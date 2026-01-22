@@ -40,8 +40,8 @@ class GenerationPipeline:
         self._llm = LLMClient()
         self._tts = TTSClient()
 
-    def _make_song_folder(self, song_id: str, artist: str, title: str) -> Path:
-        """Create a human-readable folder for this song's generated content."""
+    def _make_song_folder(self, song_id: str, artist: str, title: str, dj: str) -> Path:
+        """Create a human-readable folder for this song's generated content, organized by DJ."""
         # Sanitize artist and title for filesystem
         safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist)
         safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title)
@@ -49,14 +49,14 @@ class GenerationPipeline:
         safe_title = safe_title.strip().replace(' ', '_')
         
         folder_name = f"{safe_artist}-{safe_title}"
-        folder_path = self.output_dir / "intros" / folder_name
+        folder_path = self.output_dir / "intros" / dj / folder_name
         folder_path.mkdir(parents=True, exist_ok=True)
         return folder_path
 
     def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str) -> GenerationResult:
         try:
             # Create song folder
-            song_folder = self._make_song_folder(song_id, artist, title)
+            song_folder = self._make_song_folder(song_id, artist, title, dj)
             
             # Generate text
             self._llm_loaded = True
@@ -96,13 +96,13 @@ class GenerationPipeline:
         for s in songs:
             current_song = s.get("title") or s.get("id")
             if resume:
-                # Check for existing audio in song folder
+                # Check for existing audio in DJ-specific song folder
                 safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in s.get("artist", "Unknown"))
                 safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in s.get("title", "Unknown"))
                 safe_artist = safe_artist.strip().replace(' ', '_')
                 safe_title = safe_title.strip().replace(' ', '_')
                 folder_name = f"{safe_artist}-{safe_title}"
-                existing = self.output_dir / "intros" / folder_name / f"{dj}_0.wav"
+                existing = self.output_dir / "intros" / dj / folder_name / f"{dj}_0.wav"
                 
                 if existing.exists():
                     completed += 1

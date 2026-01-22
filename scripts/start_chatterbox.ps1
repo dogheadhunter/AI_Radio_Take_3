@@ -22,14 +22,19 @@ if ($port3000) {
 Write-Host "Starting Chatterbox from $chatterboxPath..."
 Push-Location $chatterboxPath
 
-# Check if node_modules exists; if not, run npm install
-if (-not (Test-Path "node_modules")) {
-    Write-Host "Installing dependencies (npm install)..."
-    npm install
+# Chatterbox is a Python app - check if venv exists
+if (-not (Test-Path ".venv")) {
+    Write-Host "Creating Python virtual environment..."
+    python -m venv .venv
 }
 
-Write-Host "Starting Chatterbox server (npm run dev)..."
+# Activate venv and install dependencies
+Write-Host "Installing dependencies..."
+& .\.venv\Scripts\Activate.ps1
+pip install -e .
+
+Write-Host "Starting Chatterbox Gradio app on port 3000..."
 Write-Host "Chatterbox will run in this terminal. Press Ctrl+C to stop."
-npm run dev
+python gradio_tts_turbo_app.py --server_port 3000
 
 Pop-Location

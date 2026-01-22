@@ -18,17 +18,30 @@ class TTSClient:
         # Allow overriding via environment variable AI_RADIO_TTS_URL
         self.base_url = base_url or os.getenv("AI_RADIO_TTS_URL", "http://localhost:3000")
 
-    def synthesize(self, text: str, voice_reference: Optional[Path] = None, timeout: int = 30) -> bytes:
+    def synthesize(self, text: str, voice_reference: Optional[Path] = None, timeout: int = 120) -> bytes:
         """Attempt to synthesize via remote service. Returns raw audio bytes (WAV).
 
         If the remote service is unavailable, this may raise TTSError.
         """
         try:
-            resp = requests.post(f"{self.base_url}/synthesize", json={"text": text}, timeout=timeout)
+            payload = {
+                "text": text,
+                "exaggeration": 0.5,
+                "cfg": 0.5,
+                "temperature": 0.8
+            }
+            if voice_reference and voice_reference.exists():
+                # Read voice reference file as base64 for Docker image
+                import base64
+                with open(voice_reference, 'rb') as f:
+                    audio_data = f.read()
+                payload["audio_prompt"] = base64.b64encode(audio_data).decode('utf-8')
+            
+            resp = requests.post(f"{self.base_url}/speech", json=payload, timeout=timeout)
             resp.raise_for_status()
             return resp.content
         except Exception as exc:
-            raise TTSError(str(exc)) from exc
+            raise TTSError(f"TTS request failed: {exc}") from exc
 
 
 def generate_audio(client: Optional[TTSClient], text: str, output_path: Path, voice_reference: Optional[Path] = None):

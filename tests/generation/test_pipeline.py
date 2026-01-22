@@ -170,9 +170,12 @@ def test_can_resume_from_checkpoint(monkeypatch, tmp_path):
 
     songs = [{"id": f"song_{i}", "artist": "Test", "title": f"Song {i}"} for i in range(10)]
 
-    # create files for first 5
+    # create files for first 5 in new DJ-organized structure
     for i in range(5):
-        p = tmp_path / "intros" / f"song_{i}_julie_0.wav"
+        safe_artist = "Test"
+        safe_title = f"Song_{i}"
+        folder_name = f"{safe_artist}-{safe_title}"
+        p = tmp_path / "intros" / "julie" / folder_name / "julie_0.wav"
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(b"\x00\x00")
 
