@@ -1,3 +1,4 @@
 - This project is scaffolded for quick Python development using pytest.
 - To get started, create a venv, install requirements, and open the project in VS Code.
 - Use the `Python: Debug Tests` launch configuration to run tests with the debugger.
+- If a shell command isn't working as expected, confirm you're not inside the Python REPL (you'll see the `>>>` prompt). Exit the REPL with `exit()` or `quit()`, or use Ctrl+Z then Enter on Windows (Ctrl+D on macOS/Linux), then run the command in your terminal.
