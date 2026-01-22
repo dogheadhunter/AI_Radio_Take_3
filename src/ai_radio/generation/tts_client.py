@@ -75,12 +75,13 @@ def check_tts_available(base_url: str = "http://localhost:3000") -> bool:
     the endpoint is considered a healthy TTS service for integration tests.
     """
     try:
-        resp = requests.head(f"{base_url}/synthesize", timeout=1)
-        if resp.status_code == 200:
-            return True
-        if resp.status_code == 405:
-            resp2 = requests.get(f"{base_url}/synthesize", timeout=1)
-            return resp2.status_code == 200
-        return False
+        # Docker-based Chatterbox exposes /speech; probe that endpoint.
+        # If the server responds with anything other than 404 or a connection error,
+        # consider the service available (405 Method Not Allowed is common for POST-only endpoints).
+        resp = requests.head(f"{base_url}/speech", timeout=1)
+        if resp.status_code == 404:
+            return False
+        # Any other response (200, 401, 405, etc.) indicates the service is present
+        return True
     except Exception:
         return False
