@@ -137,9 +137,11 @@ class TestExceptionHierarchy:
 ```
 
 **Success Criteria:**
-- [ ] `pytest tests/utils/test_errors.py` passes all tests
-- [ ] All exceptions can be caught by `AIRadioError`
-- [ ] Exception strings include suggestions when provided
+- [x] `pytest tests/utils/test_errors.py` passes all tests
+- [x] All exceptions can be caught by `AIRadioError`
+- [x] Exception strings include suggestions when provided
+
+**Status:** Completed on 2026-01-22 — exception hierarchy implemented and tests passed.
 
 **Validation:**
 ```bash
