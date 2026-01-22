@@ -74,7 +74,7 @@ def main():
 
             for result in generate_batch_intros(
                 pipeline,
-                [{"id": s.id, "artist": s.artist, "title": s.title} for s in songs],
+                songs,
                 dj=dj,
                 resume=args.resume,
                 progress_callback=progress_callback,

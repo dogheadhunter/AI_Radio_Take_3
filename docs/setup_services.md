@@ -13,6 +13,10 @@ Chatterbox or Mock TTS
 ----------------------
 - For true Chatterbox, follow https://github.com/resemble-ai/chatterbox to run the service (Docker is typical).
 - Alternatively, a lightweight mock TTS is provided to exercise the pipeline and generate sample audio without external services.
+- **Local Chatterbox (non-Docker)**: If you have Chatterbox cloned locally (e.g., `C:\Users\doghe\chatterbox`), you can start it directly:
+  - PowerShell: `scripts\start_chatterbox.ps1`
+  - Bash: `scripts/start_chatterbox.sh`
+  - This will stop the mock TTS (port 3000), run `npm install` if needed, and start Chatterbox with `npm run dev`.
 
 Using the mock TTS (recommended for development)
 1. Ensure Docker and docker-compose are installed.
@@ -20,6 +24,17 @@ Using the mock TTS (recommended for development)
    - bash: `scripts/start_services.sh`
    - powershell: `scripts\start_services.ps1`
 3. The mock TTS listens at `http://localhost:3000` by default and responds to `POST /synthesize` with a tiny WAV.
+4. **Alternatively, run without Docker**: `python scripts/run_mock_tts.py` (requires Flask).
+
+Offline Docker Usage
+--------------------
+- If you plan to work offline or your Internet may go down, pre-pull and save Docker images while online:
+  - PowerShell: `scripts\save_docker_images.ps1`
+  - Bash: `scripts/save_docker_images.sh`
+- Later, load them offline:
+  - PowerShell: `scripts\load_docker_images.ps1`
+  - Bash: `scripts/load_docker_images.sh`
+- Once images are saved, you can build and run containers without Internet access.
 
 Configuration
 -------------
