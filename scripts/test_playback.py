@@ -10,6 +10,14 @@ Usage:
 Note: Requires `pygame` to be installed and initialized in the environment.
 """
 
+# When running this script directly from the repo, ensure the project root
+# is on sys.path so `src.*` imports work without installing the package.
+import sys
+from pathlib import Path as _Path
+ROOT = _Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 import time
 import wave
 import math
