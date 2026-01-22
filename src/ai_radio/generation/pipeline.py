@@ -6,6 +6,7 @@ from src.ai_radio.generation.llm_client import LLMClient, generate_text
 from src.ai_radio.generation.tts_client import TTSClient, generate_audio
 from src.ai_radio.generation.prompts import build_song_intro_prompt, DJ
 from src.ai_radio.utils.errors import GenerationError
+from src.ai_radio.config import VOICE_REFERENCES_DIR
 
 
 @dataclass
@@ -52,7 +53,13 @@ class GenerationPipeline:
             self._llm_loaded = False
 
             audio_path = self._make_audio_path(song_id, dj)
-            generate_audio(self._tts, text=text, output_path=audio_path)
+            
+            # Use voice reference if available
+            voice_ref = VOICE_REFERENCES_DIR / f"{dj}.wav"
+            if not voice_ref.exists():
+                voice_ref = None
+            
+            generate_audio(self._tts, text=text, output_path=audio_path, voice_reference=voice_ref)
 
             return GenerationResult(song_id=song_id, dj=dj, text=text, audio_path=audio_path, success=True)
         except Exception as exc:

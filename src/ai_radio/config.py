@@ -9,6 +9,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 LOGS_DIR = PROJECT_ROOT / "logs"
 ASSETS_DIR = PROJECT_ROOT / "assets"
 GENERATED_DIR = DATA_DIR / "generated"
+VOICE_REFERENCES_DIR = ASSETS_DIR / "voice_references"
 
 # Catalog files
 CATALOG_FILE = DATA_DIR / "catalog.json"

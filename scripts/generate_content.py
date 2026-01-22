@@ -37,6 +37,7 @@ def main():
     # catalog._songs maps id -> SongMetadata; convert to simple dicts used by pipeline
     songs = [{"id": str(song_id), "artist": s.artist, "title": s.title} for song_id, s in catalog._songs.items()]
 
+    if args.limit:
         songs = songs[: args.limit]
         print(f"Limited to {args.limit} songs for testing")
 
