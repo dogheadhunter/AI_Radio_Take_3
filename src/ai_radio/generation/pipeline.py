@@ -40,19 +40,36 @@ class GenerationPipeline:
         self._llm = LLMClient()
         self._tts = TTSClient()
 
-    def _make_audio_path(self, song_id: str, dj: str) -> Path:
-        path = self.output_dir / "intros" / f"{song_id}_{dj}_0.wav"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        return path
+    def _make_song_folder(self, song_id: str, artist: str, title: str) -> Path:
+        """Create a human-readable folder for this song's generated content."""
+        # Sanitize artist and title for filesystem
+        safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist)
+        safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title)
+        safe_artist = safe_artist.strip().replace(' ', '_')
+        safe_title = safe_title.strip().replace(' ', '_')
+        
+        folder_name = f"{safe_artist}-{safe_title}"
+        folder_path = self.output_dir / "intros" / folder_name
+        folder_path.mkdir(parents=True, exist_ok=True)
+        return folder_path
 
     def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str) -> GenerationResult:
         try:
+            # Create song folder
+            song_folder = self._make_song_folder(song_id, artist, title)
+            
+            # Generate text
             self._llm_loaded = True
             prompt = build_song_intro_prompt(DJ(dj), artist=artist, title=title)
             text = generate_text(self._llm, prompt)
             self._llm_loaded = False
 
-            audio_path = self._make_audio_path(song_id, dj)
+            # Save text script
+            text_path = song_folder / f"{dj}_0.txt"
+            text_path.write_text(text, encoding='utf-8')
+            
+            # Generate audio
+            audio_path = song_folder / f"{dj}_0.wav"
             
             # Use voice reference if available
             voice_ref = VOICE_REFERENCES_DIR / f"{dj}.wav"
@@ -79,7 +96,14 @@ class GenerationPipeline:
         for s in songs:
             current_song = s.get("title") or s.get("id")
             if resume:
-                existing = self.output_dir / "intros" / f"{s['id']}_{dj}_0.wav"
+                # Check for existing audio in song folder
+                safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in s.get("artist", "Unknown"))
+                safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in s.get("title", "Unknown"))
+                safe_artist = safe_artist.strip().replace(' ', '_')
+                safe_title = safe_title.strip().replace(' ', '_')
+                folder_name = f"{safe_artist}-{safe_title}"
+                existing = self.output_dir / "intros" / folder_name / f"{dj}_0.wav"
+                
                 if existing.exists():
                     completed += 1
                     res = GenerationResult(song_id=s["id"], dj=dj, text=None, audio_path=existing, success=True, skipped=True)
