@@ -1,0 +1,135 @@
+2026-01-22 12:06:13,683 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:08:57,939 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:11:21,624 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:11:46,689 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:18:25,096 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:19:07,470 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:19:12,214 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:21:08,740 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:35:17,705 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:37:43,625 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:39:02,979 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:39:45,975 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:40:10,810 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 12:41:03,184 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:00:16,730 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:04:12,849 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:09:51,295 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:10:07,759 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:10:57,754 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:11:50,342 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:12:09,492 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:13:06,486 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:16:52,794 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:17:58,103 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:18:27,799 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:18:58,018 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 13:19:27,007 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing

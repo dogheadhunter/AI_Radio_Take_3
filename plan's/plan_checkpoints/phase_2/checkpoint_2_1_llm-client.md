@@ -70,8 +70,8 @@ class TestLLMClientIntegration:
 ```
 
 **Success Criteria:**
-- [ ] Unit tests pass with mocking
-- [ ] Integration test passes when Ollama is running
-- [ ] Errors are caught and wrapped in `LLMError`
+- [x] Unit tests pass with mocking
+- [x] Integration test passes when Ollama is running
+- [x] Errors are caught and wrapped in `LLMError`
 
 **Git Commit:** `feat(generation): add LLM client`

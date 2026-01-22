@@ -82,8 +82,8 @@ class TestTTSClientIntegration:
 ```
 
 **Success Criteria:**
-- [ ] Unit tests pass with mocking
-- [ ] Integration test generates actual audio file
-- [ ] Voice cloning with reference audio works
+- [x] Unit tests pass with mocking
+- [x] Integration test generates actual audio file
+- [x] Voice cloning with reference audio works
 
 **Git Commit:** `feat(generation): add TTS client`

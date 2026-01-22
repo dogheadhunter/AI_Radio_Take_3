@@ -72,8 +72,8 @@ class TestSongIntroPrompt:
 ```
 
 **Success Criteria:**
-- [ ] All prompt tests pass
-- [ ] Prompts capture DJ personality from character cards
-- [ ] Prompts are complete and self-contained
+- [x] All prompt tests pass
+- [x] Prompts capture DJ personality from character cards
+- [x] Prompts are complete and self-contained
 
 **Git Commit:** `feat(generation): add prompt templates`

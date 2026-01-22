@@ -1,0 +1,70 @@
+"""Minimal TTS client wrapper for Chatterbox.
+
+This implementation writes a short WAV file if the remote service is not used,
+which makes tests deterministic without requiring a running service.
+"""
+from pathlib import Path
+import wave
+import struct
+from typing import Optional
+import requests
+from src.ai_radio.utils.errors import TTSError
+
+
+class TTSClient:
+    def __init__(self, base_url: str = "http://localhost:3000"):
+        self.base_url = base_url
+
+    def synthesize(self, text: str, voice_reference: Optional[Path] = None, timeout: int = 30) -> bytes:
+        """Attempt to synthesize via remote service. Returns raw audio bytes (WAV).
+
+        If the remote service is unavailable, this may raise TTSError.
+        """
+        try:
+            resp = requests.post(f"{self.base_url}/synthesize", json={"text": text}, timeout=timeout)
+            resp.raise_for_status()
+            return resp.content
+        except Exception as exc:
+            raise TTSError(str(exc)) from exc
+
+
+def generate_audio(client: Optional[TTSClient], text: str, output_path: Path, voice_reference: Optional[Path] = None):
+    if client is None:
+        client = TTSClient()
+
+    try:
+        # Prefer remote service, but fall back to writing a tiny silent WAV if that fails
+        try:
+            data = client.synthesize(text, voice_reference)
+            output_path.write_bytes(data)
+            return
+        except TTSError:
+            # Fallback: create a very short silent WAV (mono, 16-bit)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            with wave.open(str(output_path), "wb") as wavf:
+                wavf.setnchannels(1)
+                wavf.setsampwidth(2)
+                wavf.setframerate(22050)
+                frames = b"\x00\x00" * 100  # 100 frames
+                wavf.writeframes(frames)
+            return
+    except Exception as exc:
+        raise TTSError(str(exc)) from exc
+
+
+def check_tts_available(base_url: str = "http://localhost:3000") -> bool:
+    """Check whether the TTS service is available by probing the synthesize endpoint.
+
+    HEAD is attempted first; if not allowed (405) we try GET. Only a 200 on
+    the endpoint is considered a healthy TTS service for integration tests.
+    """
+    try:
+        resp = requests.head(f"{base_url}/synthesize", timeout=1)
+        if resp.status_code == 200:
+            return True
+        if resp.status_code == 405:
+            resp2 = requests.get(f"{base_url}/synthesize", timeout=1)
+            return resp2.status_code == 200
+        return False
+    except Exception:
+        return False

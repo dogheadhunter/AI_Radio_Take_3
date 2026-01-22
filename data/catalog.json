@@ -1,0 +1,445 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "file_path": "music\\Alberta Hunter - The Darktown Strutters' Ball.mp3",
+      "artist": "Alberta Hunter",
+      "title": "The Darktown Strutters Ball",
+      "album": "Amtrak Blues",
+      "year": 1978,
+      "duration_seconds": 320.304
+    },
+    {
+      "id": 2,
+      "file_path": "music\\Artie Shaw - A Room With A View.mp3",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "album": "The Essential Artie Shaw",
+      "year": null,
+      "duration_seconds": 208.68
+    },
+    {
+      "id": 3,
+      "file_path": "music\\Bessie Smith - You've Got to Give Me Some - 78 rpm Version.mp3",
+      "artist": "Bessie Smith",
+      "title": "You've Got to Give Me Some - 78 rpm Version",
+      "album": "The Complete Recordings, Vol. 4",
+      "year": null,
+      "duration_seconds": 165.216
+    },
+    {
+      "id": 4,
+      "file_path": "music\\Betty Hutton - He's a Demon, He's a Devil, He's a Doll.mp3",
+      "artist": "Betty Hutton",
+      "title": "He’s a Demon, He’s a Devil, He’s a Doll",
+      "album": "Rumble Rumble Rumble",
+      "year": null,
+      "duration_seconds": 194.544
+    },
+    {
+      "id": 5,
+      "file_path": "music\\Billie Holiday - Baby, I Don't Cry Over You.mp3",
+      "artist": "Billie Holiday",
+      "title": "Baby, I Don't Cry Over You",
+      "album": "The Complete Commodore/Decca Masters",
+      "year": null,
+      "duration_seconds": 193.632
+    },
+    {
+      "id": 6,
+      "file_path": "music\\Billie Holiday - Cheek To Cheek.mp3",
+      "artist": "Billie Holiday",
+      "title": "Cheek To Cheek",
+      "album": "All Or Nothing At All",
+      "year": null,
+      "duration_seconds": 217.536
+    },
+    {
+      "id": 7,
+      "file_path": "music\\Bing Crosby - Only Forever - Single Version.mp3",
+      "artist": "Bing Crosby",
+      "title": "Only Forever - Single Version",
+      "album": "Bing-His Legendary Years 1931-1957",
+      "year": null,
+      "duration_seconds": 189.432
+    },
+    {
+      "id": 8,
+      "file_path": "music\\Bo Diddley - Who Do You Love.mp3",
+      "artist": "Bo Diddley",
+      "title": "Who Do You Love",
+      "album": "Bo Diddley",
+      "year": null,
+      "duration_seconds": 147.408
+    },
+    {
+      "id": 9,
+      "file_path": "music\\Bobby Darin - Mack the Knife.mp3",
+      "artist": "Bobby Darin",
+      "title": "Mack the Knife",
+      "album": "The Ultimate Bobby Darin",
+      "year": null,
+      "duration_seconds": 184.368
+    },
+    {
+      "id": 10,
+      "file_path": "music\\Brenda Lee - Side By Side.mp3",
+      "artist": "Brenda Lee",
+      "title": "Side By Side",
+      "album": "Grandma, What Great Songs You Sang!",
+      "year": null,
+      "duration_seconds": 132.072
+    },
+    {
+      "id": 11,
+      "file_path": "music\\Cab Calloway - Hey Now, Hey Now.mp3",
+      "artist": "Cab Calloway",
+      "title": "Hey Now, Hey Now",
+      "album": "Are You Hep To The Jive?",
+      "year": null,
+      "duration_seconds": 173.976
+    },
+    {
+      "id": 12,
+      "file_path": "music\\Chubby Checker - The Watusi.mp3",
+      "artist": "Chubby Checker",
+      "title": "The Watusi",
+      "album": "It's Pony Time/Let's Twist Again",
+      "year": null,
+      "duration_seconds": 154.032
+    },
+    {
+      "id": 13,
+      "file_path": "music\\Count Basie - Harvard Blues.mp3",
+      "artist": "Count Basie",
+      "title": "Harvard Blues",
+      "album": "America's #1 Band",
+      "year": 1936,
+      "duration_seconds": 200.904
+    },
+    {
+      "id": 14,
+      "file_path": "music\\Debbie Reynolds - Aba Daba Honeymoon.mp3",
+      "artist": "Debbie Reynolds",
+      "title": "Aba Daba Honeymoon",
+      "album": "Hollywood Musicals",
+      "year": 2007,
+      "duration_seconds": 193.728
+    },
+    {
+      "id": 15,
+      "file_path": "music\\Dinah Washington - TV Is The Thing (This Year).mp3",
+      "artist": "Dinah Washington",
+      "title": "TV Is The Thing (This Year)",
+      "album": "The Best In Blues",
+      "year": null,
+      "duration_seconds": 145.632
+    },
+    {
+      "id": 16,
+      "file_path": "music\\Eartha Kitt - I Want to Be Evil.mp3",
+      "artist": "Eartha Kitt",
+      "title": "I Want to Be Evil",
+      "album": "That Bad Eartha",
+      "year": 1956,
+      "duration_seconds": 211.848
+    },
+    {
+      "id": 17,
+      "file_path": "music\\Ella Fitzgerald - Solid As A Rock.mp3",
+      "artist": "Ella Fitzgerald",
+      "title": "Solid As A Rock",
+      "album": "Ella Fitzgerald",
+      "year": 2004,
+      "duration_seconds": 182.232
+    },
+    {
+      "id": 18,
+      "file_path": "music\\Elvis Presley - (Let's Have A) Party.mp3",
+      "artist": "Elvis Presley",
+      "title": "(Let's Have A) Party",
+      "album": "Loving You",
+      "year": null,
+      "duration_seconds": 89.808
+    },
+    {
+      "id": 19,
+      "file_path": "music\\Elvis Presley - Viva Las Vegas - Remastered.mp3",
+      "artist": "Elvis Presley",
+      "title": "Viva Las Vegas - Remastered",
+      "album": "The Essential Elvis Presley",
+      "year": 2007,
+      "duration_seconds": 144.432
+    },
+    {
+      "id": 20,
+      "file_path": "music\\Fluffy Hunter - The Walkin' Blues.mp3",
+      "artist": "Fluffy Hunter",
+      "title": "The Walkin' Blues",
+      "album": "Risque Blues - It Ain't The Meat",
+      "year": null,
+      "duration_seconds": 176.136
+    },
+    {
+      "id": 21,
+      "file_path": "music\\Frank Sinatra - Saturday Night (Is The Loneliest Night In The Week).mp3",
+      "artist": "Frank Sinatra",
+      "title": "Saturday Night (Is The Loneliest Night In The Week)",
+      "album": "Sinatra Sings His Greatest Hits",
+      "year": null,
+      "duration_seconds": 163.032
+    },
+    {
+      "id": 22,
+      "file_path": "music\\Frankie Valli & The Four Seasons - Candy Girl.mp3",
+      "artist": "Frankie Valli & The Four Seasons",
+      "title": "Candy Girl",
+      "album": "The Very Best of Frankie Valli & The 4 Seasons",
+      "year": null,
+      "duration_seconds": 156.576
+    },
+    {
+      "id": 23,
+      "file_path": "music\\Glenn Miller - American Patrol.mp3",
+      "artist": "Glenn Miller",
+      "title": "American Patrol",
+      "album": "The Essential Glenn Miller",
+      "year": null,
+      "duration_seconds": 196.56
+    },
+    {
+      "id": 24,
+      "file_path": "music\\Hank Williams - Hey Good Lookin'.mp3",
+      "artist": "Hank Williams",
+      "title": "Hey Good Lookin'",
+      "album": "Hank Williams - The Album",
+      "year": null,
+      "duration_seconds": 174.552
+    },
+    {
+      "id": 25,
+      "file_path": "music\\Helen Forrest - Taking A Chance On Love.mp3",
+      "artist": "Helen Forrest",
+      "title": "Taking A Chance On Love",
+      "album": "Ladies In Jazz - Helen Forrest",
+      "year": null,
+      "duration_seconds": 197.136
+    },
+    {
+      "id": 26,
+      "file_path": "music\\James Brown - Night Train - Single Version.mp3",
+      "artist": "James Brown",
+      "title": "Night Train - Single Version",
+      "album": "20 All-Time Greatest Hits!",
+      "year": 1991,
+      "duration_seconds": 211.128
+    },
+    {
+      "id": 27,
+      "file_path": "music\\Jimmy Donley - Born To Be A Loser.mp3",
+      "artist": "Jimmy Donley",
+      "title": "Born To Be A Loser",
+      "album": "Voices Of Americana: Born To Be A Loser",
+      "year": null,
+      "duration_seconds": 155.592
+    },
+    {
+      "id": 28,
+      "file_path": "music\\Johnny Cash - Big River.mp3",
+      "artist": "Johnny Cash",
+      "title": "Big River",
+      "album": "Sings the Songs that Made Him Famous",
+      "year": null,
+      "duration_seconds": 155.928
+    },
+    {
+      "id": 29,
+      "file_path": "music\\Johnny Cash, June Carter Cash - Jackson (with June Carter Cash).mp3",
+      "artist": "Johnny Cash/June Carter Cash",
+      "title": "Jackson (with June Carter Cash)",
+      "album": "The Essential Johnny Cash",
+      "year": null,
+      "duration_seconds": 164.76
+    },
+    {
+      "id": 30,
+      "file_path": "music\\Julia Lee And Her Boyfriends - My Man Stands Out.mp3",
+      "artist": "Julia Lee And Her Boyfriends",
+      "title": "My Man Stands Out",
+      "album": "Party Time",
+      "year": null,
+      "duration_seconds": 136.512
+    },
+    {
+      "id": 31,
+      "file_path": "music\\Kay Starr - Wheel Of Fortune.mp3",
+      "artist": "Kay Starr",
+      "title": "Wheel Of Fortune",
+      "album": "Capitol Collectors Series",
+      "year": null,
+      "duration_seconds": 185.64
+    },
+    {
+      "id": 32,
+      "file_path": "music\\Lefty Frizzell - Cigarettes and Coffee Blues.mp3",
+      "artist": "Lefty Frizzell",
+      "title": "Cigarettes and Coffee Blues",
+      "album": "Look What Thoughts Will Do",
+      "year": null,
+      "duration_seconds": 153.936
+    },
+    {
+      "id": 33,
+      "file_path": "music\\Louis Armstrong - Body and Soul.mp3",
+      "artist": "Louis Armstrong",
+      "title": "Body and Soul",
+      "album": "Love Songs",
+      "year": 1930,
+      "duration_seconds": 196.632
+    },
+    {
+      "id": 34,
+      "file_path": "music\\Margaret Whiting - Pass That Peace Pipe.mp3",
+      "artist": "Margaret Whiting",
+      "title": "Pass That Peace Pipe",
+      "album": "Capitol Collectors Series (1990 - Remastered)",
+      "year": null,
+      "duration_seconds": 180.96
+    },
+    {
+      "id": 35,
+      "file_path": "music\\Mel Tormé - Happy Together.mp3",
+      "artist": "Mel Tormé",
+      "title": "Happy Together",
+      "album": "A Time For Us",
+      "year": null,
+      "duration_seconds": 152.688
+    },
+    {
+      "id": 36,
+      "file_path": "music\\Nat King Cole - The Sand And The Sea - Remastered.mp3",
+      "artist": "Nat King Cole",
+      "title": "The Sand And The Sea - Remastered",
+      "album": "The Nat King Cole Story",
+      "year": null,
+      "duration_seconds": 161.04
+    },
+    {
+      "id": 37,
+      "file_path": "music\\Patsy Cline, The Jordanaires - I Fall To Pieces - Single Version.mp3",
+      "artist": "Patsy Cline/The Jordanaires",
+      "title": "I Fall To Pieces - Single Version",
+      "album": "Showcase",
+      "year": null,
+      "duration_seconds": 171.36
+    },
+    {
+      "id": 38,
+      "file_path": "music\\Ray Charles - Leave My Woman Alone.mp3",
+      "artist": "Ray Charles",
+      "title": "Leave My Woman Alone",
+      "album": "Yes Indeed!",
+      "year": 1958,
+      "duration_seconds": 160.824
+    },
+    {
+      "id": 39,
+      "file_path": "music\\Roy Brown - Good Rockin Tonight.mp3",
+      "artist": "Roy Brown",
+      "title": "Good Rockin Tonight",
+      "album": "Good Rockin Tonight",
+      "year": null,
+      "duration_seconds": 216.792
+    },
+    {
+      "id": 40,
+      "file_path": "music\\Sam Cooke - Trouble in Mind.mp3",
+      "artist": "Sam Cooke",
+      "title": "Trouble in Mind",
+      "album": "My Kind Of Blues",
+      "year": 1961,
+      "duration_seconds": 180.336
+    },
+    {
+      "id": 41,
+      "file_path": "music\\Six Hits And A Miss, Gordon Jenkins & His Orchestra, Pauline Byrnes - You'd Be So Nice To Come Home To.mp3",
+      "artist": "Six Hits And A Miss/Gordon Jenkins & His Orchestra/Pauline Byrnes",
+      "title": "You'd Be So Nice To Come Home To",
+      "album": "Capitol Records From The Vaults: \"The Birth Of A Label\"",
+      "year": null,
+      "duration_seconds": 167.928
+    },
+    {
+      "id": 42,
+      "file_path": "music\\Tennessee Ernie Ford - Dark As A Dungeon.mp3",
+      "artist": "Tennessee Ernie Ford",
+      "title": "Dark As A Dungeon",
+      "album": "This Lusty Land!",
+      "year": null,
+      "duration_seconds": 171.504
+    },
+    {
+      "id": 43,
+      "file_path": "music\\The Andrews Sisters, Bing Crosby, Vic Schoen & His Orchestra - Is You Is Or Is You Ain't (Ma' Baby) - Single Version.mp3",
+      "artist": "The Andrews Sisters/Bing Crosby/Vic Schoen & His Orchestra",
+      "title": "Is You Is Or Is You Ain't (Ma' Baby) - Single Version",
+      "album": "50th Anniversary Collection (Vol. 2)",
+      "year": null,
+      "duration_seconds": 181.944
+    },
+    {
+      "id": 44,
+      "file_path": "music\\The Coasters - Charlie Brown - 2007 Remaster Stereo Single Version; Remastered.mp3",
+      "artist": "The Coasters",
+      "title": "Charlie Brown - 2007 Remaster Stereo Single Version; Remastered",
+      "album": "There's A Riot Goin' On: The Coasters On Atco",
+      "year": null,
+      "duration_seconds": 141.336
+    },
+    {
+      "id": 45,
+      "file_path": "music\\The Impressions - People Get Ready.mp3",
+      "artist": "The Impressions",
+      "title": "People Get Ready",
+      "album": "People Get Ready",
+      "year": null,
+      "duration_seconds": 163.392
+    },
+    {
+      "id": 46,
+      "file_path": "music\\The Marcels - Blue Moon.mp3",
+      "artist": "The Marcels",
+      "title": "Blue Moon",
+      "album": "The Best Of The Marcels",
+      "year": null,
+      "duration_seconds": 135.24
+    },
+    {
+      "id": 47,
+      "file_path": "music\\The Platters - Remember When.mp3",
+      "artist": "The Platters",
+      "title": "Remember When",
+      "album": "Remember When?",
+      "year": null,
+      "duration_seconds": 172.2
+    },
+    {
+      "id": 48,
+      "file_path": "music\\The Velvelettes - Needle In A Haystack.mp3",
+      "artist": "The Velvelettes",
+      "title": "Needle In A Haystack",
+      "album": "The Very Best Of The Velvelettes",
+      "year": null,
+      "duration_seconds": 150.408
+    },
+    {
+      "id": 49,
+      "file_path": "music\\Wanda Jackson - Fujiyama Mama - Remastered.mp3",
+      "artist": "Wanda Jackson",
+      "title": "Fujiyama Mama - Remastered",
+      "album": "Rockin' With Wanda (Expanded Edition)",
+      "year": null,
+      "duration_seconds": 133.776
+    }
+  ]
+}

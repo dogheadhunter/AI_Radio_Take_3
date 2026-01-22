@@ -217,12 +217,12 @@ class GenerationPipeline:
 ```
 
 **Success Criteria:**
-- [ ] All pipeline tests pass
-- [ ] Single song generation works end-to-end
-- [ ] Batch generation processes all songs
-- [ ] Failed songs don't stop the batch
-- [ ] Can resume interrupted batches
-- [ ] LLM and TTS never run simultaneously
+- [x] All pipeline tests pass
+- [x] Single song generation works end-to-end
+- [x] Batch generation processes all songs
+- [x] Failed songs don't stop the batch
+- [x] Can resume interrupted batches
+- [x] LLM and TTS never run simultaneously
 
 **Validation:**
 ```bash

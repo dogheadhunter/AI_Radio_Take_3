@@ -1,7 +1,9 @@
 from typing import Iterable
 
+from src.ai_radio.config import SIGNAL_THRESHOLD
 
-def detect_signal(samples: Iterable[float], threshold: float = 0.5) -> bool:
+
+def detect_signal(samples: Iterable[float], threshold: float = SIGNAL_THRESHOLD) -> bool:
     """Return True if any sample exceeds the threshold indicating a detected signal.
 
     Args:

@@ -1,0 +1,13 @@
+﻿{
+    "songs": [
+        {
+            "id": 1,
+            "file_path": "music\\Bobby Darin - Mack the Knife.mp3",
+            "artist": "Bobby Darin",
+            "title": "Mack the Knife",
+            "album": "The Ultimate Bobby Darin",
+            "year": null,
+            "duration_seconds": 184.368
+        }
+    ]
+}

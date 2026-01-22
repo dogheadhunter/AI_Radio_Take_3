@@ -63,7 +63,6 @@ class TestScanLibrary:
 
 **Status:** Completed on 2026-01-22 — scanner implemented, tested, and validated against the local `music/` directory.
 
-**Verification (audit):** Verified on 2026-01-22 — `pytest tests/library/test_scanner.py` passed; live scan of `music/` returned total_files=1, successful=1, failed=0. Verification performed by GitHub Copilot (Raptor mini (Preview)).
 
 **Validation:**
 ```bash

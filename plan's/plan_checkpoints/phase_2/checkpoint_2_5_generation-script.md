@@ -124,11 +124,11 @@ if __name__ == "__main__":
 ```
 
 **Success Criteria:**
-- [ ] Script runs without error
-- [ ] `--dry-run` shows what would be generated
-- [ ] `--limit 5` generates only 5 intros
-- [ ] Progress is displayed during generation
-- [ ] `--resume` skips already-generated content
+- [x] Script runs without error
+- [x] `--dry-run` shows what would be generated
+- [x] `--limit 5` generates only 5 intros
+- [x] Progress is displayed during generation
+- [x] `--resume` skips already-generated content
 
 **Validation:**
 ```bash
