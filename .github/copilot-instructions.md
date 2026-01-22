@@ -1,0 +1,3 @@
+- This project is scaffolded for quick Python development using pytest.
+- To get started, create a venv, install requirements, and open the project in VS Code.
+- Use the `Python: Debug Tests` launch configuration to run tests with the debugger.
