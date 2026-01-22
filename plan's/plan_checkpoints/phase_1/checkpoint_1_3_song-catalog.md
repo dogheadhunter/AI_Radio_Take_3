@@ -75,9 +75,11 @@ class TestSongCatalog:
 ```
 
 **Success Criteria:**
-- [ ] All `test_catalog.py` tests pass
-- [ ] Catalog persists between sessions
-- [ ] JSON file is human-readable
+- [x] All `test_catalog.py` tests pass
+- [x] Catalog persists between sessions
+- [x] JSON file is human-readable
+
+**Verification (audit):** Verified on 2026-01-22 — `pytest tests/library/test_catalog.py` passed; `save_catalog` writes a JSON file with human-readable formatting (indent=2). Verification performed by GitHub Copilot (Raptor mini (Preview)).
 
 **Validation:**
 ```bash
