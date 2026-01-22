@@ -3,12 +3,15 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+# Ensure the repository root is on sys.path so internal `src` package imports work
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-from ai_radio.library.catalog import load_catalog
-from ai_radio.generation.pipeline import GenerationPipeline, generate_batch_intros
-from ai_radio.config import CATALOG_FILE, GENERATED_DIR
-from ai_radio.utils.logging import setup_logging
+from src.ai_radio.library.catalog import load_catalog
+from src.ai_radio.generation.pipeline import GenerationPipeline, generate_batch_intros
+from src.ai_radio.config import CATALOG_FILE, GENERATED_DIR
+from src.ai_radio.utils.logging import setup_logging
 
 
 def main():
@@ -31,9 +34,9 @@ def main():
         return 1
 
     catalog = load_catalog(CATALOG_FILE)
-    songs = list(catalog.songs.values())
+    # catalog._songs maps id -> SongMetadata; convert to simple dicts used by pipeline
+    songs = [{"id": str(song_id), "artist": s.artist, "title": s.title} for song_id, s in catalog._songs.items()]
 
-    if args.limit:
         songs = songs[: args.limit]
         print(f"Limited to {args.limit} songs for testing")
 

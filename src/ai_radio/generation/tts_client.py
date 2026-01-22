@@ -11,9 +11,12 @@ import requests
 from src.ai_radio.utils.errors import TTSError
 
 
+import os
+
 class TTSClient:
-    def __init__(self, base_url: str = "http://localhost:3000"):
-        self.base_url = base_url
+    def __init__(self, base_url: str = None):
+        # Allow overriding via environment variable AI_RADIO_TTS_URL
+        self.base_url = base_url or os.getenv("AI_RADIO_TTS_URL", "http://localhost:3000")
 
     def synthesize(self, text: str, voice_reference: Optional[Path] = None, timeout: int = 30) -> bytes:
         """Attempt to synthesize via remote service. Returns raw audio bytes (WAV).

@@ -8,9 +8,12 @@ import requests
 from src.ai_radio.utils.errors import LLMError
 
 
+import os
+
 class LLMClient:
-    def __init__(self, base_url: str = "http://localhost:11434"):
-        self.base_url = base_url
+    def __init__(self, base_url: str = None):
+        # Allow overriding via environment variable AI_RADIO_LLM_URL
+        self.base_url = base_url or os.getenv("AI_RADIO_LLM_URL", "http://localhost:11434")
 
     def generate(self, prompt: str, timeout: int = 10) -> str:
         """Call Ollama (or any compatible service) and return generated text.

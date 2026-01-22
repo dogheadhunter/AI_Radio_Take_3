@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  mock-tts:
+    build: ./mock_tts
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  # Optional: real Chatterbox service (uncomment and set image/build accordingly)
+  # chatterbox:
+  #   image: resembleai/chatterbox:latest
+  #   ports:
+  #     - "3000:3000"
+  #   restart: unless-stopped
+
+# Notes:
+# - Use `docker-compose -f dev/docker-compose.yml up -d` to start the mock-tts.
+# - If you have a real Chatterbox image, uncomment and replace the `chatterbox` service.
