@@ -106,9 +106,11 @@ class TestConfigValues:
 ```
 
 **Success Criteria:**
-- [ ] `pytest tests/test_config.py` passes all tests
-- [ ] Configuration can be imported:  `from src.ai_radio.config import PROJECT_ROOT`
-- [ ] No hardcoded values outside config. py
+- [x] `pytest tests/test_config.py` passes all tests
+- [x] Configuration can be imported:  `from src.ai_radio.config import PROJECT_ROOT`
+- [x] No hardcoded values outside `config.py` (all runtime defaults and env names centralized in `src.ai_radio.config`)
+
+**Status:** Completed on 2026-01-22 — all checks passed and constants centralized.
 
 **Validation:**
 ```bash
