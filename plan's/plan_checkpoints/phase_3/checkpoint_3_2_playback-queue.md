@@ -110,9 +110,12 @@ class TestQueueWithIntros:
 ```
 
 **Success Criteria:**
-- [ ] All queue tests pass
-- [ ] FIFO ordering works correctly
-- [ ] insert_next places items at front
-- [ ] Queue can be cleared
+- [x] All queue tests pass
+- [x] FIFO ordering works correctly
+- [x] insert_next places items at front
+- [x] Queue can be cleared
 
+**Progress:**
+- Implemented `PlaybackQueue` with FIFO semantics and helper functions (`add_to_queue`, `insert_next`, `get_next`, `peek_next`, `clear_queue`, `get_queue_length`).
+- Added unit tests in `tests/playback/test_queue.py` and verified they pass locally.
 **Git Commit:** `feat(playback): add playback queue`
