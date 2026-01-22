@@ -94,8 +94,8 @@ class TestTransitions:
 ```
 
 **Success Criteria:**
-- [ ] All scheduler tests pass
-- [ ] Correct DJ returned for all times
-- [ ] Transition times detected correctly
+- [x] All scheduler tests pass
+- [x] Correct DJ returned for all times
+- [x] Transition times detected correctly
 
 **Git Commit:** `feat(dj): add DJ scheduler`

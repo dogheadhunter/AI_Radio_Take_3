@@ -92,9 +92,9 @@ class TestTimeAnnouncements:
 ```
 
 **Success Criteria:**
-- [ ] All content tests pass
-- [ ] Correct intros selected for DJ and song
-- [ ] Variety in intro selection works
-- [ ] Time announcements match time of day
+- [x] All content tests pass
+- [x] Correct intros selected for DJ and song
+- [x] Variety in intro selection works
+- [x] Time announcements match time of day
 
 **Git Commit:** `feat(dj): add content selector`

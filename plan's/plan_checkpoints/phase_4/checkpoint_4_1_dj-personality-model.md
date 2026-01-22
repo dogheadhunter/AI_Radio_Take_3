@@ -70,8 +70,8 @@ class TestDJTraits:
 ```
 
 **Success Criteria:**
-- [ ] All personality tests pass
-- [ ] Can load Julie and Mr. New Vegas personalities
-- [ ] Personality traits match character cards
+- [x] All personality tests pass
+- [x] Can load Julie and Mr. New Vegas personalities
+- [x] Personality traits match character cards
 
 **Git Commit:** `feat(dj): add personality model`
