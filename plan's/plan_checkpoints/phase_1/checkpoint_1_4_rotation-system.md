@@ -99,10 +99,12 @@ class TestSongSelection:
 ```
 
 **Success Criteria:**
-- [ ] All `test_rotation.py` tests pass
-- [ ] Banished songs never play
-- [ ] Core/Discovery ratio is approximately correct
-- [ ] Auto-graduation works after threshold plays
+- [x] All `test_rotation.py` tests pass
+- [x] Banished songs never play
+- [x] Core/Discovery ratio is approximately correct
+- [x] Auto-graduation works after threshold plays
+
+**Verification (audit):** Verified on 2026-01-22 — `pytest tests/library/test_rotation.py` passed; `get_next_song` selection respects `CORE_PLAYLIST_RATIO`, banishment prevents selection, and auto-graduation occurs after the configured threshold. Verification performed by GitHub Copilot (Raptor mini (Preview)).
 
 **Validation:**
 ```bash
