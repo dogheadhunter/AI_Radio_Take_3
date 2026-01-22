@@ -121,9 +121,11 @@ def read_metadata(file_path: Path) -> SongMetadata:
 ```
 
 **Success Criteria:**
-- [ ] All `test_metadata.py` tests pass
-- [ ] Can read metadata from your actual music files
-- [ ] Missing metadata handled gracefully (no crashes)
+- [x] All `test_metadata.py` tests pass
+- [x] Can read metadata from your actual music files
+- [x] Missing metadata handled gracefully (no crashes)
+
+**Status:** Completed on 2026-01-22 — implemented `read_metadata()` with fallbacks and tested with a real MP3 (`music/Bobby Darin - Mack the Knife.mp3`).
 
 **Validation:**
 ```bash
