@@ -95,3 +95,10 @@ class TestPlayerIntegration:
 - [ ] Errors are handled gracefully
 
 **Git Commit:** `feat(playback): add basic audio player`
+
+
+**Progress:**
+- Implemented `AudioPlayer` (test-friendly) and a `PygameAudioPlayer` for real playback.
+- Added an integration test `tests/playback/test_player_integration_real.py` that plays a WAV file using `pygame` (marked `integration`).
+- Note: Real playback requires `pygame` to be installed in the test environment; MP3 playback depends on system decoders/SDL_mixer support. Run `pytest -m integration` after installing `pygame` to verify real playback.
+
