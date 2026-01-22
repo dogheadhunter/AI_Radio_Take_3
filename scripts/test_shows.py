@@ -4,7 +4,13 @@ Run: .venv\Scripts\python scripts/test_shows.py
 
 This script discovers shows under `data/shows`, lists them, selects the next episode for "The_Shadow" (if present), and simulates playback using the `ShowPlayer` with a simple `MockPlayback` implementation.
 """
+import sys
 from pathlib import Path
+
+# Ensure repo root is on sys.path so `src` package can be imported when running directly
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
 from src.ai_radio.shows.show_manager import ShowManager, scan_shows, get_next_episode
 from src.ai_radio.shows.show_player import ShowPlayer, play_show_block
 

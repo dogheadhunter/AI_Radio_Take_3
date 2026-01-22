@@ -19,3 +19,14 @@
 4. Manual test:  play show with DJ intro/outro
 
 **Git Tag:** `v0.6.0-shows`
+
+**Gate Status:** PASS ✅
+
+- [x] All automated tests verified (`pytest tests/ -v`) — all pass
+- [x] Human validation steps completed:
+  - [x] Placed The Shadow episode in `data/shows` for manual testing
+  - [x] Verified show detected by scanner
+  - [x] Manual playback tested with DJ intro/outro via `scripts/test_shows.py`
+- [x] Tag `v0.6.0-shows` created and pushed
+
+**Gate Pass Notes:** Implementation tested and verified; optional enhancements (sample show and manual test script) added for demo purposes.
