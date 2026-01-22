@@ -118,10 +118,14 @@ class TestSongWithIntro:
 ```
 
 **Success Criteria:**
-- [ ] All controller tests pass
-- [ ] Auto-advances through queue
-- [ ] Pause/resume works correctly
-- [ ] Skip advances to next item
-- [ ] Songs play after their intros
+- [x] All controller tests pass
+- [x] Auto-advances through queue
+- [x] Pause/resume works correctly
+- [x] Skip advances to next item
+- [x] Songs play after their intros
+
+**Progress:**
+- Implemented `PlaybackController` with auto-advance, pause/resume, skip, and `add_song_with_intro` helper.
+- Added `tests/playback/test_controller.py` and verified all controller tests pass locally.
 
 **Git Commit:** `feat(playback): add playback controller`
