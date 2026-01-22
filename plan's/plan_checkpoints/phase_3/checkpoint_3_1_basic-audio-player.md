@@ -89,10 +89,13 @@ class TestPlayerIntegration:
 ```
 
 **Success Criteria:**
-- [ ] All player tests pass
-- [ ] Can play an actual MP3 file
-- [ ] Completion callback fires when file ends
-- [ ] Errors are handled gracefully
+- [x] All player tests pass
+- [x] Can play an actual MP3 file (integration test using `pydub`/`ffmpeg`)
+- [x] Completion callback fires when file ends
+- [x] Errors are handled gracefully
+
+**Notes:**
+- The MP3 integration test (`tests/playback/test_player_integration_mp3.py`) creates an MP3 using `pydub` and `ffmpeg` and verifies playback via `pygame`. This test is marked `integration` and will be skipped if `pygame` or `pydub`/`ffmpeg` are unavailable in the environment.
 
 **Git Commit:** `feat(playback): add basic audio player`
 
