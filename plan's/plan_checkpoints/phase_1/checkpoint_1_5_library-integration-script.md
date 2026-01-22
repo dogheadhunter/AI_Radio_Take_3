@@ -64,9 +64,11 @@ if __name__ == "__main__":
 ```
 
 **Success Criteria:**
-- [ ] Script runs on your actual music directory
-- [ ] `data/catalog.json` is created with your songs
-- [ ] Report shows reasonable success/failure counts
+- [x] Script runs on your actual music directory
+- [x] `data/catalog.json` is created with your songs
+- [x] Report shows reasonable success/failure counts
+
+**Verification (audit):** Verified on 2026-01-22 — `python scripts/scan_library.py music` executed successfully; output reported `Total files found: 1`, `Successfully read: 1`, `Failed: 0`, and `data/catalog.json` was written with the scanned songs. Verification performed by GitHub Copilot (Raptor mini (Preview)).
 
 **Validation:**
 ```bash
