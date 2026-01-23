@@ -1,5 +1,5 @@
 {
-  "temperature": -11.24679946899414,
+  "temperature": -10.796798706054688,
   "conditions": "overcast",
   "raw": {
     "params": {
@@ -9,5 +9,7 @@
       "timezone": "America/Chicago",
       "temperature_unit": "fahrenheit"
     }
-  }
+  },
+  "forecast_hour": 12,
+  "is_forecast": true
 }

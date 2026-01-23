@@ -1,0 +1,33 @@
+# Exclude unnecessary files from Docker build context
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+.venv
+venv
+.pytest_cache
+.coverage
+htmlcov
+.tox
+.mypy_cache
+.ruff_cache
+logs
+*.log
+data/generated
+music
+music_with_lyrics
+.git
+.vscode
+.idea
+node_modules
+
+# Chatterbox specific exclusions
+chatterbox-src/chatterbox/.venv
+chatterbox-src/chatterbox/.git
+chatterbox-src/chatterbox/.pytest_cache
+chatterbox-src/chatterbox/.gradio
+chatterbox-src/.venv

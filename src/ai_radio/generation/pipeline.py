@@ -82,7 +82,9 @@ class GenerationPipeline:
                         raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
                 
                 # Use voice reference if available
-                voice_ref = VOICE_REFERENCES_DIR / f"{dj}.wav"
+                # Voice files are in subdirectories: Julie/julie.wav, Mister_New_Vegas/mr_new_vegas.wav
+                dj_folder = "Julie" if dj == "julie" else "Mister_New_Vegas"
+                voice_ref = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
                 if not voice_ref.exists():
                     voice_ref = None
                 
@@ -228,7 +230,8 @@ class GenerationPipeline:
                     else:
                         raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
                 
-                voice_ref = VOICE_REFERENCES_DIR / f"{dj}.wav"
+                dj_folder = "Julie" if dj == "julie" else "Mister_New_Vegas"
+                voice_ref = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
                 if not voice_ref.exists():
                     voice_ref = None
 
@@ -262,7 +265,7 @@ class GenerationPipeline:
                 else:
                     # Dict format
                     summary = weather_data.get('summary', '')
-                prompt = build_weather_prompt(DJ(dj), summary)
+                prompt = build_weather_prompt(DJ(dj), summary, hour=hour)
 
                 self._llm_loaded = True
                 text = generate_text(self._llm, prompt)
@@ -291,7 +294,8 @@ class GenerationPipeline:
                     else:
                         raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
                 
-                voice_ref = VOICE_REFERENCES_DIR / f"{dj}.wav"
+                dj_folder = "Julie" if dj == "julie" else "Mister_New_Vegas"
+                voice_ref = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
                 if not voice_ref.exists():
                     voice_ref = None
 
@@ -336,7 +340,8 @@ class GenerationPipeline:
                     else:
                         raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
                 
-                voice_ref = VOICE_REFERENCES_DIR / f"{dj}.wav"
+                dj_folder = "Julie" if dj == "julie" else "Mister_New_Vegas"
+                voice_ref = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
                 if not voice_ref.exists():
                     voice_ref = None
 
@@ -492,8 +497,8 @@ def generate_batch_weather_announcements(
                     progress_callback(BatchProgress(total=total, completed=completed, failed=failed, current_song=current_slot))
                 continue
             
-            # fetch weather data
-            weather_data = weather_service.get_current_weather()
+            # Fetch forecast weather for the target hour (not current weather)
+            weather_data = weather_service.get_forecast_for_hour(hour)
             
             result = pipeline.generate_weather_announcement(hour=hour, minute=minute, dj=dj, weather_data=weather_data, text_only=True)
             if result.success:
@@ -544,8 +549,8 @@ def generate_batch_weather_announcements(
                     progress_callback(BatchProgress(total=total, completed=completed, failed=failed, current_song=current_slot))
                 continue
 
-            # fetch weather data
-            weather_data = weather_service.get_current_weather()
+            # Fetch forecast weather for the target hour (not current weather)
+            weather_data = weather_service.get_forecast_for_hour(hour)
 
             result = pipeline.generate_weather_announcement(hour=hour, minute=minute, dj=dj, weather_data=weather_data)
             if result.success:

@@ -1,0 +1,44 @@
+services:
+  chatterbox-tts:
+    build:
+      context: .
+      dockerfile: Dockerfile.turbo
+    image: chatterbox-turbo:latest
+    container_name: chatterbox-turbo
+    ports:
+      - "3000:3000"
+    volumes:
+      # Persist HuggingFace model cache (models are large, avoid re-downloading)
+      - chatterbox-cache:/cache/huggingface
+      # Mount voice references from host (optional - for custom voices)
+      # Uncomment if you have voice references to use:
+      # - ./assets/voice_references:/app/voice_references:ro
+    # NVIDIA GPU support - requires nvidia-container-toolkit
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1  # Use 1 GPU (change to 'all' for multi-GPU)
+              capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - CUDA_VISIBLE_DEVICES=0
+      # HuggingFace token - REQUIRED for Chatterbox model download
+      # Get your token from: https://huggingface.co/settings/tokens
+      - HF_TOKEN=${HF_TOKEN}
+      - HF_HOME=/cache/huggingface
+    restart: unless-stopped
+    # Shared memory size - important for PyTorch/CUDA
+    shm_size: '2gb'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 180s  # Turbo model takes time to load on first run
+
+volumes:
+  chatterbox-cache:
+    name: chatterbox-hf-cache

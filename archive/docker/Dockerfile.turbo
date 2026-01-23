@@ -1,0 +1,107 @@
+# Dockerfile for Chatterbox-Turbo with CUDA 12.1 support
+# Optimized for GPU inference with NVIDIA GPUs
+# 
+# Build: docker build -f Dockerfile.turbo -t chatterbox-turbo .
+# Run:   docker run --gpus all -p 3000:3000 chatterbox-turbo
+#
+FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install Python 3.10 (required by chatterbox) and system dependencies
+RUN apt-get update && apt-get install -y \
+    python3.10 \
+    python3.10-dev \
+    python3.10-venv \
+    python3-pip \
+    git \
+    build-essential \
+    ffmpeg \
+    libsndfile1 \
+    libsndfile1-dev \
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
+
+# Make python3.10 the default
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1 \
+    && update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
+# Upgrade pip and install build tools
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel
+
+# Set working directory
+WORKDIR /app
+
+# Install PyTorch with CUDA 12.1 support FIRST (before other dependencies)
+# This ensures we get the GPU-enabled version, not CPU-only
+# Split into separate commands with resume-retries for large downloads
+RUN pip config set global.timeout 600 && \
+    pip install --resume-retries 20 \
+    torch==2.5.1+cu121 \
+    --index-url https://download.pytorch.org/whl/cu121
+
+RUN pip install --resume-retries 10 \
+    torchaudio==2.5.1+cu121 \
+    --index-url https://download.pytorch.org/whl/cu121
+
+# Install numpy first with compatible version (chatterbox requires <1.26.0)
+RUN pip install --no-cache-dir "numpy>=1.24.0,<1.26.0"
+
+# Clone Chatterbox TTS from GitHub (official Resemble AI repo)
+RUN git clone --depth 1 https://github.com/resemble-ai/chatterbox.git /chatterbox
+
+# Install chatterbox dependencies (excluding torch/torchaudio since we installed CUDA versions)
+RUN pip install --no-cache-dir \
+    librosa==0.11.0 \
+    s3tokenizer \
+    transformers==4.46.3 \
+    diffusers==0.29.0 \
+    resemble-perth==1.0.1 \
+    conformer==0.3.2 \
+    safetensors==0.5.3 \
+    spacy-pkuseg \
+    pykakasi==2.3.0 \
+    pyloudnorm \
+    omegaconf \
+    soundfile
+
+# Install Flask server dependencies
+RUN pip install --no-cache-dir flask flask-cors
+
+# Install chatterbox in editable mode (without installing its torch dependencies again)
+RUN cd /chatterbox && pip install --no-cache-dir --no-deps -e .
+
+# Copy the server script
+COPY dev/chatterbox_server.py /app/server.py
+
+# Create cache and voice reference directories
+RUN mkdir -p /cache/huggingface /app/voice_references
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables for CUDA and caching
+ENV PORT=3000 \
+    PYTHONUNBUFFERED=1 \
+    NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    # HuggingFace cache directories
+    TRANSFORMERS_CACHE=/cache/huggingface \
+    HF_HOME=/cache/huggingface \
+    HUGGINGFACE_HUB_CACHE=/cache/huggingface \
+    # CUDA settings
+    CUDA_VISIBLE_DEVICES=0 \
+    TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;8.9;9.0" \
+    # Python path to find chatterbox
+    PYTHONPATH=/chatterbox/src:$PYTHONPATH
+
+# Healthcheck
+HEALTHCHECK --interval=30s --timeout=10s --start-period=180s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Run the server
+CMD ["python", "server.py"]

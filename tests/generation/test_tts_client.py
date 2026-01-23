@@ -22,14 +22,34 @@ def test_generate_with_voice_reference(tmp_path, tmp_path_factory):
     assert output_path.exists()
 
 
-def test_raises_on_tts_error(monkeypatch, tmp_path):
+def test_fallback_on_tts_error(monkeypatch, tmp_path):
+    """When TTS fails, generate_audio creates a silent placeholder instead of raising."""
     class BrokenClient:
         def synthesize(self, *args, **kwargs):
-            raise Exception("boom")
+            raise TTSError("boom")  # Must raise TTSError for fallback to catch
 
     client = BrokenClient()
-    with pytest.raises(TTSError):
-        generate_audio(client, text="Hello", output_path=tmp_path / "out.wav")
+    output_path = tmp_path / "out.wav"
+    # Should NOT raise - instead creates silent fallback
+    generate_audio(client, text="Hello", output_path=output_path)
+    assert output_path.exists()  # Silent WAV was created
+
+
+def test_synthesize_raises_on_error():
+    """TTSClient.synthesize should raise TTSError when model fails."""
+    client = TTSClient()
+    # Force model to None to simulate failure
+    client._model = None  
+    # Monkeypatch to prevent model loading
+    import src.ai_radio.generation.tts_client as tts_module
+    original = tts_module._model_load_attempted
+    tts_module._model_load_attempted = True
+    tts_module._model = None
+    try:
+        with pytest.raises(TTSError):
+            client.synthesize("Hello")
+    finally:
+        tts_module._model_load_attempted = original
 
 
 def test_check_tts_available():

@@ -10,6 +10,8 @@ class WeatherData:
     temperature: Optional[float]
     conditions: Optional[str]
     raw: Optional[Dict[str, Any]] = None
+    forecast_hour: Optional[int] = None  # The hour this weather is for (0-23)
+    is_forecast: bool = False  # True if this is a future forecast, False if current
 
 
 class WeatherService:
@@ -118,7 +120,109 @@ class WeatherService:
         except Exception:
             conditions = None
 
-        return WeatherData(temperature=temp, conditions=conditions, raw={'params': params})
+        return WeatherData(temperature=temp, conditions=conditions, raw={'params': params}, forecast_hour=None, is_forecast=False)
+    
+    def get_forecast_for_hour(self, target_hour: int) -> WeatherData:
+        """Get weather forecast for a specific hour today (0-23).
+        
+        This is useful for generating announcements at midnight that will be played later in the day.
+        For example, at midnight, you can generate a 6 AM announcement with the forecast for 6 AM.
+        
+        Args:
+            target_hour: Hour of the day (0-23) to get forecast for
+            
+        Returns:
+            WeatherData for that specific hour with is_forecast=True
+        """
+        try:
+            import openmeteo_requests
+            import requests_cache
+            from retry_requests import retry
+            import pandas as pd
+        except Exception:
+            return WeatherData(temperature=65, conditions="clear skies", raw=None, forecast_hour=target_hour, is_forecast=True)
+        
+        # Setup cached session and retry
+        cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
+        retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
+        client = openmeteo_requests.Client(session=retry_session)
+
+        url = "https://api.open-meteo.com/v1/forecast"
+        params = {
+            "latitude": float(self._lat),
+            "longitude": float(self._lon),
+            "hourly": "temperature_2m,weathercode",
+            "timezone": self._tz,
+            "temperature_unit": "fahrenheit",
+        }
+
+        responses = client.weather_api(url, params=params)
+        if not responses:
+            return WeatherData(temperature=None, conditions=None, raw=None, forecast_hour=target_hour, is_forecast=True)
+
+        response = responses[0]
+        hourly = response.Hourly()
+        
+        try:
+            temp_vals = hourly.Variables(0).ValuesAsNumpy()
+            weathercode_vals = hourly.Variables(1).ValuesAsNumpy()
+            time_start = hourly.Time()
+            time_end = hourly.TimeEnd()
+            interval = hourly.Interval()
+        except Exception:
+            return WeatherData(temperature=None, conditions=None, raw=None, forecast_hour=target_hour, is_forecast=True)
+
+        # Build pandas index
+        times = pd.date_range(
+            start=pd.to_datetime(time_start + response.UtcOffsetSeconds(), unit='s', utc=True),
+            end=pd.to_datetime(time_end + response.UtcOffsetSeconds(), unit='s', utc=True),
+            freq=pd.Timedelta(seconds=interval),
+            inclusive='left',
+        )
+        
+        # Find the entry that matches target_hour (today)
+        from zoneinfo import ZoneInfo
+        tz_info = ZoneInfo(self._tz)
+        now_local = datetime.now(tz_info)
+        target_time = now_local.replace(hour=target_hour, minute=0, second=0, microsecond=0)
+        
+        # Convert to pandas timestamp for indexing
+        target_ts = pd.Timestamp(target_time)
+        
+        # Find closest time index
+        df = pd.DataFrame({
+            'temperature_2m': temp_vals,
+            'weathercode': weathercode_vals
+        }, index=times)
+        
+        idx = df.index.get_indexer([target_ts], method='nearest')[0]
+        if idx == -1 or idx >= len(df):
+            return WeatherData(temperature=None, conditions=None, raw=None, forecast_hour=target_hour, is_forecast=True)
+        
+        temp = float(df.iloc[idx]['temperature_2m'])
+        weathercode = int(df.iloc[idx]['weathercode'])
+        
+        # Map weathercode to text
+        weathercode_map = {
+            0: 'clear sky',
+            1: 'mainly clear',
+            2: 'partly cloudy',
+            3: 'overcast',
+            45: 'fog',
+            48: 'depositing rime fog',
+            51: 'drizzle',
+            53: 'moderate drizzle',
+            55: 'dense drizzle',
+            61: 'rain',
+            63: 'moderate rain',
+            65: 'heavy rain',
+            71: 'snow',
+            80: 'rain showers',
+            95: 'thunderstorm'
+        }
+        conditions = weathercode_map.get(weathercode, f'code {weathercode}')
+        
+        return WeatherData(temperature=temp, conditions=conditions, raw={'params': params}, forecast_hour=target_hour, is_forecast=True)
 
     def _fetch_and_cache(self) -> WeatherData:
         data = self._api_client()

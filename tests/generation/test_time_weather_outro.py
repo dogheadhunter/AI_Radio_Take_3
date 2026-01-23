@@ -81,6 +81,9 @@ def test_batch_weather_announcements_uses_weather_service(monkeypatch, pipeline)
             # Return an object compatible with WeatherData (simple dict allowed by pipeline usage)
             return {"summary": "Cloudy", "temp": 60}
 
+        def get_forecast_for_hour(self, hour):
+            return {"summary": "Cloudy", "temp": 60, "hour": hour}
+
     monkeypatch.setattr('src.ai_radio.services.weather.WeatherService', FakeWeatherService)
 
     results = list(generate_batch_weather_announcements(pipeline, dj="julie", resume=False))
@@ -99,6 +102,9 @@ def test_batch_weather_announcements_count(monkeypatch, pipeline):
 
         def get_current_weather(self):
             return {"summary": "Cloudy", "temp": 60}
+
+        def get_forecast_for_hour(self, hour):
+            return {"summary": "Cloudy", "temp": 60, "hour": hour}
 
     monkeypatch.setattr('src.ai_radio.services.weather.WeatherService', FakeWeatherService)
 

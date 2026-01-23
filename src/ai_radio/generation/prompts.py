@@ -55,16 +55,32 @@ def build_time_announcement_prompt(hour: int = None, minute: int = None, dj: DJ 
     return f"Announce {time_part} in a way that matches the DJ personality{dj_part}."
 
 
-def build_weather_prompt(dj: DJ, weather_summary: str) -> str:
-    """Build a weather announcement prompt using a short weather summary."""
+def build_weather_prompt(dj: DJ, weather_summary: str, hour: int = None) -> str:
+    """Build a weather announcement prompt using a short weather summary.
+    
+    Args:
+        dj: DJ personality
+        weather_summary: Current or forecast weather summary
+        hour: Hour of day (0-23) when this will be broadcast, for context
+    """
     if dj == DJ.JULIE:
         traits = "friendly, warm, and conversational"
     else:
         traits = "suave, smooth, and theatrical like a classic Vegas lounge DJ"
     
-    return f"""You are a radio DJ announcing the current weather to your listeners.
-Your style is {traits}.
-Current weather: {weather_summary}
+    # Add context based on time of day
+    time_context = ""
+    if hour is not None:
+        if hour == 6:
+            time_context = " You're announcing the morning weather to listeners just waking up. Mention what to expect for the day ahead."
+        elif hour == 12:
+            time_context = " It's midday. Mention the current conditions and what to expect for the afternoon and evening."
+        elif hour == 17:
+            time_context = " It's evening time. Mention current conditions and what to expect tonight and tomorrow morning."
+    
+    return f"""You are a radio DJ announcing the weather to your listeners.
+Your style is {traits}.{time_context}
+Weather: {weather_summary}
 
 Write a brief, natural weather announcement (2-3 sentences) that sounds like you're speaking directly to your radio audience. Stay in character and make it engaging."""
 

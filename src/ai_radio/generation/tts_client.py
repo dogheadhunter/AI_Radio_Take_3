@@ -1,47 +1,93 @@
-"""Minimal TTS client wrapper for Chatterbox.
+"""TTS client using Chatterbox directly (no server required).
 
-This implementation writes a short WAV file if the remote service is not used,
-which makes tests deterministic without requiring a running service.
+Uses the local Chatterbox installation for text-to-speech synthesis.
+Falls back to silent WAV for tests when model loading fails.
 """
 from pathlib import Path
 import wave
-import struct
 from typing import Optional
-import requests
 from src.ai_radio.utils.errors import TTSError
 
-
 import os
+import logging
+
+logger = logging.getLogger(__name__)
+
+# Global model instance (lazy loaded)
+_model = None
+_model_load_attempted = False
+
+
+def _get_model():
+    """Lazy-load the Chatterbox model on first use."""
+    global _model, _model_load_attempted
+    
+    if _model is not None:
+        return _model
+    
+    if _model_load_attempted:
+        return None  # Already tried and failed
+    
+    _model_load_attempted = True
+    
+    try:
+        import torch
+        from chatterbox.tts_turbo import ChatterboxTurboTTS
+        
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        logger.info(f"Loading Chatterbox-Turbo on {device}...")
+        
+        if device == "cuda":
+            logger.info(f"CUDA Device: {torch.cuda.get_device_name(0)}")
+        
+        _model = ChatterboxTurboTTS.from_pretrained(device=device)
+        logger.info("Chatterbox model loaded successfully!")
+        return _model
+        
+    except Exception as e:
+        logger.warning(f"Could not load Chatterbox model: {e}")
+        logger.warning("TTS will fall back to silent audio for tests")
+        return None
+
 
 class TTSClient:
     def __init__(self, base_url: str = None):
-        # Allow overriding via environment variable AI_RADIO_TTS_URL
-        self.base_url = base_url or os.getenv("AI_RADIO_TTS_URL", "http://localhost:3000")
+        # base_url kept for backward compatibility but not used
+        self._model = None
+    
+    def _ensure_model(self):
+        """Ensure model is loaded."""
+        if self._model is None:
+            self._model = _get_model()
+        return self._model
 
     def synthesize(self, text: str, voice_reference: Optional[Path] = None, timeout: int = 120) -> bytes:
-        """Attempt to synthesize via remote service. Returns raw audio bytes (WAV).
+        """Synthesize speech using local Chatterbox model. Returns raw audio bytes (WAV).
 
-        If the remote service is unavailable, this may raise TTSError.
+        If the model is unavailable, raises TTSError.
         """
+        model = self._ensure_model()
+        if model is None:
+            raise TTSError("Chatterbox model not loaded")
+        
         try:
-            payload = {
-                "text": text,
-                "exaggeration": 0.5,
-                "cfg": 0.5,
-                "temperature": 0.8
-            }
-            if voice_reference and voice_reference.exists():
-                # Read voice reference file as base64 for Docker image
-                import base64
-                with open(voice_reference, 'rb') as f:
-                    audio_data = f.read()
-                payload["audio_prompt"] = base64.b64encode(audio_data).decode('utf-8')
+            import torchaudio as ta
+            import io
             
-            resp = requests.post(f"{self.base_url}/speech", json=payload, timeout=timeout)
-            resp.raise_for_status()
-            return resp.content
+            # Generate audio
+            if voice_reference and voice_reference.exists():
+                wav = model.generate(text, audio_prompt_path=str(voice_reference))
+            else:
+                wav = model.generate(text)
+            
+            # Convert to WAV bytes
+            buffer = io.BytesIO()
+            ta.save(buffer, wav, model.sr, format="wav")
+            buffer.seek(0)
+            return buffer.read()
+            
         except Exception as exc:
-            raise TTSError(f"TTS request failed: {exc}") from exc
+            raise TTSError(f"TTS synthesis failed: {exc}") from exc
 
 
 def generate_audio(client: Optional[TTSClient], text: str, output_path: Path, voice_reference: Optional[Path] = None):
@@ -49,39 +95,25 @@ def generate_audio(client: Optional[TTSClient], text: str, output_path: Path, vo
         client = TTSClient()
 
     try:
-        # Prefer remote service, but fall back to writing a tiny silent WAV if that fails
-        try:
-            data = client.synthesize(text, voice_reference)
-            output_path.write_bytes(data)
-            return
-        except TTSError:
-            # Fallback: create a very short silent WAV (mono, 16-bit)
-            output_path.parent.mkdir(parents=True, exist_ok=True)
-            with wave.open(str(output_path), "wb") as wavf:
-                wavf.setnchannels(1)
-                wavf.setsampwidth(2)
-                wavf.setframerate(22050)
-                frames = b"\x00\x00" * 100  # 100 frames
-                wavf.writeframes(frames)
-            return
-    except Exception as exc:
-        raise TTSError(str(exc)) from exc
+        data = client.synthesize(text, voice_reference)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_bytes(data)
+    except TTSError:
+        # Fallback: create a very short silent WAV (mono, 16-bit) for tests
+        logger.warning(f"TTS failed, creating silent placeholder: {output_path}")
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with wave.open(str(output_path), "wb") as wavf:
+            wavf.setnchannels(1)
+            wavf.setsampwidth(2)
+            wavf.setframerate(22050)
+            frames = b"\x00\x00" * 100  # 100 frames
+            wavf.writeframes(frames)
 
 
-def check_tts_available(base_url: str = "http://localhost:3000") -> bool:
-    """Check whether the TTS service is available by probing the synthesize endpoint.
-
-    HEAD is attempted first; if not allowed (405) we try GET. Only a 200 on
-    the endpoint is considered a healthy TTS service for integration tests.
-    """
+def check_tts_available() -> bool:
+    """Check whether the local Chatterbox model can be loaded."""
     try:
-        # Docker-based Chatterbox exposes /speech; probe that endpoint.
-        # If the server responds with anything other than 404 or a connection error,
-        # consider the service available (405 Method Not Allowed is common for POST-only endpoints).
-        resp = requests.head(f"{base_url}/speech", timeout=1)
-        if resp.status_code == 404:
-            return False
-        # Any other response (200, 401, 405, etc.) indicates the service is present
-        return True
+        model = _get_model()
+        return model is not None
     except Exception:
         return False

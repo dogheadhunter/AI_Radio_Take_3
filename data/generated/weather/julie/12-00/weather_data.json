@@ -1,6 +1,6 @@
 {
-  "temperature": -18.716796875,
-  "conditions": "clear sky",
+  "temperature": -12.866798400878906,
+  "conditions": "overcast",
   "raw": {
     "params": {
       "latitude": 44.0216,
@@ -9,5 +9,7 @@
       "timezone": "America/Chicago",
       "temperature_unit": "fahrenheit"
     }
-  }
+  },
+  "forecast_hour": 12,
+  "is_forecast": true
 }
