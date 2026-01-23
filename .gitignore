@@ -22,3 +22,6 @@ build/
 # Large media directories (audio shows and music library)
 Radio_Shows/
 music/
+
+# MP3 files
+*.mp3
