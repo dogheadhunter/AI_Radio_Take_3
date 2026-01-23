@@ -208,3 +208,156 @@
   Technical:  TestError:  This is a test
   Suggestion:  This is just a test, ignore it
   Action taken: Logged for testing
+2026-01-22 17:42:08,830 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 17:45:24,397 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 17:48:14,697 - station - INFO - Starting station
+2026-01-22 17:48:14,698 - station - INFO - Stopping station
+2026-01-22 17:48:15,212 - station - INFO - Starting station
+2026-01-22 17:48:15,744 - station - INFO - Stopping station
+2026-01-22 17:48:16,231 - station - INFO - Starting station
+2026-01-22 17:48:17,238 - station - INFO - Stopping station
+2026-01-22 17:48:17,248 - station - INFO - Starting station
+2026-01-22 17:48:17,461 - station - INFO - Stopping station
+2026-01-22 17:48:19,620 - commands - INFO - Quit command received
+2026-01-22 17:48:19,623 - commands - INFO - Pausing playback
+2026-01-22 17:48:19,626 - commands - INFO - Resuming playback
+2026-01-22 17:48:19,628 - commands - INFO - Skipping:  
+2026-01-22 17:48:19,630 - commands - INFO - Banishing: Artist - Song
+2026-01-22 17:48:19,633 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 17:48:19,679 - main - INFO - Starting AI Radio Station...
+2026-01-22 17:48:19,679 - station - INFO - Starting station
+2026-01-22 17:48:19,684 - main - INFO - Station is now playing!
+2026-01-22 17:51:05,166 - main - INFO - Shutdown signal received
+2026-01-22 17:51:05,176 - station - INFO - Stopping station
+2026-01-22 17:51:05,608 - station - INFO - Stopping station
+2026-01-22 17:51:05,608 - main - INFO - Station stopped
+2026-01-22 17:51:05,684 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 17:51:47,134 - main - INFO - Starting AI Radio Station...
+2026-01-22 17:51:47,134 - station - INFO - Starting station
+2026-01-22 17:51:47,144 - main - INFO - Station is now playing!
+2026-01-22 17:58:58,828 - station - INFO - Starting station
+2026-01-22 17:58:59,039 - station - INFO - Stopping station
+2026-01-22 17:58:59,342 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "c:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 17:59:06,073 - main - INFO - Starting AI Radio Station...
+2026-01-22 17:59:06,073 - station - INFO - Starting station
+2026-01-22 17:59:06,093 - main - INFO - Station is now playing!
+2026-01-22 18:00:44,916 - station - INFO - Starting station
+2026-01-22 18:00:44,918 - station - INFO - Stopping station
+2026-01-22 18:00:45,429 - station - INFO - Starting station
+2026-01-22 18:00:45,961 - station - INFO - Stopping station
+2026-01-22 18:00:46,447 - station - INFO - Starting station
+2026-01-22 18:00:47,460 - station - INFO - Stopping station
+2026-01-22 18:00:47,964 - station - INFO - Starting station
+2026-01-22 18:00:48,164 - station - INFO - Stopping station
+2026-01-22 18:00:48,465 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "c:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 18:01:24,771 - station - INFO - Starting station
+2026-01-22 18:01:24,984 - station - INFO - Stopping station
+2026-01-22 18:01:25,284 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "c:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 18:03:57,811 - station - INFO - Starting station
+2026-01-22 18:03:57,813 - station - INFO - Stopping station
+2026-01-22 18:03:58,328 - station - INFO - Starting station
+2026-01-22 18:03:58,859 - station - INFO - Stopping station
+2026-01-22 18:03:59,338 - station - INFO - Starting station
+2026-01-22 18:04:00,344 - station - INFO - Stopping station
+2026-01-22 18:04:00,855 - station - INFO - Starting station
+2026-01-22 18:04:01,072 - station - INFO - Stopping station
+2026-01-22 18:04:01,362 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "c:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 18:04:03,311 - commands - INFO - Quit command received
+2026-01-22 18:04:03,314 - commands - INFO - Pausing playback
+2026-01-22 18:04:03,317 - commands - INFO - Resuming playback
+2026-01-22 18:04:03,319 - commands - INFO - Skipping:  
+2026-01-22 18:04:03,322 - commands - INFO - Banishing: Artist - Song
+2026-01-22 18:04:03,326 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 18:04:03,442 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 18:04:09,050 - station - INFO - Starting station
+2026-01-22 18:04:09,051 - station - INFO - Stopping station
+2026-01-22 18:04:09,557 - station - INFO - Starting station
+2026-01-22 18:04:10,102 - station - INFO - Stopping station
+2026-01-22 18:04:10,573 - station - INFO - Starting station
+2026-01-22 18:04:11,589 - station - INFO - Stopping station
+2026-01-22 18:04:12,091 - station - INFO - Starting station
+2026-01-22 18:04:12,295 - station - INFO - Stopping station
+2026-01-22 18:04:12,606 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "c:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 18:04:14,316 - commands - INFO - Quit command received
+2026-01-22 18:04:14,319 - commands - INFO - Pausing playback
+2026-01-22 18:04:14,321 - commands - INFO - Resuming playback
+2026-01-22 18:04:14,324 - commands - INFO - Skipping:  
+2026-01-22 18:04:14,326 - commands - INFO - Banishing: Artist - Song
+2026-01-22 18:04:14,328 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 18:04:14,430 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 18:06:52,329 - station - INFO - Starting station
+2026-01-22 18:06:52,330 - station - INFO - Stopping station
+2026-01-22 18:06:52,836 - station - INFO - Starting station
+2026-01-22 18:06:53,355 - station - INFO - Stopping station
+2026-01-22 18:06:53,841 - station - INFO - Starting station
+2026-01-22 18:06:54,854 - station - INFO - Stopping station
+2026-01-22 18:06:54,858 - station - INFO - Starting station
+2026-01-22 18:06:55,072 - station - INFO - Stopping station
+2026-01-22 18:06:55,371 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "c:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 18:06:57,065 - commands - INFO - Quit command received
+2026-01-22 18:06:57,067 - commands - INFO - Pausing playback
+2026-01-22 18:06:57,069 - commands - INFO - Resuming playback
+2026-01-22 18:06:57,071 - commands - INFO - Skipping:  
+2026-01-22 18:06:57,074 - commands - INFO - Banishing: Artist - Song
+2026-01-22 18:06:57,076 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 18:06:57,171 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing

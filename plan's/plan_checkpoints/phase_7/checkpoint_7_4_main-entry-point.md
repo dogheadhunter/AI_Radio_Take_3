@@ -180,10 +180,10 @@ class TestMain:
 ```
 
 **Success Criteria:**
-- [ ] All main tests pass
-- [ ] `--dry-run` shows configuration
-- [ ] Station starts with valid configuration
-- [ ] Ctrl+C stops station gracefully
-- [ ] Exit codes are correct
+- [x] All main tests pass
+- [x] `--dry-run` shows configuration
+- [x] Station starts with valid configuration
+- [x] Ctrl+C stops station gracefully
+- [x] Exit codes are correct
 
 **Git Commit:** `feat(station): add main entry point`

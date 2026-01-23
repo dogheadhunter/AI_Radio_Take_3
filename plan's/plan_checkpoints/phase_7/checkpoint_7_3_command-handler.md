@@ -224,9 +224,9 @@ class CommandHandler:
 ```
 
 **Success Criteria:**
-- [ ] All command tests pass
-- [ ] Keys map to correct commands
-- [ ] Commands execute correctly
-- [ ] Non-blocking input works
+- [x] All command tests pass
+- [x] Keys map to correct commands
+- [x] Commands execute correctly
+- [x] Non-blocking input works
 
 **Git Commit:** `feat(station): add command handler`

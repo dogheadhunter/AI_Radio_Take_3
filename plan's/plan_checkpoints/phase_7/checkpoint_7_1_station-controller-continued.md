@@ -237,14 +237,14 @@ class StationController:
 ```
 
 **Success Criteria:**
-- [ ] All controller tests pass
-- [ ] Station starts and initializes all subsystems
-- [ ] Correct content decisions based on time
-- [ ] DJ handoff works at 7 PM
-- [ ] Radio shows play at 8 PM
-- [ ] Weather plays at scheduled times
-- [ ] Time announcements play every 30 minutes
-- [ ] Errors are caught and recovered from
+- [x] All controller tests pass
+- [x] Station starts and initializes all subsystems
+- [x] Correct content decisions based on time
+- [x] DJ handoff works at 7 PM
+- [x] Radio shows play at 8 PM
+- [x] Weather plays at scheduled times
+- [x] Time announcements play every 30 minutes
+- [x] Errors are caught and recovered from
 
 **Validation:**
 ```bash
