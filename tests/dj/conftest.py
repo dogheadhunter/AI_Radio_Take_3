@@ -26,6 +26,9 @@ def content_with_intros(tmp_path: Path):
     (d / "julie_song_1_intro_var2.mp3").write_text("dummy2")
     (d / "mr_new_vegas_song_1_intro.mp3").write_text("dummy3")
     (d / "julie_time_14.mp3").write_text("time14")
+    # add outro files for testing
+    (d / "julie_song_1_outro.mp3").write_text("outro1")
+    (d / "mr_new_vegas_song_1_outro.mp3").write_text("outro2")
     return d
 
 
