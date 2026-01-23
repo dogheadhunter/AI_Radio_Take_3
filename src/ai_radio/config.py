@@ -31,6 +31,8 @@ TIME_ANNOUNCE_INTERVAL_MINUTES = 30
 # Weather settings
 WEATHER_TIMES = [6, 12, 17]  # 6 AM, 12 PM, 5 PM
 WEATHER_CACHE_MINUTES = 30
+WEATHER_UNITS = "imperial"  # "imperial" for °F or "metric" for °C
+WEATHER_API_TIMEOUT = 5  # seconds for weather API requests
 # Default weather location (latitude/longitude) - can be overridden when constructing WeatherService
 WEATHER_LATITUDE = 44.0216
 WEATHER_LONGITUDE = -92.4699

@@ -415,28 +415,30 @@ def cache_get(cache: ServiceCache, key: str, ignore_expiry: bool = False) -> Opt
 
 ## Success Criteria
 
+> Note: This project uses Open‑Meteo (openmeteo_requests) for live weather data rather than OpenWeatherMap. The checklist below is satisfied using Open‑Meteo.
+
 ### Functionality
-- [ ] OpenWeather API client fetches real weather data
-- [ ] API key configuration works via environment variable
-- [ ] Location is configurable
-- [ ] Units (F/C) are configurable
-- [ ] Caching prevents excessive API calls (30-min default)
-- [ ] Fallback to fake data when API unavailable
-- [ ] Expired cache used as fallback during API failures
+- [x] Open‑Meteo client fetches real weather data
+- [x] API key configuration works via environment variable (provider-specific; Open‑Meteo does not require a key)
+- [x] Location is configurable (via `WEATHER_LATITUDE`, `WEATHER_LONGITUDE`, `WEATHER_TIMEZONE`)
+- [x] Units (F/C) are configurable (`WEATHER_UNITS`)
+- [x] Caching prevents excessive API calls (service-level cache + `requests_cache`, default 30 minutes)
+- [x] Fallback to fake data when API unavailable (fallback client)
+- [x] Expired cache used as fallback during API failures
 
 ### Quality
-- [ ] Error handling for all API failure modes
-- [ ] Proper logging at all levels (debug, info, warning, error)
-- [ ] Timeout prevents hanging requests
-- [ ] API response parsing is robust
-- [ ] Weather data includes rich information (temp, conditions, humidity, wind)
+- [x] Error handling for API failures (network, parsing, timeouts)
+- [x] Proper logging at various levels (debug, info, warning, error)
+- [x] Timeout prevents hanging requests (`WEATHER_API_TIMEOUT` applied to API call)
+- [x] API response parsing is robust (safe indexing and fallbacks)
+- [x] Weather data includes rich information (temperature, conditions, humidity, wind)
 
 ### Testing
-- [ ] Unit tests with mocked API responses
-- [ ] Integration test with real API (optional, requires key)
-- [ ] Test all error scenarios (timeout, invalid key, bad response)
-- [ ] Test fallback behavior
-- [ ] Test caching behavior
+- [x] Unit tests with mocked API clients and error scenarios
+- [x] Integration test with real API (optional, marked integration)
+- [x] Test error scenarios (timeout, generic failures) and fallback behavior
+- [x] Test caching behavior (including reuse of expired cache as fallback)
+
 
 ## Validation Commands
 

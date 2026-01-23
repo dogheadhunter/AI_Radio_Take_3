@@ -21,10 +21,12 @@ def cache_set(cache: ServiceCache, key: str, value: Any, ttl_seconds: Optional[i
     cache._entries[key] = CacheEntry(value=value, created=datetime.now(), ttl_seconds=ttl)
 
 
-def cache_get(cache: ServiceCache, key: str):
+def cache_get(cache: ServiceCache, key: str, ignore_expiry: bool = False):
     entry = cache._entries.get(key)
     if entry is None:
         return None
+    if ignore_expiry:
+        return entry.value
     if not is_cache_valid(cache, key):
         cache_invalidate(cache, key)
         return None
