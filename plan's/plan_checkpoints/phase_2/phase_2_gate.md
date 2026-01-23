@@ -13,6 +13,8 @@
 | Batch generation handles failures | Unit tests |
 | Resume functionality works | Unit tests |
 | Generation script runs | Manual test with `--limit 5` |
+| Time announcements generation works | Checkpoint 2.6 |
+| Weather announcements generation works | Checkpoint 2.7 |
 | No regressions | `pytest tests/ -v` (all tests) |
 
 **Human Validation Required:**

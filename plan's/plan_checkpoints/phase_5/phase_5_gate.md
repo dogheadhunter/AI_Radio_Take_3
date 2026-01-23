@@ -10,6 +10,7 @@
 | Show scanning works | Unit tests |
 | Sequential play works | Unit tests |
 | DJ integration works | Unit tests |
+| Enhanced playback controls work | Checkpoint 5.3 (optional) |
 | No regressions | `pytest tests/ -v` (all tests) |
 
 **Human Validation Required:**
