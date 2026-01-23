@@ -12,6 +12,7 @@
 | Commands work (Q, P, S, B, F) | Manual test |
 | Display shows correct info | Visual inspection |
 | Logs are comprehensive | Review log file |
+| Outro playback integration (if implemented) | Checkpoint 7.1a (optional) |
 | No regressions | `pytest tests/ -v` (all tests) |
 
 **Human Validation Required:**

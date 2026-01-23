@@ -15,6 +15,7 @@
 | Generation script runs | Manual test with `--limit 5` |
 | Time announcements generation works | Checkpoint 2.6 |
 | Weather announcements generation works | Checkpoint 2.7 |
+| Outro generation works (optional) | Checkpoint 2.8 (optional) |
 | No regressions | `pytest tests/ -v` (all tests) |
 
 **Human Validation Required:**
