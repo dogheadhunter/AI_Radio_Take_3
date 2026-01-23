@@ -20,11 +20,18 @@ def main():
     parser = argparse.ArgumentParser(description="Generate radio content")
     parser.add_argument("--intros", action="store_true", help="Generate song intros")
     parser.add_argument("--time-announcements", action="store_true", help="Generate time announcements")
+    parser.add_argument("--weather-announcements", action="store_true", help="Generate weather announcements")
+    parser.add_argument("--location", type=str, help="Location for weather announcements (e.g., 'New York, NY')")
+    parser.add_argument("--outros", action="store_true", help="Generate song outros")
     parser.add_argument("--dj", choices=["julie", "mr_new_vegas", "all"], default="all")
     parser.add_argument("--limit", type=int, help="Limit number of songs")
     parser.add_argument("--resume", action="store_true", help="Resume interrupted generation")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be generated")
+    parser.add_argument("--single-phase", action="store_true", help="Generate text+audio sequentially (default is two-phase to reduce GPU contention)")
     args = parser.parse_args()
+    
+    # Two-phase is the default (better for GPU management)
+    two_phase = not args.single_phase
 
     logger = setup_logging("generate_content")
 
@@ -79,6 +86,7 @@ def main():
                 dj=dj,
                 resume=args.resume,
                 progress_callback=progress_callback,
+                two_phase=two_phase,
             ):
                 if result.success:
                     success_count += 1
@@ -91,9 +99,141 @@ def main():
             print(f"Success: {success_count}, Failed: {fail_count}")
 
     if args.time_announcements:
-        print("Generating time announcements...")
-        # Implementation for time announcements
-        pass
+        from src.ai_radio.generation.pipeline import generate_batch_time_announcements
+
+        print("Generating time announcements for 24 hours...")
+        print(f"DJ: {args.dj}")
+        print(f"Resume mode: {args.resume}")
+        print("-" * 50)
+
+        pipeline = GenerationPipeline(output_dir=GENERATED_DIR)
+        djs = ["julie", "mr_new_vegas"] if args.dj == "all" else [args.dj]
+
+        for dj in djs:
+            print(f"\n=== Generating {dj.upper()} time announcements ===\n")
+
+            start_time = datetime.now()
+            success_count = 0
+            fail_count = 0
+            skip_count = 0
+
+            def progress_callback(progress):
+                elapsed = datetime.now() - start_time
+                print(
+                    f"\r[{progress.percent:.1f}%] {progress.completed}/{progress.total} "
+                    f"({progress.failed} failed) - {progress.current_song[:40]}...",
+                    end="",
+                    flush=True,
+                )
+
+            for result in generate_batch_time_announcements(pipeline, dj=dj, resume=args.resume, progress_callback=progress_callback, two_phase=two_phase):
+                if result.success:
+                    if result.skipped:
+                        skip_count += 1
+                    else:
+                        success_count += 1
+                else:
+                    fail_count += 1
+                    logger.warning(f"Failed: {result.song_id} - {result.error}")
+
+            elapsed = datetime.now() - start_time
+            print(f"\n\nCompleted in {elapsed}")
+            print(f"Success: {success_count}, Skipped: {skip_count}, Failed: {fail_count}")
+
+    if args.weather_announcements:
+        from src.ai_radio.generation.pipeline import generate_batch_weather_announcements
+        from src.ai_radio.config import WEATHER_TIMES
+
+        print("Generating weather announcements for configured times...")
+        print(f"Weather times: {WEATHER_TIMES} (hours)")
+        print(f"Location: {args.location or 'default from config'}")
+        print(f"DJ: {args.dj}")
+        print(f"Resume mode: {args.resume}")
+        print("-" * 50)
+
+        pipeline = GenerationPipeline(output_dir=GENERATED_DIR)
+        djs = ["julie", "mr_new_vegas"] if args.dj == "all" else [args.dj]
+
+        for dj in djs:
+            print(f"\n=== Generating {dj.upper()} weather announcements ===\n")
+
+            start_time = datetime.now()
+            success_count = 0
+            fail_count = 0
+            skip_count = 0
+
+            def progress_callback(progress):
+                elapsed = datetime.now() - start_time
+                print(
+                    f"\r[{progress.percent:.1f}%] {progress.completed}/{progress.total} "
+                    f"({progress.failed} failed) - {progress.current_song[:40]}...",
+                    end="",
+                    flush=True,
+                )
+
+            for result in generate_batch_weather_announcements(
+                pipeline,
+                dj=dj,
+                weather_times=WEATHER_TIMES,
+                location=args.location,
+                resume=args.resume,
+                progress_callback=progress_callback,
+                two_phase=two_phase,
+            ):
+                if result.success:
+                    if result.skipped:
+                        skip_count += 1
+                    else:
+                        success_count += 1
+                else:
+                    fail_count += 1
+                    logger.warning(f"Failed: {result.song_id} - {result.error}")
+
+            elapsed = datetime.now() - start_time
+            print(f"\n\nCompleted in {elapsed}")
+            print(f"Success: {success_count}, Skipped: {skip_count}, Failed: {fail_count}")
+
+    if args.outros:
+        from src.ai_radio.generation.pipeline import generate_batch_outros
+
+        print("Generating song outros...")
+        print(f"DJ: {args.dj}")
+        print(f"Resume mode: {args.resume}")
+        print("-" * 50)
+
+        pipeline = GenerationPipeline(output_dir=GENERATED_DIR)
+        djs = ["julie", "mr_new_vegas"] if args.dj == "all" else [args.dj]
+
+        for dj in djs:
+            print(f"\n=== Generating {dj.upper()} outros ===\n")
+
+            start_time = datetime.now()
+            success_count = 0
+            fail_count = 0
+            skip_count = 0
+
+            def progress_callback(progress):
+                elapsed = datetime.now() - start_time
+                print(
+                    f"\r[{progress.percent:.1f}%] {progress.completed}/{progress.total} "
+                    f"({progress.failed} failed) - {progress.current_song[:40]}...",
+                    end="",
+                    flush=True,
+                )
+
+            for result in generate_batch_outros(pipeline, songs, dj=dj, resume=args.resume, progress_callback=progress_callback, two_phase=two_phase):
+                if result.success:
+                    if result.skipped:
+                        skip_count += 1
+                    else:
+                        success_count += 1
+                else:
+                    fail_count += 1
+                    logger.warning(f"Failed: {result.song_id} - {result.error}")
+
+            elapsed = datetime.now() - start_time
+            print(f"\n\nCompleted in {elapsed}")
+            print(f"Success: {success_count}, Skipped: {skip_count}, Failed: {fail_count}")
 
     return 0
 

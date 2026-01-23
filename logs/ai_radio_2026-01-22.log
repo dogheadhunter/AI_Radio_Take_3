@@ -865,3 +865,334 @@ RuntimeError: boom
   Technical:  TestError:  This is a test
   Suggestion:  This is just a test, ignore it
   Action taken: Logged for testing
+2026-01-22 20:54:30,437 - station - INFO - Starting station
+2026-01-22 20:54:30,548 - station - INFO - Stopping station
+2026-01-22 20:54:30,949 - station - INFO - Starting station
+2026-01-22 20:54:31,059 - station - INFO - Stopping station
+2026-01-22 20:54:31,455 - station - INFO - Starting station
+2026-01-22 20:54:31,571 - station - INFO - Stopping station
+2026-01-22 20:54:31,957 - station - INFO - Starting station
+2026-01-22 20:54:31,957 - station - INFO - Stopping station
+2026-01-22 20:54:32,466 - station - INFO - Starting station
+2026-01-22 20:54:32,673 - station - INFO - Stopping station
+2026-01-22 20:54:32,975 - station - INFO - Starting station
+2026-01-22 20:54:32,975 - station - INFO - Pausing playback
+2026-01-22 20:54:33,030 - station - INFO - Resuming playback
+2026-01-22 20:54:33,091 - station - INFO - Pausing playback
+2026-01-22 20:54:33,155 - station - INFO - Resuming playback
+2026-01-22 20:54:33,205 - station - INFO - Pausing playback
+2026-01-22 20:54:33,258 - station - INFO - Resuming playback
+2026-01-22 20:54:33,324 - station - INFO - Stopping station
+2026-01-22 20:54:33,494 - station - INFO - Starting station
+2026-01-22 20:54:34,509 - station - INFO - Stopping station
+2026-01-22 20:54:35,012 - station - INFO - Starting station
+2026-01-22 20:54:35,528 - station - INFO - Stopping station
+2026-01-22 20:54:36,030 - station - INFO - Starting station
+2026-01-22 20:54:36,031 - station - INFO - Starting station
+2026-01-22 20:54:36,032 - station - INFO - Starting station
+2026-01-22 20:54:36,032 - station - INFO - Starting station
+2026-01-22 20:54:36,033 - station - INFO - Starting station
+2026-01-22 20:54:36,033 - station - INFO - Stopping station
+2026-01-22 20:54:36,544 - station - INFO - Stopping station
+2026-01-22 20:54:37,046 - station - INFO - Stopping station
+2026-01-22 20:54:37,563 - station - INFO - Stopping station
+2026-01-22 20:54:38,063 - station - INFO - Stopping station
+2026-01-22 20:54:38,084 - station - INFO - Starting station
+2026-01-22 20:54:38,196 - station - INFO - Stopping station
+2026-01-22 20:54:38,815 - station - INFO - Starting station
+2026-01-22 20:54:38,815 - station - INFO - Stopping station
+2026-01-22 20:54:39,332 - station - INFO - Starting station
+2026-01-22 20:54:39,864 - station - INFO - Stopping station
+2026-01-22 20:54:40,368 - station - INFO - Starting station
+2026-01-22 20:54:41,383 - station - INFO - Stopping station
+2026-01-22 20:54:41,887 - station - INFO - Starting station
+2026-01-22 20:54:42,100 - station - INFO - Stopping station
+2026-01-22 20:54:42,400 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "C:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 20:54:44,949 - commands - INFO - Quit command received
+2026-01-22 20:54:44,951 - commands - INFO - Pausing playback
+2026-01-22 20:54:44,954 - commands - INFO - Resuming playback
+2026-01-22 20:54:44,956 - commands - INFO - Skipping:  
+2026-01-22 20:54:44,959 - commands - INFO - Banishing: Artist - Song
+2026-01-22 20:54:44,962 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 20:54:45,042 - validation - INFO - Starting 0.01-hour validation test
+2026-01-22 20:54:45,042 - validation - INFO - Checkpoints every 0.1 minutes
+2026-01-22 20:54:45,042 - station - INFO - Starting station
+2026-01-22 20:54:45,043 - validation - INFO - Station started
+2026-01-22 20:54:45,043 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 20:54:45,043 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 20:54:55,044 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 20:55:05,044 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 20:55:15,045 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=60, errors=0, dj=julie
+2026-01-22 20:55:25,045 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=80, errors=0, dj=julie
+2026-01-22 20:55:25,045 - station - INFO - Stopping station
+2026-01-22 20:55:25,090 - validation - INFO - Validation test complete: PASS
+2026-01-22 20:55:25,091 - validation - INFO - Starting 0.005-hour validation test
+2026-01-22 20:55:25,091 - validation - INFO - Checkpoints every 0.05 minutes
+2026-01-22 20:55:25,093 - station - INFO - Starting station
+2026-01-22 20:55:25,093 - validation - INFO - Station started
+2026-01-22 20:55:25,093 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 20:55:25,093 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 20:55:35,094 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 20:55:45,095 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 20:55:45,095 - station - INFO - Stopping station
+2026-01-22 20:55:45,113 - validation - INFO - Validation test complete: PASS
+2026-01-22 20:55:45,172 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 21:09:02,970 - station - INFO - Starting station
+2026-01-22 21:09:03,076 - station - INFO - Stopping station
+2026-01-22 21:09:03,482 - station - INFO - Starting station
+2026-01-22 21:09:03,599 - station - INFO - Stopping station
+2026-01-22 21:09:03,986 - station - INFO - Starting station
+2026-01-22 21:09:04,098 - station - INFO - Stopping station
+2026-01-22 21:09:04,501 - station - INFO - Starting station
+2026-01-22 21:09:04,501 - station - INFO - Stopping station
+2026-01-22 21:09:05,017 - station - INFO - Starting station
+2026-01-22 21:09:05,232 - station - INFO - Stopping station
+2026-01-22 21:09:05,518 - station - INFO - Starting station
+2026-01-22 21:09:05,521 - station - INFO - Pausing playback
+2026-01-22 21:09:05,584 - station - INFO - Resuming playback
+2026-01-22 21:09:05,634 - station - INFO - Pausing playback
+2026-01-22 21:09:05,684 - station - INFO - Resuming playback
+2026-01-22 21:09:05,749 - station - INFO - Pausing playback
+2026-01-22 21:09:05,799 - station - INFO - Resuming playback
+2026-01-22 21:09:05,860 - station - INFO - Stopping station
+2026-01-22 21:09:06,039 - station - INFO - Starting station
+2026-01-22 21:09:07,052 - station - INFO - Stopping station
+2026-01-22 21:09:07,556 - station - INFO - Starting station
+2026-01-22 21:09:08,086 - station - INFO - Stopping station
+2026-01-22 21:09:08,573 - station - INFO - Starting station
+2026-01-22 21:09:08,574 - station - INFO - Starting station
+2026-01-22 21:09:08,574 - station - INFO - Starting station
+2026-01-22 21:09:08,575 - station - INFO - Starting station
+2026-01-22 21:09:08,576 - station - INFO - Starting station
+2026-01-22 21:09:08,576 - station - INFO - Stopping station
+2026-01-22 21:09:09,086 - station - INFO - Stopping station
+2026-01-22 21:09:09,588 - station - INFO - Stopping station
+2026-01-22 21:09:09,589 - station - INFO - Stopping station
+2026-01-22 21:09:10,089 - station - INFO - Stopping station
+2026-01-22 21:09:10,591 - station - INFO - Starting station
+2026-01-22 21:09:10,705 - station - INFO - Stopping station
+2026-01-22 21:09:11,309 - station - INFO - Starting station
+2026-01-22 21:09:11,309 - station - INFO - Stopping station
+2026-01-22 21:09:11,824 - station - INFO - Starting station
+2026-01-22 21:09:12,358 - station - INFO - Stopping station
+2026-01-22 21:09:12,844 - station - INFO - Starting station
+2026-01-22 21:09:13,859 - station - INFO - Stopping station
+2026-01-22 21:09:14,360 - station - INFO - Starting station
+2026-01-22 21:09:14,562 - station - INFO - Stopping station
+2026-01-22 21:09:14,877 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "C:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 21:09:16,658 - commands - INFO - Quit command received
+2026-01-22 21:09:16,661 - commands - INFO - Pausing playback
+2026-01-22 21:09:16,667 - commands - INFO - Resuming playback
+2026-01-22 21:09:16,669 - commands - INFO - Skipping:  
+2026-01-22 21:09:16,673 - commands - INFO - Banishing: Artist - Song
+2026-01-22 21:09:16,676 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 21:09:16,746 - validation - INFO - Starting 0.01-hour validation test
+2026-01-22 21:09:16,746 - validation - INFO - Checkpoints every 0.1 minutes
+2026-01-22 21:09:16,746 - station - INFO - Starting station
+2026-01-22 21:09:16,746 - validation - INFO - Station started
+2026-01-22 21:09:16,746 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:09:16,746 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:09:26,746 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 21:09:36,747 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 21:09:46,747 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=60, errors=0, dj=julie
+2026-01-22 21:09:56,748 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=80, errors=0, dj=julie
+2026-01-22 21:09:56,748 - station - INFO - Stopping station
+2026-01-22 21:09:56,791 - validation - INFO - Validation test complete: PASS
+2026-01-22 21:09:56,792 - validation - INFO - Starting 0.005-hour validation test
+2026-01-22 21:09:56,794 - validation - INFO - Checkpoints every 0.05 minutes
+2026-01-22 21:09:56,794 - station - INFO - Starting station
+2026-01-22 21:09:56,794 - validation - INFO - Station started
+2026-01-22 21:09:56,794 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:09:56,794 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:10:06,795 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 21:10:16,796 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 21:10:16,796 - station - INFO - Stopping station
+2026-01-22 21:10:16,814 - validation - INFO - Validation test complete: PASS
+2026-01-22 21:10:16,896 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 21:21:37,995 - station - INFO - Starting station
+2026-01-22 21:21:38,103 - station - INFO - Stopping station
+2026-01-22 21:21:38,502 - station - INFO - Starting station
+2026-01-22 21:21:38,604 - station - INFO - Stopping station
+2026-01-22 21:21:39,004 - station - INFO - Starting station
+2026-01-22 21:21:39,120 - station - INFO - Stopping station
+2026-01-22 21:21:39,507 - station - INFO - Starting station
+2026-01-22 21:21:39,508 - station - INFO - Stopping station
+2026-01-22 21:21:40,025 - station - INFO - Starting station
+2026-01-22 21:21:40,238 - station - INFO - Stopping station
+2026-01-22 21:21:40,541 - station - INFO - Starting station
+2026-01-22 21:21:40,541 - station - INFO - Pausing playback
+2026-01-22 21:21:40,595 - station - INFO - Resuming playback
+2026-01-22 21:21:40,655 - station - INFO - Pausing playback
+2026-01-22 21:21:40,720 - station - INFO - Resuming playback
+2026-01-22 21:21:40,771 - station - INFO - Pausing playback
+2026-01-22 21:21:40,821 - station - INFO - Resuming playback
+2026-01-22 21:21:40,872 - station - INFO - Stopping station
+2026-01-22 21:21:41,061 - station - INFO - Starting station
+2026-01-22 21:21:42,073 - station - INFO - Stopping station
+2026-01-22 21:21:42,577 - station - INFO - Starting station
+2026-01-22 21:21:43,108 - station - INFO - Stopping station
+2026-01-22 21:21:43,597 - station - INFO - Starting station
+2026-01-22 21:21:43,597 - station - INFO - Starting station
+2026-01-22 21:21:43,598 - station - INFO - Starting station
+2026-01-22 21:21:43,598 - station - INFO - Starting station
+2026-01-22 21:21:43,598 - station - INFO - Starting station
+2026-01-22 21:21:43,600 - station - INFO - Stopping station
+2026-01-22 21:21:44,111 - station - INFO - Stopping station
+2026-01-22 21:21:44,625 - station - INFO - Stopping station
+2026-01-22 21:21:45,126 - station - INFO - Stopping station
+2026-01-22 21:21:45,128 - station - INFO - Stopping station
+2026-01-22 21:21:45,629 - station - INFO - Starting station
+2026-01-22 21:21:45,744 - station - INFO - Stopping station
+2026-01-22 21:21:46,348 - station - INFO - Starting station
+2026-01-22 21:21:46,349 - station - INFO - Stopping station
+2026-01-22 21:21:46,850 - station - INFO - Starting station
+2026-01-22 21:21:47,381 - station - INFO - Stopping station
+2026-01-22 21:21:47,882 - station - INFO - Starting station
+2026-01-22 21:21:48,897 - station - INFO - Stopping station
+2026-01-22 21:21:49,401 - station - INFO - Starting station
+2026-01-22 21:21:49,613 - station - INFO - Stopping station
+2026-01-22 21:21:49,914 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "C:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 21:21:51,838 - commands - INFO - Quit command received
+2026-01-22 21:21:51,840 - commands - INFO - Pausing playback
+2026-01-22 21:21:51,843 - commands - INFO - Resuming playback
+2026-01-22 21:21:51,845 - commands - INFO - Skipping:  
+2026-01-22 21:21:51,848 - commands - INFO - Banishing: Artist - Song
+2026-01-22 21:21:51,850 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 21:21:51,938 - validation - INFO - Starting 0.01-hour validation test
+2026-01-22 21:21:51,938 - validation - INFO - Checkpoints every 0.1 minutes
+2026-01-22 21:21:51,938 - station - INFO - Starting station
+2026-01-22 21:21:51,938 - validation - INFO - Station started
+2026-01-22 21:21:51,939 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:21:51,939 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:22:01,940 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 21:22:11,941 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 21:22:21,941 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=60, errors=0, dj=julie
+2026-01-22 21:22:31,942 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=80, errors=0, dj=julie
+2026-01-22 21:22:31,942 - station - INFO - Stopping station
+2026-01-22 21:22:31,986 - validation - INFO - Validation test complete: PASS
+2026-01-22 21:22:31,988 - validation - INFO - Starting 0.005-hour validation test
+2026-01-22 21:22:31,988 - validation - INFO - Checkpoints every 0.05 minutes
+2026-01-22 21:22:31,988 - station - INFO - Starting station
+2026-01-22 21:22:31,989 - validation - INFO - Station started
+2026-01-22 21:22:31,989 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:22:31,989 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 21:22:41,990 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 21:22:51,990 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 21:22:51,990 - station - INFO - Stopping station
+2026-01-22 21:22:52,011 - validation - INFO - Validation test complete: PASS
+2026-01-22 21:22:52,091 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing
+2026-01-22 23:10:56,588 - generate_content - WARNING - Failed: weather_0600 - Text file not found for audio generation: C:\Users\doghe\AI_Radio_Take_3\data\generated\weather\julie\06-00\julie_0.txt
+2026-01-22 23:10:56,589 - generate_content - WARNING - Failed: weather_1200 - Text file not found for audio generation: C:\Users\doghe\AI_Radio_Take_3\data\generated\weather\julie\12-00\julie_0.txt
+2026-01-22 23:10:56,590 - generate_content - WARNING - Failed: weather_1700 - Text file not found for audio generation: C:\Users\doghe\AI_Radio_Take_3\data\generated\weather\julie\17-00\julie_0.txt
+2026-01-22 23:57:06,879 - station - INFO - Starting station
+2026-01-22 23:57:06,986 - station - INFO - Stopping station
+2026-01-22 23:57:07,390 - station - INFO - Starting station
+2026-01-22 23:57:07,494 - station - INFO - Stopping station
+2026-01-22 23:57:07,894 - station - INFO - Starting station
+2026-01-22 23:57:08,009 - station - INFO - Stopping station
+2026-01-22 23:57:08,397 - station - INFO - Starting station
+2026-01-22 23:57:08,398 - station - INFO - Stopping station
+2026-01-22 23:57:08,900 - station - INFO - Starting station
+2026-01-22 23:57:09,115 - station - INFO - Stopping station
+2026-01-22 23:57:09,402 - station - INFO - Starting station
+2026-01-22 23:57:09,402 - station - INFO - Pausing playback
+2026-01-22 23:57:09,452 - station - INFO - Resuming playback
+2026-01-22 23:57:09,516 - station - INFO - Pausing playback
+2026-01-22 23:57:09,567 - station - INFO - Resuming playback
+2026-01-22 23:57:09,630 - station - INFO - Pausing playback
+2026-01-22 23:57:09,680 - station - INFO - Resuming playback
+2026-01-22 23:57:09,730 - station - INFO - Stopping station
+2026-01-22 23:57:09,915 - station - INFO - Starting station
+2026-01-22 23:57:10,927 - station - INFO - Stopping station
+2026-01-22 23:57:10,932 - station - INFO - Starting station
+2026-01-22 23:57:11,462 - station - INFO - Stopping station
+2026-01-22 23:57:11,951 - station - INFO - Starting station
+2026-01-22 23:57:11,953 - station - INFO - Starting station
+2026-01-22 23:57:11,953 - station - INFO - Starting station
+2026-01-22 23:57:11,954 - station - INFO - Starting station
+2026-01-22 23:57:11,955 - station - INFO - Starting station
+2026-01-22 23:57:11,955 - station - INFO - Stopping station
+2026-01-22 23:57:12,465 - station - INFO - Stopping station
+2026-01-22 23:57:12,965 - station - INFO - Stopping station
+2026-01-22 23:57:13,466 - station - INFO - Stopping station
+2026-01-22 23:57:13,969 - station - INFO - Stopping station
+2026-01-22 23:57:14,469 - station - INFO - Starting station
+2026-01-22 23:57:14,587 - station - INFO - Stopping station
+2026-01-22 23:57:15,191 - station - INFO - Starting station
+2026-01-22 23:57:15,192 - station - INFO - Stopping station
+2026-01-22 23:57:15,707 - station - INFO - Starting station
+2026-01-22 23:57:16,240 - station - INFO - Stopping station
+2026-01-22 23:57:16,725 - station - INFO - Starting station
+2026-01-22 23:57:17,741 - station - INFO - Stopping station
+2026-01-22 23:57:18,254 - station - INFO - Starting station
+2026-01-22 23:57:18,455 - station - INFO - Stopping station
+2026-01-22 23:57:18,758 - station - ERROR - Unhandled error in playback loop: boom
+Traceback (most recent call last):
+  File "C:\Users\doghe\AI_Radio_Take_3\src\ai_radio\station\controller.py", line 140, in _run_loop
+    self._play_next()
+  File "C:\Users\doghe\AI_Radio_Take_3\tests\integration\test_full_station.py", line 62, in bad_play
+    raise RuntimeError("boom")
+RuntimeError: boom
+2026-01-22 23:57:22,207 - commands - INFO - Quit command received
+2026-01-22 23:57:22,209 - commands - INFO - Pausing playback
+2026-01-22 23:57:22,211 - commands - INFO - Resuming playback
+2026-01-22 23:57:22,214 - commands - INFO - Skipping:  
+2026-01-22 23:57:22,217 - commands - INFO - Banishing: Artist - Song
+2026-01-22 23:57:22,219 - commands - INFO - Flagging intro for regeneration: /path/to/intro.wav
+2026-01-22 23:57:22,300 - validation - INFO - Starting 0.01-hour validation test
+2026-01-22 23:57:22,301 - validation - INFO - Checkpoints every 0.1 minutes
+2026-01-22 23:57:22,301 - station - INFO - Starting station
+2026-01-22 23:57:22,301 - validation - INFO - Station started
+2026-01-22 23:57:22,301 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 23:57:22,303 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 23:57:32,304 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 23:57:42,304 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 23:57:52,305 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=60, errors=0, dj=julie
+2026-01-22 23:58:02,305 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=80, errors=0, dj=julie
+2026-01-22 23:58:02,305 - station - INFO - Stopping station
+2026-01-22 23:58:02,345 - validation - INFO - Validation test complete: PASS
+2026-01-22 23:58:02,347 - validation - INFO - Starting 0.005-hour validation test
+2026-01-22 23:58:02,347 - validation - INFO - Checkpoints every 0.05 minutes
+2026-01-22 23:58:02,348 - station - INFO - Starting station
+2026-01-22 23:58:02,348 - validation - INFO - Station started
+2026-01-22 23:58:02,348 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 23:58:02,348 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=1, errors=0, dj=julie
+2026-01-22 23:58:12,348 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=20, errors=0, dj=julie
+2026-01-22 23:58:22,348 - validation - INFO - Checkpoint @ 0.0h: status=playing, songs=40, errors=0, dj=julie
+2026-01-22 23:58:22,348 - station - INFO - Stopping station
+2026-01-22 23:58:22,376 - validation - INFO - Validation test complete: PASS
+2026-01-22 23:58:22,431 - test_error_context - ERROR - ERROR DETAILS:
+  What happened: Test error occurred
+  Technical:  TestError:  This is a test
+  Suggestion:  This is just a test, ignore it
+  Action taken: Logged for testing

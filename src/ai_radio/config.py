@@ -31,6 +31,10 @@ TIME_ANNOUNCE_INTERVAL_MINUTES = 30
 # Weather settings
 WEATHER_TIMES = [6, 12, 17]  # 6 AM, 12 PM, 5 PM
 WEATHER_CACHE_MINUTES = 30
+# Default weather location (latitude/longitude) - can be overridden when constructing WeatherService
+WEATHER_LATITUDE = 44.0216
+WEATHER_LONGITUDE = -92.4699
+WEATHER_TIMEZONE = "America/Chicago"
 
 # Radio show settings
 RADIO_SHOW_HOUR = 20  # 8 PM

@@ -25,7 +25,20 @@ def content_with_intros(tmp_path: Path):
     (d / "julie_song_1_intro.mp3").write_text("dummy")
     (d / "julie_song_1_intro_var2.mp3").write_text("dummy2")
     (d / "mr_new_vegas_song_1_intro.mp3").write_text("dummy3")
-    (d / "julie_time_14.mp3").write_text("time14")
+    
+    # Create time announcements in new directory structure
+    time_dir = d / "time" / "julie" / "14-30"
+    time_dir.mkdir(parents=True)
+    (time_dir / "julie_0.wav").write_text("time1430")
+    
+    time_dir2 = d / "time" / "julie" / "14-00"
+    time_dir2.mkdir(parents=True)
+    (time_dir2 / "julie_0.wav").write_text("time1400")
+    
+    time_dir3 = d / "time" / "julie" / "15-00"
+    time_dir3.mkdir(parents=True)
+    (time_dir3 / "julie_0.wav").write_text("time1500")
+    
     return d
 
 

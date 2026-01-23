@@ -1,0 +1,13 @@
+{
+  "temperature": -18.716796875,
+  "conditions": "clear sky",
+  "raw": {
+    "params": {
+      "latitude": 44.0216,
+      "longitude": -92.4699,
+      "hourly": "temperature_2m,weathercode",
+      "timezone": "America/Chicago",
+      "temperature_unit": "fahrenheit"
+    }
+  }
+}

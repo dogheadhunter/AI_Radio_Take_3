@@ -49,16 +49,23 @@ def mark_intro_used(selector: ContentSelector, intro: Path):
 
 
 def get_time_announcement(selector: ContentSelector, dj: str, time) -> Optional[Path]:
-    # Look for files with hour in name (e.g., time_14_julie.mp3)
+    """Locate a generated time announcement by looking in
+    `data/generated/time/<dj>/<HH-MM>/` and returning the first audio file found.
+    """
     hour = getattr(time, "hour", None)
+    minute = getattr(time, "minute", 0)
     if hour is None:
         return None
 
-    for p in selector.content_dir.rglob("*"):
-        if p.is_file() and dj.lower() in p.name.lower() and str(hour) in p.name:
+    time_str = f"{hour:02d}-{minute:02d}"
+    dir_path = selector.content_dir / "time" / dj / time_str
+    if not dir_path.exists():
+        return None
+
+    for p in dir_path.iterdir():
+        if p.is_file():
             return p
 
-    # Do not fallback to generic time files; if a specific hour is not present return None
     return None
 
 
