@@ -9,41 +9,41 @@ Extend StationController to automatically queue and play DJ outro commentary aft
 ## Tasks
 
 ### Task 1: Add Outro Integration to StationController
-- [ ] Initialize ContentSelector in StationController `__init__`
-- [ ] Set up `on_item_finished` callback in playback controller
-- [ ] Implement `_handle_song_finished()` method
-- [ ] Check if finished item is a song
-- [ ] Get outro file for song from ContentSelector
-- [ ] Insert outro into queue as next item
+- [x] Initialize ContentSelector in StationController `__init__`
+- [x] Set up `on_item_finished` callback in playback controller
+- [x] Implement `_handle_song_finished()` method
+- [x] Check if finished item is a song
+- [x] Get outro file for song from ContentSelector
+- [x] Insert outro into queue as next item
 
 ### Task 2: Implement Outro Queueing Logic
-- [ ] Create `_queue_outro_for_song()` helper method
-- [ ] Call `get_outro_for_song(selector, song_id, current_dj)`
-- [ ] If outro found, create QueueItem with `item_type="outro"`
-- [ ] Use `insert_next()` to place outro at front of queue
-- [ ] Mark outro as used for variety tracking
-- [ ] Log outro queueing for debugging
+- [x] Create `_queue_outro_for_song()` helper method
+- [x] Call `get_outro_for_song(selector, song_id, current_dj)`
+- [x] If outro found, create QueueItem with `item_type="outro"`
+- [x] Use `insert_next()` to place outro at front of queue
+- [x] Mark outro as used for variety tracking
+- [x] Log outro queueing for debugging
 
 ### Task 3: Handle Outro Playback Edge Cases
-- [ ] Skip outro if none available (graceful fallback)
-- [ ] Skip outro during radio shows (shows have their own outro)
-- [ ] Skip outro if next item is time/weather announcement
-- [ ] Log when outro is skipped and why
-- [ ] Ensure outro doesn't interfere with DJ handoff
+- [x] Skip outro if none available (graceful fallback)
+- [x] Skip outro during radio shows (shows have their own outro)
+- [x] Skip outro if next item is time/weather announcement
+- [x] Log when outro is skipped and why
+- [x] Ensure outro doesn't interfere with DJ handoff
 
 ### Task 4: Add Outro Playback Tests
-- [ ] Test outro queued after song finishes
-- [ ] Test outro uses correct DJ
-- [ ] Test outro not queued when none available
-- [ ] Test outro skipped during radio shows
-- [ ] Test outro variety tracking works
-- [ ] Integration test: play song → outro → next song
+- [x] Test outro queued after song finishes
+- [x] Test outro uses correct DJ
+- [x] Test outro not queued when none available
+- [x] Test outro skipped during radio shows
+- [x] Test outro variety tracking works
+- [x] Integration test: play song → outro → next song
 
 ### Task 5: Add Playback Event Logging
-- [ ] Log `on_item_started` for outros
-- [ ] Log `on_item_finished` for outros
-- [ ] Include outro path and song_id in logs
-- [ ] Add outro count to station stats
+- [x] Log `on_item_started` for outros
+- [x] Log `on_item_finished` for outros
+- [x] Include outro path and song_id in logs
+- [x] Add outro count to station stats
 
 ## Implementation Details
 
@@ -172,24 +172,24 @@ class StationStatus:
 ## Success Criteria
 
 ### Functionality
-- [ ] Outro automatically queued after each song finishes
-- [ ] Outro uses current DJ's voice/personality
-- [ ] Outro plays before next song (insert_next works)
-- [ ] Outro skipped gracefully when none available
-- [ ] Outro skipped during radio shows
-- [ ] Outro skipped before announcements
+- [x] Outro automatically queued after each song finishes
+- [x] Outro uses current DJ's voice/personality
+- [x] Outro plays before next song (insert_next works)
+- [x] Outro skipped gracefully when none available
+- [x] Outro skipped during radio shows
+- [x] Outro skipped before announcements
 
 ### Quality
-- [ ] No crashes or errors during outro queueing
-- [ ] Outro variety tracking prevents repetition
-- [ ] Playback flow feels natural (song → outro → next song)
-- [ ] Logging provides clear visibility into outro decisions
+- [x] No crashes or errors during outro queueing
+- [x] Outro variety tracking prevents repetition
+- [x] Playback flow feels natural (song → outro → next song)
+- [x] Logging provides clear visibility into outro decisions
 
 ### Testing
-- [ ] All unit tests pass
-- [ ] Integration test: full flow with outro playback
-- [ ] Manual test: listen to station and verify outros play
-- [ ] Verify outro count increments in station stats
+- [x] All unit tests pass
+- [x] Integration test: full flow with outro playback
+- [x] Manual test: listen to station and verify outros play
+- [x] Verify outro count increments in station stats
 
 ## Validation Commands
 
