@@ -26,3 +26,13 @@ music/
 # MP3 and WAV files
 *.mp3
 *.wav
+
+# Generated content and local DBs
+/data/generated/
+logs/
+.cache.sqlite
+server_output.log
+server_error.log
+
+# Embedded local repos or vendor code
+/chatterbox/

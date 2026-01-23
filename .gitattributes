@@ -1,0 +1,9 @@
+# Force LF for shell scripts (Unix-compatible)
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Keep CRLF for PowerShell scripts on Windows
+*.ps1 text eol=crlf
+
+# Normalize text files
+* text=auto
