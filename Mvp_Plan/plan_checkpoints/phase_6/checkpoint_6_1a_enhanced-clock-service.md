@@ -247,12 +247,12 @@ def build_time_announcement_prompt(hour: int, minute: int, dj: str) -> str:
 ## Success Criteria
 
 ### Functionality
-- [ ] ClockService returns timezone-aware datetime objects
-- [ ] Configured timezone is respected (test with different timezones)
-- [ ] System timezone is used when no timezone configured
-- [ ] `format_time_for_dj()` produces all format styles correctly
-- [ ] AM/PM is included when requested
-- [ ] Scheduling window accepts seconds 0-2 (configurable)
+- [x] ClockService returns timezone-aware datetime objects
+- [x] Configured timezone is respected (test with different timezones)
+- [x] System timezone is used when no timezone configured
+- [x] `format_time_for_dj()` produces all format styles correctly
+- [x] AM/PM is included when requested
+- [x] Scheduling window accepts seconds 0-2 (configurable)
 
 ### Quality
 - [ ] Timezone conversions are accurate

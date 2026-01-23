@@ -27,6 +27,10 @@ DISCOVERY_GRADUATION_PLAYS = 5  # Plays before auto-promotion
 
 # Time announcement settings
 TIME_ANNOUNCE_INTERVAL_MINUTES = 30
+# Clock timezone (None = use system timezone), e.g., "America/New_York"
+CLOCK_TIMEZONE = None
+# Scheduling tolerance in seconds for time announcements (allow 0-N seconds)
+ANNOUNCEMENT_WINDOW_SECONDS = 2
 
 # Weather settings
 WEATHER_TIMES = [6, 12, 17]  # 6 AM, 12 PM, 5 PM

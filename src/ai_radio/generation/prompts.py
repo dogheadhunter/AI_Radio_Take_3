@@ -36,23 +36,24 @@ def build_time_announcement_prompt(hour: int = None, minute: int = None, dj: DJ 
     """
     time_part = "the current time"
     if hour is not None and minute is not None:
-        # Format time in 12-hour notation with AM/PM
-        suffix = "AM"
-        h = hour
-        if hour == 0:
-            h = 12
-            suffix = "AM"
-        elif 1 <= hour < 12:
-            suffix = "AM"
-        elif hour == 12:
-            suffix = "PM"
+        from datetime import datetime
+        from src.ai_radio.services.clock import format_time_for_dj
+
+        dt = datetime.now().replace(hour=hour, minute=minute, second=0, microsecond=0)
+        if dj == DJ.JULIE:
+            formatted = format_time_for_dj(dt, include_ampm=True, style="casual")
+        elif dj == DJ.MR_NEW_VEGAS:
+            formatted = format_time_for_dj(dt, include_ampm=True, style="written")
         else:
-            h = hour - 12
-            suffix = "PM"
-        time_part = f"{h}:{minute:02d} {suffix}"
+            formatted = format_time_for_dj(dt, include_ampm=True, style="numeric")
+        time_part = formatted
 
     dj_part = f" for {dj.value}" if dj else ""
-    return f"Announce {time_part} in a way that matches the DJ personality{dj_part}."
+    return (
+        f"You are a radio DJ. Announce that it is now {time_part}. "
+        "Keep it brief (1-2 sentences), natural, and engaging. "
+        "Do not repeat the exact same phrasing every time." "")
+
 
 
 def build_weather_prompt(dj: DJ, weather_summary: str, hour: int = None) -> str:

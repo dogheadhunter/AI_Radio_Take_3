@@ -27,7 +27,20 @@ def test_different_djs_produce_different_prompts():
 
 def test_time_prompt_includes_formatted_time():
     prompt = build_time_announcement_prompt(14, 30, DJ.JULIE)
-    assert "2:30" in prompt or "2:30 PM" in prompt
+    # Julie uses casual phrasing which might be 'half past two' or '2:30 PM'
+    assert any(x in prompt.lower() for x in ("2:30", "half past", "two thirty"))
+
+
+def test_time_prompt_varies_by_dj():
+    julie_prompt = build_time_announcement_prompt(14, 30, DJ.JULIE)
+    vegas_prompt = build_time_announcement_prompt(14, 30, DJ.MR_NEW_VEGAS)
+    assert julie_prompt != vegas_prompt
+
+
+def test_prompt_includes_ampm_when_requested():
+    # Mr. New Vegas uses written style with AM/PM in phrasing
+    prompt = build_time_announcement_prompt(6, 0, DJ.MR_NEW_VEGAS)
+    assert any(x in prompt.lower() for x in ("in the morning", "am", "pm"))
 
 
 def test_outro_prompt_is_short_and_personalized():
