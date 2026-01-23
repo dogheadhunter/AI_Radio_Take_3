@@ -1,0 +1,72 @@
+{
+  "start_time": "2026-01-22T18:36:33.622555",
+  "end_time": "2026-01-22T18:37:14.000761",
+  "target_duration_hours": 0.01,
+  "actual_duration_hours": 0.011216168333333333,
+  "total_checkpoints": 6,
+  "total_issues": 0,
+  "checkpoints": [
+    {
+      "timestamp": "2026-01-22T18:36:33.623555",
+      "hours_elapsed": 2.7777777777777776e-07,
+      "status": "playing",
+      "songs_played": 1,
+      "errors_count": 0,
+      "current_dj": "julie",
+      "current_song": "Test Song",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-01-22T18:36:33.624559",
+      "hours_elapsed": 5.566666666666667e-07,
+      "status": "playing",
+      "songs_played": 1,
+      "errors_count": 0,
+      "current_dj": "julie",
+      "current_song": "Test Song",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-01-22T18:36:43.632735",
+      "hours_elapsed": 0.0027806055555555558,
+      "status": "playing",
+      "songs_played": 20,
+      "errors_count": 0,
+      "current_dj": "julie",
+      "current_song": "Song 20",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-01-22T18:36:53.634068",
+      "hours_elapsed": 0.005558753611111111,
+      "status": "playing",
+      "songs_played": 40,
+      "errors_count": 0,
+      "current_dj": "julie",
+      "current_song": "Song 40",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-01-22T18:37:03.648320",
+      "hours_elapsed": 0.008340490277777777,
+      "status": "playing",
+      "songs_played": 59,
+      "errors_count": 0,
+      "current_dj": "julie",
+      "current_song": "Song 59",
+      "notes": ""
+    },
+    {
+      "timestamp": "2026-01-22T18:37:13.663499",
+      "hours_elapsed": 0.011122484444444445,
+      "status": "playing",
+      "songs_played": 79,
+      "errors_count": 0,
+      "current_dj": "julie",
+      "current_song": "Song 79",
+      "notes": ""
+    }
+  ],
+  "issues": [],
+  "result": "PASS"
+}
