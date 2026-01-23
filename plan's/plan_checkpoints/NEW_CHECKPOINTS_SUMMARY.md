@@ -2,6 +2,9 @@
 
 This document summarizes the newly added checkpoint files for pending implementation tasks.
 
+**Related Documents:**
+- [Phase 6 Enhancements Summary](PHASE_6_ENHANCEMENTS_SUMMARY.md) - Optional enhancements to improve time and weather services
+
 ## Created Checkpoint Files
 
 ### Phase 2: Content Generation Pipeline
@@ -222,6 +225,8 @@ python src/ai_radio/main.py
 - Checkpoints are designed for LLM-assisted implementation
 - Git commit messages are provided for each checkpoint
 - Anti-regression tests ensure existing functionality isn't broken
+
+**Phase 6 Enhancements:** Optional improvements to time and weather services are documented in [PHASE_6_ENHANCEMENTS_SUMMARY.md](PHASE_6_ENHANCEMENTS_SUMMARY.md). These enhancements should be implemented before Phase 2.6/2.7 for best results.
 
 ## Phase Gate Updates
 
