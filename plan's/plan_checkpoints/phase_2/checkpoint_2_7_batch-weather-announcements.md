@@ -9,32 +9,32 @@ Generate weather announcements for specific times of day (configured in `WEATHER
 ## Tasks
 
 ### Task 1: Extend Generation Pipeline for Weather Announcements
-- [ ] Add `generate_weather_announcement()` method to `GenerationPipeline`
-- [ ] Create output structure: `data/generated/weather/<dj>/<HH-MM>/`
-- [ ] Save both text script and audio file with weather data
-- [ ] Handle voice reference if available
+- [x] Add `generate_weather_announcement()` method to `GenerationPipeline`
+- [x] Create output structure: `data/generated/weather/<dj>/<HH-MM>/`
+- [x] Save both text script and audio file with weather data
+- [x] Handle voice reference if available
 
 ### Task 2: Implement Batch Weather Generation Iterator
-- [ ] Create `generate_batch_weather_announcements()` function
-- [ ] Generate for configured times from `config.WEATHER_TIMES`
-- [ ] Integrate with `WeatherService` to fetch current conditions
-- [ ] Support resume mode (skip existing files)
-- [ ] Add progress callback support
-- [ ] Handle both DJs (julie, mr_new_vegas)
+- [x] Create `generate_batch_weather_announcements()` function
+- [x] Generate for configured times from `config.WEATHER_TIMES`
+- [x] Integrate with `WeatherService` to fetch current conditions
+- [x] Support resume mode (skip existing files)
+- [x] Add progress callback support
+- [x] Handle both DJs (julie, mr_new_vegas)
 
 ### Task 3: Update Generation Script
-- [ ] Implement `--weather-announcements` flag in `scripts/generate_content.py`
-- [ ] Add `--location` argument for weather location
-- [ ] Display progress during generation
-- [ ] Show success/failure counts
-- [ ] Support `--resume` for interrupted generation
+- [x] Implement `--weather-announcements` flag in `scripts/generate_content.py`
+- [x] Add `--location` argument for weather location
+- [x] Display progress during generation
+- [x] Show success/failure counts
+- [x] Support `--resume` for interrupted generation
 
 ### Task 4: Test Weather Announcement Generation
-- [ ] Test dry-run mode shows correct count (weather times × DJs)
-- [ ] Test generation creates proper directory structure
-- [ ] Test resume mode skips existing files
-- [ ] Verify weather data is included in scripts
-- [ ] Verify audio files are valid and playable
+- [x] Test dry-run mode shows correct count (weather times × DJs)
+- [x] Test generation creates proper directory structure
+- [x] Test resume mode skips existing files
+- [x] Verify weather data is included in scripts
+- [x] Verify audio files are valid and playable
 
 ## Implementation Details
 
@@ -271,12 +271,12 @@ if args.weather_announcements:
 ## Success Criteria
 
 ### Functionality
-- [ ] `generate_weather_announcement()` creates text + audio files
-- [ ] Batch generation produces announcements for each configured time
-- [ ] Output structure: `data/generated/weather/<dj>/<HH-MM>/<dj>_0.txt` and `.wav`
-- [ ] Weather metadata saved as JSON alongside scripts
-- [ ] Resume mode skips existing files correctly
-- [ ] Progress display shows current time slot and percentage
+- [x] `generate_weather_announcement()` creates text + audio files
+- [x] Batch generation produces announcements for each configured time
+- [x] Output structure: `data/generated/weather/<dj>/<HH-MM>/<dj>_0.txt` and `.wav`
+- [x] Weather metadata saved as JSON alongside scripts
+- [x] Resume mode skips existing files correctly
+- [x] Progress display shows current time slot and percentage
 
 ### Quality
 - [ ] Generated scripts include actual weather data (temp, conditions, etc.)

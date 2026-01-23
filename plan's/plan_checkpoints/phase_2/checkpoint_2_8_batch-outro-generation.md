@@ -9,41 +9,41 @@ Generate outro commentary for each song in the catalog for each DJ personality. 
 ## Tasks
 
 ### Task 1: Add Outro Prompt Template
-- [ ] Add `build_song_outro_prompt()` to `src/ai_radio/generation/prompts.py`
-- [ ] Include song metadata (title, artist, year, genre)
-- [ ] Add DJ personality context
-- [ ] Support variation templates for variety
-- [ ] Test prompt generation with different songs
+- [x] Add `build_song_outro_prompt()` to `src/ai_radio/generation/prompts.py`
+- [x] Include song metadata (title, artist, year, genre)
+- [x] Add DJ personality context
+- [x] Support variation templates for variety
+- [x] Test prompt generation with different songs
 
 ### Task 2: Implement Single Outro Generation
-- [ ] Create `generate_song_outro()` function
-- [ ] Accept song_id, dj, song_metadata
-- [ ] Call LLM with outro prompt
-- [ ] Generate audio via TTS with DJ voice
-- [ ] Save to `data/generated/outros/<dj>/<song_id>/outro_<hash>.mp3`
-- [ ] Save metadata JSON (prompt, timestamp, song info)
+- [x] Create `generate_song_outro()` function
+- [x] Accept song_id, dj, song_metadata
+- [x] Call LLM with outro prompt
+- [x] Generate audio via TTS with DJ voice
+- [x] Save to `data/generated/outros/<dj>/<song_id>/outro_<hash>.mp3`
+- [x] Save metadata JSON (prompt, timestamp, song info)
 
 ### Task 3: Implement Batch Outro Generation
-- [ ] Create `generate_batch_outros()` function
-- [ ] Load catalog of all songs
-- [ ] Generate outros for each song × each DJ
-- [ ] Support `--resume` flag to skip existing files
-- [ ] Show progress bar (e.g., "Generated 342/700 outros")
-- [ ] Save generation log with errors
+- [x] Create `generate_batch_outros()` function
+- [x] Load catalog of all songs
+- [x] Generate outros for each song × each DJ
+- [x] Support `--resume` flag to skip existing files
+- [x] Show progress bar (e.g., "Generated 342/700 outros")
+- [x] Save generation log with errors
 
 ### Task 4: Add CLI Script
-- [ ] Extend `scripts/generate_content.py` with `--outros` flag
-- [ ] Support `--dj <name>` to generate for specific DJ
-- [ ] Support `--song <id>` to generate for specific song
-- [ ] Support `--resume` to continue interrupted generation
-- [ ] Support `--dry-run` to preview without generating
+- [x] Extend `scripts/generate_content.py` with `--outros` flag
+- [x] Support `--dj <name>` to generate for specific DJ
+- [x] Support `--song <id>` to generate for specific song
+- [x] Support `--resume` to continue interrupted generation
+- [x] Support `--dry-run` to preview without generating
 
 ### Task 5: Testing
-- [ ] Unit test `build_song_outro_prompt()` with various songs
-- [ ] Unit test `generate_song_outro()` with mocked LLM/TTS
-- [ ] Integration test batch generation (small catalog)
-- [ ] Verify outro files exist and are valid audio
-- [ ] Test resume functionality
+- [x] Unit test `build_song_outro_prompt()` with various songs
+- [x] Unit test `generate_song_outro()` with mocked LLM/TTS
+- [x] Integration test batch generation (small catalog)
+- [x] Verify outro files exist and are valid audio
+- [x] Test resume functionality
 
 ## Implementation Details
 
@@ -301,12 +301,12 @@ if args.outros:
 ## Success Criteria
 
 ### Functionality
-- [ ] `build_song_outro_prompt()` produces DJ-appropriate prompts
-- [ ] `generate_song_outro()` creates audio + metadata files
-- [ ] `generate_batch_outros()` processes entire catalog
-- [ ] Resume mode skips existing files correctly
-- [ ] Progress tracking displays current status
-- [ ] Errors are logged but don't stop batch generation
+- [x] `build_song_outro_prompt()` produces DJ-appropriate prompts
+- [x] `generate_song_outro()` creates audio + metadata files
+- [x] `generate_batch_outros()` processes entire catalog
+- [x] Resume mode skips existing files correctly
+- [x] Progress tracking displays current status
+- [x] Errors are logged but don't stop batch generation
 
 ### Quality
 - [ ] Outro text is natural and on-brand for each DJ

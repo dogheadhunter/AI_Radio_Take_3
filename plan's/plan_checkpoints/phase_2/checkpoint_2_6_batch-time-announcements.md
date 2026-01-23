@@ -9,29 +9,29 @@ Generate all time announcements for a 24-hour period (48 announcements at 30-min
 ## Tasks
 
 ### Task 1: Extend Generation Pipeline for Time Announcements
-- [ ] Add `generate_time_announcement()` method to `GenerationPipeline`
-- [ ] Create output structure: `data/generated/time/<dj>/<HH-MM>/`
-- [ ] Save both text script and audio file
-- [ ] Handle voice reference if available
+- [x] Add `generate_time_announcement()` method to `GenerationPipeline`
+- [x] Create output structure: `data/generated/time/<dj>/<HH-MM>/`
+- [x] Save both text script and audio file
+- [x] Handle voice reference if available
 
 ### Task 2: Implement Batch Time Generation Iterator
-- [ ] Create `generate_batch_time_announcements()` function
-- [ ] Generate for all 48 time slots (00:00, 00:30, 01:00, ... 23:30)
-- [ ] Support resume mode (skip existing files)
-- [ ] Add progress callback support
-- [ ] Handle both DJs (julie, mr_new_vegas)
+- [x] Create `generate_batch_time_announcements()` function
+- [x] Generate for all 48 time slots (00:00, 00:30, 01:00, ... 23:30)
+- [x] Support resume mode (skip existing files)
+- [x] Add progress callback support
+- [x] Handle both DJs (julie, mr_new_vegas)
 
 ### Task 3: Update Generation Script
-- [ ] Implement `--time-announcements` flag in `scripts/generate_content.py`
-- [ ] Display progress during generation
-- [ ] Show success/failure counts
-- [ ] Support `--resume` for interrupted generation
+- [x] Implement `--time-announcements` flag in `scripts/generate_content.py`
+- [x] Display progress during generation
+- [x] Show success/failure counts
+- [x] Support `--resume` for interrupted generation
 
 ### Task 4: Test Time Announcement Generation
-- [ ] Test dry-run mode shows correct count (48 × DJs)
-- [ ] Test generation creates proper directory structure
-- [ ] Test resume mode skips existing files
-- [ ] Verify audio files are valid and playable
+- [x] Test dry-run mode shows correct count (48 × DJs)
+- [x] Test generation creates proper directory structure
+- [x] Test resume mode skips existing files
+- [x] Verify audio files are valid and playable
 
 ## Implementation Details
 
@@ -237,11 +237,11 @@ if args.time_announcements:
 ## Success Criteria
 
 ### Functionality
-- [ ] `generate_time_announcement()` creates text + audio files
-- [ ] Batch generation produces 48 time slots per DJ
-- [ ] Output structure: `data/generated/time/<dj>/<HH-MM>/<dj>_0.txt` and `.wav`
-- [ ] Resume mode skips existing files correctly
-- [ ] Progress display shows current time slot and percentage
+- [x] `generate_time_announcement()` creates text + audio files
+- [x] Batch generation produces 48 time slots per DJ
+- [x] Output structure: `data/generated/time/<dj>/<HH-MM>/<dj>_0.txt` and `.wav`
+- [x] Resume mode skips existing files correctly
+- [x] Progress display shows current time slot and percentage
 
 ### Quality
 - [ ] Generated scripts use proper DJ personality
