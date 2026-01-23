@@ -27,6 +27,10 @@ music/
 *.mp3
 *.wav
 
+# Audio files in archive
+archive/**/*.mp3
+archive/**/*.wav
+
 # Generated content and local DBs
 /data/generated/
 logs/
