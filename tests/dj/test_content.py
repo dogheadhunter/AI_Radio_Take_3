@@ -1,5 +1,5 @@
 from pathlib import Path
-from src.ai_radio.dj.content import ContentSelector, get_intro_for_song, get_time_announcement, mark_intro_used
+from src.ai_radio.dj.content import ContentSelector, get_intro_for_song, get_outro_for_song, get_time_announcement, mark_intro_used, mark_outro_used
 
 
 class TestIntroSelection:
@@ -48,3 +48,43 @@ class TestTimeAnnouncements:
         # They may be None if not available, but if available they should differ for different hours
         if two_pm and three_pm:
             assert two_pm != three_pm
+
+
+class TestOutroSelection:
+    def test_returns_path_to_outro(self, tmp_path: Path):
+        d = tmp_path / "content_outros"
+        d.mkdir()
+        (d / "julie_song_1_outro.mp3").write_text("outro")
+        selector = ContentSelector(content_dir=d)
+        outro = get_outro_for_song(selector, song_id="song_1", dj="julie")
+        assert isinstance(outro, Path)
+        assert outro.exists()
+
+    def test_returns_none_if_no_outro(self, empty_content_dir):
+        selector = ContentSelector(content_dir=empty_content_dir)
+        outro = get_outro_for_song(selector, song_id="nonexistent", dj="julie")
+        assert outro is None
+
+    def test_selects_correct_dj_outro(self, tmp_path: Path):
+        d = tmp_path / "content_outros"
+        d.mkdir()
+        (d / "julie_song_1_outro.mp3").write_text("outro")
+        (d / "mr_new_vegas_song_1_outro.mp3").write_text("outro")
+        selector = ContentSelector(content_dir=d)
+        julie_outro = get_outro_for_song(selector, song_id="song_1", dj="julie")
+        vegas_outro = get_outro_for_song(selector, song_id="song_1", dj="mr_new_vegas")
+        assert "julie" in str(julie_outro).lower()
+        assert "vegas" in str(vegas_outro).lower() or "mr_new" in str(vegas_outro).lower()
+
+    def test_outro_variety_tracking(self, tmp_path: Path):
+        d = tmp_path / "content_outros_multi"
+        d.mkdir()
+        for i in range(3):
+            (d / f"julie_song_1_outro_{i}.mp3").write_text("x")
+        selector = ContentSelector(content_dir=d)
+        outros = []
+        for _ in range(6):
+            outro = get_outro_for_song(selector, song_id="song_1", dj="julie")
+            mark_outro_used(selector, outro)
+            outros.append(str(outro))
+        assert len(set(outros)) > 1

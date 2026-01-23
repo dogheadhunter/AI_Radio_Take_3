@@ -8,9 +8,9 @@
 2. Select intro based on DJ and song
 3. Handle multiple intro variations
 4. Track which intros have been used (variety)
-5. [ ] Add outro selection functions
-6. [ ] Add outro variety tracking
-7. [ ] Export outro functions from package
+5. [x] Add outro selection functions
+6. [x] Add outro variety tracking
+7. [x] Export outro functions from package
 
 **Tests First:**
 ```python
@@ -194,8 +194,8 @@ from .content import (
 - [x] Correct intros selected for DJ and song
 - [x] Variety in intro selection works
 - [x] Time announcements match time of day
-- [ ] Outro selection returns correct DJ-specific files
-- [ ] Outro variety tracking prevents repetition
-- [ ] Outro functions exported from package
+- [x] Outro selection returns correct DJ-specific files
+- [x] Outro variety tracking prevents repetition
+- [x] Outro functions exported from package
 
 **Git Commit:** `feat(dj): add content selector with outro support`
