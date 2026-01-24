@@ -1,0 +1,19 @@
+{
+  "script_id": "5_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 6.35,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 7.0,
+    "length": 4.0
+  },
+  "issues": [
+    "Forbids elements: meta-commentary (e.g., 'wild Mojave Wastelands')"
+  ],
+  "notes": "Smooth introduction fitting Mr. New Vegas' voice and era, though could tighten up a bit for better flow.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 9,\n    \"era_appropriateness\": 8,\n    \"forbidden_elements\": 1, \n    \"natural_flow\": 7,\n    \"length\": 4\n  },\n  \"issues\": [\"Forbids elements: meta-commentary (e.g., 'wild Mojave Wastelands')\"],\n  \"notes\": \"Smooth introduction fitting Mr. New Vegas' voice and era, though could tighten up a bit for better flow.\"\n}"
+}

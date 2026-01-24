@@ -1,0 +1,19 @@
+{
+  "script_id": "1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 9.0
+  },
+  "issues": [
+    "Cass Daley's last name should be mentioned earlier for smoother flow"
+  ],
+  "notes": "Julie sounds conversational and rambling as expected, but could improve with more vocal cues. Era-appropriate language used throughout.",
+  "raw_response": "{\n  \"criteria_scores\": {\"character_voice\": 8, \"era_appropriateness\": 9, \"forbidden_elements\": 10, \"natural_flow\": 8, \"length\": 9},\n  \"issues\": [\"Cass Daley's last name should be mentioned earlier for smoother flow\"],\n  \"notes\": \"Julie sounds conversational and rambling as expected, but could improve with more vocal cues. Era-appropriate language used throughout.\"\n}"
+}

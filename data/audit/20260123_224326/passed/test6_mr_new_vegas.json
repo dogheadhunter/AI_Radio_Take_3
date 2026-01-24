@@ -1,0 +1,17 @@
+{
+  "script_id": "test6_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 9.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "Script matches Mr. New Vegas's voice perfectly and captures his suave, romantic tone. Only minor concern is the era - while not strictly anachronistic, 'soulmate' feels slightly modern; nonetheless, overall impact remains sophisticated.",
+  "raw_response": "{\n  \"score\": 9,\n  \"passed\": true,\n  \"criteria_scores\": {\n    \"Character Voice\": 10,\n    \"Era Appropriateness\": 8,\n    \"Forbidden Elements\": 10,\n    \"Natural Flow\": 9,\n    \"Length\": 9\n  },\n  \"issues\": [],\n  \"notes\": \"Script matches Mr. New Vegas's voice perfectly and captures his suave, romantic tone. Only minor concern is the era - while not strictly anachronistic, 'soulmate' feels slightly modern; nonetheless, overall impact remains sophisticated.\"\n}"
+}

@@ -1,0 +1,17 @@
+{
+  "script_id": "test1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "Julie's conversational voice and friendly tone are captured well, but some phrases ('dancing through these final tunes', 'stay safe out there') have a slightly modern feel. Otherwise, an engaging intro that invites listener participation.",
+  "raw_response": "{\n  \"score\": 8,\n  \"passed\": true,\n  \"criteria_scores\": {\n    \"Character Voice\": 28,\n    \"Era Appropriateness\": 23,\n    \"Forbidden Elements\": 10,\n    \"Natural Flow\": 18,\n    \"Length\": 9\n  },\n  \"issues\": [],\n  \"notes\": \"Julie's conversational voice and friendly tone are captured well, but some phrases ('dancing through these final tunes', 'stay safe out there') have a slightly modern feel. Otherwise, an engaging intro that invites listener participation.\"\n}"
+}

@@ -1,0 +1,64 @@
+{
+  "scripts": [
+    {
+      "script_id": "1_julie",
+      "script_content": "I can't help but wonder, friends is it really that difficult out there in the world to find good people? That seems like quite a challenge according to this tune from 40s starlet Cass Daly. Let's see if she has some answers for us as we hear A Good Man Is Hard To Find coming up next on your Appalachian Radio!.",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "2_julie",
+      "script_content": "I've always loved how this song, A Kiss To Build A Dream On from the one and only Louie Armst. Here's Louis Armstrong with \"A Kiss to Build a Dream On.\".",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "3_julie",
+      "script_content": "Artie Shaw brings us that wistful romantic longing in his rendition of \"A Room With a View.\" I wonder if we'd ever take the time to gaze out at life itself, appreciating its beauty and fleeting nature like these lyrics suggest.",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "4_julie",
+      "script_content": "I wonder, does this song speak to folks who've been separated in these uncertain times? Here are the harmonious voices of The Ink Spots on Address Unknown..",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "5_julie",
+      "script_content": "You know, I always wonder about this one is \"Ain't misbehavin'\" really a promise or just a hope? Here's the great Fats Waller with his signature tune..",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "1_mr_new_vegas",
+      "script_content": "Ladies and gentlemen, it seems love can be a mysterious game indeed. This next tune from the incomparable Cass Daley wonders aloud if that perfect match is even out there are you ready for her hunt?",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "2_mr_new_vegas",
+      "script_content": "Ladies and gentlemen of New Vegas, there are moments in life when dreams seem just out of reach. but then love comes along. Here's the incomparable Louis Armstrong with his soulful take on what it means to build your hopes upon that one special kiss A Kiss to Build a Dream On!.",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "3_mr_new_vegas",
+      "script_content": "The masterful clarinet of Mr. Shaw brings us this timeless, dreamy tune that seems to paint vivid pictures in the mind perhaps envisioning an ideal romantic getaway or escape from life's tribulations into serene bliss. Here is legendary bandleader Artie Shaw with his enchanting hit, 'A Room With a View.'.",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "4_mr_new_vegas",
+      "script_content": "I've got a special treat for you tonight, folks. This song always makes me wonder about the uncertainty in life that longing to reconnect and find out where your loved one is now, even after being separated by distance or time. Here are The Ink Spots with 'Address Unknown'..",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "5_mr_new_vegas",
+      "script_content": "The carefree spirit of this tune, full of playful defiance against the rules it reminds me why New Vegas is such a liberated oasis in these wild Mojave Wastelands. Here's that feeling encapsulated by none other than the great Fats Waller with Ain't Misbehavin'..",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    }
+  ]
+}

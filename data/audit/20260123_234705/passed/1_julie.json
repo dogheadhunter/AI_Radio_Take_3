@@ -1,0 +1,17 @@
+{
+  "script_id": "1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.3,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 6.0
+  },
+  "issues": [],
+  "notes": "Solid introduction in Julie's voice, fitting with the era and style. The only minor issue is a slightly rambling sentence structure which prevents a perfect score for natural flow.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 6\n  },\n  \"issues\": [],\n  \"notes\": \"Solid introduction in Julie's voice, fitting with the era and style. The only minor issue is a slightly rambling sentence structure which prevents a perfect score for natural flow.\"\n}"
+}

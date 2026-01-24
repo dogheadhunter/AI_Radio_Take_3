@@ -1,0 +1,100 @@
+{
+  "scripts": [
+    {
+      "script_id": "test1_julie",
+      "script_content": "Coming up, we've got Rosemary Clooney singing This Heart of Mine. I'm curious if you think her delivery here makes the title phrase sound more hopeful or melancholic to your ears? Let's find out as this 1950s gem plays on! \n\n(1 sentence intro with a question about interpretation)",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test2_julie",
+      "script_content": "Okay, y'all! Let me spin this next one for you. It's Peggy Lee singing Why Don't You Do Right?, a tune that always makes me wonder about the man in her life - is he really worth all these pleas and promises? I mean, why would anyone put up with being ignored unless...well, maybe there was something special hidden beneath his gruff exterior! Guess we'll never know for sure from just this song alone. But hey, that's part of what makes music so intriguing, right - trying to piece together a story in our own imaginations while these talented artists spin their tales over the radio waves out here where it can be downright lonely sometimes if you don't stay safe inside those Vault bunkers!",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test3_julie",
+      "script_content": "Alright folks, we've got The Maddox Brothers & Rose now performing Wildwood Flower. Now I wonder if they chose this old folk song for its soothing melody or to highlight their harmonies in a more subdued arrangement compared to some of the upbeat numbers from these talented siblings out west. Either way it's lovely hearing them put such care into presenting an American music treasure like this.",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test4_julie",
+      "script_content": "Artist 4 is up next, and I'm curious to hear how their song fits into the post-war atmosphere we've been enjoying tonight. \n\n(1 sentence intro with specific observation about artist's fit)",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test5_julie",
+      "script_content": "I'm curious, folks, does anyone else catch a sense of longing in the voice when Artist 5 sings \"Oh please give me just one more day to try and win your heart\"? It's as if she's making an impassioned plea for second chances at love. Anyway, here is that soulful song from her latest release: Song Title by Artist Name",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test6_julie",
+      "script_content": "I'm intrigued by this next tune from Hank Thompson, called \"Six Pack to Go\". What kind of trouble do you reckon a six pack could get someone into out there in the wasteland? Guess we'll find out as it plays! Here's Hank singing about his favorite beverage.",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test7_julie",
+      "script_content": "And now, let's hear from Artist 7 singing Song 7. I've gotta wonder if this tune is a commentary on conformity and blending in with the crowd - you know how it can feel like everyone around us looks just alike these days out here in post-war Appalachia where so much has changed since the wasteland ended but some things remain very familiar indeed, at least musically speaking.",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test8_julie",
+      "script_content": "Well, this next one is an absolute delight. It's a real treat to share Artist 8 and their charming rendition of Song 8 with you all tonight! The way they weave together those lilting melodies and heartfelt lyrics just warms the soul in these uncertain times - when we're all still trying our best not to get caught out there beyond Appalachia Radio's signal, right?",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test1_mr_new_vegas",
+      "script_content": "Ladies and gentlemen, get ready to swoon as we welcome the velvety smooth sounds of Dean Martin on \"Ain't That a Kick in the Head.\" This sultry tune always makes me ponder - what's it really like being smitten from afar? The longing gaze across that crowded casino floor...the tender touch when finally your hands meet. I think you'll agree, this song perfectly captures those electrifying early moments of romance on the glitzy Las Vegas Strip!",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test2_mr_new_vegas",
+      "script_content": "Ladies and gentlemen, Radio New Vegas brings you another enchanting crooner as the one-and-only Frank Sinatra serenades us tonight. \"Fly Me to the Moon\" is a timeless tune that captures the pure joy of love taking flight - no wonder it's often played at weddings! This next song goes out from me straight into your hearts, wishing each and every listener their own magical moonlit moments with someone special under the stars up above Vegas' glittering Strip.",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test3_mr_new_vegas",
+      "script_content": "And now, Radio New Vegas dedicates this tender ballad to the one and only you out there in our listening audience. It's Frank Sinatra crooning \"Fly Me To The Moon\", a sweet serenade about yearning for that special someone who makes your heart take flight like stardust across the night sky - just as I hope my voice does every evening on this station, guiding you home to love and magic amidst the Mojave wasteland.",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test4_mr_new_vegas",
+      "script_content": "And now, from across that glittering desert horizon straight to you here in the heart of New Vegas, it's none other than Artist 4 crooning out Song 4 - a sultry serenade about forbidden love burning bright under the cover of night. Can't help but wonder: what secrets do these star-crossed lovers plan as they steal away from prying eyes?",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test5_mr_new_vegas",
+      "script_content": "Ladies and gentlemen of New Vegas, allow me to introduce a tune that encapsulates the intoxicating allure of the unknown - it is \"Mysterious Mambo\" by Artist 5. As those syncopated rhythms wash over you like desert sandstorms at dusk, can't help but wonder what secrets await around every shadowed corner along our beloved Strip?",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test6_mr_new_vegas",
+      "script_content": "Good evening, beautiful listeners of Radio New Vegas! Tonight we're feeling the magic as crooner Dean Martin serenades us once again. This next song has a certain je ne sais quoi - is it longing for an old flame? A wistful glance back at love's sweet memories or perhaps eagerly anticipating what's to come with someone new, that special some-one who makes your heart sing and dance the night away under the bright neon lights of New Vegas Boulevard. Let Dean Martin whisper his smooth sentiments directly into our ears as we drift off in dreamland...",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test7_mr_new_vegas",
+      "script_content": "Ladies and gentlemen, let us indulge in a delightful serenade by the enchanting Artist 7. With lyrics as smooth as silk, this song captures that undeniable allure between two souls - an unspoken understanding of desire blossoming into something more profound with each passing moment together under starry skies... Or perhaps I'm reading too much romance into it? Whatever your interpretation may be, get ready to sway along!",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "test8_mr_new_vegas",
+      "script_content": "Ladies and gentlemen, tune in closely for this enchanting ballad by Artist 8. The soothing melody lulls us into a world of tender devotion as the lyrics paint an image of love's unwavering presence through life's trials - can you feel that serenity wash over you like moonlight on the Strip?",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    }
+  ]
+}

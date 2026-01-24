@@ -1,0 +1,28 @@
+{
+  "scripts": [
+    {
+      "script_id": "1_julie",
+      "script_content": "Now we've got the lovely voice of Cass Daley, and I wonder if you agree with her a good man really is hard to find sometimes. Here's Cass Daley with \"A Good Man Is Hard to Find.\".",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "2_julie",
+      "script_content": "Louis, he always had such an optimistic outlook. When you listen closely in this song of his, it really makes me wonder if dreams are worth the risk sometimes but that hopeful tone is infectious! Here's Louis Armstrong with A Kiss to Build a Dream On..",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "1_mr_new_vegas",
+      "script_content": "Ladies and gentlemen, I'd like to play something really special for you right now because it speaks directly from the heart. The next song is all about searching high and low until that perfect someone comes along isn't love a treasure hunt? Here's Cass Daley with A Good Man Is Hard to Find!.",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "2_mr_new_vegas",
+      "script_content": "Louis, the Satchmo of dreams himself. In this timeless ballad he croons about the fleeting yet powerful magic in that first kiss is it really just another moment among millions. or might something extraordinary blossom from it? Find out as Louis Armstrong shares A Kiss to Build a Dream On with us tonight on Radio New Vegas!.",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "script_id": "1_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.549999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 8.0
+  },
+  "issues": [],
+  "notes": "Mr. NV's script perfectly captures his suave, romantic tone throughout the intro.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 9,\n    \"era_appropriateness\": 8,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 8\n  },\n  \"issues\": [],\n  \"notes\": \"Mr. NV's script perfectly captures his suave, romantic tone throughout the intro.\"\n}"
+}

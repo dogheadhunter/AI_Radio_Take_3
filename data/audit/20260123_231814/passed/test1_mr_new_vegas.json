@@ -1,0 +1,19 @@
+{
+  "script_id": "test1_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 9.299999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 9.0
+  },
+  "issues": [
+    "Some phrasing could be tightened for smoother delivery"
+  ],
+  "notes": "Excellent script capturing Mr. New Vegas' suave, romantic tone and 1950s lounge vibe.",
+  "raw_response": "{\n  \"criteria_scores\": {\"character_voice\": 9, \"era_appropriateness\": 10, \"forbidden_elements\": 10, \"natural_flow\": 8, \"length\": 9},\n  \"issues\": [\"Some phrasing could be tightened for smoother delivery\"], \n  \"notes\": \"Excellent script capturing Mr. New Vegas' suave, romantic tone and 1950s lounge vibe.\"\n}"
+}

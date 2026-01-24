@@ -1,0 +1,17 @@
+{
+  "script_id": "test7_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "Captures Julie's friendly, conversational tone well, but could trim some filler words for a smoother flow.",
+  "raw_response": "{\n    \"score\": 8,\n    \"passed\": true,\n    \"criteria_scores\": {\n        \"1. Character Voice\": 28,\n        \"2. Era Appropriateness\": 24,\n        \"3. Forbidden Elements\": 10,\n        \"4. Natural Flow\": 16,\n        \"5. Length\": 12\n    },\n    \"issues\": [],\n    \"notes\": \"Captures Julie's friendly, conversational tone well, but could trim some filler words for a smoother flow.\"\n}"
+}

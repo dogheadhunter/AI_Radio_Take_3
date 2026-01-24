@@ -1,0 +1,19 @@
+{
+  "script_id": "1_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.1,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 4.0
+  },
+  "issues": [
+    "Script is slightly too elaborate for Mr. NV's typical style"
+  ],
+  "notes": "Overall a strong intro that fits the character and era well, with only minor flow concerns.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 4\n  },\n  \"issues\": [\"Script is slightly too elaborate for Mr. NV's typical style\"],\n  \"notes\": \"Overall a strong intro that fits the character and era well, with only minor flow concerns.\"\n}"
+}

@@ -1,0 +1,19 @@
+{
+  "script_id": "test9_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.5,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 8.0
+  },
+  "issues": [
+    "Julie's voice could be more conversational and rambling"
+  ],
+  "notes": "Strong intro that takes a thoughtful approach to the song title; might benefit from Julie sounding even more casual and spontaneous in her delivery.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8, \n    \"era_appropriateness\": 9, \n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7, \n    \"length\": 8\n  },\n  \"issues\": [\"Julie's voice could be more conversational and rambling\"], \n  \"notes\": \"Strong intro that takes a thoughtful approach to the song title; might benefit from Julie sounding even more casual and spontaneous in her delivery.\"\n}"
+}

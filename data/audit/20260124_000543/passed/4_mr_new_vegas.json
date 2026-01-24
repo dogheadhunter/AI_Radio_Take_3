@@ -1,0 +1,19 @@
+{
+  "script_id": "4_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.25,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 5.0
+  },
+  "issues": [
+    "Mr. NV occasionally sounds more formal than typical of the era"
+  ],
+  "notes": "Smooth and romantic intro, perfect for the Ink Spots' classic song, only minor deviation in tone from usual suave style.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 9,\n    \"era_appropriateness\": 8,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 5\n  },\n  \"issues\": [\"Mr. NV occasionally sounds more formal than typical of the era\"],\n  \"notes\": \"Smooth and romantic intro, perfect for the Ink Spots' classic song, only minor deviation in tone from usual suave style.\"\n}"
+}

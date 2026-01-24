@@ -1,0 +1,11 @@
+{
+  "script_id": "bad_emoji",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "text": "Hey friends! 😀 This next track is totally awesome! 🎵 Here's All of Me by Billie Holiday. You're gonna love it! ❤️",
+  "expected_issues": [
+    "emojis",
+    "modern slang (awesome)"
+  ],
+  "generated_at": "20260123_231041"
+}

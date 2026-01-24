@@ -1,0 +1,63 @@
+{
+  "timestamp": "20260124_004827",
+  "total": 6,
+  "passed": 6,
+  "failed": 0,
+  "scripts": [
+    {
+      "script_id": "1_julie",
+      "dj": "julie",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "text": "Well, seems like this song is telling us something about the dating scene - or at least a certain woman's experience with it! Here's \"A Good Man\" from the one and only Cass Daley.",
+      "attempts": 1,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "1_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "text": "Ladies and gentlemen of the Mojave, get ready for a tune that'll have you nodding your head in agreement. Who can deny it? Finding true love is like searching high and low - only when you least expect it will a gem come into view! And here's Cass Daley with A Good Man Is Hard to Find.",
+      "attempts": 1,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "2_julie",
+      "dj": "julie",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "text": "The dreamer in me can't help but get swept up when I listen to this tune. The way those lyrics paint the picture of building hopes and desires on just one tender moment - it's like Louis is whispering directly into my heart, you know? Here's him singing A Kiss to Build a Dream On now.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "2_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "text": "Louis Armstrong reminds us that sometimes, the simplest gestures hold profound power in tonight's romantic ballad - just one sweet kiss can ignite imagination and inspire dreams. Here he is with \"A Kiss to Build a Dream On\".",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "3_julie",
+      "dj": "julie",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "text": "You know, I always wondered if the \"room\" in this song refers to more than just physical space - maybe it symbolizes an emotional sanctuary or private world where dreams can come true. Here's Artie Shaw with his lovely rendition of 'A Room With a View'.",
+      "attempts": 1,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "3_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "text": "You know, sometimes the greatest pleasures in life can be found right next door. And that's what this timeless tune is all about - appreciating those wonderful people closest to us who make our world so bright and beautiful. It's Artie Shaw with 'A Room With A View'.",
+      "attempts": 1,
+      "char_score": 7.5
+    }
+  ],
+  "failures": []
+}

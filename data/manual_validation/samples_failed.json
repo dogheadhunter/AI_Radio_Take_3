@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "script_id": "4_julie",
+    "dj": "julie",
+    "content_type": "song_intro",
+    "score": 5.1000000000000005,
+    "passed": false,
+    "criteria_scores": {
+      "character_voice": 6.0,
+      "era_appropriateness": 4.0,
+      "forbidden_elements": 1.0,
+      "natural_flow": 8.0,
+      "length": 9.0
+    },
+    "issues": [
+      "Modern reference to 'Vault cities' is anachronistic",
+      "Julie's rambling style not fully present"
+    ],
+    "notes": "Script captures Julie's friendly tone but voice patterns are inconsistent; era mistakes prevent a higher score",
+    "raw_response": "{\n  \"criteria_scores\": {\"character_voice\": 6, \"era_appropriateness\": 4, \"forbidden_elements\": 1, \"natural_flow\": 8, \"length\": 9},\n  \"issues\": [\"Modern reference to 'Vault cities' is anachronistic\", \"Julie's rambling style not fully present\"],\n  \"notes\": \"Script captures Julie's friendly tone but voice patterns are inconsistent; era mistakes prevent a higher score\"\n}",
+    "script_content": "The Ink Spots bring us this touching, melancholic tune about lost love and longing in Address Unknown. The harmonies are as rich and velvety smooth as ever those signature \"doo wop\" choruses still send shivers down my spine after all these years of listening to 'em on the radio out here amidst the wasteland where civilization ended, wondering what became of people like you tuning in from Vault cities."
+  }
+]

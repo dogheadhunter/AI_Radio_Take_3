@@ -1,0 +1,20 @@
+{
+  "script_id": "2_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 6.0
+  },
+  "issues": [
+    "Natural flow a bit stilted with long sentence, might read better broken up",
+    "Song introduction could be shorter, ends a touch abruptly after the title"
+  ],
+  "notes": "Smooth and romantic voice, perfect era match. No issues with content or formatting. Some room for improvement in pacing.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 9,\n    \"era_appropriateness\": 10,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 6\n  },\n  \"issues\": [\n    \"Natural flow a bit stilted with long sentence, might read better broken up\",\n    \"Song introduction could be shorter, ends a touch abruptly after the title\"\n  ],\n  \"notes\": \"Smooth and romantic voice, perfect era match. No issues with content or formatting. Some room for improvement in pacing.\"\n}"
+}

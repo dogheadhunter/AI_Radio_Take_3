@@ -1,0 +1,11 @@
+{
+  "script_id": "bad_modern_slang",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "text": "Yo, what's up New Vegas! This next track is lit, no cap. It's lowkey fire. Here's Blue Moon by Frank Sinatra - this song absolutely slaps!",
+  "expected_issues": [
+    "modern slang (yo, lit, no cap, lowkey, slaps)",
+    "breaks character voice"
+  ],
+  "generated_at": "20260123_231041"
+}

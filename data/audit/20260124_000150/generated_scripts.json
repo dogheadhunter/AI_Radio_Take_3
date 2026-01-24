@@ -1,0 +1,16 @@
+{
+  "scripts": [
+    {
+      "script_id": "1_julie",
+      "script_content": "Cass Daley is asking some tough questions here in her song, wondering where the good men have gone. I'm not sure she expects easy answers! Here's Cass Daley with \"A Good Man Is Hard to Find.\".",
+      "dj": "julie",
+      "content_type": "song_intro"
+    },
+    {
+      "script_id": "1_mr_new_vegas",
+      "script_content": "You know, sometimes the hunt for a perfect partner can feel like chasing an elusive mirage in this harsh Mojave wasteland. But maybe that longing is what makes finding \"the one\" all the more precious? Here's Cass Daley with 'A Good Man Is Hard to Find'..",
+      "dj": "mr_new_vegas",
+      "content_type": "song_intro"
+    }
+  ]
+}

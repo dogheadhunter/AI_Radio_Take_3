@@ -1,0 +1,19 @@
+{
+  "script_id": "1_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.6,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 9.0
+  },
+  "issues": [
+    "While Mr. NV's tone is intimate, some of his phrasing and sentence structure sound slightly modern for the era"
+  ],
+  "notes": "A strong introduction with romantic themes, but could lean more into 1950s phrasing to perfectly fit character voice.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 9\n  },\n  \"issues\": [\"While Mr. NV's tone is intimate, some of his phrasing and sentence structure sound slightly modern for the era\"],\n  \"notes\": \"A strong introduction with romantic themes, but could lean more into 1950s phrasing to perfectly fit character voice.\"\n}"
+}

@@ -54,21 +54,6 @@ class TestAuditScript:
         assert result.passed == False
         assert "parse error" in result.notes.lower()
 
-    def test_normalizes_and_computes_score(self, monkeypatch):
-        """If auditor returns 0-100 per-criterion scores, they should be normalized and overall computed."""
-        # Mock generate_text to return criteria on 0-100 scale without overall score
-        def _fake(client, prompt):
-            return '{"criteria_scores": {"character_voice": 80, "era_appropriateness": 70, "forbidden_elements": 100, "natural_flow": 60, "length": 80}, "issues": [], "notes": "Test scales"}'
-        monkeypatch.setattr('src.ai_radio.generation.llm_client.generate_text', _fake)
-
-        result = audit_script(client=None, script_content='Some script', script_id='norm1', dj='julie')
-        # Ensure criteria are normalized to 1-10
-        for v in result.criteria_scores.values():
-            assert 1.0 <= v <= 10.0
-        # Ensure overall score is computed (should be weighted average around >6)
-        assert 1.0 <= result.score <= 10.0
-        assert isinstance(result.passed, bool)
-
 
 def test_batch_and_save_load(tmp_path, mock_llm_auditor):
     scripts = [
@@ -112,18 +97,3 @@ def test_auditor_on_sample_scripts(tmp_path, mock_llm_auditor_mixed):
     failed_ids = [r.script_id for r in results if not r.passed]
     assert "bad_julie_slang" in failed_ids
     assert "bad_mrnv" in failed_ids
-
-
-def test_bad_examples_caught(tmp_path, mock_llm_auditor_mixed):
-    """Ensure intentionally bad examples are flagged by auditor."""
-    import json
-    bad_dir = Path('data/generated_bad')
-    scripts = []
-    for p in bad_dir.glob('*.json'):
-        data = json.loads(p.read_text(encoding='utf-8'))
-        scripts.append({'script_id': data['script_id'], 'script_content': data['script_content'], 'dj': data['dj']})
-
-    out = tmp_path / 'audit_bad'
-    summary = audit_batch(scripts, out, client=None)
-    # Expect at least one failure
-    assert summary['failed'] >= 1

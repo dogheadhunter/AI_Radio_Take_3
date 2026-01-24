@@ -14,11 +14,22 @@ def collect_samples(audit_dir: Path, out_dir: Path, passed_n: int = 5, failed_n:
     failed = list((audit_dir / 'failed').glob('*.json')) if (audit_dir / 'failed').exists() else []
 
     out_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Load generated scripts for merging script_content
+    generated_index = {}
+    gen_json = audit_dir / 'generated_scripts.json'
+    if gen_json.exists():
+        gen_data = json.loads(gen_json.read_text(encoding='utf-8'))
+        generated_index = {s['script_id']: s for s in gen_data.get('scripts', [])}
 
     def load_and_sample(files, n):
         items = []
         for f in files:
             d = json.loads(f.read_text(encoding='utf-8'))
+            # Merge script_content from generated_scripts.json
+            script_id = d.get('script_id')
+            if script_id in generated_index:
+                d['script_content'] = generated_index[script_id].get('script_content', '')
             items.append(d)
         if not items:
             return []

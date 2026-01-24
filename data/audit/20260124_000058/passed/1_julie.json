@@ -1,0 +1,17 @@
+{
+  "script_id": "1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 9.299999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 9.0
+  },
+  "issues": [],
+  "notes": "Smooth transition from Julie's commentary to the song title and artist. A little rambling with 'right here', but overall friendly and conversational tone fits Julie's character well.",
+  "raw_response": "{\n  \"criteria_scores\": {\"character_voice\": 9, \"era_appropriateness\": 10, \"forbidden_elements\": 10, \"natural_flow\": 8, \"length\": 9},\n  \"issues\": [],\n  \"notes\": \"Smooth transition from Julie's commentary to the song title and artist. A little rambling with 'right here', but overall friendly and conversational tone fits Julie's character well.\"\n}"
+}

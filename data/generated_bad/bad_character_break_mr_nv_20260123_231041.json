@@ -1,0 +1,12 @@
+{
+  "script_id": "bad_character_break_mr_nv",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "text": "Um, well, you know, I was just thinking, like, this next song is pretty good I guess? It's Blue Moon by Frank Sinatra. I don't know, what do you think?",
+  "expected_issues": [
+    "wrong voice (uncertain/questioning)",
+    "sounds like Julie",
+    "not confident/romantic"
+  ],
+  "generated_at": "20260123_231041"
+}

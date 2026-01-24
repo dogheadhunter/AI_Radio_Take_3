@@ -1,0 +1,17 @@
+{
+  "script_id": "test1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.749999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 7.0
+  },
+  "issues": [],
+  "notes": "Script matches Julie's conversational voice and has an engaging question for the listener. Era-appropriate language is used, with only minor anachronisms in sentence structure.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 9, \n    \"era_appropriateness\": 8,\n    \"forbidden_elements\": 10, \n    \"natural_flow\": 9, \n    \"length\": 7\n  },\n  \"issues\": [],\n  \"notes\": \"Script matches Julie's conversational voice and has an engaging question for the listener. Era-appropriate language is used, with only minor anachronisms in sentence structure.\"\n}"
+}

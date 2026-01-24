@@ -1,0 +1,17 @@
+{
+  "script_id": "test3_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "Very strong script, captures Mr. New Vegas's tone and style well. Only minor issue with anachronistic 'reckless abandon' phrase; otherwise excellent.",
+  "raw_response": "{\n  \"score\": 8,\n  \"passed\": true,\n  \"criteria_scores\": {\n    \"1.Character Voice\": 9,\n    \"2.Era Appropriateness\": 7,\n    \"4.Natural Flow\": 8,\n    \"5.Length\": 9,\n    \"3.Forbidden Elements\": 10\n  },\n  \"issues\": [],\n  \"notes\": \"Very strong script, captures Mr. New Vegas's tone and style well. Only minor issue with anachronistic 'reckless abandon' phrase; otherwise excellent.\"\n}"
+}

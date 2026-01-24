@@ -1,0 +1,19 @@
+{
+  "script_id": "3_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.6,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 9.0
+  },
+  "issues": [
+    "Julie's tone is a bit too formal for her character; should sound more conversational."
+  ],
+  "notes": "Script showcases Julie's knowledge of jazz history and ties it to the current times, which fits well with her character.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 9\n  },\n  \"issues\": [\"Julie's tone is a bit too formal for her character; should sound more conversational.\"],\n  \"notes\": \"Script showcases Julie's knowledge of jazz history and ties it to the current times, which fits well with her character.\"\n}"
+}

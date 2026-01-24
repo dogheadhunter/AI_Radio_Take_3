@@ -1,0 +1,19 @@
+{
+  "script_id": "test8_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 8.0
+  },
+  "issues": [
+    "Julie's rambling style is not fully captured; sentence structure is a bit too polished"
+  ],
+  "notes": "The script effectively conveys Julie's warm and hopeful tone, but could benefit from more filler words and casual phrasing to better match her character.",
+  "raw_response": "{\n  \"criteria_scores\": {\"character_voice\": 9, \"era_appropriateness\": 8, \"forbidden_elements\": 10, \"natural_flow\": 9, \"length\": 8},\n  \"issues\": [\"Julie's rambling style is not fully captured; sentence structure is a bit too polished\"],\n  \"notes\": \"The script effectively conveys Julie's warm and hopeful tone, but could benefit from more filler words and casual phrasing to better match her character.\"\n}"
+}

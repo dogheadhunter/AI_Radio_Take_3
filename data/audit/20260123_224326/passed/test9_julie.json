@@ -1,0 +1,17 @@
+{
+  "script_id": "test9_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "The script captures Julie's conversational tone and style well, but a couple phrases ('stay safe and warm under those stars') slightly anachronize her voice to modern times. Otherwise, it flows naturally and adheres to the forbidden elements criteria.",
+  "raw_response": "{\n  \"score\": 8,\n  \"passed\": true,\n  \"criteria_scores\": {\n    \"Character Voice\": 27,\n    \"Era Appropriateness\": 22,\n    \"Forbidden Elements\": 10,\n    \"Natural Flow\": 17,\n    \"Length\": 12\n  },\n  \"issues\": [],\n  \"notes\": \"The script captures Julie's conversational tone and style well, but a couple phrases ('stay safe and warm under those stars') slightly anachronize her voice to modern times. Otherwise, it flows naturally and adheres to the forbidden elements criteria.\"\n}"
+}

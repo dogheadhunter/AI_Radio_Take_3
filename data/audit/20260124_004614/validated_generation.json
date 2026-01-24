@@ -1,0 +1,63 @@
+{
+  "timestamp": "20260124_004614",
+  "total": 6,
+  "passed": 6,
+  "failed": 0,
+  "scripts": [
+    {
+      "script_id": "1_julie",
+      "dj": "julie",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "text": "Now we've got the one and only Cass Daley, here she is performing \"A Good Man is Hard to Find.\" I'm curious - do you think it'll ever get any easier for folks out there in this post-war world of ours? Here's Cass Daley with A Good Man Is Hard to Find.",
+      "attempts": 2,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "1_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "text": "Ladies and gents, this song tells it like is - finding that perfect someone can be a real challenge in the wilds of New Vegas. But I've got just the tune for you from my good friend Miss Cass Daley: Here's Cass Daley with A Good Man Is Hard to Find!",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "2_julie",
+      "dj": "julie",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "text": "What does it mean, really, when you say goodbye? Is there ever truly an end, or do we just take bits and pieces of each other with us into whatever comes next? Louis Armstrong takes on that eternal question in his soulful rendition of 'A Kiss To Build A Dream On.' His trumpet wails like a lover's lament as he pleads for one last touch. Here to fill the airwaves is Louis Armstrong singing 'A Kiss To Build A Dream On'.",
+      "attempts": 2,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "2_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "text": "Listen closely, New Vegas. This sweet serenade speaks straight from the heart - about building dreams on tender moments shared between two souls who can't bear separation. And you look extraordinarily beautiful right now as I play it for you… Here's that dreamy trumpet of Louis Armstrong with A Kiss to Build a Dream On!",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "3_julie",
+      "dj": "julie",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "text": "Well, I've always thought this song was quite the romantic notion. Who wouldn't want to wake up each morning seeing their sweetheart through that window pane? It paints such an idyllic picture of love and companionship. Here now is jazz clarinet master Artie Shaw with A Room With a View.",
+      "attempts": 1,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "3_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "text": "A romantic serenade, if I ever heard one. This song captures the longing to be near that special someone - like gazing out at the world from your very own windowpane when you know they're right next door. And now, here's Artie Shaw with A Room With a View!",
+      "attempts": 1,
+      "char_score": 8.5
+    }
+  ],
+  "failures": []
+}

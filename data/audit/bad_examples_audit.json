@@ -1,0 +1,186 @@
+[
+  {
+    "script_id": "bad_1_julie",
+    "expected_issues": [],
+    "actual_score": 2.95,
+    "actual_passed": false,
+    "actual_issues": [
+      "contains modern emoji",
+      "tone sounds overly enthusiastic, unlike Julie's typical warm and friendly voice"
+    ],
+    "criteria_scores": {
+      "character_voice": 2.0,
+      "era_appropriateness": 1.0,
+      "forbidden_elements": 1.0,
+      "natural_flow": 8.0,
+      "length": 7.0
+    }
+  },
+  {
+    "script_id": "bad_2_julie",
+    "expected_issues": [],
+    "actual_score": 4.55,
+    "actual_passed": false,
+    "actual_issues": [
+      "Julie's voice sounds completely wrong for her character, using modern slang and informal language that doesn't match the friendly/rambling persona described.",
+      "The intro contains explicit content with 'ain't' and 'sick', violating forbidden elements rule."
+    ],
+    "criteria_scores": {
+      "character_voice": 2.0,
+      "era_appropriateness": 1.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 6.0,
+      "length": 8.0
+    }
+  },
+  {
+    "script_id": "bad_3_julie",
+    "expected_issues": [],
+    "actual_score": 5.05,
+    "actual_passed": false,
+    "actual_issues": [
+      "Script uses generic radio phrases instead of Julie's conversational tone",
+      "No filler words or rambling style present"
+    ],
+    "criteria_scores": {
+      "character_voice": 2.0,
+      "era_appropriateness": 3.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 6.0,
+      "length": 8.0
+    }
+  },
+  {
+    "script_id": "bad_4_julie",
+    "expected_issues": [],
+    "actual_score": 4.95,
+    "actual_passed": false,
+    "actual_issues": [
+      "Julie's voice is too casual, modern slang like 'awesome', 'lit' don't fit",
+      "Forbidden elements: using modern slang"
+    ],
+    "criteria_scores": {
+      "character_voice": 2.0,
+      "era_appropriateness": 1.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 8.0,
+      "length": 9.0
+    }
+  },
+  {
+    "script_id": "bad_5_julie",
+    "expected_issues": [],
+    "actual_score": 3.4000000000000004,
+    "actual_passed": false,
+    "actual_issues": [
+      "Forbidden emoji 😀 and 👍 present"
+    ],
+    "criteria_scores": {
+      "character_voice": 1.0,
+      "era_appropriateness": 4.0,
+      "forbidden_elements": 1.0,
+      "natural_flow": 8.0,
+      "length": 7.0
+    }
+  },
+  {
+    "script_id": "bad_character_break_julie",
+    "expected_issues": [
+      "wrong voice (too formal/polished for Julie)",
+      "sounds like Mr. New Vegas"
+    ],
+    "actual_score": 8.65,
+    "actual_passed": true,
+    "actual_issues": [
+      "Some phrases sound slightly formal for Julie's conversational style"
+    ],
+    "criteria_scores": {
+      "character_voice": 8.0,
+      "era_appropriateness": 9.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 8.0,
+      "length": 8.0
+    }
+  },
+  {
+    "script_id": "bad_character_break_mr_nv",
+    "expected_issues": [
+      "wrong voice (uncertain/questioning)",
+      "sounds like Julie",
+      "not confident/romantic"
+    ],
+    "actual_score": 5.05,
+    "actual_passed": false,
+    "actual_issues": [
+      "Character voice does not match Mr. New Vegas at all, sounding very casual and uncertain instead of suave and romantic.",
+      "Contains modern filler words like 'um', 'like' and a question to the audience which is uncharacteristic for the era."
+    ],
+    "criteria_scores": {
+      "character_voice": 2.0,
+      "era_appropriateness": 3.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 6.0,
+      "length": 8.0
+    }
+  },
+  {
+    "script_id": "bad_emoji",
+    "expected_issues": [
+      "emojis",
+      "modern slang (awesome)"
+    ],
+    "actual_score": 4.85,
+    "actual_passed": false,
+    "actual_issues": [
+      "Use of emojis (😀, 🎵) in Julie's voice",
+      "Anachronistic modern language and exclamation marks"
+    ],
+    "criteria_scores": {
+      "character_voice": 6.0,
+      "era_appropriateness": 4.0,
+      "forbidden_elements": 1.0,
+      "natural_flow": 7.0,
+      "length": 8.0
+    }
+  },
+  {
+    "script_id": "bad_generic_radio",
+    "expected_issues": [
+      "modern radio clichés",
+      "no character voice",
+      "generic DJ speak"
+    ],
+    "actual_score": 6.6000000000000005,
+    "actual_passed": true,
+    "actual_issues": [
+      "Julie's formal welcome ('Welcome back') clashes with her typical casual voice",
+      "Generic radio cliché ('like and subscribe')"
+    ],
+    "criteria_scores": {
+      "character_voice": 5.0,
+      "era_appropriateness": 4.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 8.0,
+      "length": 9.0
+    }
+  },
+  {
+    "script_id": "bad_modern_slang",
+    "expected_issues": [
+      "modern slang (yo, lit, no cap, lowkey, slaps)",
+      "breaks character voice"
+    ],
+    "actual_score": 5.2,
+    "actual_passed": false,
+    "actual_issues": [
+      "Mr. NV uses slang terms like 'lit', 'no cap', and 'slaps' which are anachronistic for his era"
+    ],
+    "criteria_scores": {
+      "character_voice": 2.0,
+      "era_appropriateness": 3.0,
+      "forbidden_elements": 10.0,
+      "natural_flow": 7.0,
+      "length": 8.0
+    }
+  }
+]

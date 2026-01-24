@@ -1,0 +1,17 @@
+{
+  "script_id": "5_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.6,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 7.0
+  },
+  "issues": [],
+  "notes": "Julie's conversational style and rambling tone are well-represented. Only minor issue with the script being a bit on the longer side.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 9,\n    \"era_appropriateness\": 8,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 8,\n    \"length\": 7\n  },\n  \"issues\": [],\n  \"notes\": \"Julie's conversational style and rambling tone are well-represented. Only minor issue with the script being a bit on the longer side.\"\n}"
+}

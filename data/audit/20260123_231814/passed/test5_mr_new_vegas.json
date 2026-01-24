@@ -1,0 +1,19 @@
+{
+  "script_id": "test5_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 9.0
+  },
+  "issues": [
+    "Some phrases like 'fine city beneath our stars' sound a bit generic and could be replaced with more vivid, 1950s-era descriptions to better fit the era."
+  ],
+  "notes": "A strong script overall that captures Mr. New Vegas's voice and tone well. The only suggestions for improvement are to add more distinctively 50s flair in a few places.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 8,\n    \"length\": 9\n  },\n  \"issues\": [\"Some phrases like 'fine city beneath our stars' sound a bit generic and could be replaced with more vivid, 1950s-era descriptions to better fit the era.\"],\n  \"notes\": \"A strong script overall that captures Mr. New Vegas's voice and tone well. The only suggestions for improvement are to add more distinctively 50s flair in a few places.\"\n}"
+}

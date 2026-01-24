@@ -1,0 +1,19 @@
+{
+  "script_id": "4_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.25,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 6.0,
+    "length": 7.0
+  },
+  "issues": [
+    "Julie's introspection could be more concise, rambling a bit. The transition into song introduction is a tad abrupt."
+  ],
+  "notes": "Overall strong intro with accurate Julie voice and era tone; minor improvements to flow and pacing.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 6,\n    \"length\": 7\n  },\n  \"issues\": [\n    \"Julie's introspection could be more concise, rambling a bit. The transition into song introduction is a tad abrupt.\"\n  ],\n  \"notes\": \"Overall strong intro with accurate Julie voice and era tone; minor improvements to flow and pacing.\"\n}"
+}

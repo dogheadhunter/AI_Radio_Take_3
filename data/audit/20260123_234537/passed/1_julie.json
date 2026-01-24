@@ -1,0 +1,17 @@
+{
+  "script_id": "1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.6,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 9.0
+  },
+  "issues": [],
+  "notes": "Script is a good representation of Julie's conversational style and warm, friendly tone. The content is engaging without being too long or flowery.",
+  "raw_response": "{\n  \"criteria_scores\": {\n    \"character_voice\": 8,\n    \"era_appropriateness\": 9,\n    \"forbidden_elements\": 10,\n    \"natural_flow\": 7,\n    \"length\": 9\n  },\n  \"issues\": [],\n  \"notes\": \"Script is a good representation of Julie's conversational style and warm, friendly tone. The content is engaging without being too long or flowery.\"\n}"
+}

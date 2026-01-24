@@ -1,0 +1,19 @@
+{
+  "script_id": "1_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 6.4,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 7.0,
+    "length": 5.0
+  },
+  "issues": [
+    "forbidden_elements: uses modern phrase 'Mojave wasteland', breaks TTS rules"
+  ],
+  "notes": "Nice thematic tie to Vegas desert. Voice smooth and suave as Mr. NV. But modern reference in 'wasteland' brings the score down.",
+  "raw_response": "{\n  \"criteria_scores\": {\"character_voice\": 8, \"era_appropriateness\": 9, \"forbidden_elements\": 1, \"natural_flow\": 7, \"length\": 5},\n  \"issues\": [\"forbidden_elements: uses modern phrase 'Mojave wasteland', breaks TTS rules\"],\n  \"notes\": \"Nice thematic tie to Vegas desert. Voice smooth and suave as Mr. NV. But modern reference in 'wasteland' brings the score down.\"\n}"
+}

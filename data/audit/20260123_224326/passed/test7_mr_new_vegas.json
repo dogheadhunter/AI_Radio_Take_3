@@ -1,0 +1,17 @@
+{
+  "script_id": "test7_mr_new_vegas",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 9.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "The intro perfectly captures Mr. New Vegas' suave and romantic tone from the very first sentence. The mention of neon lights and the Strip immediately places us in his 1950s Vegas lounge era. The only minor quibble is that 'I wonder if it's love...' could be shortened for a more polished delivery, but overall this is an excellent script that embodies Mr. New Vegas' character.",
+  "raw_response": "{\n  \"score\": 9,\n  \"passed\": true,\n  \"criteria_scores\": {\n    \"Character Voice\": 9.5, \n    \"Era Appropriateness\": 10, \n    \"Forbidden Elements\": 10, \n    \"Natural Flow\": 9, \n    \"Length\": 9\n  },\n  \"issues\": [],\n  \"notes\": \"The intro perfectly captures Mr. New Vegas' suave and romantic tone from the very first sentence. The mention of neon lights and the Strip immediately places us in his 1950s Vegas lounge era. The only minor quibble is that 'I wonder if it's love...' could be shortened for a more polished delivery, but overall this is an excellent script that embodies Mr. New Vegas' character.\"\n}"
+}

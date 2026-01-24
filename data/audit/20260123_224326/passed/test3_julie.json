@@ -1,0 +1,17 @@
+{
+  "script_id": "test3_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 1.0,
+    "era_appropriateness": 1.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 1.0,
+    "length": 1.0
+  },
+  "issues": [],
+  "notes": "Julie's conversational tone and filler words like 'whatever' are a good fit, but the sentence structure could be varied more for a smoother flow.",
+  "raw_response": "{\n  \"score\": 8,\n  \"passed\": true,\n  \"criteria_scores\": {\n    \"1. Character Voice\": 8,\n    \"2. Era Appropriateness\": 9,\n    \"3. Forbidden Elements\": 10,\n    \"4. Natural Flow\": 7,\n    \"5. Length\": 8\n  },\n  \"issues\": [],\n  \"notes\": \"Julie's conversational tone and filler words like 'whatever' are a good fit, but the sentence structure could be varied more for a smoother flow.\"\n}"
+}
