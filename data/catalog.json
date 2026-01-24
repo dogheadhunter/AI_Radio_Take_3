@@ -2,88 +2,52 @@
   "songs": [
     {
       "id": 1,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Amos Milburn - Atomic Baby.mp3",
-      "artist": "Amos Milburn",
-      "title": "Atomic Baby",
-      "album": "Blues, Barrelhouse & Boogie Woogie: The Best Of Amos Milburn 1946-1955",
-      "year": 1996,
-      "duration_seconds": 162.768
+      "file_path": "music_with_lyrics\\A Good Man Is Hard to Find by Cass Daley.mp3",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "album": "Fallout 76 Unofficial Soundtrack",
+      "year": null,
+      "duration_seconds": 164.52
     },
     {
       "id": 2,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Arthur 'Big Boy' Crudup - I´m Gonna Dig Myself a Hole.mp3",
-      "artist": "Arthur “Big Boy” Crudup",
-      "title": "I’m Gonna Dig Myself a Hole",
-      "album": "I´m Gonna Dig Myself a Hole",
+      "file_path": "music_with_lyrics\\A Kiss to Build a Dream On by Louis Armstrong.mp3",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "album": "The Best Of The Decca Years Volume One: The Singer",
       "year": null,
-      "duration_seconds": 193.536
+      "duration_seconds": 181.536
     },
     {
       "id": 3,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Autry Inman - Ain't I Right.mp3",
-      "artist": "Autry Inman",
-      "title": "Ain't I Right",
-      "album": "Ballad of Two Brothers",
+      "file_path": "music_with_lyrics\\A Room With a View by Artie Shaw.mp3",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "album": "The Essential Artie Shaw",
       "year": null,
-      "duration_seconds": 181.944
+      "duration_seconds": 208.68
     },
     {
       "id": 4,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bessie Smith - You've Got to Give Me Some - 78 rpm Version.mp3",
-      "artist": "Bessie Smith",
-      "title": "You've Got to Give Me Some - 78 rpm Version",
-      "album": "The Complete Recordings, Vol. 4",
+      "file_path": "music_with_lyrics\\Address Unknown by The Ink Spots.mp3",
+      "artist": "The Ink Spots",
+      "title": "Address Unknown",
+      "album": "The Anthology",
       "year": null,
-      "duration_seconds": 165.216
+      "duration_seconds": 173.064
     },
     {
       "id": 5,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Betty Hutton - He's a Demon, He's a Devil, He's a Doll.mp3",
-      "artist": "Betty Hutton",
-      "title": "He’s a Demon, He’s a Devil, He’s a Doll",
-      "album": "Rumble Rumble Rumble",
+      "file_path": "music_with_lyrics\\Aint Misbehavin by Fats Waller.mp3",
+      "artist": "Fats Waller",
+      "title": "Ain't Misbehavin'",
+      "album": "The Essential Fats Waller",
       "year": null,
-      "duration_seconds": 194.544
+      "duration_seconds": 237.336
     },
     {
       "id": 6,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Betty Hutton - It's a Man.mp3",
-      "artist": "Betty Hutton",
-      "title": "It’s a Man",
-      "album": "Rumble Rumble Rumble",
-      "year": null,
-      "duration_seconds": 144.432
-    },
-    {
-      "id": 7,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Big Maybelle - Whole Lot Of Shakin' Goin' On.mp3",
-      "artist": "Big Maybelle",
-      "title": "Whole Lotta Shakin’ Goin’ On",
-      "album": "Whole Lot Of Shakin' Goin' On - The Okeh & Savoy Hits",
-      "year": null,
-      "duration_seconds": 177.792
-    },
-    {
-      "id": 8,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bill Haley & His Comets - (We're Gonna) Rock Around The Clock.mp3",
-      "artist": "Bill Haley & His Comets",
-      "title": "(We're Gonna) Rock Around The Clock",
-      "album": "Rock Around The Clock",
-      "year": null,
-      "duration_seconds": 129.936
-    },
-    {
-      "id": 9,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Billie Holiday - 'Tain't Nobody's Business If I Do.mp3",
-      "artist": "Billie Holiday",
-      "title": "'Tain't Nobody's Business If I Do",
-      "album": "The Decca Singles Vol. 2: 1949-1951",
-      "year": null,
-      "duration_seconds": 200.376
-    },
-    {
-      "id": 10,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Billie Holiday - All of Me.mp3",
+      "file_path": "music_with_lyrics\\All of Me by Billie Holiday.mp3",
       "artist": "Billie Holiday",
       "title": "All of Me",
       "album": "Lady Day: The Complete Billie Holiday On Columbia (1933-1944)",
@@ -91,89 +55,125 @@
       "duration_seconds": 181.464
     },
     {
-      "id": 11,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Billie Holiday - Crazy He Calls Me.mp3",
+      "id": 7,
+      "file_path": "music_with_lyrics\\All Or Nothing At All by Billie Holiday.mp3",
       "artist": "Billie Holiday",
-      "title": "Crazy He Calls Me",
-      "album": "Lover Man",
+      "title": "All Or Nothing At All",
+      "album": "All Or Nothing At All",
       "year": null,
-      "duration_seconds": 185.304
+      "duration_seconds": 342.696
+    },
+    {
+      "id": 8,
+      "file_path": "music_with_lyrics\\American Patrol by Glenn Miller.mp3",
+      "artist": "Glenn Miller",
+      "title": "American Patrol",
+      "album": "The Essential Glenn Miller",
+      "year": null,
+      "duration_seconds": 196.56
+    },
+    {
+      "id": 9,
+      "file_path": "music_with_lyrics\\Another Saturday Night by Sam Cooke.mp3",
+      "artist": "Sam Cooke",
+      "title": "Another Saturday Night (take)",
+      "album": "Ain't That Good News",
+      "year": null,
+      "duration_seconds": 162.168
+    },
+    {
+      "id": 10,
+      "file_path": "music_with_lyrics\\Anything Goes by Cole Porter.mp3",
+      "artist": "Cole Porter",
+      "title": "Anything Goes",
+      "album": "A Centennial Celebration",
+      "year": null,
+      "duration_seconds": 184.536
+    },
+    {
+      "id": 11,
+      "file_path": "music_with_lyrics\\Atom Bomb Baby by Carlos and the Bandidos.mp3",
+      "artist": "Carlos & the Bandidos",
+      "title": "Atom Bomb Baby",
+      "album": "Bandido-a-Gogo! (Best Of)",
+      "year": null,
+      "duration_seconds": 151.752
     },
     {
       "id": 12,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Billie Holiday - Easy Living.mp3",
-      "artist": "Billie Holiday",
-      "title": "Easy Living",
-      "album": "Billie Holiday Love Songs",
+      "file_path": "music_with_lyrics\\Atom Bomb Baby by The Five Stars.mp3",
+      "artist": "The Five Stars",
+      "title": "Atom Bomb Baby",
+      "album": "Presenting The Five Stars",
       "year": null,
-      "duration_seconds": 181.368
+      "duration_seconds": 136.776
     },
     {
       "id": 13,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Billy Ward & The Dominoes - Sixty Minute Man.mp3",
-      "artist": "Billy Ward & The Dominoes",
-      "title": "Sixty Minute Man",
-      "album": "Sixty Minute Man",
-      "year": null,
-      "duration_seconds": 145.08
+      "file_path": "music_with_lyrics\\Atomic Baby by Amos Milburn.mp3",
+      "artist": "Amos Milburn",
+      "title": "Atomic Baby",
+      "album": "Blues, Barrelhouse & Boogie Woogie: The Best Of Amos Milburn 1946-1955",
+      "year": 1996,
+      "duration_seconds": 162.768
     },
     {
       "id": 14,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bing Crosby - Something's Gotta Give.mp3",
-      "artist": "Bing Crosby",
-      "title": "Somethings Gotta Give",
-      "album": "Bing Sings The Johnny Mercer Songbook",
+      "file_path": "music_with_lyrics\\Bei Mir Bist Du Schon by The Andrews Sisters.mp3",
+      "artist": "The Andrews Sisters",
+      "title": "Bei Mir Bist Du Schon",
+      "album": "The Andrews Sisters Greatest Hits",
       "year": null,
-      "duration_seconds": 119.784
+      "duration_seconds": 189.624
     },
     {
       "id": 15,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bing Crosby - Swinging On A Star - Single Version.mp3",
-      "artist": "Bing Crosby",
-      "title": "Swinging On A Star - Single Version",
-      "album": "Swinging On A Star",
-      "year": null,
-      "duration_seconds": 151.704
+      "file_path": "music_with_lyrics\\Billy the Kid by Marty Robbins.mp3",
+      "artist": "Marty Robbins",
+      "title": "Billy the Kid",
+      "album": "Gunfighter Ballads And Trail Songs",
+      "year": 1959,
+      "duration_seconds": 139.104
     },
     {
       "id": 16,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bing Crosby, The Andrews Sisters, Vic Schoen & His Orchestra - Don't Fence Me In - Single Version.mp3",
-      "artist": "Bing Crosby, The Andrews Sisters, Vic Schoen & His Orchestra",
-      "title": "Don't Fence Me In - Single Version",
-      "album": "Bing-His Legendary Years 1931-1957",
+      "file_path": "music_with_lyrics\\Black Coffee by Julie London.mp3",
+      "artist": "Julie London",
+      "title": "Black Coffee",
+      "album": "The Very Best Of Julie London",
       "year": null,
-      "duration_seconds": 185.64
+      "duration_seconds": 184.992
     },
     {
       "id": 17,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bing Crosby, The Andrews Sisters, Vic Schoen & His Orchestra - Pistol Packin' Mama - Single Version.mp3",
-      "artist": "Bing Crosby and The Andrews Sisters with Vic Schoen and His Orchestra",
-      "title": "Pistol Packin’ Mama",
-      "album": "Bing-His Legendary Years 1931-1957",
-      "year": null,
-      "duration_seconds": 183.024
+      "file_path": "music_with_lyrics\\Blue Moon by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "Blue Moon",
+      "album": "Sinatra's Swingin' Session!!! And More (Remastered / Expanded Edition)",
+      "year": 1961,
+      "duration_seconds": 171.456
     },
     {
       "id": 18,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bob Crosby & The Bob Cats - Dear Hearts And Gentle People.mp3",
-      "artist": "Bob Crosby & The Bob Cats",
-      "title": "Dear Hearts And Gentle People",
-      "album": "Bob Crosby and the Bobcats: The Complete Standard Transcriptions",
-      "year": 2004,
-      "duration_seconds": 133.152
+      "file_path": "music_with_lyrics\\Blue Skies by Joséphine Baker.mp3",
+      "artist": "Joséphine Baker",
+      "title": "Blue Skies",
+      "album": "Joséphine Baker - The Gold Collection",
+      "year": 1998,
+      "duration_seconds": 172.128
     },
     {
       "id": 19,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bob Crosby & The Bob Cats - Way Back Home.mp3",
-      "artist": "Bob Crosby and the Bob Cats",
-      "title": "Way Back Home",
-      "album": "Bob Crosby and the Bobcats: The Complete Standard Transcriptions",
-      "year": 2004,
-      "duration_seconds": 174.864
+      "file_path": "music_with_lyrics\\Boogie Woogie Bugle Boy by The Andrews Sisters.mp3",
+      "artist": "The Andrews Sisters",
+      "title": "Boogie Woogie Bugle Boy",
+      "album": "The Andrews Sisters Greatest Hits",
+      "year": null,
+      "duration_seconds": 162.168
     },
     {
       "id": 20,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bob Wills - Bubbles In My Beer.mp3",
+      "file_path": "music_with_lyrics\\Bubbles In My Beer by Bob Wills.mp3",
       "artist": "Bob Wills",
       "title": "Bubbles In My Beer",
       "album": "24 Greatest Hits",
@@ -182,7 +182,25 @@
     },
     {
       "id": 21,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bobby Darin - Call Me Irresponsible - 2001 Remaster.mp3",
+      "file_path": "music_with_lyrics\\Butcher Pete by Roy Brown.mp3",
+      "artist": "Roy Brown",
+      "title": "Butcher Pete",
+      "album": "The Blues Got Me Again",
+      "year": null,
+      "duration_seconds": 163.176
+    },
+    {
+      "id": 22,
+      "file_path": "music_with_lyrics\\By the Light of the Silvery Moon by Jackie Wilson.mp3",
+      "artist": "Jackie Wilson",
+      "title": "By the Light of the Silvery Moon",
+      "album": "Lonely Teardrops",
+      "year": 1959,
+      "duration_seconds": 146.28
+    },
+    {
+      "id": 23,
+      "file_path": "music_with_lyrics\\Call Me Irresponsible by Bobby Darin.mp3",
       "artist": "Bobby Darin",
       "title": "Call Me Irresponsible",
       "album": "From Hello Dolly To Goodbye Charlie",
@@ -190,503 +208,44 @@
       "duration_seconds": 124.584
     },
     {
-      "id": 22,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bobby Darin - Mack the Knife.mp3",
-      "artist": "Bobby Darin",
-      "title": "Mack the Knife",
-      "album": "The Ultimate Bobby Darin",
-      "year": null,
-      "duration_seconds": 184.368
-    },
-    {
-      "id": 23,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Bobby Darin - Splish Splash.mp3",
-      "artist": "Bobby Darin",
-      "title": "Splish Splash",
-      "album": "Bobby Darin",
-      "year": 1958,
-      "duration_seconds": 131.76
-    },
-    {
       "id": 24,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Carlos & The Bandidos - Atom Bomb Baby.mp3",
-      "artist": "Carlos & The Bandidos",
-      "title": "Atom Bomb Baby",
-      "album": "Bandido-a-Gogo! (Best Of)",
+      "file_path": "music_with_lyrics\\Can’t Help Falling in Love by Elvis Presley.mp3",
+      "artist": "Elvis Presley",
+      "title": "Can’t Help Falling in Love",
+      "album": "Blue Hawaii",
       "year": null,
-      "duration_seconds": 151.752
+      "duration_seconds": 178.536
     },
     {
       "id": 25,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Cass Daley - A Good Man Is Hard to Find.mp3",
-      "artist": "Cass Daley",
-      "title": "A Good Man Is Hard to Find",
-      "album": "The Very Best Of",
-      "year": null,
-      "duration_seconds": 164.52
-    },
-    {
-      "id": 26,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Chuck Berry - Roll Over Beethoven.mp3",
-      "artist": "Chuck Berry",
-      "title": "Roll Over Beethoven",
-      "album": "Berry Is On Top",
-      "year": null,
-      "duration_seconds": 144.624
-    },
-    {
-      "id": 27,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Cole Porter - Anything Goes.mp3",
-      "artist": "Cole Porter",
-      "title": "Anything Goes",
-      "album": "A Centennial Celebration",
-      "year": null,
-      "duration_seconds": 184.536
-    },
-    {
-      "id": 28,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Danny Kaye, The Andrews Sisters, Vic Schoen & His Orchestra - Civilization (Bongo, Bongo, Bongo) - Single Version.mp3",
-      "artist": "Danny Kaye/The Andrews Sisters/Vic Schoen & His Orchestra",
-      "title": "Civilization (Bongo, Bongo, Bongo) - Single Version",
-      "album": "50th Anniversary Collection (Vol. 1)",
-      "year": null,
-      "duration_seconds": 182.064
-    },
-    {
-      "id": 29,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Dean Martin - Ain't That A Kick In The Head - Remastered 1997.mp3",
-      "artist": "Dean Martin",
-      "title": "Ain't That A Kick In The Head - Remastered 1997",
-      "album": "At The Movies",
-      "year": null,
-      "duration_seconds": 147.336
-    },
-    {
-      "id": 30,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Dean Martin - Everybody Loves Somebody.mp3",
-      "artist": "Dean Martin",
-      "title": "Everybody Loves Somebody",
-      "album": "Everybody Loves Somebody",
-      "year": 1964,
-      "duration_seconds": 164.592
-    },
-    {
-      "id": 31,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Dean Martin - You're Nobody 'Til Somebody Loves You - Remastered1997.mp3",
-      "artist": "Dean Martin",
-      "title": "You're Nobody 'Til Somebody Loves You - Remastered/1997",
-      "album": "Amore",
-      "year": null,
-      "duration_seconds": 133.968
-    },
-    {
-      "id": 32,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Desi Arnaz - Cuban Pete - Remastered 2011.mp3",
-      "artist": "Desi Arnaz",
-      "title": "Cuban Pete - Remastered 2011",
-      "album": "The Best Of Desi Arnaz (Remastered 2011)",
-      "year": null,
-      "duration_seconds": 188.016
-    },
-    {
-      "id": 33,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Dion - The Wanderer.mp3",
-      "artist": "Dion",
-      "title": "The Wanderer",
-      "album": "The Best Of Dion & The Belmonts",
-      "year": null,
-      "duration_seconds": 167.184
-    },
-    {
-      "id": 34,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Eddy Arnold - It's a Sin.mp3",
-      "artist": "Eddy Arnold",
-      "title": "It's a Sin",
-      "album": "The Essential Eddy Arnold",
-      "year": null,
-      "duration_seconds": 146.136
-    },
-    {
-      "id": 35,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Eddy Duchin - Ol' Man Mose.mp3",
-      "artist": "Eddy Duchin",
-      "title": "Ol' Man Mose",
-      "album": "From The Sony Vault: Silly Scary Songs",
-      "year": null,
-      "duration_seconds": 146.904
-    },
-    {
-      "id": 36,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Fitzgerald - Night And Day.mp3",
-      "artist": "Ella Fitzgerald",
-      "title": "Night And Day",
-      "album": "Ella Fitzgerald Sings The Cole Porter Song Book",
-      "year": null,
-      "duration_seconds": 186.072
-    },
-    {
-      "id": 37,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Fitzgerald, Chick Webb - Undecided.mp3",
-      "artist": "Ella Fitzgerald/Chick Webb",
-      "title": "Undecided",
-      "album": "Ella Fitzgerald: The Voice Of Jazz",
-      "year": null,
-      "duration_seconds": 199.272
-    },
-    {
-      "id": 38,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Fitzgerald, Chick Webb - When I Get Low I Get High.mp3",
-      "artist": "Ella Fitzgerald/Chick Webb",
-      "title": "When I Get Low I Get High",
-      "album": "The Complete Decca Singles Vol. 1: 1935-1939",
-      "year": null,
-      "duration_seconds": 146.472
-    },
-    {
-      "id": 39,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Fitzgerald, Louis Armstrong - Dream A Little Dream Of Me - Single Version.mp3",
-      "artist": "Ella Fitzgerald/Louis Armstrong",
-      "title": "Dream A Little Dream Of Me - Single Version",
-      "album": "Love, Ella",
-      "year": null,
-      "duration_seconds": 185.184
-    },
-    {
-      "id": 40,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Fitzgerald, Louis Armstrong - Let's Call The Whole Thing Off.mp3",
-      "artist": "Ella Fitzgerald/Louis Armstrong",
-      "title": "Let's Call The Whole Thing Off",
-      "album": "Louis Armstrong: Verve Ultimate Cool",
-      "year": null,
-      "duration_seconds": 251.64
-    },
-    {
-      "id": 41,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Fitzgerald, The Delta Rhythm Boys - It's Only A Paper Moon.mp3",
-      "artist": "Ella Fitzgerald/The Delta Rhythm Boys",
-      "title": "It's Only A Paper Moon",
-      "album": "The War Years (1941-1947)",
-      "year": null,
-      "duration_seconds": 160.176
-    },
-    {
-      "id": 42,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Mae Morse, Freddie Slack - Mr. Five By Five.mp3",
-      "artist": "Ella Mae Morse/Freddie Slack",
-      "title": "Mr. Five By Five",
-      "album": "Capitol Collectors Series",
-      "year": null,
-      "duration_seconds": 182.256
-    },
-    {
-      "id": 43,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Ella Mae Morse, Freddie Slack And His Orchestra - Pig Foot Pete.mp3",
-      "artist": "Ella Mae Morse/Freddie Slack And His Orchestra",
-      "title": "Pig Foot Pete",
-      "album": "Capitol Collectors Series",
-      "year": null,
-      "duration_seconds": 173.472
-    },
-    {
-      "id": 44,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Elton Britt - Uranium Fever.mp3",
-      "artist": "Elton Britt",
-      "title": "Uranium Fever",
-      "album": "Presenting Elton Britt",
-      "year": null,
-      "duration_seconds": 139.176
-    },
-    {
-      "id": 45,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Elvis Presley - Fever.mp3",
-      "artist": "Elvis Presley",
-      "title": "Fever",
-      "album": "Elvis Is Back",
-      "year": null,
-      "duration_seconds": 212.952
-    },
-    {
-      "id": 46,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Elvis Presley - Hound Dog.mp3",
-      "artist": "Elvis Presley",
-      "title": "Hound Dog",
-      "album": "Elvis' Golden Records",
-      "year": null,
-      "duration_seconds": 136.056
-    },
-    {
-      "id": 47,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Elvis Presley - Jailhouse Rock.mp3",
-      "artist": "Elvis Presley",
-      "title": "Jailhouse Rock",
-      "album": "Elvis' Golden Records",
-      "year": null,
-      "duration_seconds": 146.976
-    },
-    {
-      "id": 48,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Fats Domino - I Hear You Knocking - Remastered 2002.mp3",
-      "artist": "Fats Domino",
-      "title": "I Hear You Knocking - Remastered 2002",
-      "album": "The Big Beat Of Dave Bartholomew: 20 Milestone Dave Bartholomew Productions 1949-1960",
-      "year": null,
-      "duration_seconds": 112.632
-    },
-    {
-      "id": 49,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Fats Waller - Ain't Misbehavin'.mp3",
-      "artist": "Fats Waller",
-      "title": "Ain't Misbehavin'",
-      "album": "The Essential Fats Waller",
-      "year": null,
-      "duration_seconds": 237.336
-    },
-    {
-      "id": 50,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Four Vagabonds - Hit That Jive, Jack.mp3",
-      "artist": "Four Vagabonds",
-      "title": "Hit That Jive, Jack",
-      "album": "The Very Best Of",
-      "year": null,
-      "duration_seconds": 146.904
-    },
-    {
-      "id": 51,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Frank Sinatra - I've Got You Under My Skin - Remastered 1998.mp3",
-      "artist": "Frank Sinatra",
-      "title": "I've Got You Under My Skin - Remastered 1998",
-      "album": "Songs For Swingin' Lovers! (Remastered)",
-      "year": 1956,
-      "duration_seconds": 223.8
-    },
-    {
-      "id": 52,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Frank Sinatra - Luck Be A Lady - 2008 Remastered.mp3",
-      "artist": "Frank Sinatra",
-      "title": "Luck Be A Lady - 2008 Remastered",
-      "album": "Nothing But The Best (Remastered)",
-      "year": null,
-      "duration_seconds": 314.64
-    },
-    {
-      "id": 53,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Frank Sinatra - My Kind of Town.mp3",
-      "artist": "Frank Sinatra",
-      "title": "My Kind of Town",
-      "album": "Sinatra: Best Of The Best",
-      "year": null,
-      "duration_seconds": 188.112
-    },
-    {
-      "id": 54,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Frank Sinatra, Count Basie - Fly Me To The Moon.mp3",
-      "artist": "Frank Sinatra/Count Basie",
-      "title": "Fly Me To The Moon",
-      "album": "Ultimate Sinatra",
-      "year": null,
-      "duration_seconds": 147.552
-    },
-    {
-      "id": 55,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Frank Sinatra, Sammy Davis Jr. - Me And My Shadow.mp3",
-      "artist": "Frank Sinatra/Sammy Davis Jr.",
-      "title": "Me And My Shadow",
-      "album": "Reprise Rarities (Vol. 5)",
-      "year": null,
-      "duration_seconds": 186.936
-    },
-    {
-      "id": 56,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Frankie Valli & The Four Seasons - Earth Angel.mp3",
-      "artist": "Frankie Valli & The Four Seasons",
-      "title": "Earth Angel",
-      "album": "Dawn (Go Away) and 11 Other Hits",
-      "year": null,
-      "duration_seconds": 145.656
-    },
-    {
-      "id": 57,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Glenn Miller - American Patrol.mp3",
+      "file_path": "music_with_lyrics\\Chattanooga Choo Choo by Glenn Miller.mp3",
       "artist": "Glenn Miller",
-      "title": "American Patrol",
-      "album": "The Essential Glenn Miller",
-      "year": null,
-      "duration_seconds": 196.56
-    },
-    {
-      "id": 58,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Glenn Miller - Chattanooga Choo Choo.mp3",
-      "artist": "Glenn Miller",
-      "title": "Chattanooga Choo Choo",
+      "title": "Chattanooga Choo-Choo",
       "album": "Ultimate Big Band Collection: Glenn Miller",
       "year": null,
       "duration_seconds": 207.36
     },
     {
-      "id": 59,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Glenn Miller - Juke Box Saturday Night.mp3",
-      "artist": "Glenn Miller",
-      "title": "Juke Box Saturday Night",
-      "album": "The Complete Glenn Miller and His Orchestra",
+      "id": 26,
+      "file_path": "music_with_lyrics\\Cheek To Cheek by Billie Holiday.mp3",
+      "artist": "Billie Holiday",
+      "title": "Cheek To Cheek",
+      "album": "All Or Nothing At All",
       "year": null,
-      "duration_seconds": 184.392
+      "duration_seconds": 217.536
     },
     {
-      "id": 60,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Glenn Miller - Shhh, It's A Military Secret.mp3",
-      "artist": "Glenn Miller",
-      "title": "Shhh, It's A Military Secret",
-      "album": "The Complete Glenn Miller and His Orchestra",
+      "id": 27,
+      "file_path": "music_with_lyrics\\Choo Choo Ch’boogie by Louis Jordan.mp3",
+      "artist": "Louis Jordan",
+      "title": "Choo Choo Ch’boogie",
+      "album": "No Moe! Louis Jordan's Greatest Hits",
       "year": null,
-      "duration_seconds": 183.408
+      "duration_seconds": 138.6
     },
     {
-      "id": 61,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Hank Williams, Drifting Cowboys - Ramblin' Man.mp3",
-      "artist": "Hank Williams/Drifting Cowboys",
-      "title": "Ramblin' Man",
-      "album": "Ramblin’ Man (Undubbed Edition)",
-      "year": null,
-      "duration_seconds": 184.176
-    },
-    {
-      "id": 62,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Harry McClintock - The Big Rock Candy Mountain.mp3",
-      "artist": "Harry McClintock",
-      "title": "The Big Rock Candy Mountain",
-      "album": "Bona Fide Bluegrass and Mountain Music",
-      "year": null,
-      "duration_seconds": 135.192
-    },
-    {
-      "id": 63,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Hoosier Hot Shots - I Like Bananas (Because They Have No Bones).mp3",
-      "artist": "Hoosier Hot Shots",
-      "title": "I Like Bananas (Because They Have No Bones)",
-      "album": "\"Are You Ready, Hezzie?\"",
-      "year": 1993,
-      "duration_seconds": 135.672
-    },
-    {
-      "id": 64,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Jerry Lee Lewis - Great Balls of Fire.mp3",
-      "artist": "Jerry Lee Lewis",
-      "title": "Great Balls of Fire",
-      "album": "Jerry Lee's Greatest",
-      "year": null,
-      "duration_seconds": 113.784
-    },
-    {
-      "id": 65,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Cash - I Walk the Line.mp3",
-      "artist": "Johnny Cash",
-      "title": "I Walk the Line",
-      "album": "The Legend of Johnny Cash (5 Hits)",
-      "year": null,
-      "duration_seconds": 162.936
-    },
-    {
-      "id": 66,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Cash - Man in Black.mp3",
-      "artist": "Johnny Cash",
-      "title": "Man in Black",
-      "album": "The Essential Johnny Cash",
-      "year": null,
-      "duration_seconds": 172.464
-    },
-    {
-      "id": 67,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Cash - Ring of Fire.mp3",
-      "artist": "Johnny Cash",
-      "title": "Ring of Fire",
-      "album": "Ring Of Fire: The Best Of Johnny Cash",
-      "year": null,
-      "duration_seconds": 158.472
-    },
-    {
-      "id": 68,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Cash, Tennessee Three - One Piece at a Time.mp3",
-      "artist": "Johnny Cash/Tennessee Three",
-      "title": "One Piece at a Time",
-      "album": "One Piece At A Time",
-      "year": null,
-      "duration_seconds": 241.848
-    },
-    {
-      "id": 69,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Long - In A Shanty In Old Shanty Town.mp3",
-      "artist": "Johnny Long",
-      "title": "In A Shanty In Old Shanty Town",
-      "album": "Big Bands of the Swingin' Years",
-      "year": null,
-      "duration_seconds": 184.176
-    },
-    {
-      "id": 70,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Mercer - Personality.mp3",
-      "artist": "Johnny Mercer",
-      "title": "Personality",
-      "album": "Jazz for Swing Dancers",
-      "year": null,
-      "duration_seconds": 167.256
-    },
-    {
-      "id": 71,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Johnny Mercer, The Pied Pipers, Paul Weston And His Orchestra - Ac-Cent-Tchu-Ate The Positive.mp3",
-      "artist": "Johnny Mercer/The Pied Pipers/Paul Weston And His Orchestra",
-      "title": "Ac-Cent-Tchu-Ate The Positive",
-      "album": "Accentuate The Positive!",
-      "year": null,
-      "duration_seconds": 168.816
-    },
-    {
-      "id": 72,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Julia Lee And Her Boyfriends - King Size Papa.mp3",
-      "artist": "Julia Lee And Her Boyfriends",
-      "title": "King Size Papa",
-      "album": "Capitol Records From The Vaults: \"Capitol Jumps\"",
-      "year": null,
-      "duration_seconds": 160.32
-    },
-    {
-      "id": 73,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Julie London - Black Coffee - Remastered 1999.mp3",
-      "artist": "Julie London",
-      "title": "Black Coffee - Remastered 1999",
-      "album": "The Very Best Of Julie London",
-      "year": null,
-      "duration_seconds": 184.992
-    },
-    {
-      "id": 74,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Kay Kyser & His Orchestra - (I Got Spurs That) Jingle, Jangle, Jingle.mp3",
-      "artist": "Kay Kyser & His Orchestra",
-      "title": "(I Got Spurs That) Jingle, Jangle, Jingle",
-      "album": "Best Of The Big Bands",
-      "year": null,
-      "duration_seconds": 200.112
-    },
-    {
-      "id": 75,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Kay Kyser & His Orchestra - Praise The Lord And Pass The Ammunition.mp3",
-      "artist": "Kay Kyser & His Orchestra",
-      "title": "Praise The Lord And Pass The Ammunition",
-      "album": "Best Of The Big Bands",
-      "year": null,
-      "duration_seconds": 151.584
-    },
-    {
-      "id": 76,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Lead Belly - Where Did You Sleep Last Night.mp3",
-      "artist": "Lead Belly",
-      "title": "Where Did You Sleep Last Night",
-      "album": "Absolutely The Best",
-      "year": 2000,
-      "duration_seconds": 181.92
-    },
-    {
-      "id": 77,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Lefty Frizzell - Cigarettes and Coffee Blues.mp3",
+      "id": 28,
+      "file_path": "music_with_lyrics\\Cigarettes and Coffee Blues by Lefty Frizzell.mp3",
       "artist": "Lefty Frizzell",
       "title": "Cigarettes and Coffee Blues",
       "album": "Look What Thoughts Will Do",
@@ -694,53 +253,26 @@
       "duration_seconds": 153.936
     },
     {
-      "id": 78,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Lil Green - Why Don't You Do Right.mp3",
-      "artist": "Lil Green",
-      "title": "Why Don't You Do Right?",
-      "album": "Why Don't You Do Right?",
+      "id": 29,
+      "file_path": "music_with_lyrics\\Civilization Single Version by Danny Kaye The Andrews Sisters Vic Schoen and His Orchestra.mp3",
+      "artist": "Danny Kaye, The Andrews Sisters, Vic Schoen & His Orchestra",
+      "title": "Civilization (Bongo, Bongo, Bongo) - Single Version",
+      "album": "50th Anniversary Collection (Vol. 1)",
       "year": null,
-      "duration_seconds": 180.288
+      "duration_seconds": 182.064
     },
     {
-      "id": 79,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Louis Jordan & His Tympany Five - Salt Pork, West Virginia.mp3",
-      "artist": "Louis Jordan & His Tympany Five",
-      "title": "Salt Pork, West Virginia",
-      "album": "Let The Good Times Roll: The Anthology 1938 - 1953",
-      "year": null,
-      "duration_seconds": 180.432
+      "id": 30,
+      "file_path": "music_with_lyrics\\Come Fly With Me by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "Come Fly With Me",
+      "album": "Come Fly With Me (Expanded Edition)",
+      "year": 1958,
+      "duration_seconds": 199.128
     },
     {
-      "id": 80,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Louis Prima - Just A Gigolo - Remastered.mp3",
-      "artist": "Louis Prima",
-      "title": "Just A Gigolo - Remastered",
-      "album": "Capitol Collectors Series",
-      "year": null,
-      "duration_seconds": 283.224
-    },
-    {
-      "id": 81,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Marty Robbins - Big Iron.mp3",
-      "artist": "Marty Robbins",
-      "title": "Big Iron",
-      "album": "Gunfighter Ballads And Trail Songs",
-      "year": 1959,
-      "duration_seconds": 235.776
-    },
-    {
-      "id": 82,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Marty Robbins - Billy The Kid.mp3",
-      "artist": "Marty Robbins",
-      "title": "Billy The Kid",
-      "album": "Gunfighter Ballads And Trail Songs",
-      "year": 1959,
-      "duration_seconds": 139.104
-    },
-    {
-      "id": 83,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Marty Robbins - Cool Water.mp3",
+      "id": 31,
+      "file_path": "music_with_lyrics\\Cool Water by Marty Robbins.mp3",
       "artist": "Marty Robbins",
       "title": "Cool Water",
       "album": "Gunfighter Ballads And Trail Songs",
@@ -748,260 +280,305 @@
       "duration_seconds": 189.12
     },
     {
-      "id": 84,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Marty Robbins - El Paso.mp3",
-      "artist": "Marty Robbins",
-      "title": "El Paso",
-      "album": "Gunfighter Ballads And Trail Songs",
-      "year": 1959,
-      "duration_seconds": 259.344
+      "id": 32,
+      "file_path": "music_with_lyrics\\Crawl Out Through the Fallout by Sheldon Allman.mp3",
+      "artist": "Sheldon Allman",
+      "title": "Crawl Out Through the Fallout",
+      "album": "Folk Songs For The 21st Century",
+      "year": 1960,
+      "duration_seconds": 145.392
     },
     {
-      "id": 85,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Marty Robbins - They're Hanging Me Tonight.mp3",
-      "artist": "Marty Robbins",
-      "title": "They're Hanging Me Tonight",
-      "album": "Gunfighter Ballads And Trail Songs",
-      "year": 1959,
-      "duration_seconds": 184.752
-    },
-    {
-      "id": 86,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Milton Brown and His Musical Brownies - Keep A Knockin' But You Can't Come In.mp3",
-      "artist": "Milton Brown and His Musical Brownies",
-      "title": "Keep A Knockin' But You Can't Come In",
-      "album": "Kings Of Western Swing",
+      "id": 33,
+      "file_path": "music_with_lyrics\\Crazy He Calls Me by Billie Holiday.mp3",
+      "artist": "Billie Holiday",
+      "title": "Crazy He Calls Me",
+      "album": "Lover Man",
       "year": null,
-      "duration_seconds": 153.864
+      "duration_seconds": 185.304
     },
     {
-      "id": 87,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Nat King Cole - I Don't Want To See Tomorrow - As Heard on “Fallout” (Series).mp3",
-      "artist": "Nat King Cole",
-      "title": "I Don't Want To See Tomorrow - As Heard on “Fallout” (Series)",
-      "album": "I Don't Want To Be Hurt Anymore",
+      "id": 34,
+      "file_path": "music_with_lyrics\\Cuban Pete by Desi Arnaz.mp3",
+      "artist": "Desi Arnaz",
+      "title": "Cuban Pete",
+      "album": "The Best Of Desi Arnaz (Remastered 2011)",
       "year": null,
-      "duration_seconds": 156.936
+      "duration_seconds": 188.016
     },
     {
-      "id": 88,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Nat King Cole - L-O-V-E.mp3",
-      "artist": "Nat King Cole",
-      "title": "L-O-V-E",
-      "album": "L-O-V-E",
-      "year": null,
-      "duration_seconds": 155.352
-    },
-    {
-      "id": 89,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Nat King Cole - Orange Colored Sky - As Heard on “Fallout” (Series).mp3",
-      "artist": "Nat King Cole",
-      "title": "Orange Colored Sky - As Heard on “Fallout” (Series)",
-      "album": "The Nat King Cole Story",
-      "year": null,
-      "duration_seconds": 153.912
-    },
-    {
-      "id": 90,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Nat King Cole - Papa Loves Mambo - Remastered.mp3",
-      "artist": "Nat King Cole",
-      "title": "Papa Loves Mambo - Remastered",
-      "album": "The Extraordinary",
-      "year": null,
-      "duration_seconds": 159.096
-    },
-    {
-      "id": 91,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Patti Page - Tennessee Waltz.mp3",
-      "artist": "Patti Page",
-      "title": "Tennessee Waltz",
-      "album": "20th Century Masters: The Millennium Collection: Best Of Patti Page",
-      "year": null,
-      "duration_seconds": 181.608
-    },
-    {
-      "id": 92,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Pete Seeger - Talking Atom.mp3",
-      "artist": "Pete Seeger",
-      "title": "Talking Atom",
-      "album": "The Pete Seeger Story",
-      "year": null,
-      "duration_seconds": 171.24
-    },
-    {
-      "id": 93,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Rosemary Clooney - G.I. Jive.mp3",
-      "artist": "Rosemary Clooney",
-      "title": "G.I. Jive",
-      "album": "Sings The Lyrics Of Johnny Mercer",
-      "year": null,
-      "duration_seconds": 328.512
-    },
-    {
-      "id": 94,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Rosemary Clooney - It's a Most Unusual Day.mp3",
-      "artist": "Rosemary Clooney",
-      "title": "It's a Most Unusual Day",
-      "album": "I Feel a Song Coming On: Lost Radio Recordings",
-      "year": null,
-      "duration_seconds": 106.464
-    },
-    {
-      "id": 95,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Roy Brown - Butcher Pete (Part 1).mp3",
-      "artist": "Roy Brown",
-      "title": "Butcher Pete (Part 1)",
-      "album": "Risque Blues - My Ding-A-Ling",
-      "year": null,
-      "duration_seconds": 148.512
-    },
-    {
-      "id": 96,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Roy Brown - Butcher Pete (Pt. 2).mp3",
-      "artist": "Roy Brown",
-      "title": "Butcher Pete (Pt. 2)",
-      "album": "The Blues Got Me Again",
-      "year": null,
-      "duration_seconds": 163.176
-    },
-    {
-      "id": 97,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Roy Brown - Mighty Mighty Man.mp3",
-      "artist": "Roy Brown",
-      "title": "Mighty Mighty Man",
-      "album": "28 Big Ones",
-      "year": 2015,
-      "duration_seconds": 152.568
-    },
-    {
-      "id": 98,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Sammy Davis Jr.  Dean Martin - Sam's Song.mp3",
-      "artist": "Sammy Davis Jr. | Dean Martin",
-      "title": "Sam's Song",
-      "album": "The Sammy Davis Jr. Show with Special Guests Stars Frank Sinatra and Dean Martin",
-      "year": null,
-      "duration_seconds": 165.144
-    },
-    {
-      "id": 99,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Tennessee Ernie Ford - Shenandoah.mp3",
+      "id": 35,
+      "file_path": "music_with_lyrics\\Dark as a Dungeon by Tennessee Ernie Ford.mp3",
       "artist": "Tennessee Ernie Ford",
-      "title": "Shenandoah",
-      "album": "Shenandoah",
+      "title": "Dark as a Dungeon",
+      "album": "This Lusty Land!",
       "year": null,
-      "duration_seconds": 174.936
+      "duration_seconds": 171.504
     },
     {
-      "id": 100,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Tennessee Ernie Ford - Sixteen Tons.mp3",
-      "artist": "Tennessee Ernie Ford",
-      "title": "Sixteen Tons",
-      "album": "Vintage Collections",
-      "year": null,
-      "duration_seconds": 158.352
+      "id": 36,
+      "file_path": "music_with_lyrics\\Dear Hearts And Gentle People by Bob Crosby and The Bob Cats.mp3",
+      "artist": "Bob Crosby & The Bob Cats",
+      "title": "Dear Hearts And Gentle People",
+      "album": "Bob Crosby and the Bobcats: The Complete Standard Transcriptions",
+      "year": 2004,
+      "duration_seconds": 133.152
     },
     {
-      "id": 101,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Andrews Sisters - Boogie Woogie Bugle Boy.mp3",
+      "id": 37,
+      "file_path": "music_with_lyrics\\Dont Fence Me In Single Version by Bing Crosby The Andrews Sisters Vic Schoen and His Orchestra.mp3",
+      "artist": "Bing Crosby, The Andrews Sisters, Vic Schoen & His Orchestra",
+      "title": "Don't Fence Me In - Single Version",
+      "album": "Bing-His Legendary Years 1931-1957",
+      "year": null,
+      "duration_seconds": 185.64
+    },
+    {
+      "id": 38,
+      "file_path": "music_with_lyrics\\Don’t Get Around Much Anymore by Nat King Cole.mp3",
+      "artist": "Nat King Cole",
+      "title": "Don’t Get Around Much Anymore",
+      "album": "The Extraordinary (Deluxe Edition)",
+      "year": null,
+      "duration_seconds": 192.648
+    },
+    {
+      "id": 39,
+      "file_path": "music_with_lyrics\\Don’t Sit Under the Apple Tree by The Andrews Sisters.mp3",
       "artist": "The Andrews Sisters",
-      "title": "Boogie Woogie Bugle Boy",
-      "album": "The Andrews Sisters Greatest Hits",
-      "year": null,
-      "duration_seconds": 162.168
-    },
-    {
-      "id": 102,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Andrews Sisters - Don't Sit Under The Apple Tree.mp3",
-      "artist": "The Andrews Sisters",
-      "title": "Don't Sit Under The Apple Tree",
+      "title": "Don’t Sit Under the Apple Tree",
       "album": "The Andrew Sisters & Friends",
       "year": null,
       "duration_seconds": 178.776
     },
     {
-      "id": 103,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Andrews Sisters - Hold Tight, Hold Tight (Want Some Seafood Mama).mp3",
-      "artist": "The Andrews Sisters",
-      "title": "Hold Tight, Hold Tight (Want Some Seafood Mama)",
-      "album": "Their Greatest Hits And Finest Performances",
+      "id": 40,
+      "file_path": "music_with_lyrics\\Dream Lover by Bobby Darin.mp3",
+      "artist": "Bobby Darin",
+      "title": "Dream Lover",
+      "album": "The Ultimate Bobby Darin",
       "year": null,
-      "duration_seconds": 197.904
+      "duration_seconds": 150.744
     },
     {
-      "id": 104,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Andrews Sisters - I Didn't Know The Gun Was Loaded - Single Version.mp3",
+      "id": 41,
+      "file_path": "music_with_lyrics\\Easy Living by Billie Holiday.mp3",
+      "artist": "Billie Holiday",
+      "title": "Easy Living",
+      "album": "Billie Holiday Love Songs",
+      "year": null,
+      "duration_seconds": 181.368
+    },
+    {
+      "id": 42,
+      "file_path": "music_with_lyrics\\Everybody Loves Somebody Sometimes by Dean Martin.mp3",
+      "artist": "Dean Martin",
+      "title": "Everybody Loves Somebody Sometimes",
+      "album": "Everybody Loves Somebody",
+      "year": 1964,
+      "duration_seconds": 164.592
+    },
+    {
+      "id": 43,
+      "file_path": "music_with_lyrics\\Fever by Peggy Lee.mp3",
+      "artist": "Peggy Lee",
+      "title": "Fever",
+      "album": "All Aglow Again!",
+      "year": null,
+      "duration_seconds": 203.472
+    },
+    {
+      "id": 44,
+      "file_path": "music_with_lyrics\\Folsom Prison Blues by Johnny Cash.mp3",
+      "artist": "Johnny Cash",
+      "title": "Folsom Prison Blues",
+      "album": "I Walk the Line",
+      "year": null,
+      "duration_seconds": 155.664
+    },
+    {
+      "id": 45,
+      "file_path": "music_with_lyrics\\Frankie and Johnny by Jerry Lee Lewis.mp3",
+      "artist": "Jerry Lee Lewis",
+      "title": "Frankie and Johnny",
+      "album": "Jerry Lee's Greatest",
+      "year": null,
+      "duration_seconds": 153.744
+    },
+    {
+      "id": 46,
+      "file_path": "music_with_lyrics\\Give Me the Simple Life by June Christy.mp3",
+      "artist": "June Christy",
+      "title": "Give Me the Simple Life",
+      "album": "Gone For The Day",
+      "year": null,
+      "duration_seconds": 137.928
+    },
+    {
+      "id": 47,
+      "file_path": "music_with_lyrics\\Grandma Plays the Numbers by Wynonie Harris.mp3",
+      "artist": "Wynonie Harris",
+      "title": "Grandma Plays the Numbers",
+      "album": "More Greatest Hits - Good Rockin' Tonight",
+      "year": null,
+      "duration_seconds": 159.024
+    },
+    {
+      "id": 48,
+      "file_path": "music_with_lyrics\\Great Balls of Fire by Jerry Lee Lewis.mp3",
+      "artist": "Jerry Lee Lewis",
+      "title": "Great Balls of Fire",
+      "album": "Jerry Lee's Greatest",
+      "year": null,
+      "duration_seconds": 113.784
+    },
+    {
+      "id": 49,
+      "file_path": "music_with_lyrics\\Happy Times by Bob Crosby.mp3",
+      "artist": "Bob Crosby",
+      "title": "Happy Times",
+      "album": "Presenting The Bob Crosby Show",
+      "year": null,
+      "duration_seconds": 165.744
+    },
+    {
+      "id": 50,
+      "file_path": "music_with_lyrics\\Hello Dolly by Louis Armstrong.mp3",
+      "artist": "Louis Armstrong",
+      "title": "Hello Dolly",
+      "album": "What A Wonderful World",
+      "year": null,
+      "duration_seconds": 139.272
+    },
+    {
+      "id": 51,
+      "file_path": "music_with_lyrics\\He’s a Demon He’s a Devil He’s a Doll by Betty Hutton.mp3",
+      "artist": "Betty Hutton",
+      "title": "He’s a Demon, He’s a Devil, He’s a Doll",
+      "album": "Rumble Rumble Rumble",
+      "year": null,
+      "duration_seconds": 194.544
+    },
+    {
+      "id": 52,
+      "file_path": "music_with_lyrics\\Home on the Range by Roy Rogers.mp3",
+      "artist": "Roy Rogers",
+      "title": "Home on the Range",
+      "album": "Presenting Roy Rogers",
+      "year": null,
+      "duration_seconds": 155.76
+    },
+    {
+      "id": 53,
+      "file_path": "music_with_lyrics\\I Can’t Get Started by Ella Fitzgerald.mp3",
+      "artist": "Ella Fitzgerald",
+      "title": "I Can’t Get Started",
+      "album": "Ella Swings Gently With Nelson",
+      "year": null,
+      "duration_seconds": 214.896
+    },
+    {
+      "id": 54,
+      "file_path": "music_with_lyrics\\I Didn’t Know the Gun Was Loaded by The Andrews Sisters.mp3",
       "artist": "The Andrews Sisters",
-      "title": "I Didn't Know The Gun Was Loaded - Single Version",
+      "title": "I Didn’t Know the Gun Was Loaded",
       "album": "50th Anniversary Collection (Vol. 2)",
       "year": null,
       "duration_seconds": 169.2
     },
     {
-      "id": 105,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Andrews Sisters, Vic Schoen & His Orchestra - Straighten Up And Fly Right - Single Version.mp3",
-      "artist": "The Andrews Sisters/Vic Schoen & His Orchestra",
-      "title": "Straighten Up And Fly Right - Single Version",
-      "album": "50th Anniversary Collection (Vol. 2)",
+      "id": 55,
+      "file_path": "music_with_lyrics\\I Don’t Want to See Tomorrow by Nat King Cole.mp3",
+      "artist": "Nat King Cole",
+      "title": "I Don’t Want to See Tomorrow",
+      "album": "I Don't Want To Be Hurt Anymore",
       "year": null,
-      "duration_seconds": 161.256
+      "duration_seconds": 156.936
     },
     {
-      "id": 106,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Castells - Some Enchanted Evening.mp3",
-      "artist": "The Castells",
-      "title": "Some Enchanted Evening",
-      "album": "So This Is Love",
-      "year": 1962,
-      "duration_seconds": 152.4
-    },
-    {
-      "id": 107,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Chords - Sh-Boom.mp3",
-      "artist": "The Chords",
-      "title": "Sh-Boom",
-      "album": "Doo Wop Classics, Vol. 6",
-      "year": null,
-      "duration_seconds": 145.8
-    },
-    {
-      "id": 108,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Clovers - Love Potion No. 9 - Remastered  Single Version.mp3",
-      "artist": "The Clovers",
-      "title": "Love Potion No. 9 - Remastered / Single Version",
-      "album": "The Best Of The Clovers (Love Potion No. 9)",
-      "year": null,
-      "duration_seconds": 112.704
-    },
-    {
-      "id": 109,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Five Stars - Atom Bomb Baby.mp3",
-      "artist": "The Five Stars",
-      "title": "Atom Bomb Baby",
-      "album": "Presenting The Five Stars",
-      "year": null,
-      "duration_seconds": 136.776
-    },
-    {
-      "id": 110,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Honey Bees - In The Jailhouse Now.mp3",
-      "artist": "The Honey Bees",
-      "title": "In The Jailhouse Now",
-      "album": "Rockabilly Rhythms",
-      "year": null,
-      "duration_seconds": 109.872
-    },
-    {
-      "id": 111,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - I Don't Want To Set The World On Fire - Single Version.mp3",
+      "id": 56,
+      "file_path": "music_with_lyrics\\I Don’t Want to Set the World on Fire by The Ink Spots.mp3",
       "artist": "The Ink Spots",
-      "title": "I Don't Want To Set The World On Fire - Single Version",
+      "title": "I Don’t Want to Set the World on Fire",
       "album": "20th Century Masters: The Millennium Collection: Best Of The Ink Spots",
       "year": null,
       "duration_seconds": 184.32
     },
     {
-      "id": 112,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - I'm Beginning To See The Light.mp3",
+      "id": 57,
+      "file_path": "music_with_lyrics\\I Got it Bad and That Aint Good by Lena Horne.mp3",
+      "artist": "Lena Horne",
+      "title": "I Got It Bad and That Ain’t Good",
+      "album": "Midnite Jazz & Blues: The Lady Is a Tramp",
+      "year": 2000,
+      "duration_seconds": 224.688
+    },
+    {
+      "id": 58,
+      "file_path": "music_with_lyrics\\I Hear You Knocking by Fats Domino.mp3",
+      "artist": "Fats Domino",
+      "title": "I Hear You Knocking",
+      "album": "The Big Beat Of Dave Bartholomew: 20 Milestone Dave Bartholomew Productions 1949-1960",
+      "year": null,
+      "duration_seconds": 112.632
+    },
+    {
+      "id": 59,
+      "file_path": "music_with_lyrics\\I Like Bananas by Hoosier Hot Shots.mp3",
+      "artist": "Hoosier Hot Shots",
+      "title": "I Like Bananas Because They Have No Bones",
+      "album": "Everybody Stomp",
+      "year": null,
+      "duration_seconds": 135.672
+    },
+    {
+      "id": 60,
+      "file_path": "music_with_lyrics\\I Still Feel the Same About You by Ella Fitzgerald and Ink Spots.mp3",
+      "artist": "Ella Fitzgerald & Ink Spots",
+      "title": "I Still Feel the Same About You",
+      "album": "Ella: The Legendary Decca Recordings",
+      "year": null,
+      "duration_seconds": 196.272
+    },
+    {
+      "id": 61,
+      "file_path": "music_with_lyrics\\I Walk the Line by Johnny Cash.mp3",
+      "artist": "Johnny Cash",
+      "title": "I Walk the Line",
+      "album": "The Legend of Johnny Cash (5 Hits)",
+      "year": null,
+      "duration_seconds": 162.936
+    },
+    {
+      "id": 62,
+      "file_path": "music_with_lyrics\\If I Didn’t Care by The Ink Spots.mp3",
+      "artist": "The Ink Spots",
+      "title": "If I Didn’t Care",
+      "album": "The Anthology",
+      "year": null,
+      "duration_seconds": 182.016
+    },
+    {
+      "id": 63,
+      "file_path": "music_with_lyrics\\If I Had You by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "If I Had You",
+      "album": "A Swingin' Affair! (Remastered / Expanded Edition)",
+      "year": 1957,
+      "duration_seconds": 156.792
+    },
+    {
+      "id": 64,
+      "file_path": "music_with_lyrics\\Ill Never Smile Again by The Platters.mp3",
+      "artist": "The Platters",
+      "title": "I'll Never Smile Again",
+      "album": "Remember When?",
+      "year": null,
+      "duration_seconds": 171.912
+    },
+    {
+      "id": 65,
+      "file_path": "music_with_lyrics\\Im Beginning To See The Light by The Ink Spots.mp3",
       "artist": "The Ink Spots",
       "title": "I'm Beginning To See The Light",
       "album": "The Anthology",
@@ -1009,26 +586,98 @@
       "duration_seconds": 165.312
     },
     {
-      "id": 113,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - If I Didn't Care.mp3",
-      "artist": "The Ink Spots",
-      "title": "If I Didn't Care",
-      "album": "The Anthology",
+      "id": 66,
+      "file_path": "music_with_lyrics\\Into Each Life Some Rain Must Fall by The Ink Spots Ella Fitzgerald.mp3",
+      "artist": "The Ink Spots, Ella Fitzgerald",
+      "title": "Into Each Life Some Rain Must Fall",
+      "album": "Ella & Friends",
       "year": null,
-      "duration_seconds": 182.016
+      "duration_seconds": 189.48
     },
     {
-      "id": 114,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - It's A Sin To Tell A Lie.mp3",
+      "id": 67,
+      "file_path": "music_with_lyrics\\Its a Most Unusual Day by Rosemary Clooney.mp3",
+      "artist": "Rosemary Clooney",
+      "title": "It’s a Most Unusual Day",
+      "album": "Something to Remember Me By",
+      "year": 1997,
+      "duration_seconds": 106.464
+    },
+    {
+      "id": 68,
+      "file_path": "music_with_lyrics\\Its a Sin by Eddy Arnold.mp3",
+      "artist": "Eddy Arnold",
+      "title": "It's a Sin",
+      "album": "The Essential Eddy Arnold",
+      "year": null,
+      "duration_seconds": 146.136
+    },
+    {
+      "id": 69,
+      "file_path": "music_with_lyrics\\Its a Sin to Tell a Lie by The Ink Spots.mp3",
       "artist": "The Ink Spots",
-      "title": "It's A Sin To Tell A Lie",
+      "title": "It's a Sin to Tell a Lie",
       "album": "If I Didn't Care: An Anthology",
       "year": null,
       "duration_seconds": 142.776
     },
     {
-      "id": 115,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - Java Jive.mp3",
+      "id": 70,
+      "file_path": "music_with_lyrics\\Its Bad for Me by Rosemary Clooney Benny Goodman Sextet.mp3",
+      "artist": "Rosemary Clooney, Benny Goodman Sextet",
+      "title": "It's Bad for Me",
+      "album": "Jazz Singer",
+      "year": 1952,
+      "duration_seconds": 175.152
+    },
+    {
+      "id": 71,
+      "file_path": "music_with_lyrics\\It’s a Man by Betty Hutton.mp3",
+      "artist": "Betty Hutton",
+      "title": "It’s a Man",
+      "album": "Rumble Rumble Rumble",
+      "year": null,
+      "duration_seconds": 144.432
+    },
+    {
+      "id": 72,
+      "file_path": "music_with_lyrics\\It’s Only a Paper Moon by Ella Fitzgerald and The Delta Rhythm Boys.mp3",
+      "artist": "Ella Fitzgerald & The Delta Rhythm Boys",
+      "title": "It’s Only a Paper Moon",
+      "album": "The War Years (1941-1947)",
+      "year": null,
+      "duration_seconds": 160.176
+    },
+    {
+      "id": 73,
+      "file_path": "music_with_lyrics\\I’m Gonna Dig Myself a Hole by Arthur “Big Boy” Crudup.mp3",
+      "artist": "Arthur “Big Boy” Crudup",
+      "title": "I’m Gonna Dig Myself a Hole",
+      "album": "I´m Gonna Dig Myself a Hole",
+      "year": null,
+      "duration_seconds": 193.536
+    },
+    {
+      "id": 74,
+      "file_path": "music_with_lyrics\\I’ve Got You Under My Skin by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "I’ve Got You Under My Skin",
+      "album": "Songs For Swingin' Lovers! (Remastered)",
+      "year": 1956,
+      "duration_seconds": 223.8
+    },
+    {
+      "id": 75,
+      "file_path": "music_with_lyrics\\Jailhouse Rock by Elvis Presley.mp3",
+      "artist": "Elvis Presley",
+      "title": "Jailhouse Rock",
+      "album": "Elvis' Golden Records",
+      "year": null,
+      "duration_seconds": 146.976
+    },
+    {
+      "id": 76,
+      "file_path": "music_with_lyrics\\Java Jive by The Ink Spots.mp3",
       "artist": "The Ink Spots",
       "title": "Java Jive",
       "album": "The Anthology",
@@ -1036,8 +685,125 @@
       "duration_seconds": 181.128
     },
     {
-      "id": 116,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - Maybe.mp3",
+      "id": 77,
+      "file_path": "music_with_lyrics\\Jingle Jangle Jingle by Kay Kyser and His Orchestra.mp3",
+      "artist": "Kay Kyser & His Orchestra",
+      "title": "(I Got Spurs That) Jingle, Jangle, Jingle",
+      "album": "Best Of The Big Bands",
+      "year": null,
+      "duration_seconds": 200.112
+    },
+    {
+      "id": 78,
+      "file_path": "music_with_lyrics\\Johnny B. Goode by Chuck Berry.mp3",
+      "artist": "Chuck Berry",
+      "title": "Johnny B. Goode",
+      "album": "Berry Is On Top",
+      "year": null,
+      "duration_seconds": 161.592
+    },
+    {
+      "id": 79,
+      "file_path": "music_with_lyrics\\Just a Gigolo I Aint Got Nobody by Louis Prima.mp3",
+      "artist": "Louis Prima",
+      "title": "Just a Gigolo / I Ain't Got Nobody",
+      "album": "Capitol Collectors Series",
+      "year": null,
+      "duration_seconds": 283.224
+    },
+    {
+      "id": 80,
+      "file_path": "music_with_lyrics\\Keep a Knockin by Milton Brown and His Musical Brownies.mp3",
+      "artist": "Milton Brown and His Musical Brownies",
+      "title": "Keep a Knockin'",
+      "album": "Kings Of Western Swing",
+      "year": null,
+      "duration_seconds": 153.864
+    },
+    {
+      "id": 81,
+      "file_path": "music_with_lyrics\\Keep That Coffee Hot by Scatman Crothers.mp3",
+      "artist": "Scatman Crothers",
+      "title": "Keep That Coffee Hot",
+      "album": "Rock 'n Roll with Scatman Crothers",
+      "year": null,
+      "duration_seconds": 169.656
+    },
+    {
+      "id": 82,
+      "file_path": "music_with_lyrics\\King of the Road by Roger Miller.mp3",
+      "artist": "Roger Miller",
+      "title": "King of the Road",
+      "album": "The Best Of Roger Miller Volume Two: King Of The Road",
+      "year": null,
+      "duration_seconds": 148.536
+    },
+    {
+      "id": 83,
+      "file_path": "music_with_lyrics\\L O V E by Nat King Cole.mp3",
+      "artist": "Nat King Cole",
+      "title": "L-O-V-E",
+      "album": "L-O-V-E",
+      "year": null,
+      "duration_seconds": 155.352
+    },
+    {
+      "id": 84,
+      "file_path": "music_with_lyrics\\La Vie En Rose by Tony Martin.mp3",
+      "artist": "Tony Martin",
+      "title": "La Vie En Rose",
+      "album": "Greatest Hits",
+      "year": null,
+      "duration_seconds": 196.584
+    },
+    {
+      "id": 85,
+      "file_path": "music_with_lyrics\\Lets Call The Whole Thing Off by Ella Fitzgerald Louis Armstrong.mp3",
+      "artist": "Ella Fitzgerald, Louis Armstrong",
+      "title": "Let's Call The Whole Thing Off",
+      "album": "Louis Armstrong: Verve Ultimate Cool",
+      "year": null,
+      "duration_seconds": 251.64
+    },
+    {
+      "id": 86,
+      "file_path": "music_with_lyrics\\Let’s Go Sunning by Jack Shaindlin.mp3",
+      "artist": "Jack Shaindlin",
+      "title": "Let’s Go Sunning",
+      "album": "Dance Orchestra",
+      "year": null,
+      "duration_seconds": 104.112
+    },
+    {
+      "id": 87,
+      "file_path": "music_with_lyrics\\Mack the Knife by Bobby Darin.mp3",
+      "artist": "Bobby Darin",
+      "title": "Mack the Knife",
+      "album": "The Ultimate Bobby Darin",
+      "year": null,
+      "duration_seconds": 184.368
+    },
+    {
+      "id": 88,
+      "file_path": "music_with_lyrics\\Mairzy Doats by The Pied Pipers.mp3",
+      "artist": "The Pied Pipers",
+      "title": "Mairzy Doats",
+      "album": "Capitol Collectors Series",
+      "year": null,
+      "duration_seconds": 166.824
+    },
+    {
+      "id": 89,
+      "file_path": "music_with_lyrics\\Man in Black by Johnny Cash.mp3",
+      "artist": "Johnny Cash",
+      "title": "Man in Black",
+      "album": "The Essential Johnny Cash",
+      "year": null,
+      "duration_seconds": 172.464
+    },
+    {
+      "id": 90,
+      "file_path": "music_with_lyrics\\Maybe by The Ink Spots.mp3",
       "artist": "The Ink Spots",
       "title": "Maybe",
       "album": "Ink Spots Favorites",
@@ -1045,98 +811,44 @@
       "duration_seconds": 182.76
     },
     {
-      "id": 117,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - Melody Of Love.mp3",
-      "artist": "The Ink Spots",
-      "title": "Melody Of Love",
-      "album": "R & B Legends",
+      "id": 91,
+      "file_path": "music_with_lyrics\\Me and My Shadow by Frank Sinatra and Sammy Davis Jr..mp3",
+      "artist": "Frank Sinatra & Sammy Davis Jr.",
+      "title": "Me and My Shadow",
+      "album": "Reprise Rarities (Vol. 5)",
       "year": null,
-      "duration_seconds": 174.024
+      "duration_seconds": 186.936
     },
     {
-      "id": 118,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - My Prayer.mp3",
-      "artist": "The Ink Spots",
-      "title": "My Prayer",
-      "album": "The Anthology",
+      "id": 92,
+      "file_path": "music_with_lyrics\\Mighty Mighty Man by Roy Brown.mp3",
+      "artist": "Roy Brown",
+      "title": "Mighty Mighty Man",
+      "album": "28 Big Ones",
+      "year": 2015,
+      "duration_seconds": 152.568
+    },
+    {
+      "id": 93,
+      "file_path": "music_with_lyrics\\Mr. Five By Five by Ella Mae Morse Freddie Slack.mp3",
+      "artist": "Ella Mae Morse, Freddie Slack",
+      "title": "Mr. Five By Five",
+      "album": "Capitol Collectors Series",
       "year": null,
-      "duration_seconds": 193.368
+      "duration_seconds": 182.256
     },
     {
-      "id": 119,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - Street Of Dreams.mp3",
-      "artist": "The Ink Spots",
-      "title": "Street Of Dreams",
-      "album": "The Anthology",
-      "year": null,
-      "duration_seconds": 176.232
+      "id": 94,
+      "file_path": "music_with_lyrics\\Mr. Sandman by The Chordettes.mp3",
+      "artist": "The Chordettes",
+      "title": "Mr. Sandman",
+      "album": "\"They're Riding High\" Says Archie",
+      "year": 1957,
+      "duration_seconds": 143.16
     },
     {
-      "id": 120,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - That's When Your Heartaches Begin.mp3",
-      "artist": "The Ink Spots",
-      "title": "That's When Your Heartaches Begin",
-      "album": "The Anthology",
-      "year": null,
-      "duration_seconds": 199.872
-    },
-    {
-      "id": 121,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - To Each His Own.mp3",
-      "artist": "The Ink Spots",
-      "title": "To Each His Own",
-      "album": "The Anthology",
-      "year": null,
-      "duration_seconds": 190.032
-    },
-    {
-      "id": 122,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - We Three.mp3",
-      "artist": "The Ink Spots",
-      "title": "We Three",
-      "album": "The Ink Spots Retrospective",
-      "year": 2009,
-      "duration_seconds": 199.368
-    },
-    {
-      "id": 123,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - We'll Meet Again.mp3",
-      "artist": "The Ink Spots",
-      "title": "We'll Meet Again",
-      "album": "The Anthology",
-      "year": null,
-      "duration_seconds": 193.56
-    },
-    {
-      "id": 124,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots - You're Breaking My Heart.mp3",
-      "artist": "The Ink Spots",
-      "title": "You're Breaking My Heart",
-      "album": "The Anthology",
-      "year": null,
-      "duration_seconds": 201.072
-    },
-    {
-      "id": 125,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots, Ella Fitzgerald - I'm Making Believe.mp3",
-      "artist": "The Ink Spots/Ella Fitzgerald",
-      "title": "I'm Making Believe",
-      "album": "Ella & Friends",
-      "year": null,
-      "duration_seconds": 192.384
-    },
-    {
-      "id": 126,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The Ink Spots, Ella Fitzgerald - Into Each Life Some Rain Must Fall.mp3",
-      "artist": "The Ink Spots/Ella Fitzgerald",
-      "title": "Into Each Life Some Rain Must Fall",
-      "album": "Ella & Friends",
-      "year": null,
-      "duration_seconds": 189.48
-    },
-    {
-      "id": 127,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\The McGuire Sisters - Muskrat Ramble.mp3",
+      "id": 95,
+      "file_path": "music_with_lyrics\\Muskrat Ramble by The McGuire Sisters.mp3",
       "artist": "The McGuire Sisters",
       "title": "Muskrat Ramble",
       "album": "The Anthology",
@@ -1144,17 +856,251 @@
       "duration_seconds": 136.056
     },
     {
-      "id": 128,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Todd Rhodes, Connie Allen - Rocket 69.mp3",
-      "artist": "Todd Rhodes/Connie Allen",
-      "title": "Rocket 69",
-      "album": "Risque Blues - Keep On Churnin'",
+      "id": 96,
+      "file_path": "music_with_lyrics\\My Kind of Town by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "My Kind of Town",
+      "album": "Sinatra: Best Of The Best",
       "year": null,
-      "duration_seconds": 164.232
+      "duration_seconds": 188.112
     },
     {
-      "id": 129,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Tom Lehrer - We Will All Go Together When We Go.mp3",
+      "id": 97,
+      "file_path": "music_with_lyrics\\My Prayer by The Ink Spots.mp3",
+      "artist": "The Ink Spots",
+      "title": "My Prayer",
+      "album": "The Anthology",
+      "year": null,
+      "duration_seconds": 193.368
+    },
+    {
+      "id": 98,
+      "file_path": "music_with_lyrics\\My Way by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "My Way",
+      "album": "My Way (Expanded Edition)",
+      "year": 1969,
+      "duration_seconds": 276.84
+    },
+    {
+      "id": 99,
+      "file_path": "music_with_lyrics\\Ol Man Mose by Eddy Duchin.mp3",
+      "artist": "Eddy Duchin",
+      "title": "Ol' Man Mose",
+      "album": "From The Sony Vault: Silly Scary Songs",
+      "year": null,
+      "duration_seconds": 146.904
+    },
+    {
+      "id": 100,
+      "file_path": "music_with_lyrics\\Orange Coloured Sky by Nat King Cole.mp3",
+      "artist": "Nat King Cole",
+      "title": "Orange Coloured Sky",
+      "album": "The Nat King Cole Story",
+      "year": null,
+      "duration_seconds": 153.912
+    },
+    {
+      "id": 101,
+      "file_path": "music_with_lyrics\\Over the Rainbow by Glenn Miller.mp3",
+      "artist": "Glenn Miller",
+      "title": "Over the Rainbow",
+      "album": "The Complete Glenn Miller and His Orchestra",
+      "year": null,
+      "duration_seconds": 145.8
+    },
+    {
+      "id": 102,
+      "file_path": "music_with_lyrics\\Papa Loves Mambo Remastered by Nat King Cole.mp3",
+      "artist": "Nat King Cole",
+      "title": "Papa Loves Mambo - Remastered",
+      "album": "The Extraordinary",
+      "year": null,
+      "duration_seconds": 159.096
+    },
+    {
+      "id": 103,
+      "file_path": "music_with_lyrics\\Paper Doll by The Mills Brothers.mp3",
+      "artist": "The Mills Brothers",
+      "title": "Paper Doll",
+      "album": "Paper Doll",
+      "year": null,
+      "duration_seconds": 157.176
+    },
+    {
+      "id": 104,
+      "file_path": "music_with_lyrics\\Personality by Johnny Mercer.mp3",
+      "artist": "Johnny Mercer",
+      "title": "Personality",
+      "album": "Jazz for Swing Dancers",
+      "year": null,
+      "duration_seconds": 167.256
+    },
+    {
+      "id": 105,
+      "file_path": "music_with_lyrics\\Radioactive Mama by Sheldon Allman.mp3",
+      "artist": "Sheldon Allman",
+      "title": "Radioactive Mama",
+      "album": "Folk Songs for the 21st Century",
+      "year": null,
+      "duration_seconds": 108.384
+    },
+    {
+      "id": 106,
+      "file_path": "music_with_lyrics\\Ramblin Man by Hank Williams Drifting Cowboys.mp3",
+      "artist": "Hank Williams, Drifting Cowboys",
+      "title": "Ramblin' Man",
+      "album": "Ramblin’ Man (Undubbed Edition)",
+      "year": null,
+      "duration_seconds": 184.176
+    },
+    {
+      "id": 107,
+      "file_path": "music_with_lyrics\\Ring of Fire by Johnny Cash.mp3",
+      "artist": "Johnny Cash",
+      "title": "Ring of Fire",
+      "album": "Ring Of Fire: The Best Of Johnny Cash",
+      "year": null,
+      "duration_seconds": 158.472
+    },
+    {
+      "id": 108,
+      "file_path": "music_with_lyrics\\Sixteen Tons by Tennessee Ernie Ford.mp3",
+      "artist": "Tennessee Ernie Ford",
+      "title": "Sixteen Tons",
+      "album": "Vintage Collections",
+      "year": null,
+      "duration_seconds": 158.352
+    },
+    {
+      "id": 109,
+      "file_path": "music_with_lyrics\\Sixty Minute Man by Billy Ward and The Dominoes.mp3",
+      "artist": "Billy Ward & The Dominoes",
+      "title": "Sixty Minute Man",
+      "album": "Sixty Minute Man",
+      "year": null,
+      "duration_seconds": 145.08
+    },
+    {
+      "id": 110,
+      "file_path": "music_with_lyrics\\Splish Splash by Bobby Darin.mp3",
+      "artist": "Bobby Darin",
+      "title": "Splish Splash",
+      "album": "Bobby Darin",
+      "year": 1958,
+      "duration_seconds": 131.76
+    },
+    {
+      "id": 111,
+      "file_path": "music_with_lyrics\\Sway by Rosemary Clooney.mp3",
+      "artist": "Rosemary Clooney",
+      "title": "Sway",
+      "album": "Entertaining Made Simple: Mojitos, Mariscos, and Mambo",
+      "year": null,
+      "duration_seconds": 158.712
+    },
+    {
+      "id": 112,
+      "file_path": "music_with_lyrics\\The Big Rock Candy Mountain by Harry McClintock.mp3",
+      "artist": "Harry McClintock",
+      "title": "The Big Rock Candy Mountain",
+      "album": "Bona Fide Bluegrass and Mountain Music",
+      "year": null,
+      "duration_seconds": 135.192
+    },
+    {
+      "id": 113,
+      "file_path": "music_with_lyrics\\The Glow Worm by The Mills Brothers.mp3",
+      "artist": "The Mills Brothers",
+      "title": "The Glow Worm",
+      "album": "Paper Doll",
+      "year": null,
+      "duration_seconds": 160.968
+    },
+    {
+      "id": 114,
+      "file_path": "music_with_lyrics\\The Wanderer by Dion.mp3",
+      "artist": "Dion",
+      "title": "The Wanderer",
+      "album": "The Best Of Dion & The Belmonts",
+      "year": null,
+      "duration_seconds": 167.184
+    },
+    {
+      "id": 115,
+      "file_path": "music_with_lyrics\\They’re Hanging Me Tonight by Marty Robbins.mp3",
+      "artist": "Marty Robbins",
+      "title": "They’re Hanging Me Tonight",
+      "album": "Gunfighter Ballads And Trail Songs",
+      "year": 1959,
+      "duration_seconds": 184.752
+    },
+    {
+      "id": 116,
+      "file_path": "music_with_lyrics\\This Cold War with You 1958 Version by Floyd Tillman.mp3",
+      "artist": "Floyd Tillman",
+      "title": "This Cold War With You",
+      "album": "The History of Country & Western Music",
+      "year": null,
+      "duration_seconds": 132.672
+    },
+    {
+      "id": 117,
+      "file_path": "music_with_lyrics\\Three Cigarettes in an Ash Tray by Patsy Cline.mp3",
+      "artist": "Patsy Cline",
+      "title": "Three Cigarettes in an Ash Tray",
+      "album": "Patsy Cline",
+      "year": null,
+      "duration_seconds": 136.536
+    },
+    {
+      "id": 118,
+      "file_path": "music_with_lyrics\\Uranium Fever by Elton Britt.mp3",
+      "artist": "Elton Britt",
+      "title": "Uranium Fever",
+      "album": "Presenting Elton Britt",
+      "year": null,
+      "duration_seconds": 139.176
+    },
+    {
+      "id": 119,
+      "file_path": "music_with_lyrics\\Uranium Rock by Warren Smith.mp3",
+      "artist": "Warren Smith",
+      "title": "Uranium Rock",
+      "album": "The Sun Records Sound of Warren Smith (20 Rockabilly Favorites)",
+      "year": null,
+      "duration_seconds": 128.04
+    },
+    {
+      "id": 120,
+      "file_path": "music_with_lyrics\\Walking the Floor Over You by Ernest Tubb.mp3",
+      "artist": "Ernest Tubb",
+      "title": "Walking the Floor Over You",
+      "album": "Retrospective, Vol. 1",
+      "year": null,
+      "duration_seconds": 159.312
+    },
+    {
+      "id": 121,
+      "file_path": "music_with_lyrics\\Was That the Human Thing to Do by The Boswell Sisters.mp3",
+      "artist": "The Boswell Sisters",
+      "title": "Was That the Human Thing to Do",
+      "album": "Anthology (1925-1936)",
+      "year": null,
+      "duration_seconds": 184.104
+    },
+    {
+      "id": 122,
+      "file_path": "music_with_lyrics\\Way Back Home by Bob Crosby and the Bob Cats.mp3",
+      "artist": "Bob Crosby and the Bob Cats",
+      "title": "Way Back Home",
+      "album": "Bob Crosby and the Bobcats: The Complete Standard Transcriptions",
+      "year": 2004,
+      "duration_seconds": 174.864
+    },
+    {
+      "id": 123,
+      "file_path": "music_with_lyrics\\We Will All Go Together When We Go by Tom Lehrer.mp3",
       "artist": "Tom Lehrer",
       "title": "We Will All Go Together When We Go",
       "album": "The Best & Worst of Tom Lehrer",
@@ -1162,13 +1108,85 @@
       "duration_seconds": 204.912
     },
     {
-      "id": 130,
-      "file_path": "C:\\Users\\doghe\\AI_Radio_Take_3\\music\\Warren Smith - Uranium Rock.mp3",
-      "artist": "Warren Smith",
-      "title": "Uranium Rock",
-      "album": "The Sun Records Sound of Warren Smith (20 Rockabilly Favorites)",
+      "id": 124,
+      "file_path": "music_with_lyrics\\Well Be Together Again by Billie Holiday.mp3",
+      "artist": "Billie Holiday",
+      "title": "We'll Be Together Again",
+      "album": "All Or Nothing At All",
       "year": null,
-      "duration_seconds": 128.04
+      "duration_seconds": 267.36
+    },
+    {
+      "id": 125,
+      "file_path": "music_with_lyrics\\Well Meet Again by The Ink Spots.mp3",
+      "artist": "The Ink Spots",
+      "title": "We'll Meet Again",
+      "album": "You're Looking for a Romance / We'll Meet Again",
+      "year": 1941,
+      "duration_seconds": 193.56
+    },
+    {
+      "id": 126,
+      "file_path": "music_with_lyrics\\Whatever Will Be Will Be by Doris Day Frank DeVol and His Orchestra.mp3",
+      "artist": "Doris Day, Frank DeVol & His Orchestra",
+      "title": "Whatever Will Be, Will Be (Que Sera, Sera) (with Frank DeVol & His Orchestra)",
+      "album": "With A Smile And A Song",
+      "year": null,
+      "duration_seconds": 123.384
+    },
+    {
+      "id": 127,
+      "file_path": "music_with_lyrics\\Where Did You Sleep Last Night by Lead Belly.mp3",
+      "artist": "Lead Belly",
+      "title": "Where Did You Sleep Last Night",
+      "album": "Absolutely The Best",
+      "year": 2000,
+      "duration_seconds": 181.92
+    },
+    {
+      "id": 128,
+      "file_path": "music_with_lyrics\\Yesterday by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "Yesterday",
+      "album": "My Way (Expanded Edition)",
+      "year": 1969,
+      "duration_seconds": 239.424
+    },
+    {
+      "id": 129,
+      "file_path": "music_with_lyrics\\You Always Hurt the One You Love by The Mills Brothers.mp3",
+      "artist": "The Mills Brothers",
+      "title": "You Always Hurt the One You Love",
+      "album": "The Anthology: 1931 - 1968",
+      "year": null,
+      "duration_seconds": 203.928
+    },
+    {
+      "id": 130,
+      "file_path": "music_with_lyrics\\You Don’t Own Me by Dusty Springfield.mp3",
+      "artist": "Dusty Springfield",
+      "title": "You Don’t Own Me",
+      "album": "Stay Awhile / I Only Want To Be With You (Expanded Edition)",
+      "year": null,
+      "duration_seconds": 147.024
+    },
+    {
+      "id": 131,
+      "file_path": "music_with_lyrics\\You’ll Know When It Happens by Frank Sinatra.mp3",
+      "artist": "Frank Sinatra",
+      "title": "You’ll Know When It Happens",
+      "album": "The Columbia Years (1943-1952): The Complete Recordings: Volume 4",
+      "year": null,
+      "duration_seconds": 172.8
+    },
+    {
+      "id": 132,
+      "file_path": "music_with_lyrics\\You’ll Never Never Know by The Platters.mp3",
+      "artist": "The Platters",
+      "title": "You’ll Never, Never Know",
+      "album": "The Platters Golden Hits",
+      "year": null,
+      "duration_seconds": 161.544
     }
   ]
 }

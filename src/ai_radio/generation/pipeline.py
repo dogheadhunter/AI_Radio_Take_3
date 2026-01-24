@@ -55,7 +55,7 @@ class GenerationPipeline:
         folder_path.mkdir(parents=True, exist_ok=True)
         return folder_path
 
-    def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str, text_only: bool = False, audio_only: bool = False) -> GenerationResult:
+    def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None) -> GenerationResult:
         try:
             # Create song folder
             song_folder = self._make_song_folder(song_id, artist, title, dj)
@@ -69,12 +69,14 @@ class GenerationPipeline:
                 self._llm_loaded = True
                 # Use v2 prompts if configured
                 if getattr(self, 'prompt_version', 'v1') == 'v2':
-                    from src.ai_radio.generation.prompts_v2 import build_song_intro_prompt_v2
-                    p = build_song_intro_prompt_v2(DJ(dj), artist=artist, title=title)
+                    from src.ai_radio.generation.prompts_v2 import build_song_intro_prompt_v2, FORBIDDEN_WORDS
+                    p = build_song_intro_prompt_v2(DJ(dj), artist=artist, title=title, lyrics_context=lyrics_context)
                     prompt = p['system'] + "\n\n" + p['user']
+                    # Pass banned phrases to enable repeat_penalty (nuclear option for semantic override)
+                    text = generate_text(self._llm, prompt, banned_phrases=FORBIDDEN_WORDS)
                 else:
                     prompt = build_song_intro_prompt(DJ(dj), artist=artist, title=title)
-                text = generate_text(self._llm, prompt)
+                    text = generate_text(self._llm, prompt)
                 self._llm_loaded = False
 
                 # Save text script

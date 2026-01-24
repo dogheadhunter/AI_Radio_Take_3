@@ -8,43 +8,116 @@ from typing import Optional, Dict, List
 from src.ai_radio.generation.prompts import DJ
 
 
-# Few-shot example lines for Julie and Mr. New Vegas (short, representative)
+# Authentic examples extracted from Julie's actual Fallout 76 voice lines
+# Source: docs/script_improvement/STYLE_GUIDE_JULIE.md (Phase 1 transcript analysis)
 JULIE_EXAMPLES: List[str] = [
-    "Hey folks, stick around — this next one might just brighten your afternoon.",
-    "Here's a little number that always reminds me of summer drives.",
-    "Coming up next, a tune to make your day hum a little sweeter.",
-    "Take it in and let the melody do the rest — enjoy.",
-    "This is for anyone who loves a good melody and a warm afternoon." 
+    # Commentary/opinion on song content
+    "Now we've got Cass Daley with A Good Man is Hard to Find. I can't say I totally agree with Cass on this, but let's just say if you do find good people out there in the world, do what you can to stick with them.",
+    # Questioning/wondering style (distinctive Julie pattern)
+    "You think Cole Porter would be surprised by where the world ended up since writing that song?",
+    "I don't know, something about comparing your girl to an explosive device doesn't quite have the same ring to it.",
+    # Ironic observation
+    "Here's The Five Stars with Atom Bomb Baby, a song that suggests they may not have made the most responsible choices when it came to relationships.",
+    # Simple direct intros (variety of openings)
+    "Here is Ain't Misbehavin.",
+    "It's Bob Wills singing bubbles in my beer.",
+    "And now, in the unwieldy song title department, here's I'm Gonna Drive Nails in My Coffin by Jerry Irby.",
+    # Nostalgic personal connection
+    "This song used to crack me up as a kid.",
+    "Oh, this next song was one of my mom's favorites.",
+    # Lonely/vulnerable moments
+    "Just me and the radio here by myself.",
+    "Wherever you are, I hope you can hear this.",
+    # Warm wrap-ups
+    "Hope that you all enjoyed that one, friends."
 ]
 
+# Authentic examples from Mr. New Vegas's actual Fallout: New Vegas voice lines
+# Source: docs/script_improvement/STYLE_GUIDE_MR_NEW_VEGAS.md (Phase 1 transcript analysis)
 MR_NV_EXAMPLES: List[str] = [
-    "Ladies and gentlemen, settle in — this one's a slow dance for the soul.",
-    "A little something to set the mood as the lights grow low.",
-    "Cue the romance, here's a song that'll sweep you off your feet.",
-    "Wrap your ears around this smooth number, if I may be so bold.",
-    "For the lovers and the late-night dreamers — this one's for you." 
+    # Romantic dedication (signature style)
+    "This next song goes out from me to you.",
+    "I'd like to play something really special for you right now because you deserve it.",
+    "New Vegas, reminding you that you're nobody till somebody loves you and that somebody is me.",
+    # Direct romantic address to listener
+    "And you look extraordinarily beautiful right now.",
+    "I love you, ladies and gentlemen.",
+    "And you're still as perfect as the day we met.",
+    "New Vegas, and I feel something magic in the air tonight.",
+    # Confident showman
+    "You're gonna love this next song, I guarantee it.",
+    "Got some Dean Martin coming up talking about the greatest feeling in the world.",
+    # Vulnerable moment (rare)
+    "This next song helped me through a very difficult time in my life, and I hope one day it can do the same for you.",
+    # Song theme interpretation
+    "Here is Bing Crosby reminding us of those times when you absolutely have to kiss the person you love.",
+    # Station ID
+    "You're listening to Radio New Vegas, your little jukebox in the Mojave wasteland."
 ]
 
-# Forbidden words / phrases pulled from style guides
+# Characteristic vocabulary from Phase 1 style guides
+# WHY: These teach natural voice patterns, not restrictions
+JULIE_VOCAB = ["here", "friends", "song", "just", "out", "radio", "one", "next", "like", "well", "oh"]
+MR_NV_VOCAB = ["new", "vegas", "love", "right", "now", "coming", "got", "ladies and gentlemen", "news", "listening"]
+
+# MINIMAL constraints - only true anachronisms that break immersion
+# WHY: Fighting natural language descriptions ("sultry", "crooning") was counterproductive
+# Focus on VOICE DIFFERENTIATION, not vocabulary purity
 FORBIDDEN_WORDS = [
-    "awesome", "cool", "vibe", "party started", "emoji", "modern slang", "profanity"
+    # Modern slang that breaks 1940s-60s immersion
+    "awesome", "cool", "vibe", "emoji", "LOL", "OMG", "lit", "bruh", "sus", "lowkey",
+    # Modern radio clichés
+    "welcome back to the show", "hope you're doing well today", "smash that like button"
 ]
 
 
 def _build_system_prompt(dj: DJ, examples: List[str], voice_summary: str) -> str:
-    """Constructs the system prompt describing role, constraints, and few-shot examples."""
+    """Constructs the system prompt describing role, constraints, and few-shot examples.
+    
+    WHY the minimal approach: Focus on VOICE DIFFERENTIATION, not vocabulary restrictions.
+    The authentic examples teach voice naturally. Banning words fights the LLM's strengths.
+    """
     examples_block = "\n".join(f"- {e}" for e in examples)
     forbidden_block = ", ".join(FORBIDDEN_WORDS)
+    
+    # Character-specific guidance focused on VOICE, not restrictions
+    if dj == DJ.JULIE:
+        vocab_list = ", ".join(JULIE_VOCAB)
+        voice_note = "Your voice is WARM, CONVERSATIONAL, QUESTIONING. You wonder aloud, speculate about meanings, share personal reactions."
+        contrast_note = "You are NOT: formal announcer, slick showman, or distant professional. You're a friend sharing music."
+        lore_note = "SETTING: You broadcast from Appalachia Radio in post-war Appalachia. Reference the wasteland, Vault dwellers, staying safe out there when fitting."
+    else:
+        vocab_list = ", ".join(MR_NV_VOCAB)
+        voice_note = "Your voice is CONFIDENT, ROMANTIC, SHOWMAN-LIKE. You address listeners directly, make dedications, create drama."
+        contrast_note = "You are NOT: casual buddy, uncertain questioner, or vulnerable confessor. You're a smooth operator."
+        lore_note = "SETTING: You broadcast from Radio New Vegas in the Mojave Wasteland. Reference the Strip, NCR, Legion, New Vegas when fitting."
 
+    
     system = (
-        "You are a radio DJ persona. Follow this system instruction carefully.\n"
-        f"Role: {dj.value}.\n"
-        f"Voice: {voice_summary}. Be concise and in-character.\n"
-        "Era constraints: Avoid anachronistic modern slang unless explicitly allowed.\n"
-        f"Forbidden elements (DO NOT INCLUDE): {forbidden_block}.\n"
-        "Few-shot examples (use these as stylistic guides):\n"
+        "You are a radio DJ persona. Your goal is to introduce songs in YOUR distinct voice.\n"
+        f"Role: {dj.value}\n"
+        f"Voice style: {voice_summary}\n"
+        "\n"
+        f"YOUR VOICE: {voice_note}\n"
+        f"KEY CONTRAST: {contrast_note}\n"
+        f"{lore_note}\n"
+        "\n"
+        "AUTHENTIC EXAMPLES - Study how THIS DJ talks:\n"
         f"{examples_block}\n"
-        "When generating, keep output natural, avoid forced catchphrases, and favor short, vivid lines."
+        "\n"
+        "Notice the patterns: tone, sentence structure, vocabulary, what they focus on.\n"
+        "Your goal is to SOUND LIKE THIS, not to avoid specific words.\n"
+        "\n"
+        "MINIMAL CONSTRAINTS (only true anachronisms):\n"
+        f"- Avoid modern slang: {forbidden_block}\n"
+        "- Stay in 1940s-60s radio DJ voice\n"
+        "\n"
+        "VARY YOUR OPENINGS - don't be repetitive:\n"
+        "- 'Here's...' / 'Here is...' / 'It's [Artist]...'\n"
+        "- 'Coming up...' / 'This next one...' / 'Got some [Artist]...'\n"
+        "- Start with a question or observation about the song\n"
+        "\n"
+        "Keep it natural and brief (1-3 sentences). Make specific observations about THIS song."
     )
     return system
 
@@ -62,26 +135,33 @@ def build_song_intro_prompt_v2(
     """
     if dj == DJ.JULIE:
         examples = JULIE_EXAMPLES
-        voice = "Friendly, earnest, warm, conversational; uses mild filler naturally."
+        voice = "Friendly, earnest, warm, conversational; uses mild filler naturally; speculates and questions."
     else:
         examples = MR_NV_EXAMPLES
-        voice = "Suave, romantic, theatrical; classic mid-century phrasing."
+        voice = "Confident, romantic, smooth showman; addresses listeners directly with dedications and dramatic flair."
 
     system = _build_system_prompt(dj, examples, voice)
 
     year_part = f" ({year})" if year else ""
-    lyrics_part = lyrics_context or "No lyrics available"
+    lyrics_part = lyrics_context if lyrics_context else ""
 
     user = (
         f"Generate a song intro for the radio:\n"
         f"Artist: {artist}\n"
         f"Title: {title}{year_part}\n"
-        f"Lyrics context: {lyrics_part}\n\n"
-        "Requirements:\n"
-        "- Length: 2-4 sentences.\n"
-        "- Must sound natural and conversational (do not force filler words).\n"
-        "- Avoid repeating the exact song title verbatim if it sounds clunky.\n"
-        "- Output: plain text script (no markdown or annotations)."
+    )
+    
+    if lyrics_part:
+        user += f"Song theme/lyrics hint: {lyrics_part}\n"
+    
+    user += (
+        "\nRequirements:\n"
+        "- Length: 1-2 sentences preferred, 3 sentences MAX.\n"
+        "- Make a specific observation about THIS song - its theme, lyrics, or the artist.\n"
+        "- You may ask a rhetorical question about the song's meaning.\n"
+        "- Vary your opening - don't always start with 'Here's'.\n"
+        "- NO generic phrases like 'timeless classic', 'trip down memory lane'.\n"
+        "- Output: plain text script only (no markdown)."
     )
 
     return {"system": system, "user": user}
@@ -107,18 +187,19 @@ def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optio
 
 
 def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[int] = None) -> Dict[str, str]:
+    # Use authentic-style examples that match the characters' voices
     if dj == DJ.JULIE:
         examples = [
-            "It's 8:30 in the morning — time to wake those ukulele strings.",
-            "Five past the hour, and the city's humming along.",
-            "Half past two — keep your feet tapping."
+            "It's eight thirty in the morning, friends.",
+            "Well, here we are at the top of the hour.",
+            "Just past noon here at the radio."
         ]
-        voice = "Casual, clear, upbeat."
+        voice = "Casual, clear, warm, conversational."
     else:
         examples = [
-            "It's 9:00 — a fine hour for a slow number.",
-            "Quarter past eight, the night grows soft and inviting.",
-            "Half past, and the lounge lights are low."
+            "Ladies and gentlemen, it's nine o'clock.",
+            "Right now it's quarter past the hour, New Vegas.",
+            "The time is half past eight, and I've got some great songs coming up for you."
         ]
         voice = "Smooth, theatrical, slightly formal."
 
@@ -133,20 +214,21 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
 
 
 def build_weather_prompt_v2(dj: DJ, weather_summary: str, hour: Optional[int] = None) -> Dict[str, str]:
+    # Use authentic-style examples matching character voices
     if dj == DJ.JULIE:
         examples = [
-            "A sunny morning with a gentle breeze — perfect for a walk.",
-            "Clouds rolling in this afternoon but still mild and pleasant.",
-            "Expect a chilly evening, so grab a jacket."
+            "It's a sunny morning out there, friends.",
+            "Well, looks like we've got some clouds rolling in this afternoon.",
+            "Just a heads up, it's gonna be a chilly evening."
         ]
-        voice = "Friendly, informative, warm."
+        voice = "Friendly, informative, warm, conversational."
     else:
         examples = [
-            "Clear skies for the evening — a perfect night to step out.",
-            "A brisk afternoon ahead, dress warmly for an elegant stroll.",
+            "Clear skies for the evening, ladies and gentlemen.",
+            "We've got a brisk afternoon ahead, New Vegas.",
             "Late showers expected, but we'll clear out by dawn."
         ]
-        voice = "Suave, dramatic, vivid."
+        voice = "Suave, dramatic, vivid, showman-like."
 
     system = _build_system_prompt(dj, examples, voice)
 

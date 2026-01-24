@@ -5,7 +5,7 @@ from src.ai_radio.generation.pipeline import GenerationPipeline, generate_batch_
 
 
 class DummyLLM:
-    def generate(self, prompt):
+    def generate(self, prompt, banned_phrases=None):
         # Return prompt back for easy assertions
         return f"LLM: {prompt}"
 

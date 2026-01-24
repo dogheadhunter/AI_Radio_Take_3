@@ -16,7 +16,9 @@ def test_build_song_intro_prompt_v2_structure():
     p = build_song_intro_prompt_v2(DJ.JULIE, artist="Nat King Cole", title="Mona Lisa", year=1950)
     assert isinstance(p, dict)
     assert "system" in p and "user" in p
-    assert "Forbidden elements" in p["system"] or "DO NOT INCLUDE" in p["system"]
+    # Changed: now we focus on voice differentiation, not prohibitions
+    # Check that authentic examples are present (they teach voice)
+    assert any(ex in p["system"] for ex in JULIE_EXAMPLES[:3])
 
 
 def test_forbidden_words_mentioned_in_system():
@@ -29,9 +31,10 @@ def test_forbidden_words_mentioned_in_system():
 def test_pipeline_uses_v2_prompts(monkeypatch, tmp_path):
     captured = {}
 
-    def fake_generate_text(llm, prompt):
+    def fake_generate_text(llm, prompt, banned_phrases=None):
         # capture the prompt and return a stubbed text
         captured['prompt'] = prompt
+        captured['banned_phrases'] = banned_phrases
         return "STUBBED PROMPT OUTPUT"
 
     # Patch the reference used by pipeline (pipeline imports generate_text into its module namespace)

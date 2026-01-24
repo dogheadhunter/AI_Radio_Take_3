@@ -1,22 +1,82 @@
 """Manual validation script for prompts_v2 using real Ollama integration."""
 import json
+import sys
 from pathlib import Path
+from datetime import datetime
+
+# Add project root to path for imports
+project_root = Path(__file__).parent.parent
+sys.path.insert(0, str(project_root))
+
 from src.ai_radio.generation.pipeline import GenerationPipeline
 from src.ai_radio.generation.llm_client import check_ollama_available
 from src.ai_radio.generation.prompts import DJ
 
-# Sample songs for testing
+# Lyrics folder path
+LYRICS_FOLDER = Path(__file__).parent.parent / "music_with_lyrics"
+
+def extract_theme_from_lyrics(artist: str, title: str) -> str:
+    """Extract opening lyrics from LRC format files to give LLM concrete song content.
+    
+    WHY: LLM needs actual song material to reduce semantic pressure. Without lyrics,
+    it defaults to generic descriptions ('sultry vocals', 'crooning') from training data.
+    With lyrics, it can make specific observations about the song's actual content.
+    """
+    # Try to find matching lyrics file
+    pattern = f"{title} by {artist}.txt"
+    lyrics_file = LYRICS_FOLDER / pattern
+    
+    if not lyrics_file.exists():
+        # Try partial match
+        for f in LYRICS_FOLDER.glob("*.txt"):
+            if title.lower() in f.name.lower() and artist.split()[0].lower() in f.name.lower():
+                lyrics_file = f
+                break
+    
+    if not lyrics_file.exists():
+        return ""
+    
+    try:
+        with open(lyrics_file, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        
+        # Parse LRC format: lines like "[00:15.69] Never know how much I love you"
+        # Extract clean lyrics (strip timestamps) from opening verse
+        import re
+        lyric_lines = []
+        
+        for line in lines:
+            # Match LRC timestamp pattern [MM:SS.xx] or [HH:MM:SS.xx]
+            match = re.match(r'^\[[\d:\.]+\]\s*(.+)$', line)
+            if match:
+                lyric_text = match.group(1).strip()
+                if lyric_text and not lyric_text.startswith('='):  # Skip separator lines
+                    lyric_lines.append(lyric_text)
+                    # Get first verse/chorus (4-6 lines usually enough for context)
+                    if len(lyric_lines) >= 6:
+                        break
+        
+        if lyric_lines:
+            # Return opening lyrics as context - gives LLM concrete material to reference
+            # Format: Simple description of what the song is about based on opening lines
+            opening = " / ".join(lyric_lines[:3])  # First 3 lines for brevity
+            return f"Opening lines: {opening}"
+        return ""
+    except Exception as e:
+        return ""
+
+# Sample songs for testing - use songs we have lyrics for
 TEST_SONGS = [
-    {"id": "test1", "artist": "Nat King Cole", "title": "Mona Lisa", "year": 1950},
-    {"id": "test2", "artist": "Ella Fitzgerald", "title": "Dream a Little Dream of Me", "year": 1950},
-    {"id": "test3", "artist": "Frank Sinatra", "title": "Fly Me to the Moon", "year": 1964},
+    {"id": "test1", "artist": "Billie Holiday", "title": "All of Me", "year": 1941},
+    {"id": "test2", "artist": "The Ink Spots", "title": "Address Unknown", "year": 1939},
+    {"id": "test3", "artist": "Frank Sinatra", "title": "Blue Moon", "year": 1961},
     {"id": "test4", "artist": "Billie Holiday", "title": "God Bless the Child", "year": 1941},
-    {"id": "test5", "artist": "Louis Armstrong", "title": "What a Wonderful World", "year": 1967},
-    {"id": "test6", "artist": "Dean Martin", "title": "That's Amore", "year": 1953},
-    {"id": "test7", "artist": "Tony Bennett", "title": "I Left My Heart in San Francisco", "year": 1962},
-    {"id": "test8", "artist": "Bing Crosby", "title": "White Christmas", "year": 1942},
-    {"id": "test9", "artist": "Judy Garland", "title": "Over the Rainbow", "year": 1939},
-    {"id": "test10", "artist": "Doris Day", "title": "Que Sera, Sera", "year": 1956},
+    {"id": "test5", "artist": "Louis Armstrong", "title": "A Kiss to Build a Dream On", "year": 1951},
+    {"id": "test6", "artist": "Dean Martin", "title": "Everybody Loves Somebody Sometimes", "year": 1964},
+    {"id": "test7", "artist": "Peggy Lee", "title": "Fever", "year": 1958},
+    {"id": "test8", "artist": "Bing Crosby", "title": "Dear Hearts And Gentle People", "year": 1949},
+    {"id": "test9", "artist": "Fats Waller", "title": "Aint Misbehavin", "year": 1929},
+    {"id": "test10", "artist": "Bob Wills", "title": "Bubbles In My Beer", "year": 1947},
 ]
 
 def main():
@@ -33,12 +93,13 @@ def main():
         return 1
     
     print("\n✅ Ollama is available")
+    print("📝 Using fluffy/l3-8b-stheno-v3.2 model for script generation")
     
     # Create output directory
     output_dir = Path("data/manual_validation")
     output_dir.mkdir(parents=True, exist_ok=True)
     
-    # Initialize pipeline with v2 prompts
+    # Initialize pipeline with v2 prompts (uses fluffy model by default from llm_client.py)
     pipeline_v2 = GenerationPipeline(output_dir=output_dir, prompt_version='v2')
     
     results = {
@@ -52,13 +113,18 @@ def main():
     print("=" * 60)
     for i, song in enumerate(TEST_SONGS, 1):
         print(f"\n[{i}/10] {song['artist']} - {song['title']}")
+        # Extract lyrics context for this song
+        lyrics_context = extract_theme_from_lyrics(song['artist'], song['title'])
+        if lyrics_context:
+            print(f"   📝 {lyrics_context[:60]}...")
         try:
             result = pipeline_v2.generate_song_intro(
                 song_id=song['id'],
                 artist=song['artist'],
                 title=song['title'],
                 dj='julie',
-                text_only=True  # Text only for validation
+                text_only=True,  # Text only for validation
+                lyrics_context=lyrics_context
             )
             if result.success:
                 print(f"✅ Generated: {result.text[:80]}...")
@@ -91,13 +157,18 @@ def main():
     print("=" * 60)
     for i, song in enumerate(TEST_SONGS, 1):
         print(f"\n[{i}/10] {song['artist']} - {song['title']}")
+        # Extract lyrics context for this song
+        lyrics_context = extract_theme_from_lyrics(song['artist'], song['title'])
+        if lyrics_context:
+            print(f"   📝 {lyrics_context[:60]}...")
         try:
             result = pipeline_v2.generate_song_intro(
                 song_id=song['id'],
                 artist=song['artist'],
                 title=song['title'],
                 dj='mr_new_vegas',
-                text_only=True
+                text_only=True,
+                lyrics_context=lyrics_context
             )
             if result.success:
                 print(f"✅ Generated: {result.text[:80]}...")
@@ -124,16 +195,19 @@ def main():
                 "notes": "Exception during generation"
             })
     
-    # Save results
-    results_file = output_dir / "prompt_v2_validation_results.json"
+    # Save results with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    results_file = output_dir / f"prompt_v2_validation_results_{timestamp}.json"
     with open(results_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     
-    # Create markdown report
-    md_file = output_dir / "prompt_v2_validation_report.md"
+    # Create markdown report with timestamp
+    md_file = output_dir / f"prompt_v2_validation_report_{timestamp}.md"
     with open(md_file, 'w', encoding='utf-8') as f:
         f.write("# Phase 2 Prompt V2 Validation Results\n\n")
-        f.write(f"Generated on: {Path(__file__).parent.parent.name}\n\n")
+        f.write(f"Generated on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+        f.write(f"Model: fluffy/l3-8b-stheno-v3.2\n")
+        f.write(f"Prompt Version: v2\n\n")
         
         f.write("## Julie Intros\n\n")
         f.write("| Song | Generated Text | Score (1-10) | Notes |\n")

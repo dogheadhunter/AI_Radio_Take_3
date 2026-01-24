@@ -32,7 +32,7 @@ def test_result_contains_text(monkeypatch, tmp_path):
     pipeline = GenerationPipeline(output_dir=tmp_path)
 
     class Dummy:
-        def generate(self, prompt):
+        def generate(self, prompt, banned_phrases=None):
             return "Here's a great song!"
 
     monkeypatch.setattr(pipeline, "_llm", Dummy())
@@ -52,7 +52,7 @@ def test_result_contains_audio_path(monkeypatch, tmp_path):
     pipeline = GenerationPipeline(output_dir=tmp_path)
 
     class Dummy:
-        def generate(self, prompt):
+        def generate(self, prompt, banned_phrases=None):
             return "Some text"
 
     monkeypatch.setattr(pipeline, "_llm", Dummy())
@@ -73,7 +73,7 @@ def test_llm_called_before_tts(monkeypatch, tmp_path):
     call_order = []
 
     class MockLLM:
-        def generate(self, prompt):
+        def generate(self, prompt, banned_phrases=None):
             call_order.append("llm")
             return "Generated text"
 
@@ -136,7 +136,7 @@ def test_tracks_progress(monkeypatch, tmp_path, sample_song_list):
     pipeline = GenerationPipeline(output_dir=tmp_path)
 
     class DummyLLM:
-        def generate(self, prompt):
+        def generate(self, prompt, banned_phrases=None):
             return "Generated"
 
     class DummyTTS:

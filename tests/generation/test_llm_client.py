@@ -7,7 +7,7 @@ from src.ai_radio.utils.errors import LLMError
 
 def test_generate_returns_string(monkeypatch):
     class Dummy:
-        def generate(self, prompt):
+        def generate(self, prompt, banned_phrases=None):
             return "Generated response"
 
     client = Dummy()
