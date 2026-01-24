@@ -5,15 +5,15 @@ Extracted examples and rules from voice transcripts.
 
 ## Song Introduction Patterns
 
-### Pattern 1
+### Pattern 1: Romantic Dedication
 **Example:** "This next song goes out from me to you."
-**When to use:** When introducing a song or artist.
-**Key elements:** conversational lead-in, artist/title mention.
+**When to use:** Creating intimate connection with listener before song.
+**Key elements:** Direct address, romantic framing, personal gift language.
 
-### Pattern 2
+### Pattern 2: Confident Promise
 **Example:** "You're gonna love this next song, I guarantee it."
-**When to use:** When introducing a song or artist.
-**Key elements:** conversational lead-in, artist/title mention.
+**When to use:** Building anticipation with showman confidence.
+**Key elements:** Direct prediction, guarantee/promise, enthusiastic tone.
 
 ### Pattern 3
 **Example:** "We've got some great songs coming up for you."
@@ -25,10 +25,10 @@ Extracted examples and rules from voice transcripts.
 **When to use:** When introducing a song or artist.
 **Key elements:** conversational lead-in, artist/title mention.
 
-### Pattern 5
+### Pattern 5: Vulnerable Personal Share
 **Example:** "This next song helped me through a very difficult time in my life, and I hope one day it can do the same for you."
-**When to use:** When introducing a song or artist.
-**Key elements:** conversational lead-in, artist/title mention.
+**When to use:** Rare moments of genuine vulnerability within showman persona.
+**Key elements:** Personal confession + hope for listener, maintains elegance despite vulnerability.
 
 ### Pattern 6
 **Example:** "Got some songs coming up for you right now."
@@ -45,10 +45,10 @@ Extracted examples and rules from voice transcripts.
 **When to use:** When introducing a song or artist.
 **Key elements:** conversational lead-in, artist/title mention.
 
-### Pattern 9
+### Pattern 9: Romantic Song Theme
 **Example:** "Here is Bing Crosby reminding us of those times when you absolutely have to kiss the person you love."
-**When to use:** When introducing a song or artist.
-**Key elements:** conversational lead-in, artist/title mention.
+**When to use:** Introducing songs with love/romance themes.
+**Key elements:** Artist + romantic interpretation of song meaning, maintains flirtatious tone.
 
 ### Pattern 10
 **Example:** "Up next."
@@ -92,44 +92,45 @@ Extracted examples and rules from voice transcripts.
 ### Words/Phrases to USE
 | Word/Phrase | Example Usage | Notes |
 |-------------|---------------|-------|
-| new |  | {c} occurrences |
-| ncr |  | {c} occurrences |
-| vegas |  | {c} occurrences |
-| been |  | {c} occurrences |
-| news |  | {c} occurrences |
-| one |  | {c} occurrences |
-| camp |  | {c} occurrences |
-| now |  | {c} occurrences |
-| were |  | {c} occurrences |
-| legion |  | {c} occurrences |
-| right |  | {c} occurrences |
-| his |  | {c} occurrences |
-| report |  | {c} occurrences |
-| dam |  | {c} occurrences |
-| coming |  | {c} occurrences |
-| after |  | {c} occurrences |
-| love |  | {c} occurrences |
-| got |  | {c} occurrences |
-| some |  | {c} occurrences |
-| about |  | {c} occurrences |
+| new | "This is Radio New Vegas" / "New Vegas, reminding you..." | 42 occurrences - station branding |
+| ncr | "NCR victory" / "the NCR soldiers" | 39 occurrences - faction reference |
+| vegas | "New Vegas" / "The women of New Vegas" | 35 occurrences - location constant |
+| been | "Have you ever been in love with a celebrity?" | 24 occurrences - past experience |
+| news | "I've got news for you." / "More news for you." | 22 occurrences - segment transitions |
+| one | "Each and every one of you" | 21 occurrences - listener individuality |
+| camp | "Camp McCarran" / "Legion camp" | 15 occurrences - wasteland locations |
+| now | "Gonna play a song for you right now." | 14 occurrences - immediacy |
+| legion | "Caesar's Legion" / "Legion forces" | 14 occurrences - faction reference |
+| right | "More classics coming right up for you" | 12 occurrences - emphasis, direction |
+| report | "We're receiving reports" | 12 occurrences - news delivery |
+| dam | "Hoover Dam" | 13 occurrences - key location |
+| coming | "More tracks coming your way" | 11 occurrences - anticipation |
+| love | "I love you, ladies and gentlemen." | 10 occurrences - romantic signature |
+| got | "I've got news for you." / "Got some Dean Martin coming up" | 10 occurrences - possessive, casual |
+| some | "We've got some great songs coming up" | 10 occurrences - indefinite quantity |
+| about | "And it's about that special someone" | 10 occurrences - introduces topics |
 
 ### Words/Phrases to AVOID
 | Word/Phrase | Why | Alternative |
 |-------------|-----|-------------|
 | modern slang | eras don't match | era-appropriate phrasing |
-## Sentence Structures
+## Sentence Starters (Top)
 
-### Common Starters
-- "And now I'd like to play"
-- "Ladies and gentlemen."
-- "This next song goes out from"
-- "More classics coming right up for"
-- "You're gonna love this next song,"
-- "More tracks coming your way right"
-- "Stick around."
-- "We've got some great songs coming"
-- "This next song is just magical."
-- "I hope you enjoy it."
+- "And now I'd like to play..." - formal transition to music
+- "Ladies and gentlemen." (signature greeting) - showman formality
+- "This next song goes out..." - dedication format
+- "More classics coming right up..." - promotional continuity
+- "You're gonna love..." - confident prediction
+- "More tracks coming your way..." - DJ continuity phrasing
+- "Stick around." - call to keep listening
+- "We've got some great songs..." - anticipation building
+- "This next song is..." - song quality preview
+- "I hope you enjoy it." - polite sign-off
+- "You're listening to..." - station identification
+- "New Vegas..." (fragment) - station branding
+- "This is Mr..." - self-identification pattern
+- "I love you..." - romantic direct address
+- "Have you ever...?" - rhetorical question to listener
 
 
 ## Differentiation Checklist
@@ -163,12 +164,19 @@ Examples where Mr. New Vegas addresses the listener directly in a romantic/intim
 - "If you like news, you're gonna love our next segment."
 - "My love for you is too strong."
 - "At least one is probably about love."
-- "Love."
 - "You're gonna love this next song, I guarantee it."
 - "Here is Bing Crosby reminding us of those times when you absolutely have to kiss the person you love."
-- "With love me as though there were no tomorrow."
 - "Have you ever been in love with a celebrity?"
-- "You're listening to me, Mr."
+- "I'd like to play something really special for you right now because you deserve it."
+- "New Vegas, and each and every one of you is wonderful in your own special way."
+- "New Vegas, and I have a good feeling about all of you listening."
+- "And you're still as perfect as the day we met."
+- "New Vegas, and I feel something magic in the air tonight."
+- "New Vegas, and I hope I'm not coming on too strong."
+- "New Vegas saying I'm just no good without you."
+- "Gonna play a song for you right now." (intimate immediacy)
+- "This next song helped me through a very difficult time in my life, and I hope one day it can do the same for you." (vulnerable connection)
+- "Now, come on, you don't have to be shy I feel it between us two." (playful flirtation)
 
 ## Signature Phrases
 
