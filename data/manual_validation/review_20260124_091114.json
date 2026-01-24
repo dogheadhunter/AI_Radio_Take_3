@@ -1,0 +1,179 @@
+{
+  "timestamp": "20260124_091114",
+  "total": 20,
+  "passed": 19,
+  "failed": 1,
+  "scripts": [
+    {
+      "script_id": "1_julie",
+      "dj": "julie",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "text": "Now we've got a tune that poses quite the question for us ladies out there - where do good men go, anyway? Here's Cass Daley with A Good Man is Hard to Find.",
+      "attempts": 2,
+      "char_score": 7.5
+    },
+    {
+      "script_id": "1_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Cass Daley",
+      "title": "A Good Man Is Hard to Find",
+      "text": "Ladies, let me ask you this: what makes a good man? With lyrics like these reminding us that it takes effort and patience in the search for true love - well then… I suppose he must be worth every second! Here's Cass Daley with A Good Man Is Hard to Find.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "2_julie",
+      "dj": "julie",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "text": "Can you imagine dreaming up an entire life, just from one little kiss? That's what this song is all about. Here's Louis Armstrong with the soulful ballad - A Kiss to Build a Dream On.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "2_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Louis Armstrong",
+      "title": "A Kiss to Build a Dream On",
+      "text": "Dreaming of the future, building on love and affection? Well then this next song is for you. Give me a kiss before I leave… or so goes one lyric in Louie Armstong's heartfelt ballad about cherishing every moment with that special someone. Here it is from us to all your loves out there - Louis Armstrong singing 'A Kiss To Build A Dream On'.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "3_julie",
+      "dj": "julie",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "text": "Well, this next one makes me think about home and coziness. Who wouldn't want someone wonderful right outside your door? It feels like the perfect sentiment for after such an uncertain time out there in that post-war wasteland we've been living through. Here's Artie Shaw with A Room With a View.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "3_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Artie Shaw",
+      "title": "A Room With a View",
+      "text": "The sweet serenade of love and longing, courtesy of the great Artie Shaw. This next tune takes us on an intimate journey through windows to wonderful yous - our own secret dreams made flesh in someone special. Here is Master Swing himself with 'A Room With a View'.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "4_julie",
+      "dj": "julie",
+      "artist": "The Ink Spots",
+      "title": "Address Unknown",
+      "text": "I wonder if there are folks out in the wasteland listening to us right now, dreaming of those they've lost contact with. Maybe their address is unknown too. Here's hoping this song resonates with them - it's The Ink Spots performing 'Address Unknown'.",
+      "attempts": 2,
+      "char_score": 8.0
+    },
+    {
+      "script_id": "4_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "The Ink Spots",
+      "title": "Address Unknown",
+      "text": "The longing, the regret… this song says it all. What more can be said when you've been apart and your heart still yearns for that special someone? Here are The Ink Spots with their powerful plea of devotion - let me try to reach my love at …Address Unknown!",
+      "attempts": 1,
+      "char_score": 8.0
+    },
+    {
+      "script_id": "5_julie",
+      "dj": "julie",
+      "artist": "Fats Waller",
+      "title": "Ain't Misbehavin'",
+      "text": "Folks, I gotta wonder - what did it mean to \"misbehave\" back when this tune was written? Wasn't life already a bit of chaos and upheaval after the war ended? Anyway, here is that playful piano man Fats Waller with Ain't Misbehavin'.",
+      "attempts": 1,
+      "char_score": 8.0
+    },
+    {
+      "script_id": "5_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Fats Waller",
+      "title": "Ain't Misbehavin'",
+      "text": "Ladies and gentlemen of the Mojave, get ready to kick your heels up high as I introduce a tune that embodies pure unadulterated joy! With its carefree spirit and playful lyrics about breaking all sorts of rules, this Fats Waller number is guaranteed to have you grinning from ear to ear. Here's Ain't Misbehavin' straight ahead for New Vegas tonight!",
+      "attempts": 1,
+      "char_score": 8.0
+    },
+    {
+      "script_id": "6_julie",
+      "dj": "julie",
+      "artist": "Billie Holiday",
+      "title": "All of Me",
+      "text": "I wonder if there isn't just something special about surrendering your whole heart, like what she does here in this ballad. It takes a certain kind of courage to be that vulnerable… Here is the incomparable Billie Holiday with 'All of me'.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "6_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Billie Holiday",
+      "title": "All of Me",
+      "text": "In the spirit of love and vulnerability, I'd like to play something really special for you right now because giving all that we are is what makes life truly meaningful. Here's Billie Holiday with her iconic song about surrendering one's heart fully - take a listen as she pours out All of Me on Radio New Vegas tonight!",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "7_julie",
+      "dj": "julie",
+      "artist": "Billie Holiday",
+      "title": "All Or Nothing At All",
+      "text": "Billie Holiday sings about the extremes of love - either all in, or nothing at all. If that half-hearted stuff won't cut it for her heart… Here is Billie with \"All Or Nothing At All\".",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "7_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Billie Holiday",
+      "title": "All Or Nothing At All",
+      "text": "This song is a soulful, passionate plea for all or nothing - no half measures when it comes to love. It's the ultimate declaration of devotion and if your heart can't fully commit… well then maybe better not at all. Here's Billie Holiday with 'All Or Nothing At All'.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "8_julie",
+      "dj": "julie",
+      "artist": "Glenn Miller",
+      "title": "American Patrol",
+      "text": "I wonder if folks out there in the radio wasteland, maybe some Vault dwellers tuning in on a stray signal, will recognize this familiar march. It was played at parades and patriotic events back when our country felt safer than it does now - but music has a way of bridging gaps between eras. Here's Glenn Miller with American Patrol.",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "8_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Glenn Miller",
+      "title": "American Patrol",
+      "text": "Glenn Miller's signature sound takes us on a nostalgic journey through the heart of America. Here, in his iconic arrangement \"American Patrol\", we find ourselves marching to an anthem celebrating our nation and its people. It's Glenn Miller with American Patrol!",
+      "attempts": 1,
+      "char_score": 9.0
+    },
+    {
+      "script_id": "9_julie",
+      "dj": "julie",
+      "artist": "Sam Cooke",
+      "title": "Another Saturday Night (take)",
+      "text": "I wonder if this song captures a scene many of us know all too well - another weekend night, dancing the blues away from life outside these walls. Here's Sam Cooke with that soulful take on \"Another Saturday Night\".",
+      "attempts": 2,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "10_julie",
+      "dj": "julie",
+      "artist": "Cole Porter",
+      "title": "Anything Goes",
+      "text": "Anything seems to be going in this tune, like it always has. Here's the one and only Cole Porter crooning anything goes!",
+      "attempts": 1,
+      "char_score": 8.5
+    },
+    {
+      "script_id": "10_mr_new_vegas",
+      "dj": "mr_new_vegas",
+      "artist": "Cole Porter",
+      "title": "Anything Goes",
+      "text": "Anything goes, they say - freedom reigns in every way! Here to prove it is the legendary songsmith himself, Mr. Cole Porter, crooning his iconic tune about breaking all social rules: anything truly does go when love takes over as he shows us with 'Cole Porter's Anything Goes'.",
+      "attempts": 3,
+      "char_score": 8.5
+    }
+  ]
+}

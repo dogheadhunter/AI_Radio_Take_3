@@ -284,8 +284,11 @@ class ValidatedGenerationPipeline:
         """
         results = []
         
-        for song in songs:
-            for dj in djs:
+        # Generate all scripts for each DJ separately to avoid character switching
+        # This helps the LLM maintain consistent voice throughout each DJ's batch
+        for dj in djs:
+            logger.info(f"\n{'='*60}\nGenerating all scripts for {dj}\n{'='*60}")
+            for song in songs:
                 result = self.generate_song_intro(
                     song_id=song['id'],
                     artist=song['artist'],

@@ -22,8 +22,10 @@ build/
 # Large media directories (audio shows and music library)
 Radio_Shows/
 music/
+music_with_lyrics/*.mp3
+music_with_lyrics/*.wav
 
-# MP3 and WAV files
+# MP3 and WAV files everywhere
 *.mp3
 *.wav
 
@@ -31,12 +33,13 @@ music/
 archive/**/*.mp3
 archive/**/*.wav
 
+# Audio files in assets/voice_references (keep txt files)
+assets/voice_references/**/*.mp3
+assets/voice_references/**/*.wav
+
 # Generated content and local DBs
 /data/generated/
 logs/
 .cache.sqlite
 server_output.log
 server_error.log
-
-# Embedded local repos or vendor code
-/chatterbox/
