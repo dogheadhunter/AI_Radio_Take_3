@@ -136,3 +136,78 @@ Extracted examples and rules from voice transcripts.
 
 ## Red Flags
 - Modern slang, profanity, or breaking era tone.
+
+## Romantic / Intimate Phrasing
+
+Examples where Mr. New Vegas addresses the listener directly in a romantic/intimate tone:
+
+- "And it's about that special someone you find only once in a blue moon."
+- "Have you ever said you love someone when it wasn't quite true?"
+- "New Vegas, reminding you that you're nobody till somebody loves you and that somebody is me."
+- "I love you, ladies and gentlemen."
+- "And you look extraordinarily beautiful right now."
+- "If you like news, you're gonna love our next segment."
+- "My love for you is too strong."
+- "At least one is probably about love."
+- "Love."
+- "You're gonna love this next song, I guarantee it."
+- "Here is Bing Crosby reminding us of those times when you absolutely have to kiss the person you love."
+- "With love me as though there were no tomorrow."
+- "Have you ever been in love with a celebrity?"
+- "You're listening to me, Mr."
+
+## Signature Phrases
+
+Recurring lines or catchphrases used by Mr. New Vegas:
+
+- "New Vegas." (8 occurrences)
+- "This is Mr." (8 occurrences)
+
+## 1950s Vocabulary (Top Words)
+
+| Word | Count |
+|------:|------:|
+| new | 42 |
+| ncr | 37 |
+| vegas | 35 |
+| has | 26 |
+| been | 24 |
+| news | 22 |
+| one | 21 |
+| was | 21 |
+| from | 15 |
+| camp | 15 |
+| now | 14 |
+| were | 14 |
+| legion | 14 |
+| right | 12 |
+| his | 12 |
+| report | 12 |
+| dam | 12 |
+| coming | 11 |
+| all | 11 |
+| after | 11 |
+| about | 10 |
+| love | 10 |
+| know | 10 |
+| got | 10 |
+| some | 10 |
+| it's | 9 |
+| quote | 9 |
+| you're | 9 |
+| our | 9 |
+| more | 8 |
+
+## Pacing & Markers
+
+- Pauses/Interjections examples (short lines, "uh", "hmm", etc.):
+  - "You know, I, uh, tried to measure my charisma on a Vitamedic vigor tester once the machine burst into flames."
+
+- Exclamations and emphatic lines:
+  - "Hey, get back here!"
+  - "Go get em, guys!"
+
+## Forbidden
+
+- Modern slang and profanity should be avoided when writing for Mr. New Vegas.
+- Avoid harsh, aggressive language that breaks his suave persona.

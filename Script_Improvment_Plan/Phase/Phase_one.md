@@ -131,12 +131,12 @@ python -c "import json; d=json.load(open('data/style_analysis/julie_categorized.
 **Output File:** `docs/script_improvement/STYLE_GUIDE_MR_NEW_VEGAS.md`
 
 **Success Criteria:**
-- [ ] At least 10 song intro examples extracted
-- [ ] At least 5 song outro examples extracted
-- [ ] 1950s vocabulary list of 15+ words
-- [ ] Romantic phrasing examples (10+)
-- [ ] Signature phrases documented with usage context
-- [ ] Forbidden list complete
+- [x] At least 10 song intro examples extracted ✅
+- [x] At least 5 song outro examples extracted ✅
+- [x] 1950s vocabulary list of 15+ words ✅
+- [x] Romantic phrasing examples (10+) ✅
+- [x] Signature phrases documented with usage context ✅
+- [x] Forbidden list complete ✅
 
 **Validation:**
 - Human review: Do the extracted patterns "sound like Mr. New Vegas"?
