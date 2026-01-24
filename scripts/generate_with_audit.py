@@ -306,7 +306,7 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
 
 
 def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoint, test_mode: bool = False) -> Dict[str, int]:
-    """Stage 2: Audit all generated scripts."""
+    """Stage 2: Audit all generated scripts, processing each DJ separately."""
     logger.info("\n" + "=" * 60)
     logger.info("STAGE 2: AUDIT SCRIPTS")
     logger.info("=" * 60)
@@ -318,16 +318,21 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
     
     checkpoint.mark_stage_started("audit")
     
-    # Prepare audit client
-    if test_mode:
-        client = FakeAuditorClient()
-    else:
-        # Use Dolphin model for auditing (different from Stheno used for generation)
-        client = LLMClient(model="dolphin-llama3")
+    # Process each DJ separately to avoid cross-contamination
+    total_audit_results = {"passed": 0, "failed": 0}
     
-    # Collect all scripts to audit
-    scripts_to_audit = []
     for dj in djs:
+        logger.info(f"\nAuditing scripts for {dj.upper()}...")
+        
+        # Prepare audit client for this DJ
+        if test_mode:
+            client = FakeAuditorClient()
+        else:
+            # Use Dolphin model for auditing (different from Stheno used for generation)
+            client = LLMClient(model="dolphin-llama3")
+        
+        # Collect scripts for this DJ
+        scripts_to_audit = []
         for song in songs:
             script_path = get_script_path(song, dj)
             if script_path.exists():
@@ -340,72 +345,76 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                     "content_type": "song_intro",
                     "song": song
                 })
-    
-    logger.info(f"Auditing {len(scripts_to_audit)} scripts...")
-    
-    # Run audits and organize by DJ
-    audit_results = {"passed": 0, "failed": 0}
-    
-    for i, script in enumerate(scripts_to_audit, 1):
-        dj = script['dj']
-        song = script['song']
         
-        # Check if already audited
-        audit_path_passed = get_audit_path(song, dj, passed=True)
-        audit_path_failed = get_audit_path(song, dj, passed=False)
-        
-        if audit_path_passed.exists() or audit_path_failed.exists():
-            # Already audited, count it
-            if audit_path_passed.exists():
-                audit_results["passed"] += 1
-            else:
-                audit_results["failed"] += 1
-            logger.debug(f"  [{i}/{len(scripts_to_audit)}] Skipping {song['title']} (already audited)")
+        if not scripts_to_audit:
+            logger.info(f"No scripts found for {dj}")
             continue
         
-        try:
-            result = audit_script(
-                client=client,
-                script_content=script['script_content'],
-                script_id=script['script_id'],
-                dj=dj,
-                content_type="song_intro"
-            )
+        # Run audits for this DJ
+        for i, script in enumerate(scripts_to_audit, 1):
+            song = script['song']
             
-            # Save audit result
-            audit_path = get_audit_path(song, dj, passed=result.passed)
-            audit_path.parent.mkdir(parents=True, exist_ok=True)
+            # Check if already audited
+            audit_path_passed = get_audit_path(song, dj, passed=True)
+            audit_path_failed = get_audit_path(song, dj, passed=False)
             
-            with open(audit_path, 'w', encoding='utf-8') as f:
-                json.dump({
-                    "script_id": result.script_id,
-                    "dj": result.dj,
-                    "content_type": result.content_type,
-                    "score": result.score,
-                    "passed": result.passed,
-                    "criteria_scores": result.criteria_scores,
-                    "issues": result.issues,
-                    "notes": result.notes
-                }, f, indent=2, ensure_ascii=False)
+            if audit_path_passed.exists() or audit_path_failed.exists():
+                # Already audited, count it
+                if audit_path_passed.exists():
+                    total_audit_results["passed"] += 1
+                else:
+                    total_audit_results["failed"] += 1
+                logger.debug(f"  [{i}/{len(scripts_to_audit)}] Skipping {song['title']} (already audited)")
+                continue
             
-            if result.passed:
-                audit_results["passed"] += 1
-                logger.info(f"  [{i}/{len(scripts_to_audit)}] ✓ {song['title']} ({dj}) - Score: {result.score:.1f}")
-            else:
-                audit_results["failed"] += 1
-                logger.info(f"  [{i}/{len(scripts_to_audit)}] ✗ {song['title']} ({dj}) - Score: {result.score:.1f}")
-        
-        except Exception as e:
-            logger.error(f"  [{i}/{len(scripts_to_audit)}] ERROR auditing {song['title']}: {e}")
-            audit_results["failed"] += 1
+            try:
+                result = audit_script(
+                    client=client,
+                    script_content=script['script_content'],
+                    script_id=script['script_id'],
+                    dj=dj,
+                    content_type="song_intro"
+                )
+                
+                # Save audit result
+                audit_path = get_audit_path(song, dj, passed=result.passed)
+                audit_path.parent.mkdir(parents=True, exist_ok=True)
+                
+                with open(audit_path, 'w', encoding='utf-8') as f:
+                    json.dump({
+                        "script_id": result.script_id,
+                        "dj": result.dj,
+                        "content_type": result.content_type,
+                        "score": result.score,
+                        "passed": result.passed,
+                        "criteria_scores": result.criteria_scores,
+                        "issues": result.issues,
+                        "notes": result.notes
+                    }, f, indent=2, ensure_ascii=False)
+                
+                if result.passed:
+                    total_audit_results["passed"] += 1
+                    logger.info(f"  [{i}/{len(scripts_to_audit)}] ✓ {song['title']} - Score: {result.score:.1f}")
+                else:
+                    total_audit_results["failed"] += 1
+                    logger.info(f"  [{i}/{len(scripts_to_audit)}] ✗ {song['title']} - Score: {result.score:.1f}")
+            
+            except Exception as e:
+                logger.error(f"  [{i}/{len(scripts_to_audit)}] ERROR auditing {song['title']}: {e}")
+                total_audit_results["failed"] += 1
     
     # Generate summary
+    total_scripts = sum(len(list((DATA_DIR / "audit" / dj / "passed").glob("*.json"))) + 
+                       len(list((DATA_DIR / "audit" / dj / "failed").glob("*.json"))) 
+                       for dj in djs 
+                       if (DATA_DIR / "audit" / dj).exists())
+    
     summary = {
         "timestamp": datetime.now().isoformat(),
-        "total_scripts": len(scripts_to_audit),
-        "passed": audit_results["passed"],
-        "failed": audit_results["failed"],
-        "pass_rate": audit_results["passed"] / len(scripts_to_audit) if scripts_to_audit else 0,
+        "total_scripts": total_scripts,
+        "passed": total_audit_results["passed"],
+        "failed": total_audit_results["failed"],
+        "pass_rate": total_audit_results["passed"] / total_scripts if total_scripts else 0,
         "by_dj": {}
     }
     
@@ -421,14 +430,168 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
         json.dump(summary, f, indent=2, ensure_ascii=False)
     
     checkpoint.mark_stage_completed("audit", 
-                                   scripts_audited=len(scripts_to_audit),
-                                   passed=audit_results["passed"],
-                                   failed=audit_results["failed"])
+                                   scripts_audited=total_scripts,
+                                   passed=total_audit_results["passed"],
+                                   failed=total_audit_results["failed"])
     
-    logger.info(f"\n✓ Stage 2 complete: {audit_results['passed']} passed, {audit_results['failed']} failed")
+    logger.info(f"\n✓ Stage 2 complete: {total_audit_results['passed']} passed, {total_audit_results['failed']} failed")
     logger.info(f"  Pass rate: {summary['pass_rate']:.1%}")
     
-    return audit_results
+    return total_audit_results
+
+
+def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[str], max_retries: int = 5, test_mode: bool = False) -> int:
+    """Regenerate failed scripts up to max_retries times, processing each DJ separately."""
+    logger.info("\n" + "=" * 60)
+    logger.info(f"REGENERATION LOOP (max {max_retries} retries)")
+    logger.info("=" * 60)
+    
+    total_regenerated = 0
+    
+    for retry in range(max_retries):
+        # Check if there are any failed scripts across all DJs
+        total_failed = sum(
+            len(list((DATA_DIR / "audit" / dj / "failed").glob("*.json")))
+            for dj in djs
+            if (DATA_DIR / "audit" / dj / "failed").exists()
+        )
+        
+        if total_failed == 0:
+            logger.info("No failed scripts to regenerate!")
+            return total_regenerated
+        
+        logger.info(f"\n--- Retry {retry + 1}/{max_retries} ---")
+        logger.info(f"Total failed scripts: {total_failed}")
+        
+        # Process each DJ separately
+        for dj in djs:
+            # Identify failed scripts for this DJ
+            failed_scripts = []
+            for song in songs:
+                audit_path_failed = get_audit_path(song, dj, passed=False)
+                if audit_path_failed.exists():
+                    failed_scripts.append(song)
+            
+            if not failed_scripts:
+                logger.debug(f"No failed scripts for {dj}")
+                continue
+            
+            logger.info(f"\nRegenerating {len(failed_scripts)} failed scripts for {dj.upper()}...")
+            
+            # Delete failed scripts and their audits
+            for song in failed_scripts:
+                # Delete script
+                script_path = get_script_path(song, dj)
+                if script_path.exists():
+                    script_path.unlink()
+                
+                # Delete failed audit
+                audit_path_failed = get_audit_path(song, dj, passed=False)
+                if audit_path_failed.exists():
+                    audit_path_failed.unlink()
+            
+            # Regenerate scripts for this DJ
+            regenerated = 0
+            for i, song in enumerate(failed_scripts, 1):
+                script_path = get_script_path(song, dj)
+                
+                try:
+                    result = pipeline.generate_song_intro(
+                        song_id=song['id'],
+                        artist=song['artist'],
+                        title=song['title'],
+                        dj=dj,
+                        text_only=True
+                    )
+                    
+                    if result.success and result.text:
+                        # Sanitize and truncate
+                        sanitized = sanitize_script(result.text)
+                        truncated = truncate_after_song_intro(sanitized, song['artist'], song['title'])
+                        
+                        if truncated:
+                            script_path.parent.mkdir(parents=True, exist_ok=True)
+                            script_path.write_text(truncated, encoding='utf-8')
+                            regenerated += 1
+                            logger.debug(f"  [{i}/{len(failed_scripts)}] ✓ Regenerated {song['title']}")
+                except Exception as e:
+                    logger.error(f"  [{i}/{len(failed_scripts)}] ✗ Error regenerating {song['title']}: {e}")
+            
+            logger.info(f"Regenerated {regenerated} scripts for {dj}")
+            total_regenerated += regenerated
+            
+            # Re-audit regenerated scripts for this DJ
+            if regenerated > 0:
+                logger.info(f"Re-auditing regenerated scripts for {dj.upper()}...")
+                
+                # Prepare audit client
+                if test_mode:
+                    client = FakeAuditorClient()
+                else:
+                    client = LLMClient(model="dolphin-llama3")
+                
+                new_passed = 0
+                new_failed = 0
+                
+                for i, song in enumerate(failed_scripts, 1):
+                    script_path = get_script_path(song, dj)
+                    
+                    if not script_path.exists():
+                        continue
+                    
+                    try:
+                        content = script_path.read_text(encoding='utf-8')
+                        script_id = f"{song['id']}_{dj}"
+                        
+                        result = audit_script(
+                            client=client,
+                            script_content=content,
+                            script_id=script_id,
+                            dj=dj,
+                            content_type="song_intro"
+                        )
+                        
+                        # Save audit result
+                        audit_path = get_audit_path(song, dj, passed=result.passed)
+                        audit_path.parent.mkdir(parents=True, exist_ok=True)
+                        
+                        with open(audit_path, 'w', encoding='utf-8') as f:
+                            json.dump({
+                                "script_id": result.script_id,
+                                "dj": result.dj,
+                                "content_type": result.content_type,
+                                "score": result.score,
+                                "passed": result.passed,
+                                "criteria_scores": result.criteria_scores,
+                                "issues": result.issues,
+                                "notes": result.notes
+                            }, f, indent=2, ensure_ascii=False)
+                        
+                        if result.passed:
+                            new_passed += 1
+                            logger.info(f"  [{i}/{len(failed_scripts)}] ✓ {song['title']} - Score: {result.score:.1f}")
+                        else:
+                            new_failed += 1
+                            logger.debug(f"  [{i}/{len(failed_scripts)}] ✗ {song['title']} - Score: {result.score:.1f}")
+                    
+                    except Exception as e:
+                        logger.error(f"  [{i}/{len(failed_scripts)}] ERROR re-auditing {song['title']}: {e}")
+                
+                logger.info(f"Re-audit complete for {dj}: {new_passed} passed, {new_failed} failed")
+        
+        # Check if all scripts passed after this retry
+        total_failed_after = sum(
+            len(list((DATA_DIR / "audit" / dj / "failed").glob("*.json")))
+            for dj in djs
+            if (DATA_DIR / "audit" / dj / "failed").exists()
+        )
+        
+        if total_failed_after == 0:
+            logger.info(f"\n✓ All scripts passed after {retry + 1} retries!")
+            return total_regenerated
+    
+    logger.info(f"\n✓ Regeneration complete after {max_retries} retries")
+    return total_regenerated
 
 
 def stage_audio(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoint) -> int:
@@ -668,6 +831,9 @@ def run_pipeline(args):
         
         if 'audit' in stages_to_run:
             stage_audit(songs, djs, checkpoint, test_mode=test_mode)
+            
+            # After audit, run regeneration loop (up to 5 retries)
+            stage_regenerate(pipeline, songs, djs, max_retries=5, test_mode=test_mode)
         
         if 'audio' in stages_to_run:
             stage_audio(songs, djs, checkpoint)
