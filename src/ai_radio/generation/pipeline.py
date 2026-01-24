@@ -33,12 +33,14 @@ class BatchProgress:
 
 
 class GenerationPipeline:
-    def __init__(self, output_dir: Optional[Path] = None):
+    def __init__(self, output_dir: Optional[Path] = None, prompt_version: str = "v1"):
         self.output_dir = output_dir or Path("data/generated")
         self._llm_loaded = False
         self._tts_loaded = False
         self._llm = LLMClient()
         self._tts = TTSClient()
+        # Prompt version: 'v1' (legacy) or 'v2' (improved templates)
+        self.prompt_version = prompt_version
 
     def _make_song_folder(self, song_id: str, artist: str, title: str, dj: str) -> Path:
         """Create a human-readable folder for this song's generated content, organized by DJ."""
@@ -65,7 +67,13 @@ class GenerationPipeline:
             # Generate text (unless audio_only mode)
             if not audio_only:
                 self._llm_loaded = True
-                prompt = build_song_intro_prompt(DJ(dj), artist=artist, title=title)
+                # Use v2 prompts if configured
+                if getattr(self, 'prompt_version', 'v1') == 'v2':
+                    from src.ai_radio.generation.prompts_v2 import build_song_intro_prompt_v2
+                    p = build_song_intro_prompt_v2(DJ(dj), artist=artist, title=title)
+                    prompt = p['system'] + "\n\n" + p['user']
+                else:
+                    prompt = build_song_intro_prompt(DJ(dj), artist=artist, title=title)
                 text = generate_text(self._llm, prompt)
                 self._llm_loaded = False
 
@@ -210,8 +218,13 @@ class GenerationPipeline:
             
             # Generate text (unless audio_only mode)
             if not audio_only:
-                # Build prompt
-                prompt = build_time_announcement_prompt(hour=hour, minute=minute, dj=DJ(dj))
+                # Build prompt (v2 if configured)
+                if getattr(self, 'prompt_version', 'v1') == 'v2':
+                    from src.ai_radio.generation.prompts_v2 import build_time_prompt_v2
+                    p = build_time_prompt_v2(DJ(dj), hour=hour, minute=minute)
+                    prompt = p['system'] + "\n\n" + p['user']
+                else:
+                    prompt = build_time_announcement_prompt(hour=hour, minute=minute, dj=DJ(dj))
 
                 # Generate text
                 self._llm_loaded = True
@@ -265,7 +278,13 @@ class GenerationPipeline:
                 else:
                     # Dict format
                     summary = weather_data.get('summary', '')
-                prompt = build_weather_prompt(DJ(dj), summary, hour=hour)
+                # Build prompt (v2 if configured)
+                if getattr(self, 'prompt_version', 'v1') == 'v2':
+                    from src.ai_radio.generation.prompts_v2 import build_weather_prompt_v2
+                    p = build_weather_prompt_v2(DJ(dj), summary, hour=hour)
+                    prompt = p['system'] + "\n\n" + p['user']
+                else:
+                    prompt = build_weather_prompt(DJ(dj), summary, hour=hour)
 
                 self._llm_loaded = True
                 text = generate_text(self._llm, prompt)
@@ -323,7 +342,13 @@ class GenerationPipeline:
             
             # Generate text (unless audio_only mode)
             if not audio_only:
-                prompt = build_song_outro_prompt(DJ(dj), artist=artist, title=title, next_song=next_song)
+                # Build prompt (v2 if configured)
+                if getattr(self, 'prompt_version', 'v1') == 'v2':
+                    from src.ai_radio.generation.prompts_v2 import build_song_outro_prompt_v2
+                    p = build_song_outro_prompt_v2(DJ(dj), artist=artist, title=title, next_song=next_song)
+                    prompt = p['system'] + "\n\n" + p['user']
+                else:
+                    prompt = build_song_outro_prompt(DJ(dj), artist=artist, title=title, next_song=next_song)
 
                 self._llm_loaded = True
                 text = generate_text(self._llm, prompt)
