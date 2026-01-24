@@ -1,5 +1,14 @@
 """Complete generation pipeline with auditing.
 
+TODO: This script has grown large (~1400 lines). Consider splitting into:
+  - scripts/lib/stages/generate.py
+  - scripts/lib/stages/audit.py
+  - scripts/lib/stages/audio.py
+  - scripts/lib/stages/regenerate.py
+  - scripts/lib/checkpoint.py
+  - scripts/lib/paths.py
+See: https://github.com/dogheadhunter/AI_Radio_Take_3/issues/XXX (if issue exists)
+
 Usage:
     # Full run
     python scripts/generate_with_audit.py --intros --dj all
@@ -107,23 +116,6 @@ class PipelineCheckpoint:
 # HELPER FUNCTIONS
 # ============================================================================
 
-def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_sample: bool = False):
-    """Load songs from catalog.json."""
-    with open(catalog_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    songs = data.get('songs', [])
-    
-    # Convert to simpler format
-    songs = [{"id": s['id'], "artist": s['artist'], "title": s['title']} for s in songs]
-    
-    # Apply random sampling if requested
-    if random_sample and limit:
-        import random
-        songs = random.sample(songs, min(limit, len(songs)))
-    elif limit:
-        songs = songs[:limit]
-    
-    return songs
 def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_sample: bool = False):
     """Load songs from catalog.json."""
     with open(catalog_path, 'r', encoding='utf-8') as f:
@@ -1319,34 +1311,6 @@ def run_pipeline(args):
         logger.info(f"Partial progress saved to: {checkpoint_file}")
         logger.info("Run with --resume to continue")
         return 1
-    """Remove meta-commentary and sanitize TTS-breaking punctuation."""
-    # Remove ALL parenthetical content (often meta-commentary)
-    text = re.sub(r'\([^)]*\)', '', text)
-    
-    # Remove dates/years
-    text = re.sub(r'\b(19|20)\d{2}\b', '', text)  # Remove 4-digit years
-    text = re.sub(r'\b\d{4}s\b', '', text)  # Remove decade references like "1940s"
-    
-    # Fix TTS-breaking punctuation
-    text = text.replace('...', '…')  # Convert to single ellipsis character first
-    text = re.sub(r'([?!]),', r'\1', text)  # Remove comma after ? or !
-    text = re.sub(r'\s*-\s*', ' ', text)  # Remove dashes (often used for em-dash)
-        # Fix common punctuation errors
-    # Add comma before "and" in certain contexts
-    text = re.sub(r'(\w+)\s+(and)\s+(?:we|I|it|that)', r'\1, \2 ', text)
-    # Fix run-on questions (add ? before new sentence starting with capital)
-    text = re.sub(r'(\w+)\s+([A-Z][a-z]+\s+(?:is|are|was|were|has|have))', r'\1? \2', text)
-    # Fix missing periods before "Here's" or "Here are" 
-    text = re.sub(r'(\w+)\s+(Here(?:\'s| is| are))', r'\1. \2', text)
-        # Clean up extra whitespace
-    text = re.sub(r'\s+', ' ', text).strip()
-    
-    # Fix ellipsis at sentence boundaries (…. or ….)
-    text = re.sub(r'…\.', '.', text)  # Ellipsis + period → single period
-    text = re.sub(r'\.{2,}', '.', text)  # Multiple periods → single period
-    
-    return text
-    text = text.replace('Dr~', 'Dr.')
 
 
 def main():
