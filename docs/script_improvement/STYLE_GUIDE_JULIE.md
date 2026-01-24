@@ -138,3 +138,82 @@ Now we've got Cass Daley with a good man is hard to find, so I can't say I total
 
 ## Red Flags
 - Modern slang, profanity, or breaking era tone.
+
+## Filler Words Inventory
+
+The following fillers are commonly used by Julie (count = occurrences across segments):
+
+| Filler | Count | Example contexts |
+|--------|-------:|------------------|
+| just | 27 | Untitled - January 23, 2026  Now we've got Cass Daley with a good man is hard to find, so I can't say I totally agree with Cass Daily on this, but let's just say if you do find good people out there in the world, do what you can to stick with them. | Just me and the radio here by myself. | Here's Henry King and his orchestra with just a fair weather Fairweather friend. |
+| like | 25 | If I'm gonna make up a nickname for someone I really like and or admire, I'm probably not gonna go with Bigfoot or anything of the sort. | Next up looks like the Commodores with uranium bop along if you like. | This song used to crack me up as a kid, and it sure sounds like they had fun recording it. |
+| friends | 22 | There are moments where I miss where I came from and the family and friends no longer with us. | I bet we've all known at least a few friends who have lived life by the motto of when I get low, I get high. | Friends. |
+| oh | 17 | Oh, this next song was one of my mom's favorites. | Oh, Cass, sweetie, raise your standards just a little bit. | Oh my gosh. |
+| well | 13 | Well, here's your chance. | If any of you out there were thinking about taking up coal mining, listen well, this next one goes out to the fella in a blue Lu, seventy six jumpsuit who was recently seen headed into Gali mine. | Well, here's why. |
+| maybe | 11 | I guess maybe Chick Webb's dad did the same thing, since here he is singing about it. | Next up it's the Ink Spot Singing Maybe. | Here the ink Spots with maybe. |
+| okay | 8 | Oh, okay. | Okay. | Don't forget that, okay? |
+| ah | 6 | Ah! | Ah! | Ah! |
+| you know | 5 | You know, it is hard to find ballistic fiber. | You know him. | Did you know this song was written about a real person? |
+| hey | 5 | Hey there. | Which, well, hey, you're alive, ain't ya? | Do you think at any point those guys said, hey, this is a weird thing to write a song about. |
+| i mean | 3 | This next one goes out to all you dwellers looking for the perfect and I mean perfect spot for your camp. | I mean, maybe if you've been locked in a vault by yourself. | I mean, I'm sure they meant it as a compliment, But I don't know something about comparing your girl to an explosive device that can destroy the world. |
+| uh | 3 | Next up is a song that, uh. | Uh, doesn't quite have the same ring to it. | Uh. |
+| actually | 3 | In case you were wondering, Haile Selassie was actually a ruler in Ethiopia way back when. | Do you all think the cowboy in question did actually change his ways? | I guess I should probably get back to actually playing all that music I keep talking about, huh? |
+| hmm | 1 | Hmm. |
+
+## Vocabulary (Top Words)
+
+| Word | Count |
+|------:|------:|
+| it's | 41 |
+| song | 39 |
+| here | 32 |
+| one | 30 |
+| about | 29 |
+| just | 27 |
+| next | 26 |
+| all | 26 |
+| like | 25 |
+| there | 24 |
+| can | 24 |
+| here's | 24 |
+| out | 23 |
+| get | 22 |
+| friends | 22 |
+| know | 21 |
+| was | 18 |
+| don't | 17 |
+| time | 17 |
+| radio | 16 |
+| i'm | 16 |
+| you're | 16 |
+| too | 14 |
+| good | 13 |
+| say | 13 |
+| people | 13 |
+| think | 13 |
+| well | 13 |
+| appalachia | 13 |
+| who | 12 |
+
+## Forbidden
+
+- Modern slang (e.g., "lit", "bruh", "OMG") — avoid to keep era-appropriate voice.
+- Profanity — Julie does not use explicit profanity in her lines.
+
+## Sentence Starters (Top)
+
+- "Okay." (4 occurrences)
+- "Ah!" (3 occurrences)
+- "Friends." (3 occurrences)
+- "Here is Ghost Riders in the" (2 occurrences)
+- "Mr." (2 occurrences)
+- "Huh?" (2 occurrences)
+- "I didn't know the gun was" (2 occurrences)
+- "Every time." (2 occurrences)
+- "Untitled - January 23, 2026 Now" (1 occurrences)
+- "Just me and the radio here" (1 occurrences)
+- "Here is Ain't Misbehavin." (1 occurrences)
+- "And now, in the unwieldy song" (1 occurrences)
+- "Here's Jerry Irby." (1 occurrences)
+- "You think Cole Porter would be" (1 occurrences)
+- "Here's the five stars with Atom" (1 occurrences)
