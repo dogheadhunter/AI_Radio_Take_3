@@ -7,7 +7,6 @@ TODO: This script has grown large (~1400 lines). Consider splitting into:
   - scripts/lib/stages/regenerate.py
   - scripts/lib/checkpoint.py
   - scripts/lib/paths.py
-See: https://github.com/dogheadhunter/AI_Radio_Take_3/issues/XXX (if issue exists)
 
 Usage:
     # Full run
