@@ -164,8 +164,6 @@ def mock_llm_auditor(monkeypatch):
     import json as json_module
     def _generate(client, prompt):
         return json_module.dumps({
-            "score": 7,
-            "passed": True,
             "criteria_scores": {"character_voice": 8, "era_appropriateness": 7, "forbidden_elements": 10, "natural_flow": 6, "length": 8},
             "issues": [],
             "notes": "Good overall"
@@ -188,8 +186,6 @@ def mock_llm_auditor_mixed(monkeypatch):
         # Bad: modern slang or emojis
         if "awesome" in p or "emoji" in p or "😀" in p or "👍" in p:
             return json_module.dumps({
-                "score": 3,
-                "passed": False,
                 "criteria_scores": {"character_voice": 4, "era_appropriateness": 2, "forbidden_elements": 1, "natural_flow": 4, "length": 6},
                 "issues": ["Uses modern slang or emoji"],
                 "notes": "Contains modern slang or emojis"
@@ -197,8 +193,6 @@ def mock_llm_auditor_mixed(monkeypatch):
         # Bad: wrong character signifiers
         if "sounds like generic dj" in p or "not julie" in p:
             return json_module.dumps({
-                "score": 3,
-                "passed": False,
                 "criteria_scores": {"character_voice": 2, "era_appropriateness": 6, "forbidden_elements": 10, "natural_flow": 5, "length": 6},
                 "issues": ["Not in character"],
                 "notes": "Sounds like generic DJ rather than the target character"
@@ -206,16 +200,12 @@ def mock_llm_auditor_mixed(monkeypatch):
         # Borderline
         if "borderline" in p:
             return json_module.dumps({
-                "score": 6,
-                "passed": True,
-                "criteria_scores": {"character_voice": 6, "era_appropriateness": 6, "forbidden_elements": 10, "natural_flow": 6, "length": 6},
+                "criteria_scores": {"character_voice": 7, "era_appropriateness": 7, "forbidden_elements": 10, "natural_flow": 7, "length": 7},
                 "issues": ["Slight character drift"],
                 "notes": "Borderline but acceptable"
             })
         # Default: good
         return json_module.dumps({
-            "score": 8,
-            "passed": True,
             "criteria_scores": {"character_voice": 8, "era_appropriateness": 8, "forbidden_elements": 10, "natural_flow": 8, "length": 8},
             "issues": [],
             "notes": "Good overall"

@@ -184,19 +184,39 @@ def build_song_intro_prompt_v2(
 
 
 def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optional[str] = None) -> Dict[str, str]:
+    """Build outro-specific prompt emphasizing past tense and natural transitions."""
     if dj == DJ.JULIE:
-        examples = JULIE_EXAMPLES[:3]
-        voice = "Friendly, short, transitional."
+        # Julie-specific outro examples (conversational wrap-ups)
+        examples = [
+            "Hope that you all enjoyed that one, friends.",
+            "That was one of my mom's favorites.",
+            "Just me and the radio here, wrapping up another song.",
+            "Well, hope you liked that one as much as I did.",
+            "Always loved that song, even as a kid."
+        ]
+        voice = "Warm, reflective, conversational wrap-up."
     else:
-        examples = MR_NV_EXAMPLES[:3]
-        voice = "Suave, short, romantic." 
+        # Mr. New Vegas outro examples (romantic sign-offs)
+        examples = [
+            "I hope you enjoyed that one, ladies and gentlemen.",
+            "And that was for you, New Vegas.",
+            "Hope that brought a smile to your face.",
+            "And you're still as perfect as the day we met.",
+            "Until next time, New Vegas."
+        ]
+        voice = "Smooth, romantic, confident sign-off."
 
     system = _build_system_prompt(dj, examples, voice)
 
-    next_part = f"Also tease next song: {next_song}." if next_song else ""
+    next_part = f"Optionally tease next song: {next_song}." if next_song else ""
     user = (
-        f"Write a song outro for '{title}' by {artist}. {next_part}\n"
-        "Requirements:\n- Length: 1-2 sentences.\n- Keep it transitional and brief."
+        f"Write a song outro for '{title}' by {artist} that just finished playing. {next_part}\n"
+        "Requirements:\n"
+        "- Length: 1-2 sentences MAX.\n"
+        "- Use PAST TENSE (the song just played - 'That was...', 'Hope you enjoyed...').\n"
+        "- Keep it brief and transitional - no long commentary.\n"
+        "- Natural wrap-up or sign-off feel.\n"
+        "- DO NOT introduce the song again (it already played)."
     )
 
     return {"system": system, "user": user}
@@ -222,7 +242,15 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
     system = _build_system_prompt(dj, examples, voice)
 
     if hour is not None and minute is not None:
-        user = f"Announce the time: {hour:02d}:{minute:02d}. Keep it natural and fit the DJ persona. Length: 1 sentence."
+        user = (
+            f"Announce the time: {hour:02d}:{minute:02d}. Keep it natural and fit the DJ persona.\n"
+            "Requirements:\n"
+            "- Length: 1-2 sentences MAX.\n"
+            "- ONLY announce the time - DO NOT introduce any songs.\n"
+            "- DO NOT include artist names, song titles, or 'coming up next'.\n"
+            "- DO NOT include timecode prefixes (like '00:05' or timestamps).\n"
+            "- Natural radio time check only."
+        )
     else:
         user = "Announce the current time naturally in one sentence."
 

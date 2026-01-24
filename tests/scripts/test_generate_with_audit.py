@@ -48,5 +48,5 @@ def test_path_helpers():
     
     audit_path = get_audit_path(song, "julie", passed=True)
     assert "passed" in str(audit_path)
-    assert audit_path.name == "Test_Artist-Test_Song_audit.json"
+    assert audit_path.name == "Test_Artist-Test_Song_song_intro_audit.json"
 

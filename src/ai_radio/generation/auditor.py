@@ -59,39 +59,109 @@ def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro"
         "- Era: 1950s Vegas lounge; avoid modern slang or emojis.\n"
         "- Tone: Intimate, sophisticated.\n"
         "- Typical patterns: short, polished sentences, romantic descriptors, references to lounge/city.\n\n"
-        "Evaluation Criteria (score each 1-10):\n"
-        "1. character_voice: How well does the script match the DJ's voice? Julie should sound casual/rambling/grounded, Mr. NV should sound smooth/romantic. Generic DJ speak, flowery language for Julie, or wrong personality = FAIL.\n"
-        "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
-        "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, mean comments, meta-commentary in parentheses, placeholder text ('Artist 4'), dates/years ('1948 tune'), or TTS-breaking punctuation = automatic score of 1.\n"
-        "4. natural_flow: Does it read naturally? Too long (>100 words), too flowery/elaborate, or rambling after song introduction = lower score.\n"
-        "5. length: Appropriate length? MUST end with song introduction (artist/title). Any text after song intro = FAIL.\n\n"
-        "Scoring Scale (1-10 for each criterion):\n"
-        "- 10: Perfect\n"
-        "- 8-9: Strong\n"
-        "- 6-7: Acceptable (PASS)\n"
-        "- 4-5: Weak (FAIL)\n"
-        "- 1-3: Major issues (FAIL)\n\n"
-        "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
-        "**STRICT RULES:**\n"
-        "- If script contains ANY emoji (😀🎵❤️👍 etc.), forbidden_elements MUST = 1\n"
-        "- If script has meta-commentary like '(1 sentence intro...)', forbidden_elements MUST = 1\n"
-        "- If script has placeholder text like 'Artist 4' or 'Test Song', forbidden_elements MUST = 1\n"
-        "- If script mentions dates/years (like '1948 tune', '1960s classic'), forbidden_elements MUST ≤ 3\n"
-        "- If script has TTS-breaking punctuation (standalone '-', multiple '...', ',?'), forbidden_elements MUST ≤ 3\n"
-        "- If script continues AFTER song introduction (artist/title), length MUST ≤ 4\n"
-        "- If Julie uses flowery/elaborate language ('inimitable', 'tailor made', 'semblance of tranquility'), character_voice MUST ≤ 4\n"
-        "- If Julie sounds formal/polished (like Mr. NV), character_voice MUST ≤ 4\n"
-        "- If Mr. NV sounds uncertain/rambling (like Julie), character_voice MUST ≤ 4\n"
-        "- Generic radio clichés ('welcome back', 'like and subscribe') = era_appropriateness ≤ 4\n"
-        "- If script is too long (>100 words), natural_flow MUST ≤ 6\n\n"
+    )
+    
+    # Content-type specific criteria
+    if content_type == "time_announcement":
+        system += (
+            "Evaluation Criteria for TIME ANNOUNCEMENT (score each 1-10):\n"
+            "1. character_voice: Does it sound like the DJ? Julie should be casual/warm/conversational. Mr. NV should be smooth/polished. Focus on VOICE MATCH, not exact phrasing.\n"
+            "2. era_appropriateness: Any anachronisms or modern digital time formats ('24:00', 'military time')? Should sound like classic radio.\n"
+            "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, meta-commentary, timecode prefixes ('00:05'), or song references (artist/title mentions) = automatic score of 1.\n"
+            "4. natural_flow: Does it sound natural for a time check? Brief and clear.\n"
+            "5. brevity: Appropriate length for time announcement? Should be 1-2 sentences MAX (under 30 words).\n\n"
+            "Scoring Scale (1-10 for each criterion):\n"
+            "- 10: Perfect\n"
+            "- 8-9: Strong\n"
+            "- 6-7: Acceptable (PASS)\n"
+            "- 4-5: Weak (FAIL)\n"
+            "- 1-3: Major issues (FAIL)\n\n"
+            "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
+            "**STRICT RULES FOR TIME ANNOUNCEMENTS:**\n"
+            "- If script mentions ANY artist, song title, or 'coming up next', forbidden_elements MUST = 1\n"
+            "- If script has timecode prefix like '00:05' or '12:30' at start, forbidden_elements MUST = 1\n"
+            "- If script uses 24-hour time format inappropriately, era_appropriateness MUST ≤ 5\n"
+            "- If script is too long (>30 words), brevity MUST ≤ 4\n"
+            "- If script sounds generic/robotic (not character-specific), character_voice MUST ≤ 5\n"
+            "- Focus on CHARACTER VOICE consistency, not exact word matching\n\n"
+        )
+    elif content_type == "song_outro":
+        system += (
+            "Evaluation Criteria for SONG OUTRO (score each 1-10):\n"
+            "1. character_voice: How well does the script match the DJ's voice? Julie should sound casual/warm/reflective, Mr. NV should sound smooth/romantic. Generic DJ speak = FAIL.\n"
+            "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
+            "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, meta-commentary in parentheses, placeholder text, dates/years, or TTS-breaking punctuation = automatic score of 1.\n"
+            "4. natural_flow: Does it read naturally? Too long (>50 words for outro), too flowery/elaborate = lower score.\n"
+            "5. past_tense_usage: **OUTRO-SPECIFIC** - Must use past tense (song just played). 'That was...', 'Hope you enjoyed...', NOT 'Here is...' or 'Coming up...'. Present tense intro of song that already played = FAIL (score ≤ 3).\n\n"
+            "Scoring Scale (1-10 for each criterion):\n"
+            "- 10: Perfect\n"
+            "- 8-9: Strong\n"
+            "- 6-7: Acceptable (PASS)\n"
+            "- 4-5: Weak (FAIL)\n"
+            "- 1-3: Major issues (FAIL)\n\n"
+            "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
+            "**STRICT RULES FOR OUTROS:**\n"
+            "- If outro uses PRESENT TENSE to introduce song ('Here is...', 'This is...'), past_tense_usage MUST = 1-3\n"
+            "- If outro is too long (>50 words), natural_flow MUST ≤ 5\n"
+            "- If outro has long commentary about song that just played (>2 sentences), natural_flow MUST ≤ 6\n"
+            "- All other forbidden_elements rules apply (emoji, dates, meta-commentary, etc.)\n"
+            "- If Julie uses flowery/elaborate language, character_voice MUST ≤ 4\n"
+            "- Generic radio clichés ('thanks for tuning in', 'stay tuned') = era_appropriateness ≤ 6\n\n"
+        )
+    else:  # song_intro
+        system += (
+            "Evaluation Criteria for SONG INTRO (score each 1-10):\n"
+            "1. character_voice: How well does the script match the DJ's voice? Julie should sound casual/rambling/grounded, Mr. NV should sound smooth/romantic. Generic DJ speak, flowery language for Julie, or wrong personality = FAIL.\n"
+            "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
+            "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, mean comments, meta-commentary in parentheses, placeholder text ('Artist 4'), dates/years ('1948 tune'), or TTS-breaking punctuation = automatic score of 1.\n"
+            "4. natural_flow: Does it read naturally? Too long (>100 words), too flowery/elaborate, or rambling after song introduction = lower score.\n"
+            "5. length: Appropriate length? MUST end with song introduction (artist/title). Any text after song intro = FAIL.\n\n"
+            "Scoring Scale (1-10 for each criterion):\n"
+            "- 10: Perfect\n"
+            "- 8-9: Strong\n"
+            "- 6-7: Acceptable (PASS)\n"
+            "- 4-5: Weak (FAIL)\n"
+            "- 1-3: Major issues (FAIL)\n\n"
+            "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
+            "**STRICT RULES FOR INTROS:**\n"
+            "- If script contains ANY emoji (😀🎵❤️👍 etc.), forbidden_elements MUST = 1\n"
+            "- If script has meta-commentary like '(1 sentence intro...)', forbidden_elements MUST = 1\n"
+            "- If script has placeholder text like 'Artist 4' or 'Test Song', forbidden_elements MUST = 1\n"
+            "- If script mentions dates/years (like '1948 tune', '1960s classic'), forbidden_elements MUST ≤ 3\n"
+            "- If script has TTS-breaking punctuation (standalone '-', multiple '...', ',?'), forbidden_elements MUST ≤ 3\n"
+            "- If script continues AFTER song introduction (artist/title), length MUST ≤ 4\n"
+            "- If Julie uses flowery/elaborate language ('inimitable', 'tailor made', 'semblance of tranquility'), character_voice MUST ≤ 4\n"
+            "- If Julie sounds formal/polished (like Mr. NV), character_voice MUST ≤ 4\n"
+            "- If Mr. NV sounds uncertain/rambling (like Julie), character_voice MUST ≤ 4\n"
+            "- Generic radio clichés ('welcome back', 'like and subscribe') = era_appropriateness ≤ 4\n"
+            "- If script is too long (>100 words), natural_flow MUST ≤ 6\n\n"
+        )
+    
+    system += (
         "Instructions: Respond ONLY with valid JSON containing:\n"
         "{\n"
-        "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"length\": <1-10>},\n"
+    )
+    
+    if content_type == "time_announcement":
+        system += (
+            "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"brevity\": <1-10>},\n"
+        )
+    elif content_type == "song_outro":
+        system += (
+            "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"past_tense_usage\": <1-10>},\n"
+        )
+    else:
+        system += (
+            "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"length\": <1-10>},\n"
+        )
+    
+    system += (
         "  \"issues\": [\"list specific problems if failing\"],\n"
         "  \"notes\": \"brief summary\"\n"
         "}\n\n"
         "DO NOT include 'score' or 'passed' in your JSON - they will be calculated from criteria_scores.\n"
     )
+    
     user = f"Evaluate this {content_type} script for {dj}:\n---\n{script_content}\n---\n"
     return system + "\n" + user
 
@@ -114,14 +184,21 @@ def audit_script(
 
         criteria = parsed.get("criteria_scores", {})
         
+        # Common criteria for both intro and outro
+        common_criteria = ["character_voice", "era_appropriateness", "forbidden_elements", "natural_flow"]
+        
+        # Content-type specific 5th criterion
+        if content_type == "time_announcement":
+            fifth_criterion = "brevity"
+        elif content_type == "song_outro":
+            fifth_criterion = "past_tense_usage"
+        else:
+            fifth_criterion = "length"
+        
         # Robust extraction with key name variations
-        criteria_scores = {
-            "character_voice": _get_criterion_value(criteria, "character_voice"),
-            "era_appropriateness": _get_criterion_value(criteria, "era_appropriateness"),
-            "forbidden_elements": _get_criterion_value(criteria, "forbidden_elements"),
-            "natural_flow": _get_criterion_value(criteria, "natural_flow"),
-            "length": _get_criterion_value(criteria, "length"),
-        }
+        criteria_scores = {}
+        for key in common_criteria + [fifth_criterion]:
+            criteria_scores[key] = _get_criterion_value(criteria, key)
         
         # Normalization: if LLM returned 0-100 scale, normalize to 1-10
         max_raw_score = max(criteria_scores.values())
@@ -132,7 +209,9 @@ def audit_script(
         criteria_scores = {k: max(1.0, min(10.0, v)) for k, v in criteria_scores.items()}
         
         # Compute weighted average (Option B: weights in code)
-        score = sum(criteria_scores[k] * WEIGHTS[k] for k in WEIGHTS.keys())
+        # Use same weights for both intro and outro (5th criterion gets 0.10 weight)
+        score = sum(criteria_scores[k] * WEIGHTS[k] for k in common_criteria)
+        score += criteria_scores[fifth_criterion] * 0.10  # 5th criterion weight
         score = max(1.0, min(10.0, score))
         passed = score >= 7.5
 
@@ -149,7 +228,7 @@ def audit_script(
             criteria_scores=criteria_scores,
             issues=issues,
             notes=notes,
-            raw_response=raw,
+            raw_response=raw
         )
     except json.JSONDecodeError:
         # Malformed JSON from auditor model

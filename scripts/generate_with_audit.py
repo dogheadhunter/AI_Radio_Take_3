@@ -143,8 +143,15 @@ def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_s
     return songs
 
 
-def sanitize_script(text: str) -> str:
+def sanitize_script(text: str, content_type: str = "intros") -> str:
     """Remove meta-commentary and sanitize TTS-breaking punctuation."""
+    # Time-specific validation: remove timecode prefixes
+    if content_type == "time":
+        # Remove timecode prefixes like "00:05" or "12:30" at start
+        text = re.sub(r'^\d{1,2}:\d{2}\s+', '', text)
+        # Remove standalone timestamps
+        text = re.sub(r'\b\d{1,2}:\d{2}(:\d{2})?\b', '', text)
+    
     # Remove ALL parenthetical content (often meta-commentary)
     text = re.sub(r'\([^)]*\)', '', text)
     
@@ -261,44 +268,131 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
     checkpoint.mark_stage_started("generate")
     
     total_scripts = 0
+    content_types = checkpoint.state.get("config", {}).get("content_types", [])
+
     for dj in djs:
         logger.info(f"\nGenerating scripts for {dj.upper()}...")
         
         for i, song in enumerate(songs, 1):
-            # Check if already exists (for resume within stage)
-            script_path = get_script_path(song, dj)
-            if script_path.exists():
-                logger.debug(f"  [{i}/{len(songs)}] Skipping {song['title']} (already exists)")
-                total_scripts += 1
-                continue
-            
-            try:
-                result = pipeline.generate_song_intro(
-                    song_id=str(song['id']),
-                    artist=song['artist'],
-                    title=song['title'],
-                    dj=dj,
-                    text_only=True
-                )
-                
-                if result.success and result.text:
-                    # Sanitize and truncate
-                    sanitized = sanitize_script(result.text)
-                    truncated = truncate_after_song_intro(sanitized, song['artist'], song['title'])
-                    
-                    if truncated:
-                        # Save the script
-                        script_path.parent.mkdir(parents=True, exist_ok=True)
-                        script_path.write_text(truncated, encoding='utf-8')
-                        total_scripts += 1
-                        logger.info(f"  [{i}/{len(songs)}] ✓ {song['title']}")
-                    else:
-                        logger.warning(f"  [{i}/{len(songs)}] ✗ {song['title']} (validation failed)")
+            # Intros
+            if "intros" in content_types:
+                script_path = get_script_path(song, dj, content_type='intros')
+                if script_path.exists():
+                    logger.debug(f"  [{i}/{len(songs)}] Skipping intro {song['title']} (already exists)")
+                    total_scripts += 1
                 else:
-                    logger.warning(f"  [{i}/{len(songs)}] ✗ {song['title']} (generation failed)")
+                    try:
+                        result = pipeline.generate_song_intro(
+                            song_id=str(song['id']),
+                            artist=song['artist'],
+                            title=song['title'],
+                            dj=dj,
+                            text_only=True
+                        )
+                        
+                        if result.success and result.text:
+                            # Sanitize and truncate
+                            sanitized = sanitize_script(result.text)
+                            truncated = truncate_after_song_intro(sanitized, song['artist'], song['title'])
+                            
+                            if truncated:
+                                # Save the script
+                                script_path.parent.mkdir(parents=True, exist_ok=True)
+                                script_path.write_text(truncated, encoding='utf-8')
+                                total_scripts += 1
+                                logger.info(f"  [{i}/{len(songs)}] ✓ intro {song['title']}")
+                            else:
+                                logger.warning(f"  [{i}/{len(songs)}] ✗ intro {song['title']} (validation failed)")
+                        else:
+                            logger.warning(f"  [{i}/{len(songs)}] ✗ intro {song['title']} (generation failed)")
+                    except Exception as e:
+                        logger.error(f"  [{i}/{len(songs)}] ✗ intro {song['title']} - Error: {e}")
             
-            except Exception as e:
-                logger.error(f"  [{i}/{len(songs)}] ✗ {song['title']} - Error: {e}")
+            # Outros
+            if "outros" in content_types:
+                outro_path = get_script_path(song, dj, content_type='outros')
+                if outro_path.exists():
+                    logger.debug(f"  [{i}/{len(songs)}] Skipping outro {song['title']} (already exists)")
+                    total_scripts += 1
+                else:
+                    try:
+                        result = pipeline.generate_song_outro(
+                            song_id=str(song['id']),
+                            artist=song['artist'],
+                            title=song['title'],
+                            dj=dj,
+                            text_only=True
+                        )
+                        
+                        if result.success and result.text:
+                            sanitized = sanitize_script(result.text)
+                            # Outros are typically short; save as-is after sanitization
+                            if sanitized:
+                                outro_path.parent.mkdir(parents=True, exist_ok=True)
+                                outro_path.write_text(sanitized, encoding='utf-8')
+                                total_scripts += 1
+                                logger.info(f"  [{i}/{len(songs)}] ✓ outro {song['title']}")
+                            else:
+                                logger.warning(f"  [{i}/{len(songs)}] ✗ outro {song['title']} (validation failed)")
+                        else:
+                            logger.warning(f"  [{i}/{len(songs)}] ✗ outro {song['title']} (generation failed)")
+                    except Exception as e:
+                        logger.error(f"  [{i}/{len(songs)}] ✗ outro {song['title']} - Error: {e}")
+    
+    # Time announcements (if requested)
+    if "time" in content_types:
+        # Get time slots from checkpoint config
+        time_slots = checkpoint.state.get("config", {}).get("time_slots", [])
+        logger.info(f"\nGenerating time announcements for {len(time_slots)} slots...")
+        
+        for dj in djs:
+            logger.info(f"\nGenerating time announcements for {dj.upper()}...")
+            
+            for i, (hour, minute) in enumerate(time_slots, 1):
+                script_path = get_time_script_path(hour, minute, dj)
+                if script_path.exists():
+                    logger.debug(f"  [{i}/{len(time_slots)}] Skipping {hour:02d}:{minute:02d} (already exists)")
+                    total_scripts += 1
+                else:
+                    try:
+                        result = pipeline.generate_time_announcement(
+                            hour=hour,
+                            minute=minute,
+                            dj=dj,
+                            text_only=True
+                        )
+                        
+                        if result.success and result.text:
+                            # Sanitize the script (time-specific validation)
+                            sanitized = sanitize_script(result.text, content_type="time")
+                            
+                            # Rule-based validation for time announcements
+                            validation_passed = True
+                            if not sanitized:
+                                validation_passed = False
+                            # Check for song references (artist/title patterns)
+                            elif re.search(r'\bby\s+[A-Z][a-z]+', sanitized):
+                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (contains artist reference)")
+                                validation_passed = False
+                            elif re.search(r'[Aa]rtist:|[Tt]itle:', sanitized):
+                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (contains 'Artist:' or 'Title:')")
+                                validation_passed = False
+                            # Too long for a time announcement (should be 1-2 sentences)
+                            elif len(sanitized.split()) > 50:
+                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (too long: {len(sanitized.split())} words)")
+                                validation_passed = False
+                            
+                            if validation_passed:
+                                script_path.parent.mkdir(parents=True, exist_ok=True)
+                                script_path.write_text(sanitized, encoding='utf-8')
+                                total_scripts += 1
+                                logger.info(f"  [{i}/{len(time_slots)}] ✓ time {hour:02d}:{minute:02d}")
+                            else:
+                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (validation failed)")
+                        else:
+                            logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (generation failed)")
+                    except Exception as e:
+                        logger.error(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} - Error: {e}")
     
     checkpoint.mark_stage_completed("generate", scripts_generated=total_scripts)
     logger.info(f"\n✓ Stage 1 complete: {total_scripts} scripts generated")
@@ -331,20 +425,51 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
             # Use Dolphin model for auditing (different from Stheno used for generation)
             client = LLMClient(model="dolphin-llama3")
         
-        # Collect scripts for this DJ
+        # Collect scripts for this DJ (support intros and outros)
+        content_types = checkpoint.state.get("config", {}).get("content_types", [])
         scripts_to_audit = []
         for song in songs:
-            script_path = get_script_path(song, dj)
-            if script_path.exists():
-                script_id = f"{song['id']}_{dj}"
-                content = script_path.read_text(encoding='utf-8')
-                scripts_to_audit.append({
-                    "script_id": script_id,
-                    "script_content": content,
-                    "dj": dj,
-                    "content_type": "song_intro",
-                    "song": song
-                })
+            if "intros" in content_types:
+                script_path = get_script_path(song, dj, content_type='intros')
+                if script_path.exists():
+                    script_id = f"{song['id']}_{dj}_intro"
+                    content = script_path.read_text(encoding='utf-8')
+                    scripts_to_audit.append({
+                        "script_id": script_id,
+                        "script_content": content,
+                        "dj": dj,
+                        "content_type": "song_intro",
+                        "song": song
+                    })
+            if "outros" in content_types:
+                script_path = get_script_path(song, dj, content_type='outros')
+                if script_path.exists():
+                    script_id = f"{song['id']}_{dj}_outro"
+                    content = script_path.read_text(encoding='utf-8')
+                    scripts_to_audit.append({
+                        "script_id": script_id,
+                        "script_content": content,
+                        "dj": dj,
+                        "content_type": "song_outro",
+                        "song": song
+                    })
+        
+        # Time announcements
+        if "time" in content_types:
+            time_slots = checkpoint.state.get("config", {}).get("time_slots", [])
+            for hour, minute in time_slots:
+                script_path = get_time_script_path(hour, minute, dj)
+                if script_path.exists():
+                    time_id = f"{hour:02d}-{minute:02d}"
+                    script_id = f"{time_id}_{dj}_time"
+                    content = script_path.read_text(encoding='utf-8')
+                    scripts_to_audit.append({
+                        "script_id": script_id,
+                        "script_content": content,
+                        "dj": dj,
+                        "content_type": "time_announcement",
+                        "time_slot": (hour, minute)
+                    })
         
         if not scripts_to_audit:
             logger.info(f"No scripts found for {dj}")
@@ -352,11 +477,19 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
         
         # Run audits for this DJ
         for i, script in enumerate(scripts_to_audit, 1):
-            song = script['song']
+            ctype = script['content_type']
             
-            # Check if already audited
-            audit_path_passed = get_audit_path(song, dj, passed=True)
-            audit_path_failed = get_audit_path(song, dj, passed=False)
+            # Determine audit paths and display name based on content type
+            if ctype == "time_announcement":
+                hour, minute = script['time_slot']
+                audit_path_passed = get_time_audit_path(hour, minute, dj, passed=True)
+                audit_path_failed = get_time_audit_path(hour, minute, dj, passed=False)
+                display_name = f"{hour:02d}:{minute:02d}"
+            else:
+                song = script['song']
+                audit_path_passed = get_audit_path(song, dj, passed=True, content_type=ctype)
+                audit_path_failed = get_audit_path(song, dj, passed=False, content_type=ctype)
+                display_name = song['title']
             
             if audit_path_passed.exists() or audit_path_failed.exists():
                 # Already audited, count it
@@ -364,7 +497,7 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                     total_audit_results["passed"] += 1
                 else:
                     total_audit_results["failed"] += 1
-                logger.debug(f"  [{i}/{len(scripts_to_audit)}] Skipping {song['title']} (already audited)")
+                logger.debug(f"  [{i}/{len(scripts_to_audit)}] Skipping {display_name} (already audited for {ctype})")
                 continue
             
             try:
@@ -373,11 +506,16 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                     script_content=script['script_content'],
                     script_id=script['script_id'],
                     dj=dj,
-                    content_type="song_intro"
+                    content_type=ctype
                 )
                 
-                # Save audit result
-                audit_path = get_audit_path(song, dj, passed=result.passed)
+                # Save audit result (different path for time vs songs)
+                if ctype == "time_announcement":
+                    hour, minute = script['time_slot']
+                    audit_path = get_time_audit_path(hour, minute, dj, passed=result.passed)
+                else:
+                    audit_path = get_audit_path(song, dj, passed=result.passed, content_type=ctype)
+                
                 audit_path.parent.mkdir(parents=True, exist_ok=True)
                 
                 with open(audit_path, 'w', encoding='utf-8') as f:
@@ -394,13 +532,13 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                 
                 if result.passed:
                     total_audit_results["passed"] += 1
-                    logger.info(f"  [{i}/{len(scripts_to_audit)}] ✓ {song['title']} - Score: {result.score:.1f}")
+                    logger.info(f"  [{i}/{len(scripts_to_audit)}] ✓ {display_name} - Score: {result.score:.1f}")
                 else:
                     total_audit_results["failed"] += 1
-                    logger.info(f"  [{i}/{len(scripts_to_audit)}] ✗ {song['title']} - Score: {result.score:.1f}")
+                    logger.info(f"  [{i}/{len(scripts_to_audit)}] ✗ {display_name} - Score: {result.score:.1f}")
             
             except Exception as e:
-                logger.error(f"  [{i}/{len(scripts_to_audit)}] ERROR auditing {song['title']}: {e}")
+                logger.error(f"  [{i}/{len(scripts_to_audit)}] ERROR auditing {display_name}: {e}")
                 total_audit_results["failed"] += 1
     
     # Generate summary
@@ -448,6 +586,13 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
     
     total_regenerated = 0
     
+    # Get content types from checkpoint (needed for time announcements)
+    from pathlib import Path
+    checkpoint_file = DATA_DIR / "pipeline_state.json"
+    checkpoint = PipelineCheckpoint(checkpoint_file)
+    content_types = checkpoint.state.get("config", {}).get("content_types", [])
+    time_slots = checkpoint.state.get("config", {}).get("time_slots", [])
+    
     for retry in range(max_retries):
         # Check if there are any failed scripts across all DJs
         total_failed = sum(
@@ -465,12 +610,24 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
         
         # Process each DJ separately
         for dj in djs:
-            # Identify failed scripts for this DJ
-            failed_scripts = []
+            # Identify failed scripts for this DJ (support intros, outros, and time)
+            failed_scripts = []  # list of {'song': song, 'failed_types': [..]} or {'time_slot': (h,m), 'failed_types': ['time_announcement']}
+            
+            # Check song-based content (intros, outros)
             for song in songs:
-                audit_path_failed = get_audit_path(song, dj, passed=False)
-                if audit_path_failed.exists():
-                    failed_scripts.append(song)
+                failed_types = []
+                if get_audit_path(song, dj, passed=False, content_type='song_intro').exists():
+                    failed_types.append('song_intro')
+                if get_audit_path(song, dj, passed=False, content_type='song_outro').exists():
+                    failed_types.append('song_outro')
+                if failed_types:
+                    failed_scripts.append({'song': song, 'failed_types': failed_types})
+            
+            # Check time announcements
+            if "time" in content_types:
+                for hour, minute in time_slots:
+                    if get_time_audit_path(hour, minute, dj, passed=False).exists():
+                        failed_scripts.append({'time_slot': (hour, minute), 'failed_types': ['time_announcement']})
             
             if not failed_scripts:
                 logger.debug(f"No failed scripts for {dj}")
@@ -479,43 +636,93 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
             logger.info(f"\nRegenerating {len(failed_scripts)} failed scripts for {dj.upper()}...")
             
             # Delete failed scripts and their audits
-            for song in failed_scripts:
-                # Delete script
-                script_path = get_script_path(song, dj)
-                if script_path.exists():
-                    script_path.unlink()
-                
-                # Delete failed audit
-                audit_path_failed = get_audit_path(song, dj, passed=False)
-                if audit_path_failed.exists():
-                    audit_path_failed.unlink()
+            for entry in failed_scripts:
+                for ctype in entry['failed_types']:
+                    if ctype == 'time_announcement':
+                        hour, minute = entry['time_slot']
+                        script_path = get_time_script_path(hour, minute, dj)
+                        if script_path.exists():
+                            script_path.unlink()
+                        audit_path_failed = get_time_audit_path(hour, minute, dj, passed=False)
+                        if audit_path_failed.exists():
+                            audit_path_failed.unlink()
+                    else:
+                        song = entry['song']
+                        if ctype == 'song_intro':
+                            script_path = get_script_path(song, dj, content_type='intros')
+                        else:
+                            script_path = get_script_path(song, dj, content_type='outros')
+                        if script_path.exists():
+                            script_path.unlink()
+                        
+                        audit_path_failed = get_audit_path(song, dj, passed=False, content_type=ctype)
+                        if audit_path_failed.exists():
+                            audit_path_failed.unlink()
             
             # Regenerate scripts for this DJ
             regenerated = 0
-            for i, song in enumerate(failed_scripts, 1):
-                script_path = get_script_path(song, dj)
-                
-                try:
-                    result = pipeline.generate_song_intro(
-                        song_id=song['id'],
-                        artist=song['artist'],
-                        title=song['title'],
-                        dj=dj,
-                        text_only=True
-                    )
-                    
-                    if result.success and result.text:
-                        # Sanitize and truncate
-                        sanitized = sanitize_script(result.text)
-                        truncated = truncate_after_song_intro(sanitized, song['artist'], song['title'])
-                        
-                        if truncated:
-                            script_path.parent.mkdir(parents=True, exist_ok=True)
-                            script_path.write_text(truncated, encoding='utf-8')
-                            regenerated += 1
-                            logger.debug(f"  [{i}/{len(failed_scripts)}] ✓ Regenerated {song['title']}")
-                except Exception as e:
-                    logger.error(f"  [{i}/{len(failed_scripts)}] ✗ Error regenerating {song['title']}: {e}")
+            for i, entry in enumerate(failed_scripts, 1):
+                for ctype in entry['failed_types']:
+                    try:
+                        if ctype == 'time_announcement':
+                            hour, minute = entry['time_slot']
+                            script_path = get_time_script_path(hour, minute, dj)
+                            result = pipeline.generate_time_announcement(
+                                hour=hour,
+                                minute=minute,
+                                dj=dj,
+                                text_only=True
+                            )
+                            
+                            if result.success and result.text:
+                                sanitized = sanitize_script(result.text)
+                                if sanitized:
+                                    script_path.parent.mkdir(parents=True, exist_ok=True)
+                                    script_path.write_text(sanitized, encoding='utf-8')
+                                    regenerated += 1
+                                    logger.debug(f"  [{i}/{len(failed_scripts)}] ✓ Regenerated time {hour:02d}:{minute:02d}")
+                        elif ctype == 'song_intro':
+                            song = entry['song']
+                            script_path = get_script_path(song, dj, content_type='intros')
+                            result = pipeline.generate_song_intro(
+                                song_id=song['id'],
+                                artist=song['artist'],
+                                title=song['title'],
+                                dj=dj,
+                                text_only=True
+                            )
+                            
+                            if result.success and result.text:
+                                # Sanitize and truncate
+                                sanitized = sanitize_script(result.text)
+                                truncated = truncate_after_song_intro(sanitized, song['artist'], song['title'])
+                                
+                                if truncated:
+                                    script_path.parent.mkdir(parents=True, exist_ok=True)
+                                    script_path.write_text(truncated, encoding='utf-8')
+                                    regenerated += 1
+                                    logger.debug(f"  [{i}/{len(failed_scripts)}] ✓ Regenerated intro {song['title']}")
+                        elif ctype == 'song_outro':
+                            song = entry['song']
+                            script_path = get_script_path(song, dj, content_type='outros')
+                            result = pipeline.generate_song_outro(
+                                song_id=song['id'],
+                                artist=song['artist'],
+                                title=song['title'],
+                                dj=dj,
+                                text_only=True
+                            )
+                            
+                            if result.success and result.text:
+                                sanitized = sanitize_script(result.text)
+                                if sanitized:
+                                    script_path.parent.mkdir(parents=True, exist_ok=True)
+                                    script_path.write_text(sanitized, encoding='utf-8')
+                                    regenerated += 1
+                                    logger.debug(f"  [{i}/{len(failed_scripts)}] ✓ Regenerated outro {song['title']}")
+                    except Exception as e:
+                        display_name = f"{entry['time_slot'][0]:02d}:{entry['time_slot'][1]:02d}" if ctype == 'time_announcement' else entry['song']['title']
+                        logger.error(f"  [{i}/{len(failed_scripts)}] ✗ Error regenerating {display_name} ({ctype}): {e}")
             
             logger.info(f"Regenerated {regenerated} scripts for {dj}")
             total_regenerated += regenerated
@@ -533,49 +740,97 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
                 new_passed = 0
                 new_failed = 0
                 
-                for i, song in enumerate(failed_scripts, 1):
-                    script_path = get_script_path(song, dj)
-                    
-                    if not script_path.exists():
-                        continue
-                    
-                    try:
-                        content = script_path.read_text(encoding='utf-8')
-                        script_id = f"{song['id']}_{dj}"
-                        
-                        result = audit_script(
-                            client=client,
-                            script_content=content,
-                            script_id=script_id,
-                            dj=dj,
-                            content_type="song_intro"
-                        )
-                        
-                        # Save audit result
-                        audit_path = get_audit_path(song, dj, passed=result.passed)
-                        audit_path.parent.mkdir(parents=True, exist_ok=True)
-                        
-                        with open(audit_path, 'w', encoding='utf-8') as f:
-                            json.dump({
-                                "script_id": result.script_id,
-                                "dj": result.dj,
-                                "content_type": result.content_type,
-                                "score": result.score,
-                                "passed": result.passed,
-                                "criteria_scores": result.criteria_scores,
-                                "issues": result.issues,
-                                "notes": result.notes
-                            }, f, indent=2, ensure_ascii=False)
-                        
-                        if result.passed:
-                            new_passed += 1
-                            logger.info(f"  [{i}/{len(failed_scripts)}] ✓ {song['title']} - Score: {result.score:.1f}")
+                for i, entry in enumerate(failed_scripts, 1):
+                    for ctype in entry['failed_types']:
+                        if ctype == 'time_announcement':
+                            hour, minute = entry['time_slot']
+                            script_path = get_time_script_path(hour, minute, dj)
+                            
+                            if not script_path.exists():
+                                continue
+                            
+                            try:
+                                content = script_path.read_text(encoding='utf-8')
+                                time_id = f"{hour:02d}-{minute:02d}"
+                                script_id = f"{time_id}_{dj}_time"
+                                
+                                result = audit_script(
+                                    client=client,
+                                    script_content=content,
+                                    script_id=script_id,
+                                    dj=dj,
+                                    content_type=ctype
+                                )
+                                
+                                # Save audit result
+                                audit_path = get_time_audit_path(hour, minute, dj, passed=result.passed)
+                                audit_path.parent.mkdir(parents=True, exist_ok=True)
+                                
+                                with open(audit_path, 'w', encoding='utf-8') as f:
+                                    json.dump({
+                                        "script_id": result.script_id,
+                                        "dj": result.dj,
+                                        "content_type": result.content_type,
+                                        "score": result.score,
+                                        "passed": result.passed,
+                                        "criteria_scores": result.criteria_scores,
+                                        "issues": result.issues,
+                                        "notes": result.notes
+                                    }, f, indent=2, ensure_ascii=False)
+                                
+                                if result.passed:
+                                    new_passed += 1
+                                    logger.info(f"  [{i}/{len(failed_scripts)}] ✓ {hour:02d}:{minute:02d} - Score: {result.score:.1f}")
+                                else:
+                                    new_failed += 1
+                                    logger.debug(f"  [{i}/{len(failed_scripts)}] ✗ {hour:02d}:{minute:02d} - Score: {result.score:.1f}")
+                            
+                            except Exception as e:
+                                logger.error(f"  [{i}/{len(failed_scripts)}] ERROR re-auditing {hour:02d}:{minute:02d}: {e}")
                         else:
-                            new_failed += 1
-                            logger.debug(f"  [{i}/{len(failed_scripts)}] ✗ {song['title']} - Score: {result.score:.1f}")
-                    
-                    except Exception as e:
-                        logger.error(f"  [{i}/{len(failed_scripts)}] ERROR re-auditing {song['title']}: {e}")
+                            song = entry['song']
+                            script_path = get_script_path(song, dj, content_type='intros' if ctype == 'song_intro' else 'outros')
+                        
+                            if not script_path.exists():
+                                continue
+                            
+                            try:
+                                content = script_path.read_text(encoding='utf-8')
+                                script_id = f"{song['id']}_{dj}_intro" if ctype == 'song_intro' else f"{song['id']}_{dj}_outro"
+                                
+                                result = audit_script(
+                                    client=client,
+                                    script_content=content,
+                                    script_id=script_id,
+                                    dj=dj,
+                                    content_type=ctype
+                                )
+                                
+                                # Save audit result
+                                audit_path = get_audit_path(song, dj, passed=result.passed, content_type=ctype)
+                                audit_path.parent.mkdir(parents=True, exist_ok=True)
+                                
+                                with open(audit_path, 'w', encoding='utf-8') as f:
+                                    json.dump({
+                                        "script_id": result.script_id,
+                                        "dj": result.dj,
+                                        "content_type": result.content_type,
+                                        "score": result.score,
+                                        "passed": result.passed,
+                                        "criteria_scores": result.criteria_scores,
+                                        "issues": result.issues,
+                                        "notes": result.notes
+                                    }, f, indent=2, ensure_ascii=False)
+                                
+                                if result.passed:
+                                    new_passed += 1
+                                    logger.info(f"  [{i}/{len(failed_scripts)}] ✓ {song['title']} - Score: {result.score:.1f}")
+                                else:
+                                    new_failed += 1
+                                    logger.debug(f"  [{i}/{len(failed_scripts)}] ✗ {song['title']} - Score: {result.score:.1f}")
+                            
+                            except Exception as e:
+                                logger.error(f"  [{i}/{len(failed_scripts)}] ERROR re-auditing {song['title']}: {e}")
                 
                 logger.info(f"Re-audit complete for {dj}: {new_passed} passed, {new_failed} failed")
         
@@ -606,13 +861,14 @@ def stage_audio(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
     
     checkpoint.mark_stage_started("audio")
     
-    # Collect passed scripts only
+    # Collect passed scripts only (include intros and outros)
     passed_scripts = []
     for dj in djs:
         for song in songs:
-            audit_path = get_audit_path(song, dj, passed=True)
-            if audit_path.exists():
-                passed_scripts.append({"song": song, "dj": dj})
+            if get_audit_path(song, dj, passed=True, content_type='song_intro').exists():
+                passed_scripts.append({"song": song, "dj": dj, "content_type": "song_intro"})
+            if get_audit_path(song, dj, passed=True, content_type='song_outro').exists():
+                passed_scripts.append({"song": song, "dj": dj, "content_type": "song_outro"})
     
     logger.info(f"Generating audio for {len(passed_scripts)} passed scripts...")
     
@@ -623,10 +879,10 @@ def stage_audio(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
     for i, item in enumerate(passed_scripts, 1):
         song = item['song']
         dj = item['dj']
+        ctype = item.get('content_type', 'song_intro')
         
-        script_path = get_script_path(song, dj)
-        audio_path = get_audio_path(song, dj)
-        
+        script_path = get_script_path(song, dj, content_type='outros' if ctype == 'song_outro' else 'intros')
+        audio_path = get_audio_path(song, dj, content_type='outros' if ctype == 'song_outro' else 'intros')        
         # Check if audio already exists
         if audio_path.exists():
             audio_generated += 1
@@ -661,35 +917,61 @@ def stage_audio(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
 # UTILITY FUNCTIONS
 # ============================================================================
 
-def get_script_path(song: Dict, dj: str) -> Path:
-    """Get the path to a script file."""
+def get_script_path(song: Dict, dj: str, content_type: str = "intros") -> Path:
+    """Get the path to a script file for given content type ('intros' or 'outros')."""
     safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in song['artist'])
     safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in song['title'])
     safe_artist = safe_artist.strip().replace(' ', '_')
     safe_title = safe_title.strip().replace(' ', '_')
     folder_name = f"{safe_artist}-{safe_title}"
+    if content_type == 'outros':
+        return GENERATED_DIR / "outros" / dj / folder_name / f"{dj}_outro.txt"
+    # default: intros
     return GENERATED_DIR / "intros" / dj / folder_name / f"{dj}_0.txt"
 
 
-def get_audio_path(song: Dict, dj: str) -> Path:
-    """Get the path to an audio file."""
+def get_audio_path(song: Dict, dj: str, content_type: str = "intros") -> Path:
+    """Get the path to an audio file for given content type ('intros' or 'outros')."""
     safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in song['artist'])
     safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in song['title'])
     safe_artist = safe_artist.strip().replace(' ', '_')
     safe_title = safe_title.strip().replace(' ', '_')
     folder_name = f"{safe_artist}-{safe_title}"
+    if content_type == 'outros':
+        return GENERATED_DIR / "outros" / dj / folder_name / f"{dj}_outro.wav"
+    # default: intros
     return GENERATED_DIR / "intros" / dj / folder_name / f"{dj}_0.wav"
 
 
-def get_audit_path(song: Dict, dj: str, passed: bool) -> Path:
-    """Get the path to an audit result file."""
+def get_audit_path(song: Dict, dj: str, passed: bool, content_type: str = 'song_intro') -> Path:
+    """Get the path to an audit result file for a given content type (e.g., 'song_intro', 'song_outro')."""
     safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in song['artist'])
     safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in song['title'])
     safe_artist = safe_artist.strip().replace(' ', '_')
     safe_title = safe_title.strip().replace(' ', '_')
     folder_name = f"{safe_artist}-{safe_title}"
     status_folder = "passed" if passed else "failed"
-    return DATA_DIR / "audit" / dj / status_folder / f"{folder_name}_audit.json"
+    # Include content type in audit filename to avoid collisions (intro vs outro)
+    return DATA_DIR / "audit" / dj / status_folder / f"{folder_name}_{content_type}_audit.json"
+
+
+def get_time_script_path(hour: int, minute: int, dj: str) -> Path:
+    """Get the path to a time announcement script."""
+    time_id = f"{hour:02d}-{minute:02d}"
+    return GENERATED_DIR / "time" / dj / time_id / f"{dj}_0.txt"
+
+
+def get_time_audio_path(hour: int, minute: int, dj: str) -> Path:
+    """Get the path to a time announcement audio file."""
+    time_id = f"{hour:02d}-{minute:02d}"
+    return GENERATED_DIR / "time" / dj / time_id / f"{dj}_0.wav"
+
+
+def get_time_audit_path(hour: int, minute: int, dj: str, passed: bool) -> Path:
+    """Get the path to a time announcement audit result file."""
+    time_id = f"{hour:02d}-{minute:02d}"
+    status_folder = "passed" if passed else "failed"
+    return DATA_DIR / "audit" / dj / status_folder / f"{time_id}_time_announcement_audit.json"
 
 
 class FakeAuditorClient:
@@ -768,15 +1050,40 @@ def run_pipeline(args):
         return 1
     
     songs = load_catalog_songs(catalog_path, limit=limit, random_sample=args.random)
+    
+    # Prepare time slots if --time is specified
+    time_slots = []
+    if args.time or (args.resume and 'time' in checkpoint.state.get('config', {}).get('content_types', [])):
+        # Generate all 48 time slots (every 30 minutes)
+        all_time_slots = [(h, m) for h in range(24) for m in [0, 30]]
+        
+        if limit and args.time:  # Only apply limit if explicitly using --time (not in resume)
+            # For predictable testing, take first N slots
+            time_slots = all_time_slots[:limit]
+        else:
+            time_slots = all_time_slots
+    
     logger.info(f"Loaded {len(songs)} songs from catalog")
+    if time_slots:
+        logger.info(f"Time slots: {len(time_slots)}")
     logger.info(f"DJs: {', '.join(djs)}")
     
     # Store configuration in checkpoint
+    content_types = []
+    if args.intros:
+        content_types.append("intros")
+    if args.outros:
+        content_types.append("outros")
+    if args.time:
+        content_types.append("time")
+    if args.all_content:
+        content_types = ["intros", "outros", "time", "weather"]
     checkpoint.state["config"] = {
-        "content_types": ["intros"] if args.intros or args.resume else [],
+        "content_types": content_types if (content_types or args.resume) else [],
         "djs": djs,
         "song_limit": len(songs),
-        "test_mode": test_mode
+        "test_mode": test_mode,
+        "time_slots": time_slots
     }
     checkpoint.save()
     
@@ -914,8 +1221,8 @@ Examples:
     
     # Content type selection
     parser.add_argument('--intros', action='store_true', help='Generate song intros')
-    parser.add_argument('--outros', action='store_true', help='Generate song outros (not yet implemented)')
-    parser.add_argument('--time', action='store_true', help='Generate time announcements (not yet implemented)')
+    parser.add_argument('--outros', action='store_true', help='Generate song outros')
+    parser.add_argument('--time', action='store_true', help='Generate time announcements (48 slots, every 30 min). With --limit N, generates first N time slots.')
     parser.add_argument('--weather', action='store_true', help='Generate weather announcements (not yet implemented)')
     parser.add_argument('--all-content', action='store_true', help='Generate everything (not yet implemented)')
     
@@ -944,8 +1251,9 @@ Examples:
         if not args.intros and not args.outros and not args.time and not args.weather and not args.all_content:
             parser.error('Must specify at least one content type (--intros, --outros, --time, --weather, or --all-content)')
     
-    if args.outros or args.time or args.weather or args.all_content:
-        parser.error('Currently only --intros is supported')
+    # Block unsupported content types (weather is not yet implemented)
+    if args.weather or args.all_content:
+        parser.error('Currently only --intros, --outros, and --time are supported')
     
     # Set logging level
     if args.verbose:

@@ -1,0 +1,20 @@
+{
+  "script_id": "00-30_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 7.1,
+  "passed": false,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 1.0,
+    "natural_flow": 8.0,
+    "brevity": 5.0
+  },
+  "issues": [
+    "Too long and rambling, should be concise.",
+    "Some modern slang used ('incomparable').",
+    "Mentioned Elvis Presley, which is forbidden."
+  ],
+  "notes": "Nice voice matching for Mr. NV, but too long and included a song reference."
+}

@@ -34,14 +34,14 @@ class TestAuditScript:
         assert 1 <= result.score <= 10
 
     def test_passed_reflects_threshold(self, mock_llm_auditor):
-        """passed=True if score >= 6."""
+        """passed=True if score >= 7.5."""
         result = audit_script(
             client=None,
             script_content="Test script",
             script_id="test_1",
             dj="julie",
         )
-        assert result.passed == (result.score >= 6)
+        assert result.passed == (result.score >= 7.5)
 
     def test_handles_malformed_json(self, mock_llm_bad_json):
         """Must handle non-JSON response gracefully."""

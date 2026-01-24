@@ -1,31 +1,46 @@
 {
-  "timestamp": "2026-01-24T10:55:34.567491",
-  "run_id": "20260124_105534",
+  "timestamp": "2026-01-24T14:45:42.210836",
+  "run_id": "20260124_144542",
   "config": {
     "content_types": [
-      "intros"
+      "time"
     ],
     "djs": [
-      "julie"
+      "julie",
+      "mr_new_vegas"
     ],
     "song_limit": 3,
-    "test_mode": false
+    "test_mode": false,
+    "time_slots": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        30
+      ],
+      [
+        1,
+        0
+      ]
+    ]
   },
   "stages": {
     "generate": {
       "status": "completed",
-      "completed_at": "2026-01-24T10:55:49.990192",
-      "scripts_generated": 3
+      "completed_at": "2026-01-24T14:46:16.693838",
+      "scripts_generated": 6
     },
     "audit": {
       "status": "completed",
-      "completed_at": "2026-01-24T10:56:12.181701",
-      "scripts_audited": 3,
-      "passed": 3,
-      "failed": 0
+      "completed_at": "2026-01-24T14:47:06.222540",
+      "scripts_audited": 6,
+      "passed": 0,
+      "failed": 6
     },
     "audio": {
-      "status": "in_progress",
+      "status": "not_started",
       "completed_at": null,
       "audio_files_generated": 0
     }

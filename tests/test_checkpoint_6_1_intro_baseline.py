@@ -62,6 +62,15 @@ def test_checkpoint_6_1_intro_baseline_mock(tmp_path):
 
     checkpoint_file = tmp_data / "pipeline_state.json"
     checkpoint = gwa.PipelineCheckpoint(checkpoint_file)
+    
+    # Initialize checkpoint config with content_types (required by stage_generate)
+    checkpoint.state["config"] = {
+        "content_types": ["intros"],
+        "djs": ["julie"],
+        "song_limit": len(songs),
+        "test_mode": True
+    }
+    checkpoint.save()
 
     # Use FakeGenerationPipeline that fails first 2 attempts per script
     pipeline = FakeGenerationPipeline(output_dir=tmp_generated, fail_first_n=2)
