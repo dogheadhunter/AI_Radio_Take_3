@@ -5,6 +5,7 @@ from typing import Iterator, Callable, Optional, List, Dict, Any
 from src.ai_radio.generation.llm_client import LLMClient, generate_text
 from src.ai_radio.generation.tts_client import TTSClient, generate_audio
 from src.ai_radio.generation.prompts import build_song_intro_prompt, build_time_announcement_prompt, build_weather_prompt, build_song_outro_prompt, DJ
+from src.ai_radio.generation.lyrics_parser import match_lyrics_to_catalog, extract_lyrics_context
 from src.ai_radio.utils.errors import GenerationError
 from src.ai_radio.config import VOICE_REFERENCES_DIR
 
@@ -33,7 +34,7 @@ class BatchProgress:
 
 
 class GenerationPipeline:
-    def __init__(self, output_dir: Optional[Path] = None, prompt_version: str = "v1"):
+    def __init__(self, output_dir: Optional[Path] = None, prompt_version: str = "v1", lyrics_dir: Optional[Path] = None):
         self.output_dir = output_dir or Path("data/generated")
         self._llm_loaded = False
         self._tts_loaded = False
@@ -41,6 +42,22 @@ class GenerationPipeline:
         self._tts = TTSClient()
         # Prompt version: 'v1' (legacy) or 'v2' (improved templates)
         self.prompt_version = prompt_version
+
+        # Lyrics support: optional directory with parsed lyric files
+        self._lyrics_map = {}
+        if lyrics_dir is not None and lyrics_dir.exists():
+            # Attempt to load catalog to match lyrics against
+            try:
+                import json
+                catalog_path = Path("data/catalog.json")
+                if catalog_path.exists():
+                    catalog = json.loads(catalog_path.read_text(encoding='utf-8'))
+                else:
+                    catalog = []
+                self._lyrics_map = match_lyrics_to_catalog(lyrics_dir, catalog)
+            except Exception:
+                # Fail gracefully - leave empty mapping
+                self._lyrics_map = {}
 
     def _make_song_folder(self, song_id: str, artist: str, title: str, dj: str) -> Path:
         """Create a human-readable folder for this song's generated content, organized by DJ."""
@@ -134,7 +151,16 @@ class GenerationPipeline:
                         progress_callback(BatchProgress(total=total, completed=completed, failed=failed, current_song=current_song))
                     continue
                 
-                result = self.generate_song_intro(s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, text_only=True)
+                # Include lyrics context when available
+                lyrics_ctx = None
+                ldata = self._lyrics_map.get(str(s.get("id")))
+                if ldata:
+                    try:
+                        lyrics_ctx = extract_lyrics_context(ldata)
+                    except Exception:
+                        lyrics_ctx = None
+
+                result = self.generate_song_intro(s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, text_only=True, lyrics_context=lyrics_ctx)
                 if result.success:
                     completed += 1
                 else:
@@ -165,7 +191,16 @@ class GenerationPipeline:
                     yield res
                     continue
                 
-                result = self.generate_song_intro(s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, audio_only=True)
+                # Include lyrics context when available
+                lyrics_ctx = None
+                ldata = self._lyrics_map.get(str(s.get("id")))
+                if ldata:
+                    try:
+                        lyrics_ctx = extract_lyrics_context(ldata)
+                    except Exception:
+                        lyrics_ctx = None
+
+                result = self.generate_song_intro(s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, audio_only=True, lyrics_context=lyrics_ctx)
                 if result.success:
                     completed += 1
                 else:
@@ -196,7 +231,16 @@ class GenerationPipeline:
                         yield res
                         continue
 
-                result = self.generate_song_intro(s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj)
+                # Include lyrics context when available
+                lyrics_ctx = None
+                ldata = self._lyrics_map.get(str(s.get("id")))
+                if ldata:
+                    try:
+                        lyrics_ctx = extract_lyrics_context(ldata)
+                    except Exception:
+                        lyrics_ctx = None
+
+                result = self.generate_song_intro(s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, lyrics_context=lyrics_ctx)
                 if result.success:
                     completed += 1
                 else:
@@ -379,9 +423,9 @@ class GenerationPipeline:
             return GenerationResult(song_id=song_id, dj=dj, text=None, audio_path=None, success=False, error=str(exc))
 
 
-def generate_song_intro(pipeline: GenerationPipeline, song_id: str, artist: str, title: str, dj: str) -> GenerationResult:
+def generate_song_intro(pipeline: GenerationPipeline, song_id: str, artist: str, title: str, dj: str, lyrics_context: str = None) -> GenerationResult:
     """Module-level helper function that delegates to a pipeline instance."""
-    return pipeline.generate_song_intro(song_id=song_id, artist=artist, title=title, dj=dj)
+    return pipeline.generate_song_intro(song_id=song_id, artist=artist, title=title, dj=dj, lyrics_context=lyrics_context)
 
 
 def generate_batch_intros(

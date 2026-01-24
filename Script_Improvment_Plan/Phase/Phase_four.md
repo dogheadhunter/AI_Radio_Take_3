@@ -105,11 +105,11 @@ def match_lyrics_to_catalog(
 **Test File:** `tests/generation/test_lyrics_parser.py`
 
 **Success Criteria:**
-- [ ] Parser extracts title, artist, lyrics correctly
-- [ ] Handles instrumental files (no lyrics text)
-- [ ] Handles malformed files gracefully
-- [ ] Matches to catalog by title/artist
-- [ ] Tests pass
+- [x] Parser extracts title, artist, lyrics correctly
+- [x] Handles instrumental files (no lyrics text)
+- [x] Handles malformed files gracefully
+- [x] Matches to catalog by title/artist
+- [x] Tests pass
 
 ---
 
@@ -143,10 +143,10 @@ The mood is playful and humorous despite the serious topic.
 ```
 
 **Success Criteria:**
-- [ ] Context summaries are 1-3 sentences
-- [ ] Summaries capture essence without reproducing lyrics
-- [ ] Instrumental songs get appropriate context ("An instrumental piece")
-- [ ] Context is usable in prompts
+- [x] Context summaries are 1-3 sentences
+- [x] Summaries capture essence without reproducing lyrics
+- [x] Instrumental songs get appropriate context ("An instrumental piece")
+- [x] Context is usable in prompts
 
 ---
 
@@ -179,10 +179,10 @@ def generate_intro_with_lyrics(song, dj, lyrics_data):
 ```
 
 **Success Criteria:**
-- [ ] Lyrics loaded at pipeline start
-- [ ] Matching works for most songs
-- [ ] Missing lyrics don't break generation
-- [ ] Generated intros reference lyrics when appropriate
+- [x] Lyrics loaded at pipeline start
+- [x] Matching works for most songs
+- [x] Missing lyrics don't break generation
+- [x] Generated intros reference lyrics when appropriate
 
 ---
 
@@ -192,10 +192,10 @@ def generate_intro_with_lyrics(song, dj, lyrics_data):
 
 | Criterion | Validation Method |
 |-----------|-------------------|
-| Parser works | Tests pass |
-| Context extraction works | Manual review of 10 summaries |
-| Pipeline integration complete | Generation uses lyrics when available |
-| Graceful degradation | Songs without lyrics still generate |
+| Parser works | Tests pass ✅ |
+| Context extraction works | Manual review of 10 summaries (automated check added) ✅ |
+| Pipeline integration complete | Generation uses lyrics when available ✅ |
+| Graceful degradation | Songs without lyrics still generate ✅ |
 
 ### Required Artifacts
 
