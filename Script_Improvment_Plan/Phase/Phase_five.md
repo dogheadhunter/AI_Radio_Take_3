@@ -70,10 +70,10 @@ Stage 3: GENERATE AUDIO (passed only)
 **Output:** `docs/script_improvement/PIPELINE_ARCHITECTURE.md`
 
 **Success Criteria:**
-- [ ] All stages documented
-- [ ] GPU memory transitions clear
-- [ ] Checkpoint/resume strategy defined
-- [ ] Error handling planned for each stage
+- [x] All stages documented
+- [x] GPU memory transitions clear
+- [x] Checkpoint/resume strategy defined
+- [x] Error handling planned for each stage
 
 ---
 
@@ -112,11 +112,11 @@ Usage:
 ```
 
 **Success Criteria:**
-- [ ] Script generation works in batch
-- [ ] Progress displayed during generation
-- [ ] Checkpoint saved after completion
-- [ ] Writer model properly unloaded
-- [ ] `--limit` flag works for testing
+- [x] Script generation works in batch
+- [x] Progress displayed during generation
+- [x] Checkpoint saved after completion
+- [x] Writer model properly unloaded
+- [x] `--limit` flag works for testing
 
 ---
 
@@ -167,11 +167,11 @@ data/audit/
 ```
 
 **Success Criteria:**
-- [ ] Auditor model properly loaded/unloaded
-- [ ] Results saved to correct folders
-- [ ] Summary generated with statistics
-- [ ] Common issues identified
-- [ ] Checkpoint updated after completion
+- [x] Auditor model properly loaded/unloaded
+- [x] Results saved to correct folders
+- [x] Summary generated with statistics
+- [x] Common issues identified
+- [x] Checkpoint updated after completion
 
 ---
 
@@ -187,11 +187,11 @@ data/audit/
 5. Track completion
 
 **Success Criteria:**
-- [ ] Only passed scripts get audio
-- [ ] Audio saved to `data/generated/intros/` etc.
-- [ ] Failed scripts remain as text only
-- [ ] Progress tracking works
-- [ ] Resume capability for interrupted audio generation
+- [x] Only passed scripts get audio
+- [x] Audio saved to `data/generated/intros/` etc.
+- [x] Failed scripts remain as text only
+- [x] Progress tracking works
+- [x] Resume capability for interrupted audio generation
 
 ---
 
@@ -229,10 +229,36 @@ data/audit/
 ```
 
 **Success Criteria:**
-- [ ] All options implemented
-- [ ] `--test` and `--same-set` work for iteration
-- [ ] `--resume` correctly skips completed work
-- [ ] Help text is clear and complete
+- [x] All options implemented
+- [x] `--test` and `--same-set` work for iteration
+- [x] `--resume` correctly skips completed work
+- [x] Help text is clear and complete
+
+---
+
+## Phase 5 Enhancements (January 24, 2026)
+
+### Additional Features Beyond Original Spec
+
+| Enhancement | Status | Description |
+|-------------|--------|-------------|
+| Automatic Regeneration Loop | ✅ COMPLETE | Up to 5 retries for failed scripts, achieves 100% pass rate through iterative refinement |
+| DJ-Separated Audit Processing | ✅ COMPLETE | Each DJ audited separately to prevent cross-contamination |
+| DJ-Separated Regeneration | ✅ COMPLETE | Failed scripts regenerated per-DJ to maintain voice consistency |
+| Raised Quality Threshold | ✅ COMPLETE | Increased from 6.0 to 7.5 for better quality control |
+| Improved Sanitization | ✅ COMPLETE | Fixed missing spaces after punctuation, UTF-8 mojibake handling |
+| Early Exit Optimization | ✅ COMPLETE | Regeneration loop exits early when all scripts pass |
+
+**Test Results:**
+- Initial audit: 50% pass rate (10/20 scripts)
+- After 3 regeneration retries: 100% pass rate (20/20 scripts)
+- Julie: 70% initial → 100% after 2 retries
+- Mr. New Vegas: 30% initial → 100% after 3 retries
+
+**Git Commits:**
+- `feat: add automatic regeneration loop with DJ-separated processing` (6013bca)
+- `fix: improve sanitize_script to add spaces after punctuation and handle mojibake` (e79634e)
+- `fix: raise audit pass threshold from 6.0 to 7.5` (196b98e)
 
 ---
 
@@ -240,16 +266,16 @@ data/audit/
 
 ### All Criteria Must Pass
 
-| Criterion | Validation Method |
-|-----------|-------------------|
-| Pipeline architecture documented | `PIPELINE_ARCHITECTURE.md` exists |
-| Generate stage works | `--stage generate` completes |
-| Audit stage works | `--stage audit` completes |
-| Audio stage works | `--stage audio` completes |
-| Full pipeline works | Full run with `--limit 10` |
-| Resume works | Interrupt and resume successfully |
-| GPU memory managed | No OOM errors, models unload properly |
-| Test mode works | `--test --same-set` reproduces results |
+| Criterion | Validation Method | Status |
+|-----------|-------------------|--------|
+| Pipeline architecture documented | `PIPELINE_ARCHITECTURE.md` exists | ✅ PASS |
+| Generate stage works | `--stage generate` completes | ✅ PASS |
+| Audit stage works | `--stage audit` completes | ✅ PASS |
+| Audio stage works | `--stage audio` completes | ✅ PASS |
+| Full pipeline works | Full run with `--limit 10` | ✅ PASS |
+| Resume works | Interrupt and resume successfully | ✅ PASS |
+| GPU memory managed | No OOM errors, models unload properly | ✅ PASS |
+| Test mode works | `--test --same-set` reproduces results | ✅ PASS |
 
 ### Required Artifacts
 
@@ -270,9 +296,13 @@ Expected outcome:
 - 16-20 scripts pass audit (80%+ pass rate)
 - 16-20 audio files generated
 
-**Git Commit:** `feat(generation): add complete batch pipeline`
+**Git Commit:** `8f1a5b8 - feat(generation): complete Phase 5 batch pipeline with checkpoint system` ✅
 
-**Git Tag:** `v0.9.5-pipeline`
+**Git Tag:** `v0.9.5-pipeline` ✅
+
+**Audit Report:** [Phase 5 Audit Report](../../docs/audits/Phase_5_Audit_Report.md) ✅
+
+**Phase Status:** ✅ **COMPLETE - ALL GATES PASSED**
 
 ---
 
@@ -281,6 +311,8 @@ Expected outcome:
 | Date | Changes |
 |------|---------|
 | 2026-01-23 | Phase 5 specification created |
+| 2026-01-24 | Phase 5 enhancements implemented (regeneration loop, raised threshold) |
+| 2026-01-24 | Phase 5 audit completed - ALL CHECKPOINTS VERIFIED |
 
 ---
 ---
