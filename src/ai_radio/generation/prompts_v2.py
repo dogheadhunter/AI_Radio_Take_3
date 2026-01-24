@@ -304,28 +304,52 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
 
 
 def build_weather_prompt_v2(dj: DJ, weather_summary: str, hour: Optional[int] = None) -> Dict[str, str]:
-    # Use authentic-style examples matching character voices
-    if dj == DJ.JULIE:
-        examples = [
-            "It's a sunny morning out there, friends.",
-            "Well, looks like we've got some clouds rolling in this afternoon.",
-            "Just a heads up, it's gonna be a chilly evening."
-        ]
-        voice = "Friendly, informative, warm, conversational."
+    """Weather announcement prompt (2-3 sentences, Fallout wasteland weather)."""
+    
+    # Determine time of day context
+    if hour is not None:
+        if 5 <= hour < 12:
+            time_context = "morning"
+        elif 12 <= hour < 17:
+            time_context = "afternoon"  
+        elif 17 <= hour < 21:
+            time_context = "evening"
+        else:
+            time_context = "night"
     else:
-        examples = [
-            "Clear skies for the evening, ladies and gentlemen.",
-            "We've got a brisk afternoon ahead, New Vegas.",
-            "Late showers expected, but we'll clear out by dawn."
-        ]
-        voice = "Suave, dramatic, vivid, showman-like."
+        time_context = None
+    
+    if dj == DJ.JULIE:
+        system = f"""You are Julie, the friendly DJ from Appalachia Radio (Fallout 76).
 
-    system = _build_system_prompt(dj, examples, voice)
+VOICE: Casual, warm, conversational, optimistic despite the wasteland.
 
-    time_note = f" (for hour {hour:02d})" if hour is not None else ""
-    user = (
-        f"Weather summary: {weather_summary}{time_note}\n"
-        "Write a 2-3 sentence weather announcement that sounds like you're speaking directly to your radio audience."
-    )
+EXAMPLES:
+- "Well folks, looks like we've got clear skies this morning. Should be a nice day out there in the wasteland."
+- "Just a heads up, there's a rad storm rolling in this afternoon. Stay safe out there, friends."
+- "Chilly evening ahead, so bundle up if you're headin' out. Stay warm, everybody."
+"""
+    else:
+        system = f"""You are Mr. New Vegas, the smooth DJ from Radio New Vegas (Fallout: New Vegas).
 
+VOICE: Suave, polished, dramatic, vivid descriptions.
+
+EXAMPLES:
+- "Clear desert skies this morning, ladies and gentlemen. Perfect weather for the jewel of the Mojave."
+- "Dust storm moving in this afternoon, New Vegas. Keep those windows sealed tight."
+- "Cool evening ahead with a gentle breeze. Romantic weather for a stroll down the Strip."
+"""
+    
+    time_str = f" ({time_context})" if time_context else ""
+    user = f"""Announce the weather: {weather_summary}{time_str}.
+
+RULES:
+- 2-3 sentences ONLY
+- Describe the weather naturally in character
+- Optional: brief safety advice or wasteland context
+- NO specific artist names or song titles
+- NO dates, years, or timestamps
+- Just the announcement, nothing else
+"""
+    
     return {"system": system, "user": user}

@@ -232,6 +232,36 @@ def validate_time_announcement(text: str) -> tuple:
     return True, "OK"
 
 
+def validate_weather_announcement(text: str) -> tuple:
+    """Rule-based validation for weather announcements.
+    
+    Returns (passed, reason) tuple.
+    """
+    if not text or not text.strip():
+        return False, "Empty script"
+    
+    text = text.strip()
+    word_count = len(text.split())
+    
+    # Length check: 2-3 sentences (20-60 words)
+    if word_count < 10:
+        return False, f"Too short ({word_count} words, min 10)"
+    
+    if word_count > 80:
+        return False, f"Too long ({word_count} words, max 80)"
+    
+    # Check for specific artist/song patterns (shouldn't be in weather)
+    if re.search(r'\bby\s+[A-Z][a-z]+\s+[A-Z]', text):
+        return False, "Contains likely artist reference"
+    
+    # Pattern: explicit labels
+    if re.search(r'[Aa]rtist:|[Tt]itle:|[Ss]ong:', text):
+        return False, "Contains explicit song/artist labels"
+    
+    # All checks passed
+    return True, "OK"
+
+
 def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
     """Truncate any text that comes after the song introduction."""
     # Validate artist name appears correctly (catch typos/truncations)
@@ -419,6 +449,59 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
                     except Exception as e:
                         logger.error(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} - Error: {e}")
     
+    # Weather announcements (if requested)
+    if "weather" in content_types:
+        from src.ai_radio.config import WEATHER_TIMES
+        
+        # Hardcoded test weather data for testing
+        SAMPLE_WEATHER = [
+            "Clear skies, temperature around 75 degrees",
+            "Partly cloudy with a chance of radiation showers",
+            "Dust storm moving in from the wasteland",
+        ]
+        
+        logger.info(f"\nGenerating weather announcements for {len(WEATHER_TIMES)} slots...")
+        
+        for dj in djs:
+            logger.info(f"\nGenerating weather announcements for {dj.upper()}...")
+            
+            for i, hour in enumerate(WEATHER_TIMES, 1):
+                script_path = get_weather_script_path(hour, dj)
+                if script_path.exists():
+                    logger.debug(f"  [{i}/{len(WEATHER_TIMES)}] Skipping {hour:02d}:00 (already exists)")
+                    total_scripts += 1
+                else:
+                    # Use hardcoded weather data cycling through the samples
+                    weather_summary = SAMPLE_WEATHER[i % len(SAMPLE_WEATHER)]
+                    
+                    try:
+                        result = pipeline.generate_weather_announcement(
+                            hour=hour,
+                            minute=0,  # Weather announcements are on the hour
+                            weather_data={'summary': weather_summary},
+                            dj=dj,
+                            text_only=True
+                        )
+                        
+                        if result.success and result.text:
+                            # Sanitize the script (weather-specific)
+                            sanitized = sanitize_script(result.text, content_type="weather")
+                            
+                            # Use dedicated weather validation function
+                            passed, reason = validate_weather_announcement(sanitized)
+                            
+                            if passed:
+                                script_path.parent.mkdir(parents=True, exist_ok=True)
+                                script_path.write_text(sanitized, encoding='utf-8')
+                                total_scripts += 1
+                                logger.info(f"  [{i}/{len(WEATHER_TIMES)}] ✓ weather {hour:02d}:00")
+                            else:
+                                logger.warning(f"  [{i}/{len(WEATHER_TIMES)}] ✗ weather {hour:02d}:00 ({reason})")
+                        else:
+                            logger.warning(f"  [{i}/{len(WEATHER_TIMES)}] ✗ weather {hour:02d}:00 (generation failed)")
+                    except Exception as e:
+                        logger.error(f"  [{i}/{len(WEATHER_TIMES)}] ✗ weather {hour:02d}:00 - Error: {e}")
+    
     checkpoint.mark_stage_completed("generate", scripts_generated=total_scripts)
     logger.info(f"\n✓ Stage 1 complete: {total_scripts} scripts generated")
     return total_scripts
@@ -496,6 +579,23 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                         "time_slot": (hour, minute)
                     })
         
+        # Weather announcements
+        if "weather" in content_types:
+            from src.ai_radio.config import WEATHER_TIMES
+            for hour in WEATHER_TIMES:
+                script_path = get_weather_script_path(hour, dj)
+                if script_path.exists():
+                    time_id = f"{hour:02d}-00"
+                    script_id = f"{time_id}_{dj}_weather"
+                    content = script_path.read_text(encoding='utf-8')
+                    scripts_to_audit.append({
+                        "script_id": script_id,
+                        "script_content": content,
+                        "dj": dj,
+                        "content_type": "weather_announcement",
+                        "weather_hour": hour
+                    })
+        
         if not scripts_to_audit:
             logger.info(f"No scripts found for {dj}")
             continue
@@ -510,6 +610,11 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                 audit_path_passed = get_time_audit_path(hour, minute, dj, passed=True)
                 audit_path_failed = get_time_audit_path(hour, minute, dj, passed=False)
                 display_name = f"{hour:02d}:{minute:02d}"
+            elif ctype == "weather_announcement":
+                hour = script['weather_hour']
+                audit_path_passed = get_weather_audit_path(hour, dj, passed=True)
+                audit_path_failed = get_weather_audit_path(hour, dj, passed=False)
+                display_name = f"{hour:02d}:00"
             else:
                 song = script['song']
                 audit_path_passed = get_audit_path(song, dj, passed=True, content_type=ctype)
@@ -534,10 +639,13 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
                     content_type=ctype
                 )
                 
-                # Save audit result (different path for time vs songs)
+                # Save audit result (different path for time/weather vs songs)
                 if ctype == "time_announcement":
                     hour, minute = script['time_slot']
                     audit_path = get_time_audit_path(hour, minute, dj, passed=result.passed)
+                elif ctype == "weather_announcement":
+                    hour = script['weather_hour']
+                    audit_path = get_weather_audit_path(hour, dj, passed=result.passed)
                 else:
                     audit_path = get_audit_path(song, dj, passed=result.passed, content_type=ctype)
                 
@@ -999,6 +1107,25 @@ def get_time_audit_path(hour: int, minute: int, dj: str, passed: bool) -> Path:
     return DATA_DIR / "audit" / dj / status_folder / f"{time_id}_time_announcement_audit.json"
 
 
+def get_weather_script_path(hour: int, dj: str) -> Path:
+    """Get the path to a weather announcement script."""
+    time_id = f"{hour:02d}-00"
+    return GENERATED_DIR / "weather" / dj / time_id / f"{dj}_0.txt"
+
+
+def get_weather_audio_path(hour: int, dj: str) -> Path:
+    """Get the path to a weather announcement audio file."""
+    time_id = f"{hour:02d}-00"
+    return GENERATED_DIR / "weather" / dj / time_id / f"{dj}_0.wav"
+
+
+def get_weather_audit_path(hour: int, dj: str, passed: bool) -> Path:
+    """Get the path to a weather announcement audit result file."""
+    time_id = f"{hour:02d}-00"
+    status_folder = "passed" if passed else "failed"
+    return DATA_DIR / "audit" / dj / status_folder / f"{time_id}_weather_announcement_audit.json"
+
+
 class FakeAuditorClient:
     """Simple fake client for test mode."""
     def generate(self, prompt: str, *args, **kwargs) -> str:
@@ -1101,6 +1228,8 @@ def run_pipeline(args):
         content_types.append("outros")
     if args.time:
         content_types.append("time")
+    if args.weather:
+        content_types.append("weather")
     if args.all_content:
         content_types = ["intros", "outros", "time", "weather"]
     checkpoint.state["config"] = {
@@ -1248,7 +1377,7 @@ Examples:
     parser.add_argument('--intros', action='store_true', help='Generate song intros')
     parser.add_argument('--outros', action='store_true', help='Generate song outros')
     parser.add_argument('--time', action='store_true', help='Generate time announcements (48 slots, every 30 min). With --limit N, generates first N time slots.')
-    parser.add_argument('--weather', action='store_true', help='Generate weather announcements (not yet implemented)')
+    parser.add_argument('--weather', action='store_true', help='Generate weather announcements (3 slots: 6 AM, 12 PM, 5 PM)')
     parser.add_argument('--all-content', action='store_true', help='Generate everything (not yet implemented)')
     
     # DJ selection
@@ -1276,9 +1405,9 @@ Examples:
         if not args.intros and not args.outros and not args.time and not args.weather and not args.all_content:
             parser.error('Must specify at least one content type (--intros, --outros, --time, --weather, or --all-content)')
     
-    # Block unsupported content types (weather is not yet implemented)
-    if args.weather or args.all_content:
-        parser.error('Currently only --intros, --outros, and --time are supported')
+    # Block unsupported content types (only --all-content not yet implemented)
+    if args.all_content:
+        parser.error('Currently only --intros, --outros, --time, and --weather are supported')
     
     # Set logging level
     if args.verbose:

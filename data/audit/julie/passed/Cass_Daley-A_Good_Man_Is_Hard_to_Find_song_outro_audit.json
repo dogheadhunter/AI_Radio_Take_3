@@ -5,12 +5,12 @@
   "score": 9.25,
   "passed": true,
   "criteria_scores": {
-    "character_voice": 8.0,
+    "character_voice": 9.0,
     "era_appropriateness": 10.0,
     "forbidden_elements": 10.0,
-    "natural_flow": 9.0,
+    "natural_flow": 7.0,
     "past_tense_usage": 10.0
   },
   "issues": [],
-  "notes": "The script is in Julie's voice and has a warm, hopeful tone. It uses appropriate modern American slang and avoids any anachronisms or references to the wrong era. There are no forbidden elements like emojis, dates, or TTS-breaking punctuation. The natural flow of the script is smooth and well-structured, using past tense as required."
+  "notes": ""
 }

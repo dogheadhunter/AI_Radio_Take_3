@@ -216,19 +216,9 @@ def test_resume_with_outros(clean_outro_data):
         f"Should indicate stages were skipped. Output: {output}"
 
 
-def test_weather_and_all_content_still_blocked():
-    """Test that --weather and --all-content are still blocked (--time is now enabled)."""
-    # Note: --time is now enabled (Checkpoint 6.5)
-    
-    # Test --weather
-    result_weather = subprocess.run(
-        [sys.executable, "scripts/generate_with_audit.py", "--weather", "--dj", "julie"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True
-    )
-    assert result_weather.returncode != 0, "--weather should be blocked"
-    assert "only --intros, --outros, and --time are supported" in result_weather.stderr
+def test_all_content_still_blocked():
+    """Test that --all-content is still blocked (--time and --weather are now enabled)."""
+    # Note: --time and --weather are now enabled (Checkpoints 6.5 and 6.6)
     
     # Test --all-content
     result_all = subprocess.run(
@@ -238,7 +228,7 @@ def test_weather_and_all_content_still_blocked():
         text=True
     )
     assert result_all.returncode != 0, "--all-content should be blocked"
-    assert "only --intros, --outros, and --time are supported" in result_all.stderr
+    assert "only --intros, --outros, --time, and --weather are supported" in result_all.stderr
 
 
 if __name__ == "__main__":

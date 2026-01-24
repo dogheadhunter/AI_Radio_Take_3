@@ -69,10 +69,40 @@ Respond with ONLY valid JSON:
     return prompt
 
 
+def _build_weather_audit_prompt(script_content: str, dj: str) -> str:
+    """Simplified audit prompt for weather announcements.
+    
+    Weather announcements check:
+    1. Character voice
+    2. Natural flow
+    3. Appropriate length (2-3 sentences)
+    4. Mentions the weather
+    """
+    dj_desc = "Julie (casual, warm, friendly)" if dj.lower() == "julie" else "Mr. New Vegas (smooth, suave, polished)"
+    
+    prompt = f"""Evaluate this weather announcement for {dj_desc}.
+
+Script: "{script_content}"
+
+Score these 4 criteria (1-10 each):
+1. character_voice: Does it sound like {dj}? (casual/warm for Julie, smooth/suave for Mr. NV)
+2. natural_flow: Does it sound natural and conversational?
+3. length: Is it appropriate length (2-3 sentences, ~20-60 words)?
+4. weather_mention: Does it clearly describe weather conditions?
+
+Respond with ONLY valid JSON:
+{{"criteria_scores": {{"character_voice": <1-10>, "natural_flow": <1-10>, "length": <1-10>, "weather_mention": <1-10>}}, "notes": "brief summary"}}"""
+    
+    return prompt
+
+
 def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro") -> str:
-    # Time announcements have a simplified, separate prompt
+    # Time and weather announcements have simplified, separate prompts
     if content_type == "time_announcement":
         return _build_time_audit_prompt(script_content, dj)
+    
+    if content_type == "weather_announcement":
+        return _build_weather_audit_prompt(script_content, dj)
     
     # Song intro/outro use the full character-reference prompt
     system = (
@@ -151,6 +181,10 @@ def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro"
         system += (
             "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"brevity\": <1-10>},\n"
         )
+    elif content_type == "weather_announcement":
+        system += (
+            "  \"criteria_scores\": {\"character_voice\": <1-10>, \"natural_flow\": <1-10>, \"length\": <1-10>, \"weather_mention\": <1-10>},\n"
+        )
     elif content_type == "song_outro":
         system += (
             "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"past_tense_usage\": <1-10>},\n"
@@ -207,6 +241,41 @@ def audit_script(
             # Simple average for time (all criteria equal weight)
             score = sum(criteria_scores.values()) / len(criteria_scores)
             passed = score >= 6.0  # Lower threshold for time (simpler content)
+            
+            issues = parsed.get("issues", []) or []
+            notes = parsed.get("notes", "")
+            
+            return AuditResult(
+                script_id=script_id,
+                script_path=None,
+                dj=dj,
+                content_type=content_type,
+                score=score,
+                passed=passed,
+                criteria_scores=criteria_scores,
+                issues=issues,
+                notes=notes,
+                raw_response=raw
+            )
+        
+        # Weather announcements use simplified 4-criterion scoring
+        if content_type == "weather_announcement":
+            weather_criteria = ["character_voice", "natural_flow", "length", "weather_mention"]
+            criteria_scores = {}
+            for key in weather_criteria:
+                criteria_scores[key] = _get_criterion_value(criteria, key)
+            
+            # Normalize if needed
+            max_raw_score = max(criteria_scores.values()) if criteria_scores else 1.0
+            if max_raw_score > 10:
+                criteria_scores = {k: (v / 10.0) for k, v in criteria_scores.items()}
+            
+            # Clamp to 1-10
+            criteria_scores = {k: max(1.0, min(10.0, v)) for k, v in criteria_scores.items()}
+            
+            # Simple average for weather (all criteria equal weight)
+            score = sum(criteria_scores.values()) / len(criteria_scores)
+            passed = score >= 6.5  # Slightly higher than time (includes weather content requirement)
             
             issues = parsed.get("issues", []) or []
             notes = parsed.get("notes", "")
