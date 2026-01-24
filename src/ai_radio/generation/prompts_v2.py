@@ -223,36 +223,82 @@ def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optio
 
 
 def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[int] = None) -> Dict[str, str]:
-    # Use authentic-style examples that match the characters' voices
-    if dj == DJ.JULIE:
-        examples = [
-            "It's eight thirty in the morning, friends.",
-            "Well, here we are at the top of the hour.",
-            "Just past noon here at the radio."
-        ]
-        voice = "Casual, clear, warm, conversational."
-    else:
-        examples = [
-            "Ladies and gentlemen, it's nine o'clock.",
-            "Right now it's quarter past the hour, New Vegas.",
-            "The time is half past eight, and I've got some great songs coming up for you."
-        ]
-        voice = "Smooth, theatrical, slightly formal."
-
-    system = _build_system_prompt(dj, examples, voice)
-
+    """Build a dedicated time announcement prompt.
+    
+    Time announcements are standalone interstitial content that:
+    - States the current time naturally
+    - Bridges FROM a song outro INTO a song intro
+    - Uses generic filler (never specific artist/title)
+    """
+    
+    # Convert 24-hour to natural time expression
     if hour is not None and minute is not None:
-        user = (
-            f"Announce the time: {hour:02d}:{minute:02d}. Keep it natural and fit the DJ persona.\n"
-            "Requirements:\n"
-            "- Length: 1-2 sentences MAX.\n"
-            "- Announce the time, optionally with generic filler ('great music ahead', 'more songs coming').\n"
-            "- DO NOT mention specific artist names or song titles (you don't know what's playing next).\n"
-            "- DO NOT include timecode prefixes (like '00:05' or timestamps).\n"
-            "- Natural radio time check."
+        # Determine time of day context
+        if 0 <= hour < 6:
+            time_of_day = "late night"
+        elif 6 <= hour < 12:
+            time_of_day = "morning"
+        elif 12 <= hour < 17:
+            time_of_day = "afternoon"
+        elif 17 <= hour < 21:
+            time_of_day = "evening"
+        else:
+            time_of_day = "night"
+        
+        # Natural hour expression
+        display_hour = hour if hour <= 12 else hour - 12
+        if display_hour == 0:
+            display_hour = 12
+        am_pm = "AM" if hour < 12 else "PM"
+        
+        # Natural minute expression
+        if minute == 0:
+            minute_expr = "o'clock"
+        elif minute == 15:
+            minute_expr = "quarter past"
+        elif minute == 30:
+            minute_expr = "half past" 
+        elif minute == 45:
+            minute_expr = "quarter to"
+            display_hour = (display_hour % 12) + 1  # Next hour for "quarter to"
+        else:
+            minute_expr = f"{minute} minutes past"
+        
+        time_hint = f"{display_hour} {minute_expr}" if minute != 0 else f"{display_hour} o'clock"
+    else:
+        time_of_day = "day"
+        time_hint = "the current time"
+    
+    # Character-specific prompt
+    if dj == DJ.JULIE:
+        system = (
+            "You are Julie from Appalachia Radio. Your voice is casual, warm, and friendly.\n\n"
+            "Write a SHORT time announcement (1-2 sentences max).\n"
+            "Examples of your style:\n"
+            "- 'Hey friends, it's eight thirty in the morning here at Appalachia Radio.'\n"
+            "- 'Well, would you look at the time. Just past noon out here in the wasteland.'\n"
+            "- 'Coming up on three o'clock, hope you're staying safe out there.'\n"
         )
     else:
-        user = "Announce the current time naturally in one sentence."
+        system = (
+            "You are Mr. New Vegas from Radio New Vegas. Your voice is smooth, suave, and romantic.\n\n"
+            "Write a SHORT time announcement (1-2 sentences max).\n"
+            "Examples of your style:\n"
+            "- 'Ladies and gentlemen, it's nine o'clock on this fine evening.'\n"
+            "- 'The time is half past eight, and the music keeps flowing here on Radio New Vegas.'\n"
+            "- 'Right now it's midnight in the Mojave, and I've got more great tunes for you.'\n"
+        )
+    
+    user = (
+        f"Announce the time: {time_hint} ({time_of_day}).\n\n"
+        "RULES:\n"
+        "- 1-2 sentences ONLY\n"
+        "- State the time naturally (no digital formats like '14:30')\n"
+        "- Can include generic bridge/filler ('more music coming', 'stay with us')\n"
+        "- NO specific artist names or song titles\n"
+        "- NO timecodes or timestamps\n"
+        "- Just the announcement, nothing else"
+    )
 
     return {"system": system, "user": user}
 

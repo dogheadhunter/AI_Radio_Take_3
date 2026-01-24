@@ -61,7 +61,7 @@ def test_content_type_prompts_return_structure_and_constraints():
     # Time
     time_p = build_time_prompt_v2(DJ.MR_NEW_VEGAS, hour=9, minute=0)
     assert isinstance(time_p, dict) and "system" in time_p and "user" in time_p
-    assert "Length" in time_p["user"] or "one sentence" in time_p["user"]
+    assert "1-2 sentences" in time_p["user"] or "one sentence" in time_p["user"]
 
     # Weather
     weather_p = build_weather_prompt_v2(DJ.JULIE, "Sunny and mild", hour=6)

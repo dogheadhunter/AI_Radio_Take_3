@@ -45,8 +45,36 @@ class AuditResult:
     raw_response: str  # For debugging
 
 
+def _build_time_audit_prompt(script_content: str, dj: str) -> str:
+    """Simplified audit prompt for time announcements only.
+    
+    Time announcements are simple - just check:
+    1. Does it sound like the character?
+    2. Is it brief and natural?
+    """
+    dj_desc = "Julie (casual, warm, friendly)" if dj.lower() == "julie" else "Mr. New Vegas (smooth, suave, polished)"
+    
+    prompt = f"""Evaluate this time announcement for {dj_desc}.
+
+Script: "{script_content}"
+
+Score these 3 criteria (1-10 each):
+1. character_voice: Does it sound like {dj}? (casual/warm for Julie, smooth/suave for Mr. NV)
+2. natural_flow: Does it sound natural and conversational?
+3. brevity: Is it appropriately short (1-2 sentences)?
+
+Respond with ONLY valid JSON:
+{{"criteria_scores": {{"character_voice": <1-10>, "natural_flow": <1-10>, "brevity": <1-10>}}, "notes": "brief summary"}}"""
+    
+    return prompt
+
+
 def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro") -> str:
-    # Clarified prompt: weights are metadata, LLM returns 1-10 scores only
+    # Time announcements have a simplified, separate prompt
+    if content_type == "time_announcement":
+        return _build_time_audit_prompt(script_content, dj)
+    
+    # Song intro/outro use the full character-reference prompt
     system = (
         "You are a script auditor for an AI radio station. Your job is to evaluate DJ scripts for character accuracy and quality.\n\n"
         "Character Reference: Julie\n"
@@ -62,31 +90,7 @@ def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro"
     )
     
     # Content-type specific criteria
-    if content_type == "time_announcement":
-        system += (
-            "Evaluation Criteria for TIME ANNOUNCEMENT (score each 1-10):\n"
-            "1. character_voice: Does it sound like the DJ? Julie should be casual/warm/conversational. Mr. NV should be smooth/polished. Focus on VOICE MATCH, not exact phrasing.\n"
-            "2. era_appropriateness: Any anachronisms or modern digital time formats ('24:00', 'military time')? Should sound like classic radio.\n"
-            "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, meta-commentary, timecode prefixes ('00:05'), or SPECIFIC artist/title mentions = automatic score of 1. Generic filler ('great songs ahead') is OK.\n"
-            "4. natural_flow: Does it sound natural for a time check? Brief and clear.\n"
-            "5. brevity: Appropriate length for time announcement? Should be 1-2 sentences MAX (under 30 words).\n\n"
-            "Scoring Scale (1-10 for each criterion):\n"
-            "- 10: Perfect\n"
-            "- 8-9: Strong\n"
-            "- 6-7: Acceptable (PASS)\n"
-            "- 4-5: Weak (FAIL)\n"
-            "- 1-3: Major issues (FAIL)\n\n"
-            "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
-            "**STRICT RULES FOR TIME ANNOUNCEMENTS:**\n"
-            "- If script mentions SPECIFIC artist name or song title ('Frank Sinatra', 'My Way'), forbidden_elements MUST = 1\n"
-            "- Generic song filler ('great music', 'more songs ahead') is ACCEPTABLE and should NOT be penalized\n"
-            "- If script has timecode prefix like '00:05' or '12:30' at start, forbidden_elements MUST = 1\n"
-            "- If script uses 24-hour time format inappropriately, era_appropriateness MUST ≤ 5\n"
-            "- If script is too long (>30 words), brevity MUST ≤ 4\n"
-            "- If script sounds generic/robotic (not character-specific), character_voice MUST ≤ 5\n"
-            "- Focus on CHARACTER VOICE consistency, not exact word matching\n\n"
-        )
-    elif content_type == "song_outro":
+    if content_type == "song_outro":
         system += (
             "Evaluation Criteria for SONG OUTRO (score each 1-10):\n"
             "1. character_voice: How well does the script match the DJ's voice? Julie should sound casual/warm/reflective, Mr. NV should sound smooth/romantic. Generic DJ speak = FAIL.\n"
@@ -185,13 +189,46 @@ def audit_script(
 
         criteria = parsed.get("criteria_scores", {})
         
-        # Common criteria for both intro and outro
+        # Time announcements use simplified 3-criterion scoring
+        if content_type == "time_announcement":
+            time_criteria = ["character_voice", "natural_flow", "brevity"]
+            criteria_scores = {}
+            for key in time_criteria:
+                criteria_scores[key] = _get_criterion_value(criteria, key)
+            
+            # Normalize if needed
+            max_raw_score = max(criteria_scores.values()) if criteria_scores else 1.0
+            if max_raw_score > 10:
+                criteria_scores = {k: (v / 10.0) for k, v in criteria_scores.items()}
+            
+            # Clamp to 1-10
+            criteria_scores = {k: max(1.0, min(10.0, v)) for k, v in criteria_scores.items()}
+            
+            # Simple average for time (all criteria equal weight)
+            score = sum(criteria_scores.values()) / len(criteria_scores)
+            passed = score >= 6.0  # Lower threshold for time (simpler content)
+            
+            issues = parsed.get("issues", []) or []
+            notes = parsed.get("notes", "")
+            
+            return AuditResult(
+                script_id=script_id,
+                script_path=None,
+                dj=dj,
+                content_type=content_type,
+                score=score,
+                passed=passed,
+                criteria_scores=criteria_scores,
+                issues=issues,
+                notes=notes,
+                raw_response=raw
+            )
+        
+        # Song intro/outro use full 5-criterion scoring
         common_criteria = ["character_voice", "era_appropriateness", "forbidden_elements", "natural_flow"]
         
         # Content-type specific 5th criterion
-        if content_type == "time_announcement":
-            fifth_criterion = "brevity"
-        elif content_type == "song_outro":
+        if content_type == "song_outro":
             fifth_criterion = "past_tense_usage"
         else:
             fifth_criterion = "length"

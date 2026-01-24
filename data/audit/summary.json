@@ -1,17 +1,13 @@
 {
-  "timestamp": "2026-01-24T15:00:56.396587",
-  "total_scripts": 6,
-  "passed": 0,
-  "failed": 6,
-  "pass_rate": 0.0,
+  "timestamp": "2026-01-24T15:52:53.443814",
+  "total_scripts": 1,
+  "passed": 1,
+  "failed": 0,
+  "pass_rate": 1.0,
   "by_dj": {
     "julie": {
-      "passed": 0,
-      "failed": 3
-    },
-    "mr_new_vegas": {
-      "passed": 0,
-      "failed": 3
+      "passed": 1,
+      "failed": 0
     }
   }
 }

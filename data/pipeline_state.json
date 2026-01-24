@@ -1,43 +1,27 @@
 {
-  "timestamp": "2026-01-24T14:59:37.321034",
-  "run_id": "20260124_145937",
+  "timestamp": "2026-01-24T15:52:23.843581",
+  "run_id": "20260124_155223",
   "config": {
-    "content_types": [
-      "time"
-    ],
+    "content_types": [],
     "djs": [
-      "julie",
-      "mr_new_vegas"
+      "julie"
     ],
-    "song_limit": 3,
+    "song_limit": 1,
     "test_mode": false,
-    "time_slots": [
-      [
-        0,
-        0
-      ],
-      [
-        0,
-        30
-      ],
-      [
-        1,
-        0
-      ]
-    ]
+    "time_slots": []
   },
   "stages": {
     "generate": {
       "status": "completed",
-      "completed_at": "2026-01-24T15:00:05.586260",
-      "scripts_generated": 4
+      "completed_at": "2026-01-24T15:52:36.588891",
+      "scripts_generated": 1
     },
     "audit": {
       "status": "completed",
-      "completed_at": "2026-01-24T15:00:56.397663",
-      "scripts_audited": 6,
-      "passed": 0,
-      "failed": 6
+      "completed_at": "2026-01-24T15:52:53.444814",
+      "scripts_audited": 1,
+      "passed": 1,
+      "failed": 0
     },
     "audio": {
       "status": "not_started",

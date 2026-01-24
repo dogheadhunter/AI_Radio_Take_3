@@ -145,12 +145,18 @@ def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_s
 
 def sanitize_script(text: str, content_type: str = "intros") -> str:
     """Remove meta-commentary and sanitize TTS-breaking punctuation."""
-    # Time-specific validation: remove timecode prefixes
+    # Strip leading/trailing quotes and whitespace
+    text = text.strip().strip('"').strip("'").strip()
+    
+    # Time-specific sanitization
     if content_type == "time":
-        # Remove timecode prefixes like "00:05" or "12:30" at start
+        # Remove timecode prefixes like "00:05" or "12:30" at start or end
         text = re.sub(r'^\d{1,2}:\d{2}\s+', '', text)
-        # Remove standalone timestamps
+        text = re.sub(r'\s+\d{1,2}:\d{2}$', '', text)
+        # Remove standalone timestamps anywhere
         text = re.sub(r'\b\d{1,2}:\d{2}(:\d{2})?\b', '', text)
+        # Remove 24-hour format mentions
+        text = re.sub(r'\b([01]?\d|2[0-3]):[0-5]\d\b', '', text)
     
     # Remove ALL parenthetical content (often meta-commentary)
     text = re.sub(r'\([^)]*\)', '', text)
@@ -160,38 +166,70 @@ def sanitize_script(text: str, content_type: str = "intros") -> str:
     text = re.sub(r'\b\d{4}s\b', '', text)  # Remove decade references like "1940s"
     
     # Fix encoding issues (UTF-8 mojibake - when UTF-8 is read as Latin-1)
-    # These are the byte sequences that appear when UTF-8 special chars are misread
     mojibake_fixes = {
-        'â€¦': '...',   # ellipsis
-        'â€™': "'",     # right single quote
-        'â€˜': "'",     # left single quote  
-        'â€"': '-',     # em-dash
-        'â€"': '-',     # en-dash
-        'â€œ': '"',     # left double quote
-        'â€': '"',      # right double quote
-        '…': '...',     # actual ellipsis to dots for TTS
+        'â€¦': '...',
+        'â€™': "'",
+        'â€˜': "'",
+        'â€"': '-',
+        'â€œ': '"',
+        'â€': '"',
+        '…': '...',
     }
     for bad, good in mojibake_fixes.items():
         text = text.replace(bad, good)
     
     # Fix TTS-breaking punctuation
-    text = re.sub(r'([?!]),', r'\1', text)  # Remove comma after ? or !
-    text = re.sub(r'\s*-\s*', ' ', text)  # Remove dashes (often used for em-dash)
+    text = re.sub(r'([?!]),', r'\1', text)
+    text = re.sub(r'\s*-\s*', ' ', text)
     
     # Clean up extra whitespace
     text = re.sub(r'\s+', ' ', text).strip()
     
     # Fix ellipsis at sentence boundaries
-    text = re.sub(r'…\.', '.', text)
     text = re.sub(r'\.{2,}', '.', text)
     
     # Fix double punctuation like "!." or "?." 
     text = re.sub(r'([!?])\.', r'\1', text)
     
-    # Add missing spaces after punctuation (e.g., "you?Well" -> "you? Well")
+    # Add missing spaces after punctuation
     text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
     
     return text
+
+
+def validate_time_announcement(text: str) -> tuple:
+    """Rule-based validation for time announcements.
+    
+    Returns (passed, reason) tuple.
+    """
+    if not text or not text.strip():
+        return False, "Empty script"
+    
+    text = text.strip()
+    word_count = len(text.split())
+    
+    # Length check: 1-2 sentences max (40 words is generous)
+    if word_count > 40:
+        return False, f"Too long ({word_count} words, max 40)"
+    
+    # Too short to be useful
+    if word_count < 3:
+        return False, f"Too short ({word_count} words)"
+    
+    # Check for specific artist/song patterns
+    if re.search(r'\bby\s+[A-Z][a-z]+\s+[A-Z]', text):
+        return False, "Contains likely artist reference"
+    
+    # Pattern: explicit labels
+    if re.search(r'[Aa]rtist:|[Tt]itle:|[Ss]ong:', text):
+        return False, "Contains explicit song/artist labels"
+    
+    # Check for timecode formats
+    if re.search(r'\b\d{1,2}:\d{2}\b', text):
+        return False, "Contains timecode format"
+    
+    # All checks passed
+    return True, "OK"
 
 
 def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
@@ -363,32 +401,19 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
                         )
                         
                         if result.success and result.text:
-                            # Sanitize the script (time-specific validation)
+                            # Sanitize the script (time-specific)
                             sanitized = sanitize_script(result.text, content_type="time")
                             
-                            # Rule-based validation for time announcements
-                            validation_passed = True
-                            if not sanitized:
-                                validation_passed = False
-                            # Check for song references (artist/title patterns)
-                            elif re.search(r'\bby\s+[A-Z][a-z]+', sanitized):
-                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (contains artist reference)")
-                                validation_passed = False
-                            elif re.search(r'[Aa]rtist:|[Tt]itle:', sanitized):
-                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (contains 'Artist:' or 'Title:')")
-                                validation_passed = False
-                            # Too long for a time announcement (should be 1-2 sentences)
-                            elif len(sanitized.split()) > 50:
-                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (too long: {len(sanitized.split())} words)")
-                                validation_passed = False
+                            # Use dedicated time validation function
+                            passed, reason = validate_time_announcement(sanitized)
                             
-                            if validation_passed:
+                            if passed:
                                 script_path.parent.mkdir(parents=True, exist_ok=True)
                                 script_path.write_text(sanitized, encoding='utf-8')
                                 total_scripts += 1
                                 logger.info(f"  [{i}/{len(time_slots)}] ✓ time {hour:02d}:{minute:02d}")
                             else:
-                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (validation failed)")
+                                logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} ({reason})")
                         else:
                             logger.warning(f"  [{i}/{len(time_slots)}] ✗ time {hour:02d}:{minute:02d} (generation failed)")
                     except Exception as e:
