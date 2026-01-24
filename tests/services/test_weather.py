@@ -170,3 +170,19 @@ def test_weather_service_handles_timeout():
     service = WeatherService(api_client=timeout_client)
     weather = service.get_current_weather()
     assert weather.temperature is not None
+
+
+def test_weather_service_uses_last_successful_if_cache_removed():
+    """If an expired cache entry has been removed, the service should still use last successful data."""
+    def failing_client():
+        raise Exception("API error")
+
+    # Create a service, populate cache, then remove it and set failing client
+    service = WeatherService(api_client=lambda: WeatherData(temperature=42, conditions='cloudy'))
+    service._fetch_and_cache()
+    # Simulate external invalidation
+    service._cache._entries.pop('current', None)
+
+    service._api_client = failing_client
+    weather = service.get_current_weather()
+    assert weather.temperature == 42

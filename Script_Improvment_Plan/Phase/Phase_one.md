@@ -47,10 +47,10 @@ The current prompts fail because they describe the characters abstractly ("frien
 - `data/style_analysis/mr_new_vegas_categorized.json`
 
 **Success Criteria:**
-- [ ] Timestamps removed from all lines
-- [ ] Each line is a complete thought/segment
-- [ ] Categories identified: `song_intro`, `song_outro`, `commentary`, `time`, `weather`, `other`
-- [ ] At least 20 segments categorized for each DJ
+- [x] Timestamps removed from all lines ✅
+- [x] Each line is a complete thought/segment ✅
+- [x] Categories identified: `song_intro`, `song_outro`, `commentary`, `time`, `weather`, `other` ✅
+- [x] At least 20 segments categorized for each DJ ✅
 
 **Validation:**
 ```bash

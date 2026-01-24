@@ -42,6 +42,7 @@ class WeatherService:
         self._tz = timezone or WEATHER_TIMEZONE
         self._api_client = api_client or self._default_api_client
         self._cache = ServiceCache(default_ttl_seconds=cache_minutes * 60)
+        self._last_successful: Optional[WeatherData] = None
 
     def _default_api_client(self) -> WeatherData:
         try:
@@ -312,6 +313,8 @@ class WeatherService:
         try:
             data = self._api_client()
             cache_set(self._cache, "current", data)
+            # record last successful data for robust fallback
+            self._last_successful = data
             return data
         except Exception as e:
             logger.error(f"Weather API fetch failed: {e}")
@@ -320,6 +323,10 @@ class WeatherService:
             if cached is not None:
                 logger.warning("Using expired weather cache due to API failure")
                 return cached
+            # If cache missing, use last successful value if available
+            if self._last_successful is not None:
+                logger.warning("Using last successful weather data due to API failure")
+                return self._last_successful
             # Fallback to fake data
             logger.warning("Using fallback weather data due to API failure")
             return WeatherData(temperature=65, conditions="clear skies", raw=None)

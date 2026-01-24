@@ -1,60 +1,51 @@
 # Checkpoint 6.2a: Weather API Integration
 
 #### Checkpoint 6.2a: Weather API Integration
-**Replace fake weather data with real API integration (OpenWeatherMap).**
+**Replace fake weather data with real API integration (Open-Meteo).**
 
 ## Overview
-The current `WeatherService` returns fake weather data (`temperature=65, conditions="clear skies"`). This enhancement integrates with OpenWeatherMap API (or similar) to fetch real weather data with proper error handling, caching, and configuration.
+The current `WeatherService` returns fake weather data (`temperature=65, conditions="clear skies"`). This enhancement integrates with **Open-Meteo API** (free, no signup required) to fetch real weather data with proper error handling, caching, and configuration.
+
+**Note:** Originally planned to use OpenWeatherMap, but **Open-Meteo was chosen instead** because it is completely free with no API key or signup required, while providing equivalent or better functionality.
 
 ## Tasks
 
 ### Task 1: Add Weather API Configuration
-- [ ] Add OpenWeatherMap API key to environment variables
-- [ ] Add weather location configuration (city, coordinates)
-- [ ] Add API endpoint and timeout configuration
-- [ ] Document how to obtain and configure API key
-- [ ] Add fallback behavior when API unavailable
+- [x] Add weather location configuration (latitude, longitude, timezone)
+- [x] Add API endpoint and timeout configuration
+- [x] Add temperature units configuration (Fahrenheit/Celsius)
+- [x] Add fallback behavior when API unavailable
+- [x] Document Open-Meteo usage (no API key required)
 
-### Task 2: Implement OpenWeather API Client
-- [ ] Create `weather_api.py` with OpenWeatherMap client
-- [ ] Implement `fetch_current_weather()` function
-- [ ] Parse API response into `WeatherData` format
-- [ ] Add error handling for network failures
-- [ ] Add error handling for invalid API keys
-- [ ] Add request timeout support
+### Task 2: Implement Open-Meteo API Client
+- [x] Integrate Open-Meteo API in `weather.py` with `_default_api_client()`
+- [x] Implement weather fetching with `openmeteo_requests`
+- [x] Parse API response into `WeatherData` format
+- [x] Add error handling for network failures
+- [x] Add request timeout support
+- [x] Add retry logic with exponential backoff
 
 ### Task 3: Update WeatherService Integration
-- [ ] Replace `_default_api_client()` with real API client
-- [ ] Support API client injection for testing
-- [ ] Add fallback to fake data when API fails
-- [ ] Add logging for API calls and errors
-- [ ] Update caching to prevent excessive API calls
+- [x] Implement `_default_api_client()` with real Open-Meteo API
+- [x] Support API client injection for testing
+- [x] Add fallback to fake data when API fails
+- [x] Add logging for API calls and errors
+- [x] Update caching to prevent excessive API calls
 
 ### Task 4: Enhanced Weather Data
-- [ ] Extend `WeatherData` with additional fields (humidity, wind, description)
-- [ ] Update `format_weather_for_dj()` to use richer data
-- [ ] Add weather condition mapping (e.g., "partly cloudy" → "scattered clouds")
-- [ ] Support Fahrenheit and Celsius (configurable)
+- [x] Extend `WeatherData` with additional fields (humidity, wind, description, forecast)
+- [x] Update `format_weather_for_dj()` to use richer data
+- [x] Add weather code mapping (WMO weather codes to conditions)
+- [x] Support Fahrenheit and Celsius (configurable via WEATHER_UNITS)
 
 ### Task 5: Testing and Validation
-- [ ] Add mock API client for testing
-- [ ] Test with real API (integration test)
-- [ ] Test error scenarios (network failure, invalid key, bad response)
-- [ ] Test fallback behavior
-- [ ] Verify caching reduces API calls
+- [x] Add mock API client for testing
+- [x] Test with real API (integration test)
+- [x] Test error scenarios (network failure, bad response)
+- [x] Test fallback behavior
+- [x] Verify caching reduces API calls
 
 ## Implementation Details
-
-**File: `.env.example`**
-
-Add environment variable template:
-
-```bash
-# OpenWeatherMap API Configuration
-OPENWEATHER_API_KEY=your_api_key_here
-OPENWEATHER_LOCATION=New York,US
-OPENWEATHER_UNITS=imperial  # imperial (F) or metric (C)
-```
 
 **File: `src/ai_radio/config.py`**
 
@@ -63,23 +54,36 @@ Add weather API configuration:
 ```python
 import os
 
-# Weather API settings
-OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
-OPENWEATHER_LOCATION = os.getenv("OPENWEATHER_LOCATION", "Las Vegas,US")
-OPENWEATHER_UNITS = os.getenv("OPENWEATHER_UNITS", "imperial")  # imperial or metric
-OPENWEATHER_API_URL = "https://api.openweathermap.org/data/2.5/weather"
+# Weather API settings (Open-Meteo)
+WEATHER_LATITUDE = float(os.getenv("WEATHER_LATITUDE", "36.1699"))  # Las Vegas default
+WEATHER_LONGITUDE = float(os.getenv("WEATHER_LONGITUDE", "-115.1398"))
+WEATHER_TIMEZONE = os.getenv("WEATHER_TIMEZONE", "America/Los_Angeles")
+WEATHER_UNITS = os.getenv("WEATHER_UNITS", "imperial")  # imperial (F) or metric (C)
+WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast"
 WEATHER_API_TIMEOUT = 5  # seconds
 WEATHER_CACHE_MINUTES = 30
 WEATHER_FALLBACK_ENABLED = True  # Use fake data when API fails
 ```
 
-**File: `src/ai_radio/services/weather_api.py`**
+**File: `src/ai_radio/services/weather.py`**
 
-OpenWeatherMap API client:
+Open-Meteo API client (integrated in WeatherService):
 
 ```python
 """OpenWeatherMap API client."""
 import requests
+import logging
+from typing import Optional, Dict, Any
+from dataclasses import dataclass
+
+logger = logging.getLogger(__name__)
+
+
+@dataclass
+class W-Meteo API integration in WeatherService._default_api_client()"""
+import openmeteo_requests
+import requests_cache
+from retry_requests import retry
 import logging
 from typing import Optional, Dict, Any
 from dataclasses import dataclass
@@ -95,19 +99,12 @@ class WeatherData:
     description: Optional[str] = None
     humidity: Optional[int] = None
     wind_speed: Optional[float] = None
+    raw: Optional[Dict[str, Any]] = None
+    forecast_hour: Optional[int] = None
+    is_forecast: bool = False
 
 
-class OpenWeatherClient:
-    """Client for OpenWeatherMap API."""
-    
-    def __init__(
-        self, 
-        api_key: str, 
-        location: str, 
-        units: str = "imperial",
-        api_url: str = "https://api.openweathermap.org/data/2.5/weather",
-        timeout: int = 5
-    ):
+def _default_api_client(self) -> WeatherData
         """Initialize OpenWeather client.
         
         Args:

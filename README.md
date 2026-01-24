@@ -15,8 +15,38 @@ A minimal Python package for signal detection along with pytest configuration an
 - Run tests:
 
   ```powershell
+  # Fast mock tests (default, no services needed)
   .\.venv\Scripts\pytest -q
+  
+  # Or using make:
+  make test
+  
+  # Run integration tests (requires services)
+  $env:TEST_MODE="integration"; .\.venv\Scripts\pytest -q
+  
+  # Or using make:
+  make test-integration
   ```
+
+- **See [tests/TESTING_MODES.md](tests/TESTING_MODES.md) for detailed testing documentation**
+
+## Testing Strategy
+
+This project uses a **dual testing approach**:
+
+- **Mock Tests** (default): Fast tests using mocked services - perfect for development
+- **Integration Tests**: Full end-to-end tests with real services - for validation
+
+```powershell
+# Daily development - fast mock tests
+pytest                           # or: make test-mock
+
+# Before deployment - full integration tests  
+$env:TEST_MODE="integration"
+pytest                           # or: make test-integration
+```
+
+Read [tests/TESTING_MODES.md](tests/TESTING_MODES.md) for complete details on the testing system.
 
 
 ## Services Setup

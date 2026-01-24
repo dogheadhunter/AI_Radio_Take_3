@@ -10,6 +10,40 @@ if str(ROOT) not in sys.path:
 import pytest
 from pathlib import Path
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TDRC
+from tests.test_modes import is_mock_mode, is_integration_mode
+
+
+# ============================================================
+# Test Mode Configuration Hook
+# ============================================================
+def pytest_configure(config):
+    """Configure pytest based on TEST_MODE environment variable."""
+    from tests.test_modes import get_test_mode
+    mode = get_test_mode()
+    
+    if mode == "mock":
+        # In mock mode, skip integration tests by default
+        if not config.getoption("-m"):
+            config.option.markexpr = "not integration and not requires_services"
+    elif mode == "integration":
+        # In integration mode, run all tests including integration
+        pass
+
+
+def pytest_collection_modifyitems(config, items):
+    """Auto-skip tests based on TEST_MODE."""
+    from tests.test_modes import is_mock_mode, is_integration_mode
+    
+    for item in items:
+        # Skip integration/requires_services tests in mock mode
+        if is_mock_mode():
+            if "integration" in item.keywords or "requires_services" in item.keywords:
+                item.add_marker(pytest.mark.skip(reason="Skipped in mock mode (TEST_MODE=mock)"))
+        
+        # Ensure mock tests are marked
+        if "mock" in item.keywords and is_integration_mode():
+            # Mock tests can still run in integration mode as smoke tests
+            pass
 
 
 @pytest.fixture
@@ -52,7 +86,8 @@ def sample_mp3_no_tags(sample_mp3_path):
 # ============================================================
 # Generation & External Service Mocks
 # ============================================================
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
+import wave
 
 
 @pytest.fixture
@@ -96,6 +131,72 @@ def mock_tts(monkeypatch):
 
     monkeypatch.setattr('src.ai_radio.generation.tts_client.generate_audio', _fake)
     yield _fake
+
+
+@pytest.fixture
+def mock_llm_realistic(monkeypatch):
+    """Realistic LLM mock that generates contextual responses."""
+    def _generate(client, prompt):
+        # Parse prompt to provide contextual responses
+        if "song intro" in prompt.lower() or "introduce" in prompt.lower():
+            return "Hey there, listeners! You're tuned in to Radio New Vegas, and I've got something special for you."
+        elif "weather" in prompt.lower():
+            return "Looking out over the Mojave, it's a clear night at 65 degrees."
+        elif "time" in prompt.lower():
+            return "It's 6 o'clock in the morning, time to rise and shine!"
+        elif "outro" in prompt.lower() or "sign off" in prompt.lower():
+            return "That was a great one, wasn't it? Stay tuned for more."
+        else:
+            return "This is your DJ speaking from Radio New Vegas."
+    
+    # Mock the generate_text function
+    monkeypatch.setattr('src.ai_radio.generation.llm_client.generate_text', _generate)
+    
+    # Also mock check functions to avoid service calls
+    monkeypatch.setattr('src.ai_radio.generation.llm_client.check_ollama_available', lambda *args: True)
+    
+    yield _generate
+
+
+@pytest.fixture
+def mock_tts_realistic(monkeypatch):
+    """Realistic TTS mock that creates proper WAV files without loading model."""
+    def _generate(client, text, output_path, voice_reference=None):
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Create a realistic silent WAV file (proper format)
+        with wave.open(str(output_path), "wb") as wavf:
+            wavf.setnchannels(1)  # Mono
+            wavf.setsampwidth(2)  # 16-bit
+            wavf.setframerate(22050)  # 22.05kHz
+            # Length proportional to text length (simulate real TTS)
+            duration_seconds = len(text) / 150  # ~150 chars per second
+            num_frames = int(22050 * duration_seconds)
+            frames = b"\x00\x00" * max(num_frames, 100)  # At least 100 frames
+            wavf.writeframes(frames)
+    
+    # Mock the generate_audio function
+    monkeypatch.setattr('src.ai_radio.generation.tts_client.generate_audio', _generate)
+    
+    # Mock the model getter to prevent loading
+    monkeypatch.setattr('src.ai_radio.generation.tts_client._get_model', lambda: None)
+    monkeypatch.setattr('src.ai_radio.generation.tts_client.check_tts_available', lambda *args: True)
+    
+    yield _generate
+
+
+@pytest.fixture
+def mock_services(mock_llm_realistic, mock_tts_realistic):
+    """Combined fixture for both LLM and TTS mocking with realistic behavior."""
+    return {"llm": mock_llm_realistic, "tts": mock_tts_realistic}
+
+
+@pytest.fixture
+def mock_service_checks(monkeypatch):
+    """Mock service availability checks to return True."""
+    monkeypatch.setattr('src.ai_radio.generation.llm_client.check_ollama_available', lambda: True)
+    monkeypatch.setattr('src.ai_radio.generation.tts_client.check_tts_available', lambda: True)
+    yield
 
 
 @pytest.fixture
