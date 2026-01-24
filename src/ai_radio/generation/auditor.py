@@ -71,7 +71,7 @@ def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro"
         "- 6-7: Acceptable (PASS)\n"
         "- 4-5: Weak (FAIL)\n"
         "- 1-3: Major issues (FAIL)\n\n"
-        "Pass Threshold: Overall weighted score >= 6.0 (calculated from individual criteria)\n\n"
+        "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
         "**STRICT RULES:**\n"
         "- If script contains ANY emoji (😀🎵❤️👍 etc.), forbidden_elements MUST = 1\n"
         "- If script has meta-commentary like '(1 sentence intro...)', forbidden_elements MUST = 1\n"
@@ -134,7 +134,7 @@ def audit_script(
         # Compute weighted average (Option B: weights in code)
         score = sum(criteria_scores[k] * WEIGHTS[k] for k in WEIGHTS.keys())
         score = max(1.0, min(10.0, score))
-        passed = score >= 6.0
+        passed = score >= 7.5
 
         issues = parsed.get("issues", []) or []
         notes = parsed.get("notes", "")
