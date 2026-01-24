@@ -55,6 +55,16 @@ def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro"
     return system + "\n" + user
 
 
+# Normalization and weights used by the auditor
+WEIGHTS = {
+    "character_voice": 0.30,
+    "era_appropriateness": 0.25,
+    "forbidden_elements": 0.20,
+    "natural_flow": 0.15,
+    "length": 0.10,
+}
+
+
 def audit_script(
     client: Optional[LLMClient],
     script_content: str,
@@ -71,19 +81,49 @@ def audit_script(
         raw = llm_client.generate_text(client, prompt)
         parsed = json.loads(raw)
 
-        score = float(parsed.get("score", 1))
-        score = max(1.0, min(10.0, score))
-        passed = bool(parsed.get("passed", score >= 6))
+        # Parse criteria scores robustly (accept different key names and scales)
+        raw_criteria = parsed.get("criteria_scores", {}) or {}
+        def get_val(d, *keys, default=1.0):
+            for k in keys:
+                if k in d:
+                    try:
+                        return float(d[k])
+                    except Exception:
+                        pass
+            return default
 
-        criteria = parsed.get("criteria_scores", {})
-        # Ensure all criteria exist
-        criteria_scores = {
-            "character_voice": float(criteria.get("character_voice", 1)),
-            "era_appropriateness": float(criteria.get("era_appropriateness", 1)),
-            "forbidden_elements": float(criteria.get("forbidden_elements", 1)),
-            "natural_flow": float(criteria.get("natural_flow", 1)),
-            "length": float(criteria.get("length", 1)),
+        # Accept multiple possible key spellings
+        criteria_scores_raw = {
+            "character_voice": get_val(raw_criteria, "character_voice", "character-voice", "voice", default=1.0),
+            "era_appropriateness": get_val(raw_criteria, "era_appropriateness", "era-appropriateness", "era", default=1.0),
+            "forbidden_elements": get_val(raw_criteria, "forbidden_elements", "forbidden-elements", "forbidden", default=1.0),
+            "natural_flow": get_val(raw_criteria, "natural_flow", "natural-flow", "flow", default=1.0),
+            "length": get_val(raw_criteria, "length", "length_appropriate", default=1.0),
         }
+
+        # Normalize: If scores appear to be on a 0-100 scale (max > 10), scale them to 1-10
+        max_raw = max(criteria_scores_raw.values()) if criteria_scores_raw else 1.0
+        if max_raw > 10:
+            scale = 10.0 / max_raw
+            criteria_scores = {k: max(1.0, min(10.0, v * scale)) for k, v in criteria_scores_raw.items()}
+        else:
+            # Clamp to 1-10
+            criteria_scores = {k: max(1.0, min(10.0, v)) for k, v in criteria_scores_raw.items()}
+
+        # Compute overall score using WEIGHTS unless the model explicitly provided a reliable 'score' within 1-10
+        provided_score = None
+        try:
+            provided_score = float(parsed.get("score")) if parsed.get("score") is not None else None
+        except Exception:
+            provided_score = None
+
+        if provided_score is None or provided_score < 1 or provided_score > 10:
+            # Weighted average
+            score = sum(criteria_scores.get(k, 1.0) * w for k, w in WEIGHTS.items())
+        else:
+            score = max(1.0, min(10.0, provided_score))
+
+        passed = bool(parsed.get("passed", score >= 6))
 
         issues = parsed.get("issues", []) or []
         notes = parsed.get("notes", "")
