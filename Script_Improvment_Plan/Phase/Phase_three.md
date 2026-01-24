@@ -101,11 +101,11 @@ Even with improved prompts, some scripts will be off-character. The auditor:
 **Output:** `docs/script_improvement/AUDIT_CRITERIA.md`
 
 **Success Criteria:**
-- [ ] All criteria defined with weights
-- [ ] Scoring scale documented
-- [ ] Pass/fail threshold set
-- [ ] Note format defined
-- [ ] Example pass and fail notes created
+- [x] All criteria defined with weights
+- [x] Scoring scale documented
+- [x] Pass/fail threshold set
+- [x] Note format defined
+- [x] Example pass and fail notes created
 
 ---
 
@@ -345,11 +345,11 @@ class TestAuditScript:
 ```
 
 **Success Criteria:**
-- [ ] `auditor.py` created with all functions
-- [ ] All tests pass
-- [ ] JSON parsing handles errors gracefully
-- [ ] Results saved to correct folders (passed/failed)
-- [ ] Batch processing works
+- [x] `auditor.py` created with all functions
+- [x] All tests pass
+- [x] JSON parsing handles errors gracefully
+- [x] Results saved to correct folders (passed/failed)
+- [x] Batch processing works
 
 ---
 

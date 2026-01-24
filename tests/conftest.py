@@ -159,6 +159,31 @@ def mock_llm_realistic(monkeypatch):
 
 
 @pytest.fixture
+def mock_llm_auditor(monkeypatch):
+    """Mock LLM that returns a valid auditor JSON response."""
+    import json as json_module
+    def _generate(client, prompt):
+        return json_module.dumps({
+            "score": 7,
+            "passed": True,
+            "criteria_scores": {"character_voice": 8, "era_appropriateness": 7, "forbidden_elements": 10, "natural_flow": 6, "length": 8},
+            "issues": [],
+            "notes": "Good overall"
+        })
+    monkeypatch.setattr('src.ai_radio.generation.llm_client.generate_text', _generate)
+    yield _generate
+
+
+@pytest.fixture
+def mock_llm_bad_json(monkeypatch):
+    """Mock LLM that returns malformed JSON."""
+    def _generate(client, prompt):
+        return "NOT A JSON"
+    monkeypatch.setattr('src.ai_radio.generation.llm_client.generate_text', _generate)
+    yield _generate
+
+
+@pytest.fixture
 def mock_tts_realistic(monkeypatch):
     """Realistic TTS mock that creates proper WAV files without loading model."""
     def _generate(client, text, output_path, voice_reference=None):
