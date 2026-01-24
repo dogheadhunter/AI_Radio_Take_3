@@ -2,18 +2,18 @@
   "script_id": "00-00_mr_new_vegas_time",
   "dj": "mr_new_vegas",
   "content_type": "time_announcement",
-  "score": 3.5500000000000003,
+  "score": 6.35,
   "passed": false,
   "criteria_scores": {
-    "character_voice": 5.0,
-    "era_appropriateness": 3.0,
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
     "forbidden_elements": 1.0,
-    "natural_flow": 6.0,
-    "brevity": 2.0
+    "natural_flow": 7.0,
+    "brevity": 4.0
   },
   "issues": [
-    "Using modern artist/song reference",
-    "Incorporating timecode prefix"
+    "Song reference to 'Everybody Loves Somebody'",
+    "Inappropriate time format (12-hour) for era"
   ],
-  "notes": "Mr. NV's voice is polished, but the script has a modern artist reference and a timecode prefix."
+  "notes": "Great voice match, but song reference and wrong time format hurt the overall score."
 }

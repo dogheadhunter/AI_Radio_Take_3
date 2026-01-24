@@ -246,10 +246,10 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
             f"Announce the time: {hour:02d}:{minute:02d}. Keep it natural and fit the DJ persona.\n"
             "Requirements:\n"
             "- Length: 1-2 sentences MAX.\n"
-            "- ONLY announce the time - DO NOT introduce any songs.\n"
-            "- DO NOT include artist names, song titles, or 'coming up next'.\n"
+            "- Announce the time, optionally with generic filler ('great music ahead', 'more songs coming').\n"
+            "- DO NOT mention specific artist names or song titles (you don't know what's playing next).\n"
             "- DO NOT include timecode prefixes (like '00:05' or timestamps).\n"
-            "- Natural radio time check only."
+            "- Natural radio time check."
         )
     else:
         user = "Announce the current time naturally in one sentence."

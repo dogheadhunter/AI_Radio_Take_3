@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-01-24T14:45:42.210836",
-  "run_id": "20260124_144542",
+  "timestamp": "2026-01-24T14:59:37.321034",
+  "run_id": "20260124_145937",
   "config": {
     "content_types": [
       "time"
@@ -29,12 +29,12 @@
   "stages": {
     "generate": {
       "status": "completed",
-      "completed_at": "2026-01-24T14:46:16.693838",
-      "scripts_generated": 6
+      "completed_at": "2026-01-24T15:00:05.586260",
+      "scripts_generated": 4
     },
     "audit": {
       "status": "completed",
-      "completed_at": "2026-01-24T14:47:06.222540",
+      "completed_at": "2026-01-24T15:00:56.397663",
       "scripts_audited": 6,
       "passed": 0,
       "failed": 6
