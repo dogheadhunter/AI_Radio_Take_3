@@ -1,0 +1,18 @@
+{
+  "script_id": "1_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 9.299999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 9.0
+  },
+  "issues": [
+    "Julie's speech patterns and fillers are generally strong but occasional sentences could sound a bit more conversational"
+  ],
+  "notes": "Nice script that effectively captures Julie's warm, friendly tone while playing the 1940s song in an engaging way"
+}

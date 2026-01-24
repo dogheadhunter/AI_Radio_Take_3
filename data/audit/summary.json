@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-01-24T10:56:12.180190",
+  "total_scripts": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "by_dj": {
+    "julie": {
+      "passed": 3,
+      "failed": 0
+    }
+  }
+}

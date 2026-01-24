@@ -1,0 +1,18 @@
+{
+  "script_id": "2_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.5,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 6.0
+  },
+  "issues": [
+    "While Julie's tone is warm and friendly, her phrasing could be more conversational for a stronger 'Julie' voice."
+  ],
+  "notes": "Script has excellent forbidden elements control, natural flow, and length. Only character voice is slightly off, needing more casual rambling."
+}

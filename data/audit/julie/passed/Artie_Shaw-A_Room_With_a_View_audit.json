@@ -1,0 +1,18 @@
+{
+  "script_id": "3_julie",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.3,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 6.0
+  },
+  "issues": [
+    "Julie's introspective monologue is longer than expected for her conversational style"
+  ],
+  "notes": "A good script with minor issues; Julie's voice shines through the philosophical tangent"
+}
