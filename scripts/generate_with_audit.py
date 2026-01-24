@@ -152,15 +152,24 @@ def sanitize_script(text: str) -> str:
     text = re.sub(r'\b(19|20)\d{2}\b', '', text)  # Remove 4-digit years
     text = re.sub(r'\b\d{4}s\b', '', text)  # Remove decade references like "1940s"
     
+    # Fix encoding issues (UTF-8 mojibake - when UTF-8 is read as Latin-1)
+    # These are the byte sequences that appear when UTF-8 special chars are misread
+    mojibake_fixes = {
+        'â€¦': '...',   # ellipsis
+        'â€™': "'",     # right single quote
+        'â€˜': "'",     # left single quote  
+        'â€"': '-',     # em-dash
+        'â€"': '-',     # en-dash
+        'â€œ': '"',     # left double quote
+        'â€': '"',      # right double quote
+        '…': '...',     # actual ellipsis to dots for TTS
+    }
+    for bad, good in mojibake_fixes.items():
+        text = text.replace(bad, good)
+    
     # Fix TTS-breaking punctuation
-    text = text.replace('...', '…')  # Convert to single ellipsis character first
     text = re.sub(r'([?!]),', r'\1', text)  # Remove comma after ? or !
     text = re.sub(r'\s*-\s*', ' ', text)  # Remove dashes (often used for em-dash)
-    
-    # Fix common punctuation errors
-    text = re.sub(r'(\w+)\s+(and)\s+(?:we|I|it|that)', r'\1, \2 ', text)
-    text = re.sub(r'(\w+)\s+([A-Z][a-z]+\s+(?:is|are|was|were|has|have))', r'\1? \2', text)
-    text = re.sub(r'(\w+)\s+(Here(?:\'s| is| are))', r'\1. \2', text)
     
     # Clean up extra whitespace
     text = re.sub(r'\s+', ' ', text).strip()
@@ -171,6 +180,9 @@ def sanitize_script(text: str) -> str:
     
     # Fix double punctuation like "!." or "?." 
     text = re.sub(r'([!?])\.', r'\1', text)
+    
+    # Add missing spaces after punctuation (e.g., "you?Well" -> "you? Well")
+    text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
     
     return text
 
@@ -215,14 +227,20 @@ def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
                 result.append(sentences[i])
                 if i + 1 < len(sentences):
                     result.append(sentences[i + 1])
+                    # Add space after punctuation unless it's the last item
+                    if i + 2 < intro_index + 2:
+                        result.append(' ')
         
         final_text = ''.join(result).strip()
         # Restore protected abbreviations
         final_text = final_text.replace('Mr~', 'Mr.').replace('Mrs~', 'Mrs.').replace('Ms~', 'Ms.').replace('Dr~', 'Dr.')
+        # Ensure spaces after punctuation (fix any remaining issues)
+        final_text = re.sub(r'([.!?])([A-Z])', r'\1 \2', final_text)
         return final_text
     
-    # No intro found - return original
+    # No intro found - return original with spaces fixed
     text = text.replace('Mr~', 'Mr.').replace('Mrs~', 'Mrs.').replace('Ms~', 'Ms.').replace('Dr~', 'Dr.')
+    text = re.sub(r'([.!?])([A-Z])', r'\1 \2', text)
     return text
 
 
