@@ -29,9 +29,27 @@ _STOPWORDS = {
 }
 
 
+def _strip_timestamps(s: str) -> str:
+    """Remove common LRC timestamp markers like [00:12.34] and extra source lines."""
+    # Remove timestamps like [00:12.34] or [0:12.34] or [00:12]
+    s = re.sub(r"\[\d{1,2}:\d{2}(?:[.:]\d{1,2})?\]", "", s)
+    # Some files use parentheses timestamps (00:12)
+    s = re.sub(r"\(\d{1,2}:\d{2}(?:[.:]\d{1,2})?\)", "", s)
+    # Remove common separator lines and source markers
+    s = re.sub(r"^=+\s*$", "", s, flags=re.MULTILINE)
+    s = re.sub(r"^Source: .*", "", s, flags=re.IGNORECASE | re.MULTILINE)
+    # Collapse multiple blank lines
+    s = re.sub(r"\n{2,}", "\n\n", s)
+    return s
+
+
 def parse_lyrics_file(file_path: Path) -> Optional[LyricsData]:
     """
     Parse a lyrics file into structured data.
+
+    Supports two formats:
+    - Metadata block with 'Title:' and 'Artist:' followed by a dashed separator
+    - LRC-like or simple files where first line is 'Title by Artist' and lyrics follow
 
     Returns None if file cannot be parsed.
     """
@@ -39,44 +57,87 @@ def parse_lyrics_file(file_path: Path) -> Optional[LyricsData]:
         return None
 
     text = file_path.read_text(encoding="utf-8")
-    # Split metadata from lyrics by long dashed line or blank line
-    parts = re.split(r"\n-{3,}\n", text, maxsplit=1)
-    metadata_block = parts[0]
-    lyrics_block = parts[1] if len(parts) > 1 else ""
 
-    metadata = {}
-    for line in metadata_block.splitlines():
-        m = _METADATA_RE.match(line.strip())
+    # Try metadata block first (existing format)
+    if "Title:" in text[:200] or "Artist:" in text[:200]:
+        parts = re.split(r"\n-{3,}\n", text, maxsplit=1)
+        metadata_block = parts[0]
+        lyrics_block = parts[1] if len(parts) > 1 else ""
+
+        metadata = {}
+        for line in metadata_block.splitlines():
+            m = _METADATA_RE.match(line.strip())
+            if m:
+                key = m.group("key").strip().lower()
+                value = m.group("value").strip()
+                metadata[key] = value
+
+        title = metadata.get("title")
+        artist = metadata.get("artist")
+        provider = metadata.get("provider")
+        instrumental_flag = metadata.get("instrumental")
+        is_instrumental = False
+        if instrumental_flag is not None:
+            is_instrumental = instrumental_flag.lower() in ("true", "1", "yes")
+
+        # If TITLE or ARTIST missing, try to infer from filename
+        if not title or not artist:
+            name = file_path.stem
+            if " by " in name:
+                parts2 = name.split(" by ")
+                if not title:
+                    title = parts2[0].strip()
+                if not artist:
+                    artist = parts2[1].strip()
+
+        lyrics = _strip_timestamps(lyrics_block).strip()
+        if is_instrumental:
+            lyrics = ""
+
+    else:
+        # Fallback format: first non-empty line is 'Title by Artist' or 'Title by Artist\n=====' style
+        lines = [l.rstrip() for l in text.splitlines() if l.strip()]
+        if not lines:
+            return None
+        first = lines[0]
+        title = None
+        artist = None
+        provider = None
+        is_instrumental = False
+
+        # Try to parse 'Title by Artist'
+        m = re.match(r"(?P<title>.+?)\s+by\s+(?P<artist>.+)$", first, flags=re.IGNORECASE)
         if m:
-            key = m.group("key").strip().lower()
-            value = m.group("value").strip()
-            metadata[key] = value
+            title = m.group('title').strip()
+            artist = m.group('artist').strip()
+            # Lyrics are the rest of the file after possible separator lines
+            rest = "\n".join(lines[1:])
+        else:
+            # No by-pattern: maybe file has 'Title' then '====' then lyrics, try using filename
+            name = file_path.stem
+            if " by " in name:
+                parts2 = name.split(" by ")
+                title = parts2[0].strip()
+                artist = parts2[1].strip()
+            rest = "\n".join(lines[1:]) if len(lines) > 1 else ""
 
-    title = metadata.get("title")
-    artist = metadata.get("artist")
-    provider = metadata.get("provider")
-    instrumental_flag = metadata.get("instrumental")
-    is_instrumental = False
-    if instrumental_flag is not None:
-        is_instrumental = instrumental_flag.lower() in ("true", "1", "yes")
+        lyrics = _strip_timestamps(rest).strip()
 
-    # If TITLE or ARTIST missing, try to infer from filename 'Title by Artist.txt'
+    # If lyrics is empty but file may indicate instrumental via keywords
+    if not lyrics:
+        # Search for explicit instrumental markers in file text
+        if re.search(r"instrumental", text, flags=re.IGNORECASE):
+            is_instrumental = True
+
+    # If title or artist still missing, try filename
     if not title or not artist:
         name = file_path.stem
-        # Try pattern 'Title by Artist'
         if " by " in name:
             parts2 = name.split(" by ")
             if not title:
                 title = parts2[0].strip()
             if not artist:
                 artist = parts2[1].strip()
-
-    # Strip leading/trailing whitespace from lyrics
-    lyrics = lyrics_block.strip()
-
-    # If instrumental, ensure lyrics empty
-    if is_instrumental:
-        lyrics = ""
 
     if not title or not artist:
         return None
@@ -136,6 +197,9 @@ def extract_lyrics_context(lyrics: LyricsData, max_length: int = 200) -> str:
     notable = None
     if line_candidates:
         notable = line_candidates[0]
+        # Sanitize notable to avoid sentence-splitting punctuation
+        notable = notable.replace('.', '').replace('\n', ' ').strip()
+        # Truncate to keep it short
         if len(notable) > 80:
             notable = notable[:77].rstrip() + "..."
 
@@ -144,6 +208,14 @@ def extract_lyrics_context(lyrics: LyricsData, max_length: int = 200) -> str:
         parts.append(f"Notable line: '{notable}'")
 
     result = " ".join(parts).strip()
+    # Ensure result has at most 3 sentences - collapse extras
+    sentences = [s.strip() for s in result.split('.') if s.strip()]
+    if len(sentences) > 3:
+        sentences = sentences[:3]
+        result = '. '.join(sentences).strip()
+        if not result.endswith('.'):
+            result += '.'
+
     if len(result) > max_length:
         return result[: max_length - 3].rstrip() + "..."
     return result
