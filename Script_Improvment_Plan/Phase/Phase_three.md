@@ -380,8 +380,8 @@ class TestAuditScript:
 **Output:** Test results documented in `docs/script_improvement/AUDITOR_VALIDATION.md`
 
 **Success Criteria:**
-- [ ] 10 scripts generated and audited
-- [ ] Results saved to `data/audit/`
+- [x] 10 scripts generated and audited
+- [x] Results saved to `data/audit/`
 - [ ] Human/auditor agreement >80%
 - [ ] False positives (passed but bad) <10%
 - [ ] False negatives (failed but good) <20%

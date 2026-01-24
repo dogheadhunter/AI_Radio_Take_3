@@ -58,12 +58,18 @@ def generate_and_audit(intros: bool, dj: str, limit: int, test: bool, output_bas
 
     # Generate text scripts (text_only) for each DJ and song
     generated = []
-    for d in selected_djs:
-        for s in songs:
-            res = pipeline.generate_song_intro(song_id=s['id'], artist=s['artist'], title=s['title'], dj=d, text_only=True)
-            if res.success and res.text:
-                generated.append({"script_id": f"{s['id']}_{d}", "script_content": res.text, "dj": d, "content_type": "song_intro"})
-
+    if test:
+        # In test mode, generate deterministic placeholder scripts to avoid calling LLM
+        for d in selected_djs:
+            for s in songs:
+                text = f"This is a test script for {d}. Introducing {s['title']} by {s['artist']}."
+                generated.append({"script_id": f"{s['id']}_{d}", "script_content": text, "dj": d, "content_type": "song_intro"})
+    else:
+        for d in selected_djs:
+            for s in songs:
+                res = pipeline.generate_song_intro(song_id=s['id'], artist=s['artist'], title=s['title'], dj=d, text_only=True)
+                if res.success and res.text:
+                    generated.append({"script_id": f"{s['id']}_{d}", "script_content": res.text, "dj": d, "content_type": "song_intro"})
     # Prepare output dir
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     out_dir = output_base / timestamp
