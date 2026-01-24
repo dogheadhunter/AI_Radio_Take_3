@@ -169,6 +169,9 @@ def sanitize_script(text: str) -> str:
     text = re.sub(r'…\.', '.', text)
     text = re.sub(r'\.{2,}', '.', text)
     
+    # Fix double punctuation like "!." or "?." 
+    text = re.sub(r'([!?])\.', r'\1', text)
+    
     return text
 
 
@@ -188,34 +191,37 @@ def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
     # Protect common abbreviations
     protected_text = text.replace('Mr.', 'Mr~').replace('Mrs.', 'Mrs~').replace('Ms.', 'Ms~').replace('Dr.', 'Dr~')
     
-    sentences = re.split(r'([.!?])\s+', protected_text)
-    result = []
-    found_intro = False
+    # Split by punctuation but don't require space after (handles both "foo. bar" and "foo.bar")
+    sentences = re.split(r'([.!?])\s*', protected_text)
     
+    # Find the sentence containing the song intro (artist + title)
+    intro_index = -1
     for i in range(0, len(sentences), 2):
         if i >= len(sentences):
             break
         sentence = sentences[i]
-        punct = sentences[i+1] if i+1 < len(sentences) else '.'
-        
         has_artist = artist.lower() in sentence.lower()
         has_title = title.lower() in sentence.lower()
         
-        result.append(sentence + punct)
-        
         if has_artist and has_title:
-            found_intro = True
-            break
-        elif (has_artist or has_title) and len(result) > 1:
-            found_intro = True
+            intro_index = i
             break
     
-    if found_intro:
-        final_text = ' '.join(result).strip()
-        final_text = final_text.replace('Mr~', 'Mr.').replace('Mrs~', 'Mrs~').replace('Ms~', 'Ms.').replace('Dr~', 'Dr.')
+    # If found, keep everything up to and including the intro sentence
+    if intro_index >= 0:
+        result = []
+        for i in range(0, intro_index + 2, 2):  # +2 to include punctuation
+            if i < len(sentences):
+                result.append(sentences[i])
+                if i + 1 < len(sentences):
+                    result.append(sentences[i + 1])
+        
+        final_text = ''.join(result).strip()
+        # Restore protected abbreviations
+        final_text = final_text.replace('Mr~', 'Mr.').replace('Mrs~', 'Mrs.').replace('Ms~', 'Ms.').replace('Dr~', 'Dr.')
         return final_text
     
-    # Restore protections and return original
+    # No intro found - return original
     text = text.replace('Mr~', 'Mr.').replace('Mrs~', 'Mrs.').replace('Ms~', 'Ms.').replace('Dr~', 'Dr.')
     return text
 
@@ -298,7 +304,8 @@ def stage_audit(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
     if test_mode:
         client = FakeAuditorClient()
     else:
-        client = None  # Will use default LLMClient in auditor
+        # Use Dolphin model for auditing (different from Stheno used for generation)
+        client = LLMClient(model="dolphin-llama3")
     
     # Collect all scripts to audit
     scripts_to_audit = []
@@ -694,73 +701,6 @@ def run_pipeline(args):
     text = re.sub(r'\.{2,}', '.', text)  # Multiple periods → single period
     
     return text
-
-
-def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
-    """Truncate any text that comes after the song introduction."""
-    # First, validate artist name appears correctly (catch typos/truncations)
-    # Look for partial matches that might indicate truncation
-    artist_parts = artist.split()
-    if len(artist_parts) > 1:
-        # Check if only part of the name appears (e.g., "Louie Armst" instead of "Louis Armstrong")
-        for part in artist_parts:
-            if len(part) > 3:  # Only check meaningful parts
-                # Look for truncated versions (e.g., "Armst" from "Armstrong")
-                pattern = re.escape(part[:4])  # First 4 chars
-                if re.search(r'\b' + pattern + r'[a-z]{0,2}\b', text, re.IGNORECASE):
-                    # Found potentially truncated name - might be incomplete
-                    # Try to verify full name is NOT present
-                    if part.lower() not in text.lower():
-                        # Truncation detected - reject this script
-                        logger.warning(f"Detected truncated artist name in script: expected '{artist}', found partial match")
-                        # Return empty to flag for rejection
-                        return ""
-    
-    # Split by sentence boundaries more carefully (avoid splitting on abbreviations like Mr. Mrs. Dr.)
-    # Simple approach: protect common abbreviations before splitting
-    protected_text = text.replace('Mr.', 'Mr~')
-    protected_text = protected_text.replace('Mrs.', 'Mrs~')
-    protected_text = protected_text.replace('Ms.', 'Ms~')
-    protected_text = protected_text.replace('Dr.', 'Dr~')
-    
-    sentences = re.split(r'([.!?])\s+', protected_text)
-    result = []
-    found_intro = False
-    
-    for i in range(0, len(sentences), 2):
-        if i >= len(sentences):
-            break
-        sentence = sentences[i]
-        punct = sentences[i+1] if i+1 < len(sentences) else '.'
-        
-        # Check if this sentence contains artist or title
-        has_artist = artist.lower() in sentence.lower()
-        has_title = title.lower() in sentence.lower()
-        
-        result.append(sentence + punct)
-        
-        # If we found both artist and title in this sentence, stop here
-        if has_artist and has_title:
-            found_intro = True
-            break
-        # Or if we found just one and we've already accumulated some text
-        elif (has_artist or has_title) and len(result) > 1:
-            found_intro = True
-            break
-    
-    if found_intro:
-        # Restore protected abbreviations
-        final_text = ' '.join(result).strip()
-        final_text = final_text.replace('Mr~', 'Mr.')
-        final_text = final_text.replace('Mrs~', 'Mrs.')
-        final_text = final_text.replace('Ms~', 'Ms.')
-        final_text = final_text.replace('Dr~', 'Dr.')
-        return final_text
-    
-    # Fallback: return original if no clear intro found (also restore protections)
-    text = text.replace('Mr~', 'Mr.')
-    text = text.replace('Mrs~', 'Mrs.')
-    text = text.replace('Ms~', 'Ms.')
     text = text.replace('Dr~', 'Dr.')
 
 
