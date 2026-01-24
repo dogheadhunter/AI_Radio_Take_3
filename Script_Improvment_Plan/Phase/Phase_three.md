@@ -184,11 +184,11 @@ Remember:
 **Output File:** Add to `src/ai_radio/generation/auditor.py`
 
 **Success Criteria:**
-- [ ] Auditor prompt complete
-- [ ] Output format is parseable JSON
-- [ ] Test with 5 sample scripts (mix of good/bad)
-- [ ] Auditor correctly identifies good scripts
-- [ ] Auditor correctly flags bad scripts with reasons
+- [x] Auditor prompt complete
+- [x] Output format is parseable JSON
+- [x] Test with 5 sample scripts (mix of good/bad)
+- [x] Auditor correctly identifies good scripts
+- [x] Auditor correctly flags bad scripts with reasons
 
 **Manual Test Protocol:**
 1. Create 2 intentionally good scripts

@@ -29,13 +29,27 @@ class AuditResult:
 
 
 def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro") -> str:
-    # Minimal prompt that matches the spec in Phase 3 docs
+    # Full system prompt matching Phase 3 spec with character refs and scoring rules
     system = (
-        "You are a script auditor for an AI radio station.\n"
-        "Evaluate the script below for the specified DJ and content type.\n"
-        "Return JSON only with fields: score, passed, criteria_scores, issues, notes.\n"
-        "Scoring: 1-10, pass if score >= 6.\n"
-        "Criteria: character_voice, era_appropriateness, forbidden_elements, natural_flow, length.\n"
+        "You are a script auditor for an AI radio station. Your job is to evaluate DJ scripts for character accuracy and quality.\n\n"
+        "Character Reference: Julie\n"
+        "- Voice: conversational, uses filler words, sometimes rambling.\n"
+        "- Era: Modern American; avoid 1950s slang.\n"
+        "- Tone: Warm, hopeful, friendly.\n"
+        "- Typical patterns: longish sentences, friendly asides, filler words like 'you know' or 'right'.\n\n"
+        "Character Reference: Mr. New Vegas\n"
+        "- Voice: smooth, suave, romantic.\n"
+        "- Era: 1950s Vegas lounge; avoid modern slang or emojis.\n"
+        "- Tone: Intimate, sophisticated.\n"
+        "- Typical patterns: short, polished sentences, romantic descriptors, references to lounge/city.\n\n"
+        "Scoring Criteria (weights):\n"
+        "1. Character Voice (30%): How well does the script match the DJ's voice?\n"
+        "2. Era Appropriateness (25%): Any anachronisms or modern slang present?\n"
+        "3. Forbidden Elements (20%): Emojis, profanity, or mean comments (absolute fail).\n"
+        "4. Natural Flow (15%): Does it read naturally or sound forced?\n"
+        "5. Length (10%): Is it appropriate for the content type?\n\n"
+        "Scoring Scale: 10=Perfect, 8-9=Strong, 6-7=Acceptable (PASS), 4-5=Weak (FAIL), 1-3=Major issues (FAIL).\n\n"
+        "Instructions: Evaluate the script and respond ONLY with valid JSON in EXACT format with keys: score, passed, criteria_scores, issues (list), notes (brief). Use the scoring scale above and set 'passed' true if overall score >= 6. Give specific issues when failing.\n"
     )
     user = f"Evaluate this {content_type} script for {dj}:\n---\n{script_content}\n---\n"
     return system + "\n" + user

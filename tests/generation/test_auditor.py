@@ -72,3 +72,28 @@ def test_batch_and_save_load(tmp_path, mock_llm_auditor):
     # Load results
     results = load_audit_results(out)
     assert len(results) == 2
+
+
+def test_auditor_on_sample_scripts(tmp_path, mock_llm_auditor_mixed):
+    """Run auditor on 5 sample scripts (good/bad/borderline) and verify outcomes."""
+    scripts = [
+        {"script_id": "good_julie", "script_content": "Hey there, you know, this is Julie. Lovely tune ahead.", "dj": "julie"},
+        {"script_id": "bad_julie_slang", "script_content": "Hey, awesome track! 😀", "dj": "julie"},
+        {"script_id": "bad_mrnv", "script_content": "Yo, that was awesome, totally rad.", "dj": "mr_new_vegas"},
+        {"script_id": "borderline_julie", "script_content": "This is a borderline script with slight drift.", "dj": "julie"},
+        {"script_id": "good_mrnv", "script_content": "A smooth evening, the lights shimmer over the lounge.", "dj": "mr_new_vegas"},
+    ]
+
+    out = tmp_path / "audit_mixed"
+    summary = audit_batch(scripts, out, client=None)
+
+    # Expect: 3 pass (good_julie, borderline_julie, good_mrnv), 2 fail
+    assert summary["total"] == 5
+    assert summary["passed"] == 3
+    assert summary["failed"] == 2
+
+    # Ensure issues are recorded for failures
+    results = load_audit_results(out)
+    failed_ids = [r.script_id for r in results if not r.passed]
+    assert "bad_julie_slang" in failed_ids
+    assert "bad_mrnv" in failed_ids
