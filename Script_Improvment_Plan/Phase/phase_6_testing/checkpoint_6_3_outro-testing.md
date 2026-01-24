@@ -85,11 +85,11 @@ Get-Content data\audit\summary.json
 | Mr. NV (10 scripts) | >50% | >95% | **80%** ✅ | **100%** ✅ |
 | Scale (50 scripts) | >50% | >95% | **84%** ✅ | **100%** ✅ |
 
-- [ ] References song in past tense ("That was..." not "Here is...")
-- [ ] Natural transition feel
-- [ ] Same character voice as intros
-- [ ] Appropriate length (shorter than intros)
-- [ ] No future song spoilers unless intentional
+- [x] References song in past tense ("That was..." not "Here is...") ✅
+- [x] Natural transition feel ✅
+- [x] Same character voice as intros ✅
+- [x] Appropriate length (shorter than intros) ✅
+- [x] No future song spoilers unless intentional ✅
 
 ## Success Criteria
 
@@ -105,11 +105,11 @@ Get-Content data\audit\summary.json
 
 ## Validation Checklist
 
-- [ ] Smoke test completes without errors
-- [ ] Both DJs generate quality outros
-- [ ] Auto-regeneration improves pass rate
-- [ ] No new failure patterns vs intros
-- [ ] Ready to proceed to time integration
+- [x] Smoke test completes without errors ✅
+- [x] Both DJs generate quality outros ✅
+- [x] Auto-regeneration improves pass rate ✅
+- [x] No new failure patterns vs intros ✅
+- [x] Ready to proceed to time integration ✅
 
 ## Notes
 
