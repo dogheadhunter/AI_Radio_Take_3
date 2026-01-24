@@ -1,0 +1,15 @@
+{
+  "script_id": "06-00_mr_new_vegas_weather",
+  "dj": "mr_new_vegas",
+  "content_type": "weather_announcement",
+  "score": 6.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "length": 3.0,
+    "weather_mention": 7.0
+  },
+  "issues": [],
+  "notes": "The weather announcement has a smooth, suave tone that fits Mr. New Vegas well. The natural flow of the script is conversational and easy to understand. It's an appropriate length, consisting of three sentences, and it clearly describes the partially cloudy skies with the chance of radiation showers."
+}

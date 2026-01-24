@@ -1,0 +1,15 @@
+{
+  "script_id": "17-00_julie_weather",
+  "dj": "julie",
+  "content_type": "weather_announcement",
+  "score": 7.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "length": 4.0,
+    "weather_mention": 7.0
+  },
+  "issues": [],
+  "notes": "This weather announcement for Julie sounds casual, warm, and friendly. It has a good natural flow and mentions the weather conditions clearly."
+}

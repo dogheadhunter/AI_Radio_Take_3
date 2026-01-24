@@ -1,0 +1,15 @@
+{
+  "script_id": "12-00_mr_new_vegas_weather",
+  "dj": "mr_new_vegas",
+  "content_type": "weather_announcement",
+  "score": 8.5,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "length": 7.0,
+    "weather_mention": 10.0
+  },
+  "issues": [],
+  "notes": "The announcement sounds like Mr. New Vegas, has a natural and conversational flow, but could be slightly shorter. It clearly describes the weather conditions."
+}

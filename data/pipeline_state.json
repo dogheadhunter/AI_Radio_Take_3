@@ -1,26 +1,29 @@
 {
-  "timestamp": "2026-01-24T16:09:43.908257",
-  "run_id": "20260124_160943",
+  "timestamp": "2026-01-24T16:12:21.160280",
+  "run_id": "20260124_161221",
   "config": {
-    "content_types": [],
-    "djs": [
-      "julie"
+    "content_types": [
+      "weather"
     ],
-    "song_limit": 1,
+    "djs": [
+      "julie",
+      "mr_new_vegas"
+    ],
+    "song_limit": 132,
     "test_mode": false,
     "time_slots": []
   },
   "stages": {
     "generate": {
       "status": "completed",
-      "completed_at": "2026-01-24T16:09:55.923486",
-      "scripts_generated": 1
+      "completed_at": "2026-01-24T16:12:57.725648",
+      "scripts_generated": 6
     },
     "audit": {
       "status": "completed",
-      "completed_at": "2026-01-24T16:10:08.789705",
-      "scripts_audited": 1,
-      "passed": 1,
+      "completed_at": "2026-01-24T16:13:36.223506",
+      "scripts_audited": 7,
+      "passed": 6,
       "failed": 0
     },
     "audio": {

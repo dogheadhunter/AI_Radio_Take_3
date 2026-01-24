@@ -1,0 +1,15 @@
+{
+  "script_id": "12-00_julie_weather",
+  "dj": "julie",
+  "content_type": "weather_announcement",
+  "score": 7.5,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "length": 3.0,
+    "weather_mention": 10.0
+  },
+  "issues": [],
+  "notes": "Julie sounds casual and warm, the announcement flows naturally, it is of appropriate length, and clearly describes weather conditions."
+}
