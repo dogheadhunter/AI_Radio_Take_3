@@ -695,15 +695,18 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
             st.warning("No versions available")
             return
         
+        # Get script path and content before rendering columns
+        script_path = item.get_script_path(selected_version)
+        current_script = None
+        if script_path and script_path.exists():
+            current_script = script_path.read_text(encoding='utf-8')
+        
         # Three column layout: Edit Script | Reference Materials | Audio
         col_edit, col_reference, col_audio = st.columns([2, 2, 1])
         
         with col_edit:
             st.markdown("**Edit Script:**")
-            script_path = item.get_script_path(selected_version)
-            if script_path and script_path.exists():
-                current_script = script_path.read_text(encoding='utf-8')
-                
+            if current_script is not None:
                 # Editable script area
                 edited_script = st.text_area(
                     "Your edits",
@@ -761,7 +764,7 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                     key=f"ref_script_{item.dj}_{item.content_type}_{selected_version}",
                     label_visibility="collapsed"
                 )
-            elif script_path and script_path.exists():
+            elif current_script is not None:
                 # Fallback to current script if version 0 doesn't exist
                 st.text_area(
                     "Original script for comparison",
