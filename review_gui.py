@@ -335,10 +335,10 @@ def render_review_item(item: ReviewItem, index: int):
         with col4:
             # Status badges
             if item.audit_status:
-                color = "🟢" if item.audit_status == "passed" else "🔴"
+                color = "[PASS]" if item.audit_status == "passed" else "[FAIL]"
                 st.caption(f"Audit: {color}")
             
-            review_color = {"pending": "⚪", "approved": "🟢", "rejected": "🔴"}.get(review_status["status"], "⚪")
+            review_color = {"pending": "[PEND]", "approved": "[APPR]", "rejected": "[REJ]"}.get(review_status["status"], "[PEND]")
             st.caption(f"Review: {review_color}")
         
         # Version selector
@@ -374,7 +374,7 @@ def render_review_item(item: ReviewItem, index: int):
         
         # Version comparison (if multiple versions exist)
         if item.latest_version > 0:
-            with st.expander("📊 Compare Versions"):
+            with st.expander("Compare Versions"):
                 compare_ver = st.selectbox(
                     "Compare with version",
                     [v for v in range(item.latest_version + 1) if v != version],
@@ -393,7 +393,7 @@ def render_review_item(item: ReviewItem, index: int):
                         )
         
         # Review decision section
-        with st.expander("✏️ Review Decision", expanded=(review_status["status"] == "pending")):
+        with st.expander("Review Decision", expanded=(review_status["status"] == "pending")):
             # Script issues
             st.markdown("**Script Issues:**")
             script_issue_options = SCRIPT_ISSUES.get(item.content_type, [])
@@ -427,7 +427,7 @@ def render_review_item(item: ReviewItem, index: int):
             col1, col2, col3, col4, col5 = st.columns(5)
             
             with col1:
-                if st.button("✅ Approve", key=f"approve_{index}", use_container_width=True):
+                if st.button("Approve", key=f"approve_{index}", use_container_width=True):
                     new_status = {
                         "status": "approved",
                         "reviewed_at": datetime.now().isoformat(),
@@ -440,7 +440,7 @@ def render_review_item(item: ReviewItem, index: int):
                     st.rerun()
             
             with col2:
-                if st.button("❌ Reject", key=f"reject_{index}", use_container_width=True):
+                if st.button("Reject", key=f"reject_{index}", use_container_width=True):
                     new_status = {
                         "status": "rejected",
                         "reviewed_at": datetime.now().isoformat(),
@@ -453,19 +453,19 @@ def render_review_item(item: ReviewItem, index: int):
                     st.rerun()
             
             with col3:
-                if st.button("🔄 Regen Script", key=f"regen_script_{index}", use_container_width=True):
+                if st.button("Regen Script", key=f"regen_script_{index}", use_container_width=True):
                     feedback = f"Script issues: {', '.join(selected_script_issues)}. {reviewer_notes}"
                     add_to_regen_queue(item, "script", feedback)
                     st.info("Added to regeneration queue")
             
             with col4:
-                if st.button("🔊 Regen Audio", key=f"regen_audio_{index}", use_container_width=True):
+                if st.button("Regen Audio", key=f"regen_audio_{index}", use_container_width=True):
                     feedback = f"Audio issues: {', '.join(selected_audio_issues)}. {reviewer_notes}"
                     add_to_regen_queue(item, "audio", feedback)
                     st.info("Added to regeneration queue")
             
             with col5:
-                if st.button("🔄🔊 Regen Both", key=f"regen_both_{index}", use_container_width=True):
+                if st.button("Regen Both", key=f"regen_both_{index}", use_container_width=True):
                     feedback = f"Script issues: {', '.join(selected_script_issues)}. Audio issues: {', '.join(selected_audio_issues)}. {reviewer_notes}"
                     add_to_regen_queue(item, "both", feedback)
                     st.info("Added to regeneration queue")
@@ -590,7 +590,7 @@ def save_manual_script(item: ReviewItem, new_script: str, version: int) -> bool:
 
 def render_song_editor_page():
     """Render the song-specific editor page."""
-    st.title("🎵 Song Editor")
+    st.title("Song Editor")
     st.markdown("View and edit all content for a specific song")
     
     # Get available songs
@@ -619,12 +619,12 @@ def render_song_editor_page():
     selected_song = songs[selected_idx]
     
     # Display song info
-    st.subheader(f"🎵 {selected_song['title']}")
+    st.subheader(f"{selected_song['title']}")
     st.markdown(f"**Artist:** {selected_song['artist']}")
     st.markdown(f"**Song ID:** `{selected_song['id']}`")
     
     # Load and display lyrics
-    with st.expander("📜 Song Lyrics", expanded=False):
+    with st.expander("Song Lyrics", expanded=False):
         lyrics = load_lyrics(selected_song['lyrics_file'])
         st.text_area(
             "Lyrics",
@@ -640,7 +640,7 @@ def render_song_editor_page():
     song_content = get_song_content(selected_song['id'])
     
     # Display intros
-    st.header("🎤 Intros")
+    st.header("Intros")
     if song_content['intros']:
         for item in song_content['intros']:
             render_song_content_editor(item, selected_song, "intro")
@@ -650,7 +650,7 @@ def render_song_editor_page():
     st.markdown("---")
     
     # Display outros
-    st.header("👋 Outros")
+    st.header("Outros")
     if song_content['outros']:
         for item in song_content['outros']:
             render_song_content_editor(item, selected_song, "outro")
@@ -668,11 +668,11 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
         with col2:
             # Status indicators
             if item.audit_status:
-                status_emoji = "🟢" if item.audit_status == "passed" else "🔴"
+                status_emoji = "[PASS]" if item.audit_status == "passed" else "[FAIL]"
                 st.markdown(f"Audit: {status_emoji}")
         with col3:
-            review_emoji = {"approved": "🟢", "rejected": "🔴", "pending": "⚪"}
-            st.markdown(f"Review: {review_emoji.get(item.review_status, '⚪')}")
+            review_emoji = {"approved": "[APPR]", "rejected": "[REJ]", "pending": "[PEND]"}
+            st.markdown(f"Review: {review_emoji.get(item.review_status, '[PEND]')}")
         
         # Check if manually rewritten
         review_status = load_review_status(item.folder_path)
@@ -680,7 +680,7 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
         rewritten_version = review_status.get("rewritten_version", None)
         
         if is_rewritten:
-            st.success(f"✏️ Manually rewritten (version {rewritten_version}) - This version will be used for audio generation")
+            st.success(f"[MANUAL] Manually rewritten (version {rewritten_version}) - This version will be used for audio generation")
         
         # Version selector
         version_options = list(range(len(item.script_versions)))
@@ -716,13 +716,13 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                 col_save, col_regen = st.columns(2)
                 with col_save:
                     if edited_script != current_script:
-                        if st.button(f"💾 Save Changes", key=f"save_{item.dj}_{item.content_type}_{selected_version}"):
+                        if st.button(f"Save Changes", key=f"save_{item.dj}_{item.content_type}_{selected_version}"):
                             if save_manual_script(item, edited_script, selected_version):
                                 st.success("Script saved and marked as manually rewritten!")
                                 st.rerun()
                 
                 with col_regen:
-                    if st.button(f"🔊 Regenerate Audio", key=f"regen_audio_{item.dj}_{item.content_type}_{selected_version}"):
+                    if st.button(f"Regenerate Audio", key=f"regen_audio_{item.dj}_{item.content_type}_{selected_version}"):
                         # Add to regeneration queue for audio only
                         feedback = "Manual script edit - regenerate audio with updated script"
                         add_to_regen_queue(item, "audio", feedback)
@@ -769,7 +769,7 @@ def main():
     """Main Streamlit app."""
     st.set_page_config(
         page_title="AI Radio Review GUI",
-        page_icon="🎙️",
+        page_icon=":radio:",
         layout="wide"
     )
     
@@ -790,7 +790,7 @@ def main():
         return
     
     # Original Review List page
-    st.title("🎙️ AI Radio Review GUI")
+    st.title("AI Radio Review GUI")
     st.markdown("Manual review and approval system for generated scripts and audio")
     
     # Sidebar (filters for Review List mode)
@@ -842,7 +842,7 @@ def main():
         st.header("Actions")
         
         # Refresh button
-        if st.button("🔄 Refresh", use_container_width=True):
+        if st.button("Refresh", use_container_width=True):
             st.rerun()
         
         # Regeneration queue status
@@ -850,7 +850,7 @@ def main():
         st.metric("Regen Queue", queue_count)
         
         if queue_count > 0:
-            if st.button("🗑️ Clear Queue", use_container_width=True):
+            if st.button("Clear Queue", use_container_width=True):
                 clear_regen_queue()
                 st.success("Queue cleared!")
                 st.rerun()
@@ -878,7 +878,7 @@ def main():
         csv_df = export_reviews_to_csv(filtered_items)
         csv_data = csv_df.to_csv(index=False)
         st.download_button(
-            label="📥 Export Reviews to CSV",
+            label="Export Reviews to CSV",
             data=csv_data,
             file_name=f"review_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
             mime="text/csv"
