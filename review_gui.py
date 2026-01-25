@@ -746,9 +746,23 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                 label_visibility="collapsed"
             )
             
-            # Show original generated script
+            # Show original generated script (version 0 if available, otherwise current version)
             st.markdown("*Original Generated Script:*")
-            if script_path and script_path.exists():
+            # Always try to show version 0 as the "original" for comparison
+            original_script_path = item.get_script_path(0)
+            if original_script_path and original_script_path.exists():
+                original_script = original_script_path.read_text(encoding='utf-8')
+                comparison_label = "Version 0 (original)" if selected_version != 0 else "Current version"
+                st.text_area(
+                    f"Original script for comparison ({comparison_label})",
+                    value=original_script,
+                    height=120,
+                    disabled=True,
+                    key=f"ref_script_{item.dj}_{item.content_type}_{selected_version}",
+                    label_visibility="collapsed"
+                )
+            elif script_path and script_path.exists():
+                # Fallback to current script if version 0 doesn't exist
                 st.text_area(
                     "Original script for comparison",
                     value=current_script,
