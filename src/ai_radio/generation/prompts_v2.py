@@ -124,7 +124,7 @@ def _build_system_prompt(dj: DJ, examples: List[str], voice_summary: str) -> str
         "- 'Coming up...' / 'This next one...' / 'Got some [Artist]...'\n"
         "- Start with a question or observation about the song\n"
         "\n"
-        "Keep it natural and brief (1-3 sentences). Make specific observations about THIS song."
+        "Keep it natural and brief (1-3 sentences optimal, 5 max). Make specific observations about THIS song."
     )
     return system
 
@@ -159,13 +159,14 @@ def build_song_intro_prompt_v2(
     )
     
     if lyrics_part:
-        user += f"Song theme/lyrics hint: {lyrics_part}\n"
+        user += f"\nFull song lyrics:\n{lyrics_part}\n"
     
     user += (
         "\nRequirements:\n"
-        "- Length: 1-2 sentences preferred, 3 sentences MAX.\n"
-        "- Make a specific thematic observation about THIS song - connect to its theme, lyrics, or mood.\n"
-        "- You may ask a rhetorical question about the song's meaning.\n"
+        "- Length: 1-3 sentences optimal, 5 sentences MAX.\n"
+        "- Read the full lyrics above and identify the song's theme, mood, or key message.\n"
+        "- Make a specific thematic observation about THIS song - connect to what you found in the lyrics.\n"
+        "- You may ask a rhetorical question about the song's meaning or message.\n"
         "- CRITICAL: MUST end with the song introduction (artist and/or title).\n"
         "- DO NOT add any text after introducing the song - that's where music starts!\n"
         "- DO NOT mention years or dates.\n"
@@ -212,7 +213,7 @@ def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optio
     user = (
         f"Write a song outro for '{title}' by {artist} that just finished playing. {next_part}\n"
         "Requirements:\n"
-        "- Length: 1-2 sentences MAX.\n"
+        "- Length: 1-3 sentences optimal, 5 sentences MAX.\n"
         "- Use PAST TENSE (the song just played - 'That was...', 'Hope you enjoyed...').\n"
         "- Keep it brief and transitional - no long commentary.\n"
         "- Natural wrap-up or sign-off feel.\n"
