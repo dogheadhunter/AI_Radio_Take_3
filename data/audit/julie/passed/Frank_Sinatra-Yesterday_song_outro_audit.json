@@ -1,0 +1,18 @@
+{
+  "script_id": "128_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.05,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 8.0
+  },
+  "issues": [
+    "None"
+  ],
+  "notes": "Great job! Keep up the good work!"
+}

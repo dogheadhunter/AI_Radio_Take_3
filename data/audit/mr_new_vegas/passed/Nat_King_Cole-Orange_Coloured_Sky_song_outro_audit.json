@@ -1,0 +1,18 @@
+{
+  "script_id": "100_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.099999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "list any problems"
+  ],
+  "notes": "brief summary"
+}

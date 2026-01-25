@@ -1,0 +1,16 @@
+{
+  "script_id": "114_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [],
+  "notes": "Clean and well-structured script. Good job!"
+}

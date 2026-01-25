@@ -1,0 +1,18 @@
+{
+  "script_id": "59_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.099999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "No issues found"
+  ],
+  "notes": "Script flows naturally and sounds like the voice samples provided. No modern slang or violations were detected. Era appropriateness is well-maintained with no dates/years mentioned."
+}

@@ -1,0 +1,18 @@
+{
+  "script_id": "79_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.95,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "Issues with past tense usage. A few present tense phrases used."
+  ],
+  "notes": "Overall good job! Just need to focus on past tense usage and maintaining natural flow throughout the script."
+}

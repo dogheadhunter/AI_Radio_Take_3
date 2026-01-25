@@ -1,0 +1,18 @@
+{
+  "script_id": "122_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [
+    "script might sound a bit too formal"
+  ],
+  "notes": "Good job on maintaining the natural flow and keeping it within the length requirement. Keep up the positive attitude and relatable tone in future scripts."
+}

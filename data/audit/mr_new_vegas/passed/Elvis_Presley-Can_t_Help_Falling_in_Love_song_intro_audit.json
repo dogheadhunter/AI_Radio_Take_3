@@ -1,0 +1,18 @@
+{
+  "script_id": "24_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 5.0
+  },
+  "issues": [
+    "No issues found"
+  ],
+  "notes": "Script flows naturally and sounds like Mr. New Vegas. Era appropriateness is perfect as it uses 1950s language without any modern slang or dates/years mentioned. The script is clean with no emoji, meta-commentary, or placeholders present. It's just under the ideal length of 120 words and reads naturally. Lastly, it ends with the introduction of the song by mentioning its artist and title."
+}

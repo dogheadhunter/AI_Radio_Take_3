@@ -1,0 +1,18 @@
+{
+  "script_id": "113_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.25,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 7.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 6.0
+  },
+  "issues": [
+    "The script uses past tense for the most part, but there is one instance of present tense ('Here's jukebox...)."
+  ],
+  "notes": "The script reads naturally and has a good flow. It sounds like Julie's voice from the reference samples. The language used is appropriate for the 1950s era, and no dates or years are mentioned."
+}

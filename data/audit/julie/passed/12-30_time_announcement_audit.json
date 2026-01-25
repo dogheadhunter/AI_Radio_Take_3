@@ -1,0 +1,14 @@
+{
+  "script_id": "12-30_julie_time",
+  "dj": "julie",
+  "content_type": "time_announcement",
+  "score": 7.666666666666667,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 6.0
+  },
+  "issues": [],
+  "notes": "Julie sounds engaging and conversational. Her voice is consistent with the provided reference samples. The flow of the script is natural but could be more concise. She read a script that was appropriately short."
+}

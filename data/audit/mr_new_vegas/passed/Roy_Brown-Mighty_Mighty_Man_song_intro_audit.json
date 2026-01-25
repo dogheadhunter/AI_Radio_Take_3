@@ -1,0 +1,18 @@
+{
+  "script_id": "92_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.899999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 5.0
+  },
+  "issues": [
+    "Script seems too long"
+  ],
+  "notes": "Script is mostly clean and era-appropriate, but could be shortened to improve natural flow."
+}

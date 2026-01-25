@@ -1,0 +1,14 @@
+{
+  "script_id": "00-30_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 9.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "natural_flow": 9.0,
+    "brevity": 8.0
+  },
+  "issues": [],
+  "notes": "The script aligns well with Mr. New Vegas' voice and sounds conversational. It is not too long and fits the context of a radio DJ announcement."
+}

@@ -1,0 +1,14 @@
+{
+  "script_id": "09-00_julie_time",
+  "dj": "julie",
+  "content_type": "time_announcement",
+  "score": 7.666666666666667,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 6.0
+  },
+  "issues": [],
+  "notes": "Julie's voice is a good match for the provided samples. The script sounds conversational and natural. However, it could be shorter, as it consists of four sentences instead of the recommended 1-2."
+}

@@ -1,0 +1,18 @@
+{
+  "script_id": "125_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 8.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 6.0
+  },
+  "issues": [
+    "Some phrases may sound too modern for the era"
+  ],
+  "notes": "Overall, a solid script with a good flow. The only issue is that some phrases might be considered slightly too modern for the 1950s era."
+}

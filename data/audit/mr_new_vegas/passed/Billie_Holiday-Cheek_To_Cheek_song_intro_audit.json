@@ -1,0 +1,18 @@
+{
+  "script_id": "26_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.65,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 4.0
+  },
+  "issues": [
+    "script is too long"
+  ],
+  "notes": "A good script that sounds like the voice samples and uses era-appropriate language. No emoji or meta-commentary found. Reads naturally with a good length, but could be trimmed down even further."
+}

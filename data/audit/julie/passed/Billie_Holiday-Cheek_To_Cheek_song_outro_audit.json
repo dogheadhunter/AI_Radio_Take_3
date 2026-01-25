@@ -1,0 +1,16 @@
+{
+  "script_id": "26_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.099999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [],
+  "notes": "The script flows well and sounds like the provided voice samples. It uses appropriate language from the 1950s without any modern slang or dates/years mentioned. The script is clean with no emoji, meta-commentary, or placeholders present. The past tense usage is mostly correct, but it could be improved by avoiding the use of present tense in some instances."
+}

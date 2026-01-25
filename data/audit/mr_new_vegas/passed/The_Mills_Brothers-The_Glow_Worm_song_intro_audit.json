@@ -1,0 +1,18 @@
+{
+  "script_id": "113_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [
+    "Character voice seems slightly off compared to reference samples"
+  ],
+  "notes": "Great job on using the correct language and tone for this era! Keep up the good work!"
+}

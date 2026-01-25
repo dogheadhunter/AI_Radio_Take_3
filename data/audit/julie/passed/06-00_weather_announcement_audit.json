@@ -8,8 +8,8 @@
     "character_voice": 8.0,
     "natural_flow": 9.0,
     "length": 7.0,
-    "weather_mention": 10.0
+    "subtlety": 10.0
   },
   "issues": [],
-  "notes": "A friendly and casual voice, with a natural flow. However, it is slightly longer than ideal."
+  "notes": "A good weather announcement with a conversational tone. The voice samples provided give a good indication of the DJ's character."
 }

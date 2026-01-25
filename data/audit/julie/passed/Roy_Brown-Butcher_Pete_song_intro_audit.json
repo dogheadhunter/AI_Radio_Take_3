@@ -1,0 +1,16 @@
+{
+  "script_id": "21_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [],
+  "notes": "Script sounds like Julie's voice and reads naturally. It is era-appropriate with no modern slang or dates mentioned. The script is clean without any emoji, meta-commentary, or placeholders. The length is appropriate, ending with the introduction of the song."
+}

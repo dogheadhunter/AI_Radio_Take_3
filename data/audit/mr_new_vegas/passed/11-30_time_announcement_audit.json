@@ -1,0 +1,14 @@
+{
+  "script_id": "11-30_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 9.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 10.0
+  },
+  "issues": [],
+  "notes": "The script sounds like Mr. New Vegas and has a natural, conversational flow. It's also appropriately brief."
+}

@@ -1,0 +1,18 @@
+{
+  "script_id": "116_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.45,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 5.0
+  },
+  "issues": [
+    "The script is too long. Try to keep it under 120 words."
+  ],
+  "notes": "Overall, the script sounds like Mr. New Vegas and has a natural flow. It's era-appropriate and clean, but it could be shorter."
+}

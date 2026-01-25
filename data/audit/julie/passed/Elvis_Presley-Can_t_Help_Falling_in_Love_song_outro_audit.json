@@ -1,0 +1,16 @@
+{
+  "script_id": "24_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.7,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 10.0
+  },
+  "issues": [],
+  "notes": "Script sounds like Julie's voice, has no modern slang, doesn't mention any dates/years, reads naturally (under 80 words), and uses past tense correctly."
+}

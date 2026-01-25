@@ -1,0 +1,18 @@
+{
+  "script_id": "14_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.95,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "Julie's voice sounds a bit different than the reference samples."
+  ],
+  "notes": "Script flows well and uses past tense appropriately. The only issue is that Julie's voice doesn't sound exactly like the reference samples."
+}

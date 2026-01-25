@@ -1,0 +1,18 @@
+{
+  "script_id": "107_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.2,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 7.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 4.0
+  },
+  "issues": [
+    "Reads a bit too formal for Julie"
+  ],
+  "notes": "Nice job on keeping it clean and era-appropriate. Keep in mind that for character_voice, try to sound more like the voice samples in tone and choice of words."
+}

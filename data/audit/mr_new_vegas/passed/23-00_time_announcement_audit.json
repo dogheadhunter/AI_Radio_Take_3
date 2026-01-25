@@ -1,0 +1,14 @@
+{
+  "script_id": "23-00_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 7.333333333333333,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 5.0
+  },
+  "issues": [],
+  "notes": "Good evening, folks. It's 11 o'clock here in the Mojave as we ease into a memorable night."
+}

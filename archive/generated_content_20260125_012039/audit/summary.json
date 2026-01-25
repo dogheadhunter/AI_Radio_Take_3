@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-01-25T01:19:29.375671",
+  "total_scripts": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate": 1.0,
+  "by_dj": {
+    "mr_new_vegas": {
+      "passed": 3,
+      "failed": 0
+    }
+  }
+}

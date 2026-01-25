@@ -1,0 +1,18 @@
+{
+  "script_id": "66_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 8.55,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 6.0
+  },
+  "issues": [
+    "Some phrases sound more like a present-day DJ than a 1950s one."
+  ],
+  "notes": "Generally good script with minor issues in natural flow and past tense usage. The voice matches the character's description well, and it is era-appropriate. There are no forbidden elements or violations."
+}

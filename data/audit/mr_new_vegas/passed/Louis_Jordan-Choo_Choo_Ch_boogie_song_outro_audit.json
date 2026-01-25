@@ -1,0 +1,18 @@
+{
+  "script_id": "27_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 8.35,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 8.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 6.0
+  },
+  "issues": [
+    "Some language might be too modern"
+  ],
+  "notes": "Script flows well and uses past tense appropriately but has some issues with language."
+}

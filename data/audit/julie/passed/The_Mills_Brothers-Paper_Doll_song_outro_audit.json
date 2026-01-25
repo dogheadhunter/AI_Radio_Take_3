@@ -1,0 +1,16 @@
+{
+  "script_id": "103_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.099999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [],
+  "notes": "The script flows naturally and is in the past tense as required. It uses appropriate language from the 1950s era and contains no forbidden elements like emojis or meta-commentary."
+}

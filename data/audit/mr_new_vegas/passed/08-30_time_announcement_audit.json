@@ -1,0 +1,14 @@
+{
+  "script_id": "08-30_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 7.666666666666667,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "natural_flow": 8.0,
+    "brevity": 6.0
+  },
+  "issues": [],
+  "notes": "The script sounds like the character's voice and has a natural flow. However, it could be shorter to fit the brevity criterion."
+}

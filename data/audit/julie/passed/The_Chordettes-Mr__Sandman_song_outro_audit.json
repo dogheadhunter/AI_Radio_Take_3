@@ -1,0 +1,16 @@
+{
+  "script_id": "94_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.399999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 10.0
+  },
+  "issues": [],
+  "notes": "Script reads naturally and appropriately for the era. Character's voice is consistent with provided samples."
+}

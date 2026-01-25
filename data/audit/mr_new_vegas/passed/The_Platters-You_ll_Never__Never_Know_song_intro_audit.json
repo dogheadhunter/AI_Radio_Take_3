@@ -1,0 +1,18 @@
+{
+  "script_id": "132_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.45,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "length": 5.0
+  },
+  "issues": [
+    "The script sounds a bit too formal for Julie's radio show"
+  ],
+  "notes": "Overall, the script is well-written and maintains an appropriate tone. However, it may need to be adjusted slightly for a more casual radio show atmosphere."
+}

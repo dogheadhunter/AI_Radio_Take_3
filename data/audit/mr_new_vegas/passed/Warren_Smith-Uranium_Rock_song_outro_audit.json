@@ -1,0 +1,18 @@
+{
+  "script_id": "119_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.099999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "The script uses past tense appropriately, but some phrases sound slightly too modern."
+  ],
+  "notes": "Smooth transitions between segments. Good use of 1950s language and tone. Some sections could be a bit more natural in flow."
+}

@@ -1,0 +1,18 @@
+{
+  "script_id": "4_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 9.149999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 6.0
+  },
+  "issues": [
+    "The script is very clean, but it might sound a bit too formal for Julie."
+  ],
+  "notes": "This script seems to fit the character's voice well and uses appropriate language from the era. It doesn't contain any forbidden elements, but it may be slightly too long."
+}

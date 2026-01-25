@@ -1,0 +1,18 @@
+{
+  "script_id": "83_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.65,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 8.0
+  },
+  "issues": [
+    "list any problems"
+  ],
+  "notes": "brief summary"
+}

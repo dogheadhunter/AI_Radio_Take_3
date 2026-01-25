@@ -1,0 +1,18 @@
+{
+  "script_id": "127_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [
+    "Character voice sounds slightly off compared to reference samples"
+  ],
+  "notes": "Overall a well-written script with minor deviations from the provided voice samples."
+}

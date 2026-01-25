@@ -1,0 +1,18 @@
+{
+  "script_id": "117_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.5,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 7.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 10.0
+  },
+  "issues": [
+    "no major issues found"
+  ],
+  "notes": "script reads naturally and in past tense, with appropriate language for the era"
+}

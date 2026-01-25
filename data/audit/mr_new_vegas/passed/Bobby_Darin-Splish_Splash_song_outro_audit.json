@@ -1,0 +1,18 @@
+{
+  "script_id": "110_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 8.95,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "Script might be too long"
+  ],
+  "notes": "Great job! Just make sure your scripts stay under 80 words."
+}

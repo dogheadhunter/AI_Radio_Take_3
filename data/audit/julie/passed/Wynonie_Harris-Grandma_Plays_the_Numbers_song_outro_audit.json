@@ -1,0 +1,18 @@
+{
+  "script_id": "47_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 9.0
+  },
+  "issues": [
+    "Character voice might sound a bit more like Julie"
+  ],
+  "notes": "Great script overall"
+}

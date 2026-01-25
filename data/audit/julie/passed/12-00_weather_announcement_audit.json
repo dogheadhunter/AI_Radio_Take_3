@@ -2,14 +2,14 @@
   "script_id": "12-00_julie_weather",
   "dj": "julie",
   "content_type": "weather_announcement",
-  "score": 7.5,
+  "score": 8.5,
   "passed": true,
   "criteria_scores": {
-    "character_voice": 8.0,
-    "natural_flow": 9.0,
-    "length": 3.0,
-    "weather_mention": 10.0
+    "character_voice": 9.0,
+    "natural_flow": 8.0,
+    "length": 7.0,
+    "subtlety": 10.0
   },
   "issues": [],
-  "notes": "Julie sounds casual and warm, the announcement flows naturally, it is of appropriate length, and clearly describes weather conditions."
+  "notes": "The script sounds like Julie's voice and has a natural flow. However, it could be slightly shorter for a better score on the length criterion. The script avoids post-apocalyptic words, which is great!"
 }

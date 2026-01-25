@@ -1,0 +1,16 @@
+{
+  "script_id": "68_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.100000000000001,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 8.0
+  },
+  "issues": [],
+  "notes": "script reads naturally and is era-appropriate, with a few minor formatting issues resolved."
+}

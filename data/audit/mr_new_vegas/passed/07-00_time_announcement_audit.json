@@ -1,0 +1,14 @@
+{
+  "script_id": "07-00_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 7.0
+  },
+  "issues": [],
+  "notes": "Good morning announcement is well-spoken and sounds natural. However, it is not very brief."
+}

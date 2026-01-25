@@ -1,0 +1,15 @@
+{
+  "script_id": "17-00_mr_new_vegas_weather",
+  "dj": "mr_new_vegas",
+  "content_type": "weather_announcement",
+  "score": 8.25,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 6.0,
+    "natural_flow": 8.0,
+    "length": 9.0,
+    "subtlety": 10.0
+  },
+  "issues": [],
+  "notes": "The script has a good natural flow and is an appropriate length. The voice matches the character's voice samples but could be slightly more subtle in its language."
+}

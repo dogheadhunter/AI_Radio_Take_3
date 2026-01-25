@@ -1,0 +1,18 @@
+{
+  "script_id": "17_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.999999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 6.0
+  },
+  "issues": [
+    "Add more voice samples to better represent Julie's character"
+  ],
+  "notes": "Script sounds close to the provided voice samples and has a natural flow, but it would be even better with additional samples."
+}

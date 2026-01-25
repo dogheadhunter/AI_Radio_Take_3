@@ -1,0 +1,16 @@
+{
+  "script_id": "127_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 10.0
+  },
+  "issues": [],
+  "notes": "Script reads naturally and follows the voice samples, using past tense appropriately. No modern slang or date/time references found. Clean script with no emoji, meta-commentary, or placeholders."
+}

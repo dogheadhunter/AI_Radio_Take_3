@@ -1,0 +1,18 @@
+{
+  "script_id": "43_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.45,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 7.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [
+    "Script sounds a bit more formal than Julie's voice samples"
+  ],
+  "notes": "Good job introducing the song at the end."
+}

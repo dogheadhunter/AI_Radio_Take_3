@@ -1,0 +1,16 @@
+{
+  "script_id": "63_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 7.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 9.0
+  },
+  "issues": [],
+  "notes": "Script flows naturally and sounds like Julie. Minor issue with era appropriateness; could be more specific to the '50s without mentioning dates or years. No emoji or meta-commentary found."
+}

@@ -1,0 +1,16 @@
+{
+  "script_id": "11_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 9.0
+  },
+  "issues": [],
+  "notes": "Overall, the script is well-written and consistent with the provided samples. The natural flow of the dialogue could be improved slightly to make it more conversational."
+}

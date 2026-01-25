@@ -1,0 +1,16 @@
+{
+  "script_id": "61_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [],
+  "notes": "Script reads naturally and is clean with no violations or emoji. Good job on the length and era appropriateness."
+}

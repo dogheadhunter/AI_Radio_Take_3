@@ -1,0 +1,16 @@
+{
+  "script_id": "48_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.549999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [],
+  "notes": "Great job! The script sounds like Mr. New Vegas, uses appropriate language and tone for the era, doesn't have any forbidden elements, reads naturally, and mostly uses past tense."
+}

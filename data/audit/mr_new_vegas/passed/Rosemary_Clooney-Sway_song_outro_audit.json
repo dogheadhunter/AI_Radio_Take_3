@@ -1,0 +1,16 @@
+{
+  "script_id": "111_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 8.999999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 6.0
+  },
+  "issues": [],
+  "notes": "Clean script, excellent voice imitation, appropriate for the era, minimal issues with natural flow and past tense usage."
+}

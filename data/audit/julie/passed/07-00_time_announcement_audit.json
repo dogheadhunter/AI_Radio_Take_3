@@ -1,0 +1,14 @@
+{
+  "script_id": "07-00_julie_time",
+  "dj": "julie",
+  "content_type": "time_announcement",
+  "score": 7.666666666666667,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 6.0
+  },
+  "issues": [],
+  "notes": "Overall, the script sounds like Julie's voice and has a natural flow. However, it could be slightly shorter."
+}

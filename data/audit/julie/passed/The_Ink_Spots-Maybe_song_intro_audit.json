@@ -1,0 +1,16 @@
+{
+  "script_id": "90_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.65,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 4.0
+  },
+  "issues": [],
+  "notes": "Script flows naturally and is consistent with the character's voice. It shows a good understanding of the era's language and appropriateness. The forbidden elements rule is satisfied, and the script introduces the song without any issues."
+}

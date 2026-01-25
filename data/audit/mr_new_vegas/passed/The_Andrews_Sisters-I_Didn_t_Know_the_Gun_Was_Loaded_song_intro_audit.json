@@ -1,0 +1,18 @@
+{
+  "script_id": "54_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 8.3,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 7.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 5.0
+  },
+  "issues": [
+    "The script sounds too formal for Julie"
+  ],
+  "notes": "Overall, the script is very close to perfect. However, it could be more natural and less formal in tone."
+}

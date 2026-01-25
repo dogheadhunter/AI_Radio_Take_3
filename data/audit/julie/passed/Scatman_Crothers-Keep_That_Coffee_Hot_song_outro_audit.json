@@ -1,0 +1,18 @@
+{
+  "script_id": "81_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.2,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 9.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 5.0
+  },
+  "issues": [
+    "script should be slightly shorter"
+  ],
+  "notes": "Good job on maintaining the character's voice throughout the script. The era appropriateness and forbidden elements are well-done, but past tense usage is a bit weak. Keep up the good work!"
+}

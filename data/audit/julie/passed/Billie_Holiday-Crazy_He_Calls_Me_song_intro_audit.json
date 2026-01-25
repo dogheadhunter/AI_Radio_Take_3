@@ -1,0 +1,18 @@
+{
+  "script_id": "33_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.75,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 9.0,
+    "length": 5.0
+  },
+  "issues": [
+    "Some samples may not be representative of Julie's voice."
+  ],
+  "notes": "Sample 1 is closest to her regular speaking tone, while Sample 3 is more formal and flowery."
+}

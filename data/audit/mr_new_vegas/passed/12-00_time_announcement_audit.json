@@ -1,0 +1,14 @@
+{
+  "script_id": "12-00_mr_new_vegas_time",
+  "dj": "mr_new_vegas",
+  "content_type": "time_announcement",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "natural_flow": 8.0,
+    "brevity": 7.0
+  },
+  "issues": [],
+  "notes": "The script has a great character voice and natural flow. It is not as brief as it could be, but still within an acceptable range."
+}

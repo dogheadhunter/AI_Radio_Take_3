@@ -1,0 +1,14 @@
+{
+  "script_id": "18-30_julie_time",
+  "dj": "julie",
+  "content_type": "time_announcement",
+  "score": 8.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 8.0,
+    "natural_flow": 9.0,
+    "brevity": 7.0
+  },
+  "issues": [],
+  "notes": "The script sounds like Julie's voice and has a natural flow. However, it could be shortened to one or two sentences for better brevity."
+}

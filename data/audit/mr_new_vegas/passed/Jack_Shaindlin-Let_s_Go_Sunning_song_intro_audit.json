@@ -1,0 +1,16 @@
+{
+  "script_id": "86_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 9.2,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 10.0,
+    "length": 5.0
+  },
+  "issues": [],
+  "notes": "Script flows naturally, no issues to report."
+}

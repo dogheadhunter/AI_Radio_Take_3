@@ -1,0 +1,16 @@
+{
+  "script_id": "95_julie_intro",
+  "dj": "julie",
+  "content_type": "song_intro",
+  "score": 8.799999999999999,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "length": 4.0
+  },
+  "issues": [],
+  "notes": "Overall, the script is well-written and matches Julie's voice. It uses appropriate language for the era and doesn't include any modern slang or dates/years. The flow is natural but could be a bit more concise. The length is good, as it introduces the song without exceeding five sentences."
+}

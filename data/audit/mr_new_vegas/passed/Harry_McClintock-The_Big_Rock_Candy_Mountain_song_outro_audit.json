@@ -1,0 +1,18 @@
+{
+  "script_id": "112_mr_new_vegas_outro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_outro",
+  "score": 9.1,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 10.0,
+    "past_tense_usage": 1.0
+  },
+  "issues": [
+    "The script uses present tense instead of past tense."
+  ],
+  "notes": "Script reads naturally and effectively sets the mood with the voice samples. However, it would be more authentic if past tense were consistently used."
+}

@@ -2,14 +2,14 @@
   "script_id": "17-00_mr_new_vegas_weather",
   "dj": "mr_new_vegas",
   "content_type": "weather_announcement",
-  "score": 8.25,
+  "score": 8.5,
   "passed": true,
   "criteria_scores": {
-    "character_voice": 8.0,
-    "natural_flow": 9.0,
+    "character_voice": 9.0,
+    "natural_flow": 10.0,
     "length": 7.0,
-    "weather_mention": 9.0
+    "subtlety": 8.0
   },
   "issues": [],
-  "notes": "Smooth and suave, but slightly lengthy."
+  "notes": "The script sounds like Mr. New Vegas and has a natural conversational flow. However, it could be slightly shorter."
 }

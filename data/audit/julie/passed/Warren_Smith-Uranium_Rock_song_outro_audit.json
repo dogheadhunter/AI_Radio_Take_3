@@ -1,0 +1,18 @@
+{
+  "script_id": "119_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 9.099999999999998,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 8.0,
+    "past_tense_usage": 7.0
+  },
+  "issues": [
+    "Reads a bit long. Try to keep it under 80 words."
+  ],
+  "notes": "Great job on capturing the spirit of the era and using past tense. Just aim for a more natural flow with slightly shorter scripts."
+}

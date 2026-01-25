@@ -1,0 +1,16 @@
+{
+  "script_id": "31_julie_outro",
+  "dj": "julie",
+  "content_type": "song_outro",
+  "score": 8.85,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 7.0,
+    "past_tense_usage": 6.0
+  },
+  "issues": [],
+  "notes": "Script flows naturally and is free of any forbidden elements or present tense usage. Era appropriateness is spot on with no mention of dates or years."
+}

@@ -1,0 +1,16 @@
+{
+  "script_id": "63_mr_new_vegas_intro",
+  "dj": "mr_new_vegas",
+  "content_type": "song_intro",
+  "score": 9.5,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 10.0,
+    "era_appropriateness": 10.0,
+    "forbidden_elements": 10.0,
+    "natural_flow": 10.0,
+    "length": 5.0
+  },
+  "issues": [],
+  "notes": "The script is an excellent representation of the character's voice. It uses appropriate language and tone for the era, and it adheres to all scoring rules."
+}
