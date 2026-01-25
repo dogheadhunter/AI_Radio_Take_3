@@ -701,8 +701,8 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
         if script_path and script_path.exists():
             current_script = script_path.read_text(encoding='utf-8')
         
-        # Three column layout: Edit Script | Reference Materials | Audio
-        col_edit, col_reference, col_audio = st.columns([2, 2, 1])
+        # Two column layout: Edit Script | Reference Materials (with audio inline)
+        col_edit, col_reference = st.columns([1, 1])
         
         with col_edit:
             st.markdown("**Edit Script:**")
@@ -711,7 +711,7 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                 edited_script = st.text_area(
                     "Your edits",
                     value=current_script,
-                    height=300,
+                    height=400,
                     key=f"script_edit_{item.dj}_{item.content_type}_{selected_version}",
                     help="Edit the script here. Changes will be saved when you click 'Save Changes'"
                 )
@@ -776,9 +776,9 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                 )
             else:
                 st.info("No original script available")
-        
-        with col_audio:
-            st.markdown("**Audio:**")
+            
+            # Audio player inline with reference materials
+            st.markdown("*Audio Preview:*")
             audio_path = item.get_audio_path(selected_version)
             if audio_path and audio_path.exists():
                 try:
@@ -842,65 +842,66 @@ def main():
     
     # Sidebar (filters for Review List mode)
     with st.sidebar:
-        st.header("Filters")
-        
-        # Content type filter
-        st.session_state.filter_content_type = st.selectbox(
-            "Content Type",
-            ["All"] + CONTENT_TYPES,
-            index=["All"] + CONTENT_TYPES.index(st.session_state.filter_content_type) if st.session_state.filter_content_type in CONTENT_TYPES else 0
-        )
-        
-        # DJ filter
-        st.session_state.filter_dj = st.selectbox(
-            "DJ",
-            ["All"] + DJS,
-            index=["All"] + DJS.index(st.session_state.filter_dj) if st.session_state.filter_dj in DJS else 0
-        )
-        
-        # Audit status filter
-        st.session_state.filter_audit_status = st.selectbox(
-            "Audit Status",
-            ["All", "Passed", "Failed"],
-            index=["All", "Passed", "Failed"].index(st.session_state.filter_audit_status) if st.session_state.filter_audit_status in ["All", "Passed", "Failed"] else 0
-        )
-        
-        # Review status filter
-        st.session_state.filter_review_status = st.selectbox(
-            "Review Status",
-            ["All", "Pending", "Approved", "Rejected"],
-            index=["All", "Pending", "Approved", "Rejected"].index(st.session_state.filter_review_status) if st.session_state.filter_review_status in ["All", "Pending", "Approved", "Rejected"] else 0
-        )
-        
-        # Search
-        st.session_state.search_query = st.text_input(
-            "Search Item ID",
-            value=st.session_state.search_query
-        )
-        
-        # Items per page
-        st.session_state.items_per_page = st.selectbox(
-            "Items per page",
-            [5, 10, 20, 50],
-            index=[5, 10, 20, 50].index(st.session_state.items_per_page)
-        )
+        # Collapsible filters section
+        with st.expander("Filters", expanded=True):
+            # Content type filter
+            st.session_state.filter_content_type = st.selectbox(
+                "Content Type",
+                ["All"] + CONTENT_TYPES,
+                index=["All"] + CONTENT_TYPES.index(st.session_state.filter_content_type) if st.session_state.filter_content_type in CONTENT_TYPES else 0
+            )
+            
+            # DJ filter
+            st.session_state.filter_dj = st.selectbox(
+                "DJ",
+                ["All"] + DJS,
+                index=["All"] + DJS.index(st.session_state.filter_dj) if st.session_state.filter_dj in DJS else 0
+            )
+            
+            # Audit status filter
+            st.session_state.filter_audit_status = st.selectbox(
+                "Audit Status",
+                ["All", "Passed", "Failed"],
+                index=["All", "Passed", "Failed"].index(st.session_state.filter_audit_status) if st.session_state.filter_audit_status in ["All", "Passed", "Failed"] else 0
+            )
+            
+            # Review status filter
+            st.session_state.filter_review_status = st.selectbox(
+                "Review Status",
+                ["All", "Pending", "Approved", "Rejected"],
+                index=["All", "Pending", "Approved", "Rejected"].index(st.session_state.filter_review_status) if st.session_state.filter_review_status in ["All", "Pending", "Approved", "Rejected"] else 0
+            )
+            
+            # Search
+            st.session_state.search_query = st.text_input(
+                "Search Item ID",
+                value=st.session_state.search_query
+            )
+            
+            # Items per page
+            st.session_state.items_per_page = st.selectbox(
+                "Items per page",
+                [5, 10, 20, 50],
+                index=[5, 10, 20, 50].index(st.session_state.items_per_page)
+            )
         
         st.markdown("---")
-        st.header("Actions")
         
-        # Refresh button
-        if st.button("Refresh", use_container_width=True):
-            st.rerun()
-        
-        # Regeneration queue status
-        queue_count = get_regen_queue_count()
-        st.metric("Regen Queue", queue_count)
-        
-        if queue_count > 0:
-            if st.button("Clear Queue", use_container_width=True):
-                clear_regen_queue()
-                st.success("Queue cleared!")
+        # Collapsible actions section
+        with st.expander("Actions", expanded=True):
+            # Refresh button
+            if st.button("Refresh", use_container_width=True):
                 st.rerun()
+            
+            # Regeneration queue status
+            queue_count = get_regen_queue_count()
+            st.metric("Regen Queue", queue_count)
+            
+            if queue_count > 0:
+                if st.button("Clear Queue", use_container_width=True):
+                    clear_regen_queue()
+                    st.success("Queue cleared!")
+                    st.rerun()
     
     # Main content area
     # Scan and filter items
