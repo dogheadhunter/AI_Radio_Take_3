@@ -354,19 +354,19 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
             if content_type == "intros":
                 artist, song = _parse_song_info(item_id)
                 if artist and song:
-                    success = _generate_intro(pipeline, dj, artist, song, version, regen_type, feedback)
+                    success = _generate_intro(pipeline, dj, artist, song, regen_type, feedback)
             elif content_type == "outros":
                 artist, song = _parse_song_info(item_id)
                 if artist and song:
-                    success = _generate_outro(pipeline, dj, artist, song, version, regen_type, feedback)
+                    success = _generate_outro(pipeline, dj, artist, song, regen_type, feedback)
             elif content_type == "time":
                 hour, minute = _parse_time_info(item_id)
                 if hour is not None:
-                    success = _generate_time(pipeline, dj, hour, minute, version, regen_type, feedback)
+                    success = _generate_time(pipeline, dj, hour, minute, regen_type, feedback)
             elif content_type == "weather":
                 hour, minute = _parse_time_info(item_id)
                 if hour is not None:
-                    success = _generate_weather(pipeline, dj, hour, minute, version, regen_type, feedback)
+                    success = _generate_weather(pipeline, dj, hour, minute, regen_type, feedback)
             
             if success:
                 results["success_count"] += 1
@@ -441,7 +441,7 @@ def _parse_time_info(item_id: str) -> tuple:
     return None, None
 
 
-def _generate_intro(pipeline, dj, artist: str, song: str, version: int, regen_type: str, feedback: str) -> bool:
+def _generate_intro(pipeline, dj, artist: str, song: str, regen_type: str, feedback: str) -> bool:
     """Generate intro with specified parameters."""
     try:
         text_only = regen_type == "script"
@@ -460,7 +460,7 @@ def _generate_intro(pipeline, dj, artist: str, song: str, version: int, regen_ty
         return False
 
 
-def _generate_outro(pipeline, dj, artist: str, song: str, version: int, regen_type: str, feedback: str) -> bool:
+def _generate_outro(pipeline, dj, artist: str, song: str, regen_type: str, feedback: str) -> bool:
     """Generate outro with specified parameters."""
     try:
         text_only = regen_type == "script"
@@ -479,7 +479,7 @@ def _generate_outro(pipeline, dj, artist: str, song: str, version: int, regen_ty
         return False
 
 
-def _generate_time(pipeline, dj, hour: int, minute: int, version: int, regen_type: str, feedback: str) -> bool:
+def _generate_time(pipeline, dj, hour: int, minute: int, regen_type: str, feedback: str) -> bool:
     """Generate time announcement with specified parameters."""
     try:
         text_only = regen_type == "script"
@@ -498,7 +498,7 @@ def _generate_time(pipeline, dj, hour: int, minute: int, version: int, regen_typ
         return False
 
 
-def _generate_weather(pipeline, dj, hour: int, minute: int, version: int, regen_type: str, feedback: str) -> bool:
+def _generate_weather(pipeline, dj, hour: int, minute: int, regen_type: str, feedback: str) -> bool:
     """Generate weather announcement with specified parameters."""
     try:
         text_only = regen_type == "script"
@@ -1164,8 +1164,7 @@ def main():
                                 for error in results["errors"]:
                                     st.text(error)
                     
-                    # Clear the progress display after a moment
-                    time.sleep(2)
+                    # Rerun to clear the progress display and update queue count
                     st.rerun()
                 
                 # Clear Queue button
