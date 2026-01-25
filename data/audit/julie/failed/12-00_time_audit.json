@@ -1,0 +1,14 @@
+{
+  "script_id": "12-00",
+  "score": 5.5,
+  "passed": false,
+  "criteria_scores": {
+    "character_voice": 7,
+    "natural_flow": 6,
+    "brevity": 4
+  },
+  "issues": [
+    "Uses modern phrasing 'high noon'"
+  ],
+  "notes": "Too modern for the era"
+}

@@ -1,0 +1,9 @@
+{
+  "status": "rejected",
+  "reviewed_at": "2026-01-25T18:43:04.967003",
+  "reviewer_notes": "Uses modern phrasing",
+  "script_issues": [
+    "Wrong era references"
+  ],
+  "audio_issues": []
+}
