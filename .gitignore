@@ -39,7 +39,11 @@ assets/voice_references/**/*.wav
 
 # Generated content and local DBs
 /data/generated/
+/data/regeneration_queue.json
 logs/
 .cache.sqlite
 server_output.log
 server_error.log
+
+# Sample/test data that may be created in scripts
+scripts/data/

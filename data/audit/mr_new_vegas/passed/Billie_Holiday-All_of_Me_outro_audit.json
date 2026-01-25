@@ -1,0 +1,14 @@
+{
+  "script_id": "Billie_Holiday-All_of_Me",
+  "score": 9.0,
+  "passed": true,
+  "criteria_scores": {
+    "character_voice": 9,
+    "era_appropriateness": 9,
+    "forbidden_elements": 10,
+    "natural_flow": 9,
+    "length": 8
+  },
+  "issues": [],
+  "notes": "Excellent outro, matches character perfectly"
+}
