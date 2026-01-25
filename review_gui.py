@@ -12,12 +12,14 @@ from datetime import datetime
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, asdict
 import base64
+import re
 
 # Constants
 DATA_DIR = Path("data")
 GENERATED_DIR = DATA_DIR / "generated"
 AUDIT_DIR = DATA_DIR / "audit"
 REGEN_QUEUE_FILE = DATA_DIR / "regeneration_queue.json"
+LYRICS_DIR = Path("music_with_lyrics")
 
 # Content types and their folder structure
 CONTENT_TYPES = ["intros", "outros", "time", "weather"]
@@ -99,22 +101,6 @@ class ReviewItem:
         return None
 
 
-def init_session_state():
-    """Initialize Streamlit session state."""
-    if 'current_page' not in st.session_state:
-        st.session_state.current_page = 0
-    if 'items_per_page' not in st.session_state:
-        st.session_state.items_per_page = 10
-    if 'filter_content_type' not in st.session_state:
-        st.session_state.filter_content_type = "All"
-    if 'filter_dj' not in st.session_state:
-        st.session_state.filter_dj = "All"
-    if 'filter_audit_status' not in st.session_state:
-        st.session_state.filter_audit_status = "All"
-    if 'filter_review_status' not in st.session_state:
-        st.session_state.filter_review_status = "All"
-    if 'search_query' not in st.session_state:
-        st.session_state.search_query = ""
 
 
 def load_review_status(folder_path: Path) -> Dict[str, Any]:
@@ -485,6 +471,300 @@ def render_review_item(item: ReviewItem, index: int):
                     st.info("Added to regeneration queue")
 
 
+def get_available_songs() -> List[Dict[str, str]]:
+    """Get list of available songs from lyrics directory."""
+    songs = []
+    if not LYRICS_DIR.exists():
+        return songs
+    
+    for lyrics_file in LYRICS_DIR.glob("*.txt"):
+        # Parse filename: "Title by Artist.txt"
+        filename = lyrics_file.stem
+        match = re.match(r"(.+?)\s+by\s+(.+)", filename)
+        if match:
+            title, artist = match.groups()
+            # Create ID matching generated content naming
+            song_id = f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}"
+            songs.append({
+                "id": song_id,
+                "title": title,
+                "artist": artist,
+                "lyrics_file": lyrics_file
+            })
+    
+    return sorted(songs, key=lambda x: f"{x['artist']} - {x['title']}")
+
+
+def load_lyrics(lyrics_file: Path) -> str:
+    """Load lyrics from file."""
+    try:
+        return lyrics_file.read_text(encoding='utf-8')
+    except Exception as e:
+        return f"Error loading lyrics: {e}"
+
+
+def get_song_content(song_id: str) -> Dict[str, List[ReviewItem]]:
+    """Get all intros and outros for a specific song."""
+    content = {"intros": [], "outros": []}
+    
+    for content_type in ["intros", "outros"]:
+        for dj in DJS:
+            folder = GENERATED_DIR / content_type / dj / song_id
+            if folder.exists():
+                # Scan for versions
+                script_versions = []
+                audio_versions = []
+                
+                if content_type == "outros":
+                    # Outros use different naming: dj_outro.txt, dj_outro_1.txt, etc.
+                    base_script = folder / f"{dj}_outro.txt"
+                    base_audio = folder / f"{dj}_outro.wav"
+                    if base_script.exists():
+                        script_versions.append(base_script)
+                    if base_audio.exists():
+                        audio_versions.append(base_audio)
+                    
+                    # Check for numbered versions
+                    for i in range(1, 100):
+                        script = folder / f"{dj}_outro_{i}.txt"
+                        audio = folder / f"{dj}_outro_{i}.wav"
+                        if script.exists():
+                            script_versions.append(script)
+                        if audio.exists():
+                            audio_versions.append(audio)
+                        if not script.exists() and not audio.exists():
+                            break
+                else:
+                    # Standard naming: dj_0.txt, dj_1.txt, etc.
+                    for i in range(100):
+                        script = folder / f"{dj}_{i}.txt"
+                        audio = folder / f"{dj}_{i}.wav"
+                        if script.exists():
+                            script_versions.append(script)
+                        if audio.exists():
+                            audio_versions.append(audio)
+                        if not script.exists() and not audio.exists():
+                            break
+                
+                if script_versions or audio_versions:
+                    latest = max(len(script_versions), len(audio_versions)) - 1
+                    review_status_data = load_review_status(folder)
+                    audit_status = get_audit_status(content_type, dj, song_id)
+                    
+                    item = ReviewItem(
+                        content_type=content_type,
+                        dj=dj,
+                        item_id=song_id,
+                        folder_path=folder,
+                        script_versions=script_versions,
+                        audio_versions=audio_versions,
+                        latest_version=latest,
+                        audit_status=audit_status,
+                        review_status=review_status_data.get("status", "pending")
+                    )
+                    content[content_type].append(item)
+    
+    return content
+
+
+def save_manual_script(item: ReviewItem, new_script: str, version: int) -> bool:
+    """Save manually edited script and mark it as rewritten."""
+    try:
+        script_path = item.get_script_path(version)
+        if script_path:
+            # Save the new script
+            script_path.write_text(new_script, encoding='utf-8')
+            
+            # Mark as manually rewritten in review status
+            review_status = load_review_status(item.folder_path)
+            review_status["manually_rewritten"] = True
+            review_status["rewritten_version"] = version
+            review_status["rewritten_at"] = datetime.now().isoformat()
+            save_review_status(item.folder_path, review_status)
+            
+            return True
+    except Exception as e:
+        st.error(f"Error saving script: {e}")
+        return False
+
+
+def render_song_editor_page():
+    """Render the song-specific editor page."""
+    st.title("🎵 Song Editor")
+    st.markdown("View and edit all content for a specific song")
+    
+    # Get available songs
+    songs = get_available_songs()
+    
+    if not songs:
+        st.warning("No songs found in music_with_lyrics directory")
+        return
+    
+    # Song selector
+    song_options = [f"{s['artist']} - {s['title']}" for s in songs]
+    
+    # Initialize song selection in session state
+    if 'selected_song_idx' not in st.session_state:
+        st.session_state.selected_song_idx = 0
+    
+    selected_idx = st.selectbox(
+        "Select Song",
+        range(len(song_options)),
+        format_func=lambda x: song_options[x],
+        index=st.session_state.selected_song_idx,
+        key="song_selector"
+    )
+    st.session_state.selected_song_idx = selected_idx
+    
+    selected_song = songs[selected_idx]
+    
+    # Display song info
+    st.subheader(f"🎵 {selected_song['title']}")
+    st.markdown(f"**Artist:** {selected_song['artist']}")
+    st.markdown(f"**Song ID:** `{selected_song['id']}`")
+    
+    # Load and display lyrics
+    with st.expander("📜 Song Lyrics", expanded=False):
+        lyrics = load_lyrics(selected_song['lyrics_file'])
+        st.text_area(
+            "Lyrics",
+            value=lyrics,
+            height=300,
+            disabled=True,
+            key=f"lyrics_{selected_song['id']}"
+        )
+    
+    st.markdown("---")
+    
+    # Get all content for this song
+    song_content = get_song_content(selected_song['id'])
+    
+    # Display intros
+    st.header("🎤 Intros")
+    if song_content['intros']:
+        for item in song_content['intros']:
+            render_song_content_editor(item, selected_song, "intro")
+    else:
+        st.info("No intros generated for this song yet")
+    
+    st.markdown("---")
+    
+    # Display outros
+    st.header("👋 Outros")
+    if song_content['outros']:
+        for item in song_content['outros']:
+            render_song_content_editor(item, selected_song, "outro")
+    else:
+        st.info("No outros generated for this song yet")
+
+
+def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label: str):
+    """Render an editable content item in the song editor."""
+    with st.container():
+        # Header
+        col1, col2, col3 = st.columns([3, 1, 1])
+        with col1:
+            st.subheader(f"{item.dj.replace('_', ' ').title()} - {content_label.title()}")
+        with col2:
+            # Status indicators
+            if item.audit_status:
+                status_emoji = "🟢" if item.audit_status == "passed" else "🔴"
+                st.markdown(f"Audit: {status_emoji}")
+        with col3:
+            review_emoji = {"approved": "🟢", "rejected": "🔴", "pending": "⚪"}
+            st.markdown(f"Review: {review_emoji.get(item.review_status, '⚪')}")
+        
+        # Check if manually rewritten
+        review_status = load_review_status(item.folder_path)
+        is_rewritten = review_status.get("manually_rewritten", False)
+        rewritten_version = review_status.get("rewritten_version", None)
+        
+        if is_rewritten:
+            st.success(f"✏️ Manually rewritten (version {rewritten_version}) - This version will be used for audio generation")
+        
+        # Version selector
+        version_options = list(range(len(item.script_versions)))
+        if version_options:
+            selected_version = st.selectbox(
+                "Version",
+                version_options,
+                index=min(item.latest_version, len(version_options) - 1),
+                key=f"version_{item.dj}_{item.content_type}_{item.item_id}"
+            )
+        else:
+            st.warning("No versions available")
+            return
+        
+        # Display script and audio side by side
+        col_script, col_audio = st.columns(2)
+        
+        with col_script:
+            st.markdown("**Script:**")
+            script_path = item.get_script_path(selected_version)
+            if script_path and script_path.exists():
+                current_script = script_path.read_text(encoding='utf-8')
+                
+                # Editable script area
+                edited_script = st.text_area(
+                    "Edit Script",
+                    value=current_script,
+                    height=200,
+                    key=f"script_edit_{item.dj}_{item.content_type}_{selected_version}"
+                )
+                
+                # Save button
+                col_save, col_regen = st.columns(2)
+                with col_save:
+                    if edited_script != current_script:
+                        if st.button(f"💾 Save Changes", key=f"save_{item.dj}_{item.content_type}_{selected_version}"):
+                            if save_manual_script(item, edited_script, selected_version):
+                                st.success("Script saved and marked as manually rewritten!")
+                                st.rerun()
+                
+                with col_regen:
+                    if st.button(f"🔊 Regenerate Audio", key=f"regen_audio_{item.dj}_{item.content_type}_{selected_version}"):
+                        # Add to regeneration queue for audio only
+                        feedback = "Manual script edit - regenerate audio with updated script"
+                        add_to_regen_queue(item, "audio", feedback)
+                        st.info("Added to regeneration queue")
+            else:
+                st.warning(f"Script file not found: {script_path}")
+        
+        with col_audio:
+            st.markdown("**Audio:**")
+            audio_path = item.get_audio_path(selected_version)
+            if audio_path and audio_path.exists():
+                try:
+                    audio_bytes = audio_path.read_bytes()
+                    st.audio(audio_bytes, format="audio/wav")
+                except Exception as e:
+                    st.error(f"Error loading audio: {e}")
+            else:
+                st.info("No audio file for this version")
+        
+        st.markdown("---")
+
+
+def init_session_state():
+    """Initialize session state variables."""
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = 0
+    if 'items_per_page' not in st.session_state:
+        st.session_state.items_per_page = 10
+    if 'filter_content_type' not in st.session_state:
+        st.session_state.filter_content_type = "All"
+    if 'filter_dj' not in st.session_state:
+        st.session_state.filter_dj = "All"
+    if 'filter_audit_status' not in st.session_state:
+        st.session_state.filter_audit_status = "All"
+    if 'filter_review_status' not in st.session_state:
+        st.session_state.filter_review_status = "All"
+    if 'search_query' not in st.session_state:
+        st.session_state.search_query = ""
+    if 'page_mode' not in st.session_state:
+        st.session_state.page_mode = "Review List"
+
+
 def main():
     """Main Streamlit app."""
     st.set_page_config(
@@ -495,10 +775,25 @@ def main():
     
     init_session_state()
     
+    # Page mode selector in sidebar
+    with st.sidebar:
+        st.session_state.page_mode = st.radio(
+            "Page",
+            ["Review List", "Song Editor"],
+            index=["Review List", "Song Editor"].index(st.session_state.page_mode) if st.session_state.page_mode in ["Review List", "Song Editor"] else 0
+        )
+        st.markdown("---")
+    
+    # Route to appropriate page
+    if st.session_state.page_mode == "Song Editor":
+        render_song_editor_page()
+        return
+    
+    # Original Review List page
     st.title("🎙️ AI Radio Review GUI")
     st.markdown("Manual review and approval system for generated scripts and audio")
     
-    # Sidebar
+    # Sidebar (filters for Review List mode)
     with st.sidebar:
         st.header("Filters")
         
