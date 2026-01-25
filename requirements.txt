@@ -10,3 +10,5 @@ retry-requests>=0.1
 numpy>=1.24
 pandas>=1.5
 streamlit>=1.30.0
+pytest-playwright>=0.4.0
+playwright>=1.40.0

@@ -47,11 +47,48 @@ Tests for the regeneration queue processor (`scripts/process_regen_queue.py`).
 5. `test_queue_file_structure` - Queue JSON validation
 6. `test_version_increment_logic` - Naming pattern verification
 
+### `tests/test_review_gui_playwright.py` ⭐ NEW
+End-to-end Playwright tests for the Streamlit GUI.
+
+**Coverage:**
+- Complete GUI rendering and layout
+- Filter interactions (dropdowns, search)
+- Review actions (approve, reject, regenerate)
+- Pagination and navigation
+- Responsive design at different screen sizes
+- Error handling and edge cases
+
+**Tests (15 total):**
+1. `test_gui_loads_successfully` - Initial page load
+2. `test_filters_are_present` - All filter controls visible
+3. `test_actions_sidebar` - Action buttons and queue status
+4. `test_export_button_visible` - CSV export availability
+5. `test_pagination_controls` - Pagination UI
+6. `test_review_item_structure` - Item card layout
+7. `test_filter_by_content_type` - Content filtering
+8. `test_refresh_button_works` - Refresh functionality
+9. `test_responsive_layout` - Different screen sizes
+10. `test_review_decision_section` - Review controls
+11. `test_no_javascript_errors` - Console error checking
+12. `test_with_sample_data` - Testing with actual data
+13. `test_statistics_display` - Statistics dashboard
+14. And more...
+
 ## Running Tests
 
 ### Run All Review GUI Tests
 ```bash
+# Unit tests only (fast)
 pytest tests/test_review_gui.py tests/test_regen_queue_processor.py -v
+
+# Include Playwright tests (requires GUI running)
+pytest tests/test_review_gui.py tests/test_regen_queue_processor.py tests/test_review_gui_playwright.py -v
+
+# Playwright tests only
+pytest tests/test_review_gui_playwright.py -v
+
+# Playwright with visible browser (headed mode)
+pytest tests/test_review_gui_playwright.py --headed -v
 ```
 
 ### Run Specific Test File
@@ -61,11 +98,15 @@ pytest tests/test_review_gui.py -v
 
 # Queue processor tests only
 pytest tests/test_regen_queue_processor.py -v
+
+# Playwright tests only
+pytest tests/test_review_gui_playwright.py -v
 ```
 
 ### Run Specific Test
 ```bash
 pytest tests/test_review_gui.py::test_scan_generated_content -v
+pytest tests/test_review_gui_playwright.py::test_gui_loads_successfully --headed -v
 ```
 
 ### Run with Coverage
@@ -75,7 +116,7 @@ pytest tests/test_review_gui.py tests/test_regen_queue_processor.py --cov=review
 
 ## Test Modes
 
-The project uses a dual testing mode system (mock/integration). All Review GUI tests use **mock mode** for fast execution without requiring external services.
+The project uses a dual testing mode system (mock/integration). Review GUI tests use **mock mode** for fast execution without requiring external services.
 
 ### Mock Mode (Default)
 ```bash
@@ -88,12 +129,73 @@ Mock tests use fixtures from `tests/conftest.py`:
 - `mock_services` - Mocks LLM and TTS for pipeline tests
 - `tmp_path` - Pytest's temporary directory fixture
 
+### Playwright Tests (E2E)
+```bash
+# Requires Streamlit server running
+# Tests use real browser automation
+pytest tests/test_review_gui_playwright.py -v
+```
+
+## Playwright Testing
+
+### Setup
+
+1. **Install Playwright dependencies:**
+   ```bash
+   pip install pytest-playwright playwright
+   playwright install chromium  # Or firefox, webkit
+   ```
+
+2. **Start Review GUI:**
+   ```bash
+   python run_review_gui.py
+   ```
+
+3. **Run Playwright tests:**
+   ```bash
+   pytest tests/test_review_gui_playwright.py -v
+   ```
+
+### Playwright Test Features
+
+- **Automatic server management**: Tests start/stop Streamlit automatically
+- **Real browser testing**: Tests run in actual browser (Chromium by default)
+- **Screenshot capture**: Can take screenshots at any point
+- **Page snapshots**: Can inspect full page state
+- **Multiple browsers**: Can test in Chrome, Firefox, Safari
+
+### Headed vs Headless Mode
+
+```bash
+# Headless (default) - faster, no GUI
+pytest tests/test_review_gui_playwright.py
+
+# Headed - see browser, useful for debugging
+pytest tests/test_review_gui_playwright.py --headed
+
+# Slow motion - see actions happening
+pytest tests/test_review_gui_playwright.py --headed --slowmo=500
+```
+
+### Manual Testing with Playwright MCP
+
+See `docs/REVIEW_GUI_PLAYWRIGHT_TESTING.md` for comprehensive manual testing checklist using Playwright MCP server.
+
+Key features:
+- ✅ Complete testing checklist (70+ test cases)
+- ✅ Step-by-step Playwright MCP commands
+- ✅ Expected results for each test
+- ✅ Screenshot capture instructions
+- ✅ Test results template
+
 ## Test Structure
 
 ### Fixtures Used
 - **`tmp_path`** (pytest built-in) - Temporary directories for isolated tests
 - **`sample_generated_content`** - Creates sample file structure with all content types
 - **`monkeypatch`** (pytest built-in) - For patching module-level constants
+- **`streamlit_server`** (Playwright) - Manages Streamlit process
+- **`page`** (Playwright) - Browser page instance
 
 ### Sample Data Structure
 Tests create realistic sample data:
