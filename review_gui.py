@@ -695,21 +695,22 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
             st.warning("No versions available")
             return
         
-        # Display script and audio side by side
-        col_script, col_audio = st.columns(2)
+        # Three column layout: Edit Script | Reference Materials | Audio
+        col_edit, col_reference, col_audio = st.columns([2, 2, 1])
         
-        with col_script:
-            st.markdown("**Script:**")
+        with col_edit:
+            st.markdown("**Edit Script:**")
             script_path = item.get_script_path(selected_version)
             if script_path and script_path.exists():
                 current_script = script_path.read_text(encoding='utf-8')
                 
                 # Editable script area
                 edited_script = st.text_area(
-                    "Edit Script",
+                    "Your edits",
                     value=current_script,
-                    height=200,
-                    key=f"script_edit_{item.dj}_{item.content_type}_{selected_version}"
+                    height=300,
+                    key=f"script_edit_{item.dj}_{item.content_type}_{selected_version}",
+                    help="Edit the script here. Changes will be saved when you click 'Save Changes'"
                 )
                 
                 # Save button
@@ -729,6 +730,35 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                         st.info("Added to regeneration queue")
             else:
                 st.warning(f"Script file not found: {script_path}")
+        
+        with col_reference:
+            st.markdown("**Reference Materials:**")
+            
+            # Show song lyrics
+            st.markdown("*Song Lyrics:*")
+            lyrics = load_lyrics(song_info['lyrics_file'])
+            st.text_area(
+                "Lyrics for reference",
+                value=lyrics,
+                height=150,
+                disabled=True,
+                key=f"ref_lyrics_{item.dj}_{item.content_type}_{selected_version}",
+                label_visibility="collapsed"
+            )
+            
+            # Show original generated script
+            st.markdown("*Original Generated Script:*")
+            if script_path and script_path.exists():
+                st.text_area(
+                    "Original script for comparison",
+                    value=current_script,
+                    height=120,
+                    disabled=True,
+                    key=f"ref_script_{item.dj}_{item.content_type}_{selected_version}",
+                    label_visibility="collapsed"
+                )
+            else:
+                st.info("No original script available")
         
         with col_audio:
             st.markdown("**Audio:**")
