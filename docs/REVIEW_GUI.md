@@ -356,11 +356,31 @@ data/
 1. **User queues items** via Review GUI buttons
 2. **Feedback is compiled** from selected issues + notes
 3. **Item added to queue** with regeneration type
-4. **Batch processor** reads queue and calls generation pipeline
-5. **New versions created** with incremented numbers
-6. **Queue cleared** after processing
+4. **User clicks "Process Queue"** in the GUI sidebar
+5. **Progress bar displays** real-time status updates
+6. **New versions created** with incremented numbers
+7. **Queue cleared** after processing
 
-### Running the Processor
+### Processing the Queue
+
+**Option 1: GUI (Recommended)**
+
+Click the "Process Queue" button in the sidebar Actions section.
+
+**Features:**
+- Real-time progress bar showing completion percentage
+- Status messages for each item being processed
+- Success/failure counts displayed
+- Error details available in expandable section
+- Automatic queue clearing when complete
+
+**What you'll see:**
+1. Progress bar updating from 0% to 100%
+2. Status text: "Processing 1/5: Artist-Song (script)"
+3. Final summary: "Regenerated 4 items successfully! Failed to regenerate 1 items"
+4. Expandable error list if any items failed
+
+**Option 2: Command Line**
 
 ```bash
 python scripts/process_regen_queue.py
@@ -374,6 +394,17 @@ python scripts/process_regen_queue.py
    - Saves new version (e.g., julie_1.txt, julie_1.wav)
 3. Logs results to `logs/regeneration_log.txt`
 4. Clears queue
+
+### Progress Tracking
+
+The GUI provides live feedback during regeneration:
+
+- **Progress Bar**: Visual indicator of overall completion (0-100%)
+- **Status Updates**: Text showing current item being processed
+- **Item Counter**: "Processing 3/10" shows current position
+- **Item Details**: Shows item ID and regeneration type
+- **Error Handling**: Failed items are logged and displayed
+- **Final Summary**: Success/failure counts at completion
 
 ### Integration with Pipeline
 

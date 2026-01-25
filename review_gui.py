@@ -13,6 +13,8 @@ from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, asdict
 import base64
 import re
+import sys
+import time
 
 # Constants
 DATA_DIR = Path("data")
@@ -279,6 +281,240 @@ def clear_regen_queue():
     """Clear the regeneration queue."""
     if REGEN_QUEUE_FILE.exists():
         REGEN_QUEUE_FILE.write_text("[]", encoding='utf-8')
+
+
+def process_regeneration_queue(progress_callback=None, status_callback=None):
+    """
+    Process items in the regeneration queue with progress tracking.
+    
+    Args:
+        progress_callback: Function to call with progress (0.0 to 1.0)
+        status_callback: Function to call with status messages
+        
+    Returns:
+        Dict with results: {"success_count": int, "failed_count": int, "errors": List[str]}
+    """
+    if not REGEN_QUEUE_FILE.exists():
+        return {"success_count": 0, "failed_count": 0, "errors": []}
+    
+    try:
+        queue = json.loads(REGEN_QUEUE_FILE.read_text(encoding='utf-8'))
+    except Exception as e:
+        return {"success_count": 0, "failed_count": 0, "errors": [f"Failed to read queue: {str(e)}"]}
+    
+    if not queue:
+        return {"success_count": 0, "failed_count": 0, "errors": []}
+    
+    # Import generation pipeline
+    try:
+        project_root = Path(__file__).parent
+        sys.path.insert(0, str(project_root))
+        from src.ai_radio.generation.pipeline import GenerationPipeline
+        from src.ai_radio.generation.prompts import DJ
+    except Exception as e:
+        return {"success_count": 0, "failed_count": 0, "errors": [f"Failed to import generation pipeline: {str(e)}"]}
+    
+    results = {
+        "success_count": 0,
+        "failed_count": 0,
+        "errors": []
+    }
+    
+    total_items = len(queue)
+    
+    for idx, queue_item in enumerate(queue):
+        item_progress = idx / total_items
+        if progress_callback:
+            progress_callback(item_progress)
+        
+        item_id = queue_item.get("item_id", "Unknown")
+        regen_type = queue_item.get("regenerate_type", "both")
+        
+        if status_callback:
+            status_callback(f"Processing {idx + 1}/{total_items}: {item_id} ({regen_type})")
+        
+        try:
+            # Extract information from queue item
+            content_type = queue_item["content_type"]
+            dj_name = queue_item["dj"]
+            folder_path = Path(queue_item["folder_path"])
+            feedback = queue_item.get("feedback", "")
+            
+            # Create DJ enum
+            dj = DJ.JULIE if dj_name == "julie" else DJ.MR_NEW_VEGAS
+            
+            # Initialize pipeline
+            pipeline = GenerationPipeline()
+            
+            # Determine version number
+            version = _get_next_version_for_regen(folder_path, dj_name, content_type)
+            
+            # Generate based on type
+            success = False
+            if content_type == "intros":
+                artist, song = _parse_song_info(item_id)
+                if artist and song:
+                    success = _generate_intro(pipeline, dj, artist, song, version, regen_type, feedback)
+            elif content_type == "outros":
+                artist, song = _parse_song_info(item_id)
+                if artist and song:
+                    success = _generate_outro(pipeline, dj, artist, song, version, regen_type, feedback)
+            elif content_type == "time":
+                hour, minute = _parse_time_info(item_id)
+                if hour is not None:
+                    success = _generate_time(pipeline, dj, hour, minute, version, regen_type, feedback)
+            elif content_type == "weather":
+                hour, minute = _parse_time_info(item_id)
+                if hour is not None:
+                    success = _generate_weather(pipeline, dj, hour, minute, version, regen_type, feedback)
+            
+            if success:
+                results["success_count"] += 1
+            else:
+                results["failed_count"] += 1
+                results["errors"].append(f"{item_id}: Generation returned False")
+                
+        except Exception as e:
+            results["failed_count"] += 1
+            error_msg = f"{item_id}: {str(e)}"
+            results["errors"].append(error_msg)
+            if status_callback:
+                status_callback(f"ERROR: {error_msg}")
+    
+    # Final progress
+    if progress_callback:
+        progress_callback(1.0)
+    
+    if status_callback:
+        status_callback(f"Complete! {results['success_count']} succeeded, {results['failed_count']} failed")
+    
+    # Clear queue after processing
+    clear_regen_queue()
+    
+    return results
+
+
+def _get_next_version_for_regen(folder_path: Path, dj: str, content_type: str) -> int:
+    """Get next version number for regeneration."""
+    if content_type == "outros":
+        existing_files = list(folder_path.glob(f"{dj}_outro*.txt")) + list(folder_path.glob(f"{dj}_outro*.wav"))
+    else:
+        existing_files = list(folder_path.glob(f"{dj}_*.txt")) + list(folder_path.glob(f"{dj}_*.wav"))
+    
+    if not existing_files:
+        return 0
+    
+    # Extract version numbers
+    versions = []
+    for f in existing_files:
+        if content_type == "outros":
+            if f.stem == f"{dj}_outro":
+                versions.append(0)
+            else:
+                match = re.search(r'_outro_(\d+)', f.stem)
+                if match:
+                    versions.append(int(match.group(1)))
+        else:
+            match = re.search(rf'{dj}_(\d+)', f.stem)
+            if match:
+                versions.append(int(match.group(1)))
+    
+    return max(versions) + 1 if versions else 0
+
+
+def _parse_song_info(item_id: str) -> tuple:
+    """Parse artist and song from item_id like 'Artist-Song'."""
+    parts = item_id.split('-', 1)
+    if len(parts) == 2:
+        return parts[0].strip().replace('_', ' '), parts[1].strip().replace('_', ' ')
+    return None, None
+
+
+def _parse_time_info(item_id: str) -> tuple:
+    """Parse hour and minute from item_id like '12-00'."""
+    parts = item_id.split('-')
+    if len(parts) >= 2:
+        try:
+            return int(parts[0]), int(parts[1])
+        except ValueError:
+            pass
+    return None, None
+
+
+def _generate_intro(pipeline, dj, artist: str, song: str, version: int, regen_type: str, feedback: str) -> bool:
+    """Generate intro with specified parameters."""
+    try:
+        text_only = regen_type == "script"
+        audio_only = regen_type == "audio"
+        pipeline.generate_song_intro(
+            artist=artist,
+            song=song,
+            dj=dj,
+            prompt_version="v2",
+            text_only=text_only,
+            audio_only=audio_only,
+            audit_feedback=feedback if feedback else None
+        )
+        return True
+    except Exception:
+        return False
+
+
+def _generate_outro(pipeline, dj, artist: str, song: str, version: int, regen_type: str, feedback: str) -> bool:
+    """Generate outro with specified parameters."""
+    try:
+        text_only = regen_type == "script"
+        audio_only = regen_type == "audio"
+        pipeline.generate_song_outro(
+            artist=artist,
+            song=song,
+            dj=dj,
+            prompt_version="v2",
+            text_only=text_only,
+            audio_only=audio_only,
+            audit_feedback=feedback if feedback else None
+        )
+        return True
+    except Exception:
+        return False
+
+
+def _generate_time(pipeline, dj, hour: int, minute: int, version: int, regen_type: str, feedback: str) -> bool:
+    """Generate time announcement with specified parameters."""
+    try:
+        text_only = regen_type == "script"
+        audio_only = regen_type == "audio"
+        pipeline.generate_time_announcement(
+            hour=hour,
+            minute=minute,
+            dj=dj,
+            prompt_version="v2",
+            text_only=text_only,
+            audio_only=audio_only,
+            audit_feedback=feedback if feedback else None
+        )
+        return True
+    except Exception:
+        return False
+
+
+def _generate_weather(pipeline, dj, hour: int, minute: int, version: int, regen_type: str, feedback: str) -> bool:
+    """Generate weather announcement with specified parameters."""
+    try:
+        text_only = regen_type == "script"
+        audio_only = regen_type == "audio"
+        pipeline.generate_weather_announcement(
+            hour=hour,
+            minute=minute,
+            dj=dj,
+            prompt_version="v2",
+            text_only=text_only,
+            audio_only=audio_only,
+            audit_feedback=feedback if feedback else None
+        )
+        return True
+    except Exception:
+        return False
 
 
 def export_reviews_to_csv(items: List[ReviewItem]) -> pd.DataFrame:
@@ -898,6 +1134,41 @@ def main():
             st.metric("Regen Queue", queue_count)
             
             if queue_count > 0:
+                # Process Queue button
+                if st.button("Process Queue", use_container_width=True, type="primary"):
+                    # Initialize progress tracking
+                    progress_bar = st.progress(0)
+                    status_text = st.empty()
+                    
+                    def update_progress(progress):
+                        progress_bar.progress(progress)
+                    
+                    def update_status(status):
+                        status_text.text(status)
+                    
+                    # Process the queue
+                    update_status("Starting regeneration...")
+                    results = process_regeneration_queue(
+                        progress_callback=update_progress,
+                        status_callback=update_status
+                    )
+                    
+                    # Show results
+                    if results["success_count"] > 0:
+                        st.success(f"Regenerated {results['success_count']} items successfully!")
+                    
+                    if results["failed_count"] > 0:
+                        st.error(f"Failed to regenerate {results['failed_count']} items")
+                        if results["errors"]:
+                            with st.expander("View Errors"):
+                                for error in results["errors"]:
+                                    st.text(error)
+                    
+                    # Clear the progress display after a moment
+                    time.sleep(2)
+                    st.rerun()
+                
+                # Clear Queue button
                 if st.button("Clear Queue", use_container_width=True):
                     clear_regen_queue()
                     st.success("Queue cleared!")
