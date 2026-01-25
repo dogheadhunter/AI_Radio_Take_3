@@ -134,6 +134,30 @@ def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_s
     return songs
 
 
+def get_lyrics_for_song(artist: str, title: str) -> Optional[str]:
+    """Load lyrics from music_with_lyrics directory if available."""
+    lyrics_dir = Path("music_with_lyrics")
+    if not lyrics_dir.exists():
+        return None
+    
+    # Try various filename patterns
+    patterns = [
+        f"{title} by {artist}.txt",
+        f"{artist} - {title}.txt",
+        f"{title}.txt",
+    ]
+    
+    for pattern in patterns:
+        lyrics_path = lyrics_dir / pattern
+        if lyrics_path.exists():
+            try:
+                return lyrics_path.read_text(encoding='utf-8')
+            except Exception:
+                pass
+    
+    return None
+
+
 def sanitize_script(text: str, content_type: str = "intros") -> str:
     """Remove meta-commentary and sanitize TTS-breaking punctuation."""
     # Strip leading/trailing quotes and whitespace
@@ -151,6 +175,9 @@ def sanitize_script(text: str, content_type: str = "intros") -> str:
     
     # Remove ALL parenthetical content (often meta-commentary)
     text = re.sub(r'\([^)]*\)', '', text)
+    
+    # Remove ALL bracketed content (stage directions, meta-text like [Music starts])
+    text = re.sub(r'\[[^\]]*\]', '', text)
     
     # Remove dates/years
     text = re.sub(r'\b(19|20)\d{2}\b', '', text)  # Remove 4-digit years
@@ -444,11 +471,11 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
     if "weather" in content_types:
         from src.ai_radio.config import WEATHER_TIMES
         
-        # Hardcoded test weather data for testing
+        # Hardcoded test weather data - keep it subtle and timeless
         SAMPLE_WEATHER = [
-            "Clear skies, temperature around 75 degrees",
-            "Partly cloudy with a chance of radiation showers",
-            "Dust storm moving in from the wasteland",
+            "Clear skies, temperature around 75 degrees, perfect evening",
+            "Partly cloudy with a chance of afternoon showers",
+            "Dust storm moving in from the west, expect reduced visibility",
         ]
         
         logger.info(f"\nGenerating weather announcements for {len(WEATHER_TIMES)} slots...")
@@ -759,38 +786,67 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
             
             logger.info(f"\nRegenerating {len(failed_scripts)} failed scripts for {dj.upper()}...")
             
-            # Delete failed scripts and their audits
-            for entry in failed_scripts:
-                for ctype in entry['failed_types']:
-                    if ctype == 'time_announcement':
-                        hour, minute = entry['time_slot']
-                        script_path = get_time_script_path(hour, minute, dj)
-                        if script_path.exists():
-                            script_path.unlink()
-                        audit_path_failed = get_time_audit_path(hour, minute, dj, passed=False)
-                        if audit_path_failed.exists():
-                            audit_path_failed.unlink()
-                    else:
-                        song = entry['song']
-                        if ctype == 'song_intro':
-                            script_path = get_script_path(song, dj, content_type='intros')
-                        else:
-                            script_path = get_script_path(song, dj, content_type='outros')
-                        if script_path.exists():
-                            script_path.unlink()
-                        
-                        audit_path_failed = get_audit_path(song, dj, passed=False, content_type=ctype)
-                        if audit_path_failed.exists():
-                            audit_path_failed.unlink()
+            # Helper to extract feedback from failed audit JSON
+            def extract_audit_feedback(audit_path: Path) -> str:
+                """Read audit JSON and format issues/notes as feedback string."""
+                if not audit_path.exists():
+                    return None
+                try:
+                    with open(audit_path, 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                    issues = data.get("issues", [])
+                    notes = data.get("notes", "")
+                    criteria = data.get("criteria_scores", {})
+                    
+                    feedback_parts = []
+                    if issues:
+                        feedback_parts.append("Issues: " + "; ".join(issues))
+                    if notes:
+                        feedback_parts.append("Notes: " + notes)
+                    # Add low-scoring criteria
+                    low_scores = [f"{k}={v}" for k, v in criteria.items() if isinstance(v, (int, float)) and v < 8]
+                    if low_scores:
+                        feedback_parts.append("Low scores: " + ", ".join(low_scores))
+                    
+                    return " | ".join(feedback_parts) if feedback_parts else None
+                except Exception as e:
+                    logger.warning(f"Could not read audit feedback: {e}")
+                    return None
             
-            # Regenerate scripts for this DJ
+            # Regenerate scripts for this DJ (extract feedback, delete, regenerate in one pass)
             regenerated = 0
             for i, entry in enumerate(failed_scripts, 1):
                 for ctype in entry['failed_types']:
                     try:
+                        # Get paths and extract feedback BEFORE deleting
+                        audit_feedback = None
                         if ctype == 'time_announcement':
                             hour, minute = entry['time_slot']
                             script_path = get_time_script_path(hour, minute, dj)
+                            audit_path_failed = get_time_audit_path(hour, minute, dj, passed=False)
+                            audit_feedback = extract_audit_feedback(audit_path_failed)
+                        else:
+                            song = entry['song']
+                            if ctype == 'song_intro':
+                                script_path = get_script_path(song, dj, content_type='intros')
+                            else:
+                                script_path = get_script_path(song, dj, content_type='outros')
+                            audit_path_failed = get_audit_path(song, dj, passed=False, content_type=ctype)
+                            audit_feedback = extract_audit_feedback(audit_path_failed)
+                        
+                        # Delete old script and audit
+                        if script_path.exists():
+                            script_path.unlink()
+                        if audit_path_failed.exists():
+                            audit_path_failed.unlink()
+                        
+                        # Log feedback if present
+                        if audit_feedback:
+                            logger.debug(f"  Feedback for regen: {audit_feedback[:100]}...")
+                        
+                        # Regenerate with feedback
+                        if ctype == 'time_announcement':
+                            hour, minute = entry['time_slot']
                             result = pipeline.generate_time_announcement(
                                 hour=hour,
                                 minute=minute,
@@ -808,12 +864,16 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
                         elif ctype == 'song_intro':
                             song = entry['song']
                             script_path = get_script_path(song, dj, content_type='intros')
+                            # Get lyrics for feedback loop
+                            lyrics_context = get_lyrics_for_song(song['artist'], song['title'])
                             result = pipeline.generate_song_intro(
                                 song_id=song['id'],
                                 artist=song['artist'],
                                 title=song['title'],
                                 dj=dj,
-                                text_only=True
+                                text_only=True,
+                                lyrics_context=lyrics_context,
+                                audit_feedback=audit_feedback
                             )
                             
                             if result.success and result.text:
@@ -829,12 +889,16 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
                         elif ctype == 'song_outro':
                             song = entry['song']
                             script_path = get_script_path(song, dj, content_type='outros')
+                            # Get lyrics for feedback loop
+                            lyrics_context = get_lyrics_for_song(song['artist'], song['title'])
                             result = pipeline.generate_song_outro(
                                 song_id=song['id'],
                                 artist=song['artist'],
                                 title=song['title'],
                                 dj=dj,
-                                text_only=True
+                                text_only=True,
+                                lyrics_context=lyrics_context,
+                                audit_feedback=audit_feedback
                             )
                             
                             if result.success and result.text:

@@ -72,7 +72,7 @@ class GenerationPipeline:
         folder_path.mkdir(parents=True, exist_ok=True)
         return folder_path
 
-    def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None) -> GenerationResult:
+    def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None, audit_feedback: str = None) -> GenerationResult:
         try:
             # Create song folder
             song_folder = self._make_song_folder(song_id, artist, title, dj)
@@ -87,7 +87,7 @@ class GenerationPipeline:
                 # Use v2 prompts if configured
                 if getattr(self, 'prompt_version', 'v1') == 'v2':
                     from src.ai_radio.generation.prompts_v2 import build_song_intro_prompt_v2, FORBIDDEN_WORDS
-                    p = build_song_intro_prompt_v2(DJ(dj), artist=artist, title=title, lyrics_context=lyrics_context)
+                    p = build_song_intro_prompt_v2(DJ(dj), artist=artist, title=title, lyrics_context=lyrics_context, audit_feedback=audit_feedback)
                     prompt = p['system'] + "\n\n" + p['user']
                     # Pass banned phrases to enable repeat_penalty (nuclear option for semantic override)
                     text = generate_text(self._llm, prompt, banned_phrases=FORBIDDEN_WORDS)
@@ -156,7 +156,7 @@ class GenerationPipeline:
                 ldata = self._lyrics_map.get(str(s.get("id")))
                 if ldata:
                     try:
-                        lyrics_ctx = extract_lyrics_context(ldata)
+                        lyrics_ctx = ldata.lyrics if not ldata.is_instrumental else "[Instrumental - no lyrics]"
                     except Exception:
                         lyrics_ctx = None
 
@@ -196,7 +196,7 @@ class GenerationPipeline:
                 ldata = self._lyrics_map.get(str(s.get("id")))
                 if ldata:
                     try:
-                        lyrics_ctx = extract_lyrics_context(ldata)
+                        lyrics_ctx = ldata.lyrics if not ldata.is_instrumental else "[Instrumental - no lyrics]"
                     except Exception:
                         lyrics_ctx = None
 
@@ -236,7 +236,7 @@ class GenerationPipeline:
                 ldata = self._lyrics_map.get(str(s.get("id")))
                 if ldata:
                     try:
-                        lyrics_ctx = extract_lyrics_context(ldata)
+                        lyrics_ctx = ldata.lyrics if not ldata.is_instrumental else "[Instrumental - no lyrics]"
                     except Exception:
                         lyrics_ctx = None
 
@@ -370,7 +370,7 @@ class GenerationPipeline:
         except Exception as exc:
             return GenerationResult(song_id=f"weather_{hour:02d}{minute:02d}", dj=dj, text=None, audio_path=None, success=False, error=str(exc))
 
-    def generate_song_outro(self, song_id: str, artist: str, title: str, dj: str, next_song: str = None, text_only: bool = False, audio_only: bool = False) -> GenerationResult:
+    def generate_song_outro(self, song_id: str, artist: str, title: str, dj: str, next_song: str = None, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None, audit_feedback: str = None) -> GenerationResult:
         """Generate a short outro for a song and save it under outros/<dj>/<song_folder>/"""
         try:
             # Create folder similar to intros
@@ -391,7 +391,7 @@ class GenerationPipeline:
                 # Build prompt (v2 if configured)
                 if getattr(self, 'prompt_version', 'v1') == 'v2':
                     from src.ai_radio.generation.prompts_v2 import build_song_outro_prompt_v2
-                    p = build_song_outro_prompt_v2(DJ(dj), artist=artist, title=title, next_song=next_song)
+                    p = build_song_outro_prompt_v2(DJ(dj), artist=artist, title=title, next_song=next_song, lyrics_context=lyrics_context, audit_feedback=audit_feedback)
                     prompt = p['system'] + "\n\n" + p['user']
                 else:
                     prompt = build_song_outro_prompt(DJ(dj), artist=artist, title=title, next_song=next_song)

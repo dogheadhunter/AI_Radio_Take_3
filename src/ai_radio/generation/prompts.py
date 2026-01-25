@@ -34,7 +34,10 @@ def build_time_announcement_prompt(hour: int = None, minute: int = None, dj: DJ 
         build_time_announcement_prompt(14, 30, DJ.JULIE)
         build_time_announcement_prompt(dj=DJ.MR_NEW_VEGAS)
     """
+    from src.ai_radio.generation.voice_samples import format_voice_samples
+    
     time_part = "the current time"
+    time_context = ""
     if hour is not None and minute is not None:
         from datetime import datetime
         from src.ai_radio.services.clock import format_time_for_dj
@@ -47,12 +50,34 @@ def build_time_announcement_prompt(hour: int = None, minute: int = None, dj: DJ 
         else:
             formatted = format_time_for_dj(dt, include_ampm=True, style="numeric")
         time_part = formatted
+        
+        # Add time-of-day context so LLM understands the actual period
+        if 0 <= hour < 5:
+            time_context = " It's the middle of the night/very early morning."
+        elif 5 <= hour < 9:
+            time_context = " It's early morning."
+        elif 9 <= hour < 12:
+            time_context = " It's mid-morning."
+        elif 12 <= hour < 14:
+            time_context = " It's around noon/early afternoon."
+        elif 14 <= hour < 17:
+            time_context = " It's afternoon."
+        elif 17 <= hour < 21:
+            time_context = " It's evening."
+        else:
+            time_context = " It's late night."
 
-    dj_part = f" for {dj.value}" if dj else ""
-    return (
-        f"You are a radio DJ. Announce that it is now {time_part}. "
-        "Keep it brief (1-2 sentences), natural, and engaging. "
-        "Do not repeat the exact same phrasing every time." "")
+    # Get voice samples for the DJ
+    dj_name = dj.value if dj else "DJ"
+    voice_samples = format_voice_samples(dj_name) if dj else ""
+    
+    return f"""You are {dj_name}, a radio DJ. Announce that it is now {time_part}.{time_context}
+
+HOW YOU SOUND (study these examples):
+{voice_samples}
+
+Write a brief time announcement (1-2 sentences). Sound like the examples above - casual, natural, in character.
+Do not mention years or dates. Do not use words like 'wasteland', 'radiation', or 'vault'."""
 
 
 
@@ -64,26 +89,30 @@ def build_weather_prompt(dj: DJ, weather_summary: str, hour: int = None) -> str:
         weather_summary: Current or forecast weather summary
         hour: Hour of day (0-23) when this will be broadcast, for context
     """
-    if dj == DJ.JULIE:
-        traits = "friendly, warm, and conversational"
-    else:
-        traits = "suave, smooth, and theatrical like a classic Vegas lounge DJ"
+    from src.ai_radio.generation.voice_samples import format_voice_samples
+    
+    dj_name = dj.value if dj else "DJ"
+    voice_samples = format_voice_samples(dj_name)
     
     # Add context based on time of day
     time_context = ""
     if hour is not None:
         if hour == 6:
-            time_context = " You're announcing the morning weather to listeners just waking up. Mention what to expect for the day ahead."
+            time_context = " You're announcing the morning weather to listeners just waking up."
         elif hour == 12:
-            time_context = " It's midday. Mention the current conditions and what to expect for the afternoon and evening."
+            time_context = " It's midday - mention what to expect for the afternoon."
         elif hour == 17:
-            time_context = " It's evening time. Mention current conditions and what to expect tonight and tomorrow morning."
+            time_context = " It's evening - mention conditions for tonight."
     
-    return f"""You are a radio DJ announcing the weather to your listeners.
-Your style is {traits}.{time_context}
-Weather: {weather_summary}
+    return f"""You are {dj_name}, a radio DJ announcing the weather.
 
-Write a brief, natural weather announcement (2-3 sentences) that sounds like you're speaking directly to your radio audience. Stay in character and make it engaging."""
+HOW YOU SOUND (study these examples):
+{voice_samples}
+
+Weather: {weather_summary}{time_context}
+
+Write a brief weather announcement (2-3 sentences). Sound like the examples above - casual, natural, in character.
+IMPORTANT: Do NOT use words like: radiation, fallout, mutation, wasteland, vault, nuclear. Just describe normal weather like a 1950s DJ would."""
 
 
 def build_song_outro_prompt(dj: DJ, artist: str, title: str, next_song: str = None) -> str:

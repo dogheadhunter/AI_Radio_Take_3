@@ -11,6 +11,7 @@ import json
 
 from src.ai_radio.generation import llm_client
 from src.ai_radio.generation.llm_client import LLMClient  # keep class for typing
+from src.ai_radio.generation.voice_samples import format_voice_samples
 
 # Criterion weights for computing overall score (Option B: weights in code)
 WEIGHTS = {
@@ -46,228 +47,149 @@ class AuditResult:
 
 
 def _build_time_audit_prompt(script_content: str, dj: str) -> str:
-    """Simplified audit prompt for time announcements only.
+    """Audit prompt for time announcements with voice samples for comparison."""
+    from src.ai_radio.generation.voice_samples import format_voice_samples
     
-    Time announcements are simple - just check:
-    1. Does it sound like the character?
-    2. Is it brief and natural?
-    """
-    dj_desc = "Julie (casual, warm, friendly)" if dj.lower() == "julie" else "Mr. New Vegas (smooth, suave, polished)"
+    voice_samples = format_voice_samples(dj)
+    dj_name = "Julie" if dj.lower() == "julie" else "Mr. New Vegas"
     
-    prompt = f"""Evaluate this time announcement for {dj_desc}.
+    prompt = f"""You are auditing a radio DJ time announcement. Score each criterion 1-10.
 
-Script: "{script_content}"
+HOW {dj_name.upper()} SOUNDS (reference samples):
+{voice_samples}
 
-Score these 3 criteria (1-10 each):
-1. character_voice: Does it sound like {dj}? (casual/warm for Julie, smooth/suave for Mr. NV)
+SCRIPT TO EVALUATE:
+"{script_content}"
+
+SCORING CRITERIA (1-10 each, where 10=perfect, 7=good, 4=poor):
+1. character_voice: Does script sound like the voice samples above?
 2. natural_flow: Does it sound natural and conversational?
-3. brevity: Is it appropriately short (1-2 sentences)?
+3. brevity: Is it appropriately short? (1-2 sentences is GOOD=8-10, 3 sentences is OK=6-7)
 
-Respond with ONLY valid JSON:
-{{"criteria_scores": {{"character_voice": <1-10>, "natural_flow": <1-10>, "brevity": <1-10>}}, "notes": "brief summary"}}"""
+Respond with ONLY this JSON format:
+{{"criteria_scores": {{"character_voice": N, "natural_flow": N, "brevity": N}}, "notes": "brief summary"}}"""
     
     return prompt
 
 
 def _build_weather_audit_prompt(script_content: str, dj: str) -> str:
-    """Simplified audit prompt for weather announcements.
+    """Audit prompt for weather announcements with voice samples for comparison."""
+    from src.ai_radio.generation.voice_samples import format_voice_samples
     
-    Weather announcements check:
-    1. Character voice
-    2. Natural flow
-    3. Appropriate length (2-3 sentences)
-    4. Mentions the weather
-    """
-    dj_desc = "Julie (casual, warm, friendly)" if dj.lower() == "julie" else "Mr. New Vegas (smooth, suave, polished)"
+    voice_samples = format_voice_samples(dj)
+    dj_name = "Julie" if dj.lower() == "julie" else "Mr. New Vegas"
     
-    prompt = f"""Evaluate this weather announcement for {dj_desc}.
+    prompt = f"""You are auditing a radio DJ weather announcement. Score each criterion 1-10.
 
-Script: "{script_content}"
+HOW {dj_name.upper()} SOUNDS (reference samples):
+{voice_samples}
 
-Score these 4 criteria (1-10 each):
-1. character_voice: Does it sound like {dj}? (casual/warm for Julie, smooth/suave for Mr. NV)
+SCRIPT TO EVALUATE:
+"{script_content}"
+
+SCORING CRITERIA (1-10 each, where 10=perfect, 7=good, 4=poor):
+1. character_voice: Does script sound like the voice samples above?
 2. natural_flow: Does it sound natural and conversational?
-3. length: Is it appropriate length (2-3 sentences, ~20-60 words)?
-4. weather_mention: Does it clearly describe weather conditions?
+3. length: Is it appropriate length? (2-3 sentences is GOOD=8-10)
+4. subtlety: Does it avoid post-apocalyptic words? (radiation, nuclear, fallout, wasteland, vault, mutant = score 3 or less)
 
-Respond with ONLY valid JSON:
-{{"criteria_scores": {{"character_voice": <1-10>, "natural_flow": <1-10>, "length": <1-10>, "weather_mention": <1-10>}}, "notes": "brief summary"}}"""
+Respond with ONLY this JSON format:
+{{"criteria_scores": {{"character_voice": N, "natural_flow": N, "length": N, "subtlety": N}}, "notes": "brief summary"}}"""
     
     return prompt
 
 
-def _build_song_intro_audit_prompt_julie(script_content: str) -> str:
-    """Build audit prompt for Julie's song intros."""
-    system = (
-        "You are a script auditor for an AI radio station. Your job is to evaluate DJ scripts for character accuracy and quality.\n\n"
-        "Character Reference: Julie\n"
-        "- Voice: conversational, uses filler words, sometimes rambling.\n"
-        "- Era: Modern American; avoid 1950s slang.\n"
-        "- Tone: Warm, hopeful, friendly.\n"
-        "- Typical patterns: longish sentences, friendly asides, filler words like 'you know' or 'right'.\n\n"
-        "Evaluation Criteria for SONG INTRO (score each 1-10):\n"
-        "1. character_voice: Does this sound like Julie? Should be casual/rambling/grounded with filler words. Generic DJ speak, flowery language, or overly polished = FAIL.\n"
-        "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
-        "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, mean comments, meta-commentary in parentheses, placeholder text ('Artist 4'), dates/years ('1948 tune'), or TTS-breaking punctuation = automatic score of 1.\n"
-        "4. natural_flow: Does it read naturally? Too long (>120 words), too flowery/elaborate, or rambling after song introduction = lower score.\n"
-        "5. length: Appropriate length (1-3 optimal, 5 max sentences)? MUST end with song introduction (artist/title). Any text after song intro = FAIL.\n\n"
-        "Scoring Scale (1-10 for each criterion):\n"
-        "- 10: Perfect\n"
-        "- 8-9: Strong\n"
-        "- 6-7: Acceptable (PASS)\n"
-        "- 4-5: Weak (FAIL)\n"
-        "- 1-3: Major issues (FAIL)\n\n"
-        "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
-        "**STRICT RULES FOR JULIE INTROS:**\n"
-        "- If script contains ANY emoji (😀🎵❤️👍 etc.), forbidden_elements MUST = 1\n"
-        "- If script has meta-commentary like '(1 sentence intro...)', forbidden_elements MUST = 1\n"
-        "- If script has placeholder text like 'Artist 4' or 'Test Song', forbidden_elements MUST = 1\n"
-        "- If script mentions dates/years (like '1948 tune', '1960s classic'), forbidden_elements MUST ≤ 3\n"
-        "- If script has TTS-breaking punctuation (standalone '-', multiple '...', ',?'), forbidden_elements MUST ≤ 3\n"
-        "- If script continues AFTER song introduction (artist/title), length MUST ≤ 4\n"
-        "- If Julie uses flowery/elaborate language ('inimitable', 'tailor made', 'semblance of tranquility'), character_voice MUST ≤ 4\n"
-        "- If Julie sounds formal/polished (like Mr. NV would), character_voice MUST ≤ 4\n"
-        "- Generic radio clichés ('welcome back', 'like and subscribe') = era_appropriateness ≤ 4\n"
-        "- If script is too long (>120 words), natural_flow MUST ≤ 6\n\n"
-        "Instructions: Respond ONLY with valid JSON containing:\n"
-        "{\n"
-        "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"length\": <1-10>},\n"
-        "  \"issues\": [\"list specific problems if failing\"],\n"
-        "  \"notes\": \"brief summary\"\n"
-        "}\n\n"
-        "DO NOT include 'score' or 'passed' in your JSON - they will be calculated from criteria_scores.\n"
-    )
+def _build_song_intro_audit_prompt(script_content: str, dj: str, song_title: str = "", artist: str = "", lyrics: str = "") -> str:
+    """Compact audit prompt for song intros using voice samples + lyrics."""
+    voice_samples = format_voice_samples(dj)
+    dj_name = "Julie" if dj.lower() == "julie" else "Mr. New Vegas"
     
-    user = f"Evaluate this song_intro script for Julie:\n---\n{script_content}\n---\n"
-    return system + "\n" + user
+    # Truncate lyrics if too long (keep first ~500 chars for context)
+    lyrics_section = ""
+    if lyrics and lyrics.strip():
+        truncated = lyrics[:500] + "..." if len(lyrics) > 500 else lyrics
+        lyrics_section = f"\nSONG LYRICS:\n{truncated}\n"
+    
+    prompt = f"""You are auditing a radio DJ script. Score each criterion 1-10.
 
+HOW {dj_name.upper()} SOUNDS (reference samples):
+{voice_samples}
+
+SONG INFO: "{song_title}" by {artist}{lyrics_section}
+SCRIPT TO EVALUATE:
+"{script_content}"
+
+SCORING CRITERIA (1-10 each, where 10=perfect, 6-7=acceptable, 1-3=major fail):
+
+1. character_voice: Does the script sound like the voice samples above? 
+2. era_appropriateness: Uses 1950s language, no modern slang, no dates/years mentioned?
+3. forbidden_elements: CLEAN=10, VIOLATIONS=1. Give 10 if NO emoji/no meta-commentary/no placeholders. Give 1-3 only if these appear.
+4. natural_flow: Reads naturally, not too long (under 120 words)?
+5. length: 1-5 sentences, must END with introducing the song (artist/title)?
+
+IMPORTANT SCORING RULES:
+- forbidden_elements: Default to 10 if script is clean. Only score low if emoji, "(note:...)", or [[placeholder]] text actually appears.
+- If dates/years mentioned: era_appropriateness must be 3 or less  
+- If text continues AFTER the song introduction: length must be 4 or less
+- If script sounds too formal/flowery for Julie: character_voice must be 4 or less
+
+Respond with ONLY this JSON format:
+{{"criteria_scores": {{"character_voice": N, "era_appropriateness": N, "forbidden_elements": N, "natural_flow": N, "length": N}}, "issues": ["list any problems"], "notes": "brief summary"}}"""
+    
+    return prompt
+
+
+def _build_song_outro_audit_prompt(script_content: str, dj: str, song_title: str = "", artist: str = "", lyrics: str = "") -> str:
+    """Compact audit prompt for song outros using voice samples + lyrics."""
+    voice_samples = format_voice_samples(dj)
+    dj_name = "Julie" if dj.lower() == "julie" else "Mr. New Vegas"
+    
+    # Truncate lyrics if too long
+    lyrics_section = ""
+    if lyrics and lyrics.strip():
+        truncated = lyrics[:500] + "..." if len(lyrics) > 500 else lyrics
+        lyrics_section = f"\nSONG LYRICS:\n{truncated}\n"
+    
+    prompt = f"""You are auditing a radio DJ script. Score each criterion 1-10.
+
+HOW {dj_name.upper()} SOUNDS (reference samples):
+{voice_samples}
+
+SONG THAT JUST FINISHED: "{song_title}" by {artist}{lyrics_section}
+SCRIPT TO EVALUATE:
+"{script_content}"
+
+SCORING CRITERIA (1-10 each, where 10=perfect, 6-7=acceptable, 1-3=major fail):
+
+1. character_voice: Does the script sound like the voice samples above?
+2. era_appropriateness: Uses 1950s language, no modern slang, no dates/years mentioned?
+3. forbidden_elements: CLEAN=10, VIOLATIONS=1. Give 10 if NO emoji/no meta-commentary/no placeholders. Give 1-3 only if these appear.
+4. natural_flow: Reads naturally, not too long (under 80 words)?
+5. past_tense_usage: Uses PAST tense? ("That was...", "Hope you enjoyed...") NOT present tense intro.
+
+IMPORTANT SCORING RULES:
+- forbidden_elements: Default to 10 if script is clean. Only score low if emoji, "(note:...)", or [[placeholder]] text actually appears.
+- If uses present tense like "Here is..." or "This is...": past_tense_usage must be 3 or less
+- If dates/years mentioned: era_appropriateness must be 3 or less
+
+Respond with ONLY this JSON format:
+{{"criteria_scores": {{"character_voice": N, "era_appropriateness": N, "forbidden_elements": N, "natural_flow": N, "past_tense_usage": N}}, "issues": ["list any problems"], "notes": "brief summary"}}"""
+    
+    return prompt
+
+
+# Legacy wrappers for backward compatibility (no lyrics passed)
+def _build_song_intro_audit_prompt_julie(script_content: str) -> str:
+    return _build_song_intro_audit_prompt(script_content, "julie")
 
 def _build_song_intro_audit_prompt_mr_new_vegas(script_content: str) -> str:
-    """Build audit prompt for Mr. New Vegas's song intros."""
-    system = (
-        "You are a script auditor for an AI radio station. Your job is to evaluate DJ scripts for character accuracy and quality.\n\n"
-        "Character Reference: Mr. New Vegas\n"
-        "- Voice: smooth, suave, romantic.\n"
-        "- Era: 1950s Vegas lounge; avoid modern slang or emojis.\n"
-        "- Tone: Intimate, sophisticated.\n"
-        "- Typical patterns: short, polished sentences, romantic descriptors, references to lounge/city.\n\n"
-        "Evaluation Criteria for SONG INTRO (score each 1-10):\n"
-        "1. character_voice: Does this sound like Mr. New Vegas? Should be smooth/romantic/polished. Generic DJ speak, rambling, or casual filler words = FAIL.\n"
-        "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
-        "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, mean comments, meta-commentary in parentheses, placeholder text ('Artist 4'), dates/years ('1948 tune'), or TTS-breaking punctuation = automatic score of 1.\n"
-        "4. natural_flow: Does it read naturally? Too long (>120 words), too flowery/elaborate, or rambling after song introduction = lower score.\n"
-        "5. length: Appropriate length (1-3 optimal, 5 max sentences)? MUST end with song introduction (artist/title). Any text after song intro = FAIL.\n\n"
-        "Scoring Scale (1-10 for each criterion):\n"
-        "- 10: Perfect\n"
-        "- 8-9: Strong\n"
-        "- 6-7: Acceptable (PASS)\n"
-        "- 4-5: Weak (FAIL)\n"
-        "- 1-3: Major issues (FAIL)\n\n"
-        "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
-        "**STRICT RULES FOR MR. NEW VEGAS INTROS:**\n"
-        "- If script contains ANY emoji (😀🎵❤️👍 etc.), forbidden_elements MUST = 1\n"
-        "- If script has meta-commentary like '(1 sentence intro...)', forbidden_elements MUST = 1\n"
-        "- If script has placeholder text like 'Artist 4' or 'Test Song', forbidden_elements MUST = 1\n"
-        "- If script mentions dates/years (like '1948 tune', '1960s classic'), forbidden_elements MUST ≤ 3\n"
-        "- If script has TTS-breaking punctuation (standalone '-', multiple '...', ',?'), forbidden_elements MUST ≤ 3\n"
-        "- If script continues AFTER song introduction (artist/title), length MUST ≤ 4\n"
-        "- If Mr. NV sounds uncertain/rambling (like Julie would), character_voice MUST ≤ 4\n"
-        "- Generic radio clichés ('welcome back', 'like and subscribe') = era_appropriateness ≤ 4\n"
-        "- If script is too long (>120 words), natural_flow MUST ≤ 6\n\n"
-        "Instructions: Respond ONLY with valid JSON containing:\n"
-        "{\n"
-        "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"length\": <1-10>},\n"
-        "  \"issues\": [\"list specific problems if failing\"],\n"
-        "  \"notes\": \"brief summary\"\n"
-        "}\n\n"
-        "DO NOT include 'score' or 'passed' in your JSON - they will be calculated from criteria_scores.\n"
-    )
-    
-    user = f"Evaluate this song_intro script for Mr. New Vegas:\n---\n{script_content}\n---\n"
-    return system + "\n" + user
-
+    return _build_song_intro_audit_prompt(script_content, "mr_new_vegas")
 
 def _build_song_outro_audit_prompt_julie(script_content: str) -> str:
-    """Build audit prompt for Julie's song outros."""
-    system = (
-        "You are a script auditor for an AI radio station. Your job is to evaluate DJ scripts for character accuracy and quality.\n\n"
-        "Character Reference: Julie\n"
-        "- Voice: conversational, uses filler words, sometimes rambling.\n"
-        "- Era: Modern American; avoid 1950s slang.\n"
-        "- Tone: Warm, hopeful, friendly.\n"
-        "- Typical patterns: longish sentences, friendly asides, filler words like 'you know' or 'right'.\n\n"
-        "Evaluation Criteria for SONG OUTRO (score each 1-10):\n"
-        "1. character_voice: Does this sound like Julie? Should be casual/warm/reflective. Generic DJ speak, flowery language = FAIL.\n"
-        "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
-        "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, meta-commentary in parentheses, placeholder text, dates/years, or TTS-breaking punctuation = automatic score of 1.\n"
-        "4. natural_flow: Does it read naturally? Too long (>80 words for outro), too flowery/elaborate = lower score.\n"
-        "5. past_tense_usage: **OUTRO-SPECIFIC** - Must use past tense (song just played). 'That was...', 'Hope you enjoyed...', NOT 'Here is...' or 'Coming up...'. Present tense intro of song that already played = FAIL (score ≤ 3).\n\n"
-        "Scoring Scale (1-10 for each criterion):\n"
-        "- 10: Perfect\n"
-        "- 8-9: Strong\n"
-        "- 6-7: Acceptable (PASS)\n"
-        "- 4-5: Weak (FAIL)\n"
-        "- 1-3: Major issues (FAIL)\n\n"
-        "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
-        "**STRICT RULES FOR JULIE OUTROS:**\n"
-        "- If outro uses PRESENT TENSE to introduce song ('Here is...', 'This is...'), past_tense_usage MUST = 1-3\n"
-        "- If outro is too long (>80 words), natural_flow MUST ≤ 5\n"
-        "- If outro has long commentary about song that just played (>5 sentences), natural_flow MUST ≤ 6\n"
-        "- All other forbidden_elements rules apply (emoji, dates, meta-commentary, etc.)\n"
-        "- If Julie uses flowery/elaborate language, character_voice MUST ≤ 4\n"
-        "- Generic radio clichés ('thanks for tuning in', 'stay tuned') = era_appropriateness ≤ 6\n\n"
-        "Instructions: Respond ONLY with valid JSON containing:\n"
-        "{\n"
-        "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"past_tense_usage\": <1-10>},\n"
-        "  \"issues\": [\"list specific problems if failing\"],\n"
-        "  \"notes\": \"brief summary\"\n"
-        "}\n\n"
-        "DO NOT include 'score' or 'passed' in your JSON - they will be calculated from criteria_scores.\n"
-    )
-    
-    user = f"Evaluate this song_outro script for Julie:\n---\n{script_content}\n---\n"
-    return system + "\n" + user
-
+    return _build_song_outro_audit_prompt(script_content, "julie")
 
 def _build_song_outro_audit_prompt_mr_new_vegas(script_content: str) -> str:
-    """Build audit prompt for Mr. New Vegas's song outros."""
-    system = (
-        "You are a script auditor for an AI radio station. Your job is to evaluate DJ scripts for character accuracy and quality.\n\n"
-        "Character Reference: Mr. New Vegas\n"
-        "- Voice: smooth, suave, romantic.\n"
-        "- Era: 1950s Vegas lounge; avoid modern slang or emojis.\n"
-        "- Tone: Intimate, sophisticated.\n"
-        "- Typical patterns: short, polished sentences, romantic descriptors, references to lounge/city.\n\n"
-        "Evaluation Criteria for SONG OUTRO (score each 1-10):\n"
-        "1. character_voice: Does this sound like Mr. New Vegas? Should be smooth/romantic. Generic DJ speak, rambling = FAIL.\n"
-        "2. era_appropriateness: Any anachronisms, modern slang, or DATES/YEARS mentioned? Check carefully.\n"
-        "3. forbidden_elements: **CRITICAL** - ANY emoji, profanity, meta-commentary in parentheses, placeholder text, dates/years, or TTS-breaking punctuation = automatic score of 1.\n"
-        "4. natural_flow: Does it read naturally? Too long (>80 words for outro), too flowery/elaborate = lower score.\n"
-        "5. past_tense_usage: **OUTRO-SPECIFIC** - Must use past tense (song just played). 'That was...', 'Hope you enjoyed...', NOT 'Here is...' or 'Coming up...'. Present tense intro of song that already played = FAIL (score ≤ 3).\n\n"
-        "Scoring Scale (1-10 for each criterion):\n"
-        "- 10: Perfect\n"
-        "- 8-9: Strong\n"
-        "- 6-7: Acceptable (PASS)\n"
-        "- 4-5: Weak (FAIL)\n"
-        "- 1-3: Major issues (FAIL)\n\n"
-        "Pass Threshold: Overall weighted score >= 7.5 (calculated from individual criteria)\n\n"
-        "**STRICT RULES FOR MR. NEW VEGAS OUTROS:**\n"
-        "- If outro uses PRESENT TENSE to introduce song ('Here is...', 'This is...'), past_tense_usage MUST = 1-3\n"
-        "- If outro is too long (>80 words), natural_flow MUST ≤ 5\n"
-        "- If outro has long commentary about song that just played (>5 sentences), natural_flow MUST ≤ 6\n"
-        "- All other forbidden_elements rules apply (emoji, dates, meta-commentary, etc.)\n"
-        "- Generic radio clichés ('thanks for tuning in', 'stay tuned') = era_appropriateness ≤ 6\n\n"
-        "Instructions: Respond ONLY with valid JSON containing:\n"
-        "{\n"
-        "  \"criteria_scores\": {\"character_voice\": <1-10>, \"era_appropriateness\": <1-10>, \"forbidden_elements\": <1-10>, \"natural_flow\": <1-10>, \"past_tense_usage\": <1-10>},\n"
-        "  \"issues\": [\"list specific problems if failing\"],\n"
-        "  \"notes\": \"brief summary\"\n"
-        "}\n\n"
-        "DO NOT include 'score' or 'passed' in your JSON - they will be calculated from criteria_scores.\n"
-    )
-    
-    user = f"Evaluate this song_outro script for Mr. New Vegas:\n---\n{script_content}\n---\n"
-    return system + "\n" + user
+    return _build_song_outro_audit_prompt(script_content, "mr_new_vegas")
 
 
 def _build_prompt(script_content: str, dj: str, content_type: str = "song_intro") -> str:
@@ -350,7 +272,7 @@ def audit_script(
         
         # Weather announcements use simplified 4-criterion scoring
         if content_type == "weather_announcement":
-            weather_criteria = ["character_voice", "natural_flow", "length", "weather_mention"]
+            weather_criteria = ["character_voice", "natural_flow", "length", "subtlety"]
             criteria_scores = {}
             for key in weather_criteria:
                 criteria_scores[key] = _get_criterion_value(criteria, key)

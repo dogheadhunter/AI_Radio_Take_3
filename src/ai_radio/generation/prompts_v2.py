@@ -85,12 +85,12 @@ def _build_system_prompt(dj: DJ, examples: List[str], voice_summary: str) -> str
         vocab_list = ", ".join(JULIE_VOCAB)
         voice_note = "Your voice is WARM, CONVERSATIONAL, QUESTIONING. You wonder aloud, speculate about meanings, share personal reactions."
         contrast_note = "You are NOT: formal announcer, slick showman, or distant professional. You're a friend sharing music."
-        lore_note = "SETTING: You broadcast from Appalachia Radio in post-war Appalachia. Reference the wasteland, Vault dwellers, staying safe out there when fitting."
+        lore_note = "SETTING: You broadcast from a radio station, keeping folks company. You can hint at hard times, loneliness, or danger outside - but NEVER use explicit post-apocalyptic terms like 'wasteland', 'radiation', 'vault', 'mutant'. Keep it subtle and timeless."
     else:
         vocab_list = ", ".join(MR_NV_VOCAB)
         voice_note = "Your voice is CONFIDENT, ROMANTIC, SHOWMAN-LIKE. You address listeners directly, make dedications, create drama."
         contrast_note = "You are NOT: casual buddy, uncertain questioner, or vulnerable confessor. You're a smooth operator."
-        lore_note = "SETTING: You broadcast from Radio New Vegas in the Mojave Wasteland. Reference the Strip, NCR, Legion, New Vegas when fitting."
+        lore_note = "SETTING: You broadcast from Radio New Vegas. You can reference 'the Mojave', 'New Vegas', 'the desert' but avoid explicit terms like 'wasteland', 'radiation', 'mutant'. Keep the danger implicit."
 
     
     system = (
@@ -135,10 +135,14 @@ def build_song_intro_prompt_v2(
     title: str,
     year: Optional[int] = None,
     lyrics_context: Optional[str] = None,
+    audit_feedback: Optional[str] = None,
 ) -> Dict[str, str]:
     """Build improved song intro prompt v2.
 
     Returns a dict: { 'system': <str>, 'user': <str> }
+    
+    Args:
+        audit_feedback: Optional string with previous audit criticism to avoid.
     """
     if dj == DJ.JULIE:
         examples = JULIE_EXAMPLES
@@ -160,6 +164,13 @@ def build_song_intro_prompt_v2(
     
     if lyrics_part:
         user += f"\nFull song lyrics:\n{lyrics_part}\n"
+    
+    # Add audit feedback if regenerating
+    if audit_feedback:
+        user += (
+            f"\n**IMPORTANT - PREVIOUS ATTEMPT FAILED. Fix these issues:**\n"
+            f"{audit_feedback}\n"
+        )
     
     user += (
         "\nRequirements:\n"
@@ -184,8 +195,13 @@ def build_song_intro_prompt_v2(
     return {"system": system, "user": user}
 
 
-def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optional[str] = None) -> Dict[str, str]:
-    """Build outro-specific prompt emphasizing past tense and natural transitions."""
+def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optional[str] = None, lyrics_context: Optional[str] = None, audit_feedback: Optional[str] = None) -> Dict[str, str]:
+    """Build outro-specific prompt emphasizing past tense and natural transitions.
+    
+    Args:
+        lyrics_context: Optional song lyrics for thematic reference.
+        audit_feedback: Optional string with previous audit criticism to avoid.
+    """
     if dj == DJ.JULIE:
         # Julie-specific outro examples (conversational wrap-ups)
         examples = [
@@ -212,6 +228,16 @@ def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optio
     next_part = f"Optionally tease next song: {next_song}." if next_song else ""
     user = (
         f"Write a song outro for '{title}' by {artist} that just finished playing. {next_part}\n"
+    )
+    
+    # Add audit feedback if regenerating
+    if audit_feedback:
+        user += (
+            f"\n**IMPORTANT - PREVIOUS ATTEMPT FAILED. Fix these issues:**\n"
+            f"{audit_feedback}\n\n"
+        )
+    
+    user += (
         "Requirements:\n"
         "- Length: 1-3 sentences optimal, 5 sentences MAX.\n"
         "- Use PAST TENSE (the song just played - 'That was...', 'Hope you enjoyed...').\n"
