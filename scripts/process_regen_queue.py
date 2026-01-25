@@ -38,7 +38,7 @@ def log_message(message: str):
 def get_next_version_number(folder_path: Path, dj: str, content_type: str = None) -> int:
     """Determine the next version number for regeneration."""
     # Find all existing versions
-    # Handle diferentes naming conventions for outros vs other types
+    # Handle different naming conventions for outros vs other types
     if content_type == "outros":
         # Outros use: julie_outro.txt, julie_outro_1.txt, etc.
         existing_files = list(folder_path.glob(f"{dj}_outro*.txt")) + list(folder_path.glob(f"{dj}_outro*.wav"))
