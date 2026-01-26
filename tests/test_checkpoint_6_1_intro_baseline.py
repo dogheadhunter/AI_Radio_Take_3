@@ -41,12 +41,28 @@ class FakeGenerationPipeline:
 
 
 @pytest.mark.mock
-def test_checkpoint_6_1_intro_baseline_mock(tmp_path):
+def test_checkpoint_6_1_intro_baseline_mock(tmp_path, monkeypatch):
     # Prepare temporary DATA and GENERATED dirs
     tmp_data = tmp_path / "data"
     tmp_generated = tmp_data / "generated"
 
-    # Monkeypatch global dirs in generate_with_audit
+    # Monkeypatch config-level dirs so imported constants point to tmp paths
+    import src.ai_radio.config as config
+    monkeypatch.setattr(config, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(config, "GENERATED_DIR", tmp_generated, raising=False)
+
+    # Also patch module-level DATA_DIR imports in stages and core.paths that import them at module load time
+    import src.ai_radio.stages.audit as audit_stage
+    import src.ai_radio.stages.regenerate as regenerate_stage
+    import src.ai_radio.core.paths as paths_module
+    monkeypatch.setattr(audit_stage, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(regenerate_stage, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(paths_module, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(paths_module, "GENERATED_DIR", tmp_generated, raising=False)
+
+    # Also set on the script namespace for convenience
+    monkeypatch.setattr(gwa, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(gwa, "GENERATED_DIR", tmp_generated, raising=False)
     gwa.DATA_DIR = tmp_data
     gwa.GENERATED_DIR = tmp_generated
 
@@ -101,3 +117,71 @@ def test_checkpoint_6_1_intro_baseline_mock(tmp_path):
     final_pass_rate = passed / final_total
 
     assert final_pass_rate >= 0.95
+
+
+@pytest.mark.mock
+def test_checkpoint_data_dir_monkeypatch_regression_mock(tmp_path, monkeypatch):
+    """Regression test: ensure monkeypatching src.ai_radio.config.DATA_DIR causes audit files to be written to the temp data dir."""
+    tmp_data = tmp_path / "data"
+    tmp_generated = tmp_data / "generated"
+
+    # Monkeypatch config-level dirs
+    import src.ai_radio.config as config
+    monkeypatch.setattr(config, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(config, "GENERATED_DIR", tmp_generated, raising=False)
+
+    # Also patch core.paths and stage modules' DATA_DIR imports
+    import src.ai_radio.core.paths as paths_module
+    import src.ai_radio.stages.audit as audit_stage
+    import src.ai_radio.stages.regenerate as regenerate_stage
+    monkeypatch.setattr(paths_module, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(paths_module, "GENERATED_DIR", tmp_generated, raising=False)
+    monkeypatch.setattr(audit_stage, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(regenerate_stage, "DATA_DIR", tmp_data, raising=False)
+
+    # Also set on the script namespace for convenience
+    monkeypatch.setattr(gwa, "DATA_DIR", tmp_data, raising=False)
+    monkeypatch.setattr(gwa, "GENERATED_DIR", tmp_generated, raising=False)
+    gwa.DATA_DIR = tmp_data
+    gwa.GENERATED_DIR = tmp_generated
+
+    # Clean state
+    if tmp_data.exists():
+        shutil.rmtree(tmp_data)
+    tmp_data.mkdir(parents=True)
+
+    # Small catalog
+    catalog = {"songs": []}
+    for i in range(3):
+        catalog["songs"].append({"id": i, "artist": f"Artist {i}", "title": f"Title {i}"})
+    (tmp_data / "catalog.json").write_text(json.dumps(catalog), encoding='utf-8')
+
+    songs = gwa.load_catalog_songs(tmp_data / "catalog.json", limit=3)
+
+    checkpoint_file = tmp_data / "pipeline_state.json"
+    checkpoint = gwa.PipelineCheckpoint(checkpoint_file)
+    checkpoint.state["config"] = {
+        "content_types": ["intros"],
+        "djs": ["julie"],
+        "song_limit": len(songs),
+        "test_mode": True
+    }
+    checkpoint.save()
+
+    pipeline = FakeGenerationPipeline(output_dir=tmp_generated, fail_first_n=1)
+
+    # Run stages
+    generated = gwa.stage_generate(pipeline, songs, ["julie"], checkpoint, test_mode=True)
+    assert generated == 3
+
+    stats_initial = gwa.stage_audit(songs, ["julie"], checkpoint, test_mode=True)
+    total = stats_initial['passed'] + stats_initial['failed']
+    assert total == 3
+
+    regenerated = gwa.stage_regenerate(pipeline, songs, ["julie"], max_retries=3, test_mode=True)
+
+    passed = len(list((tmp_data / "audit" / "julie" / "passed").glob("*.json")))
+    failed = len(list((tmp_data / "audit" / "julie" / "failed").glob("*.json")))
+
+    final_total = passed + failed
+    assert final_total == 3
