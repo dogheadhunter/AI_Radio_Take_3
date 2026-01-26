@@ -84,10 +84,17 @@ class FakeAuditorClient:
         Returns:
             JSON string with audit result
         """
-        # Extract just the script portion (between the last '---')
-        parts = prompt.split('---')
-        script = parts[-1] if len(parts) > 1 else prompt
-        script = script.lower()
+        import re
+        
+        # Extract script content from 'SCRIPT TO EVALUATE: "..."' format
+        match = re.search(r'SCRIPT TO EVALUATE:\s*"([^"]*)"', prompt)
+        if match:
+            script = match.group(1).lower()
+        else:
+            # Fallback: extract from between '---' markers (legacy format)
+            parts = prompt.split('---')
+            script = parts[-1] if len(parts) > 1 else prompt
+            script = script.lower()
         
         # Simple heuristics for pass/fail - be more lenient in test mode
         # Look for actual problematic content in the script

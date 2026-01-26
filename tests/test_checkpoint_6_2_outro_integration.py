@@ -7,12 +7,18 @@ Validates that:
 3. Outro scripts are audited to data/audit/{dj}/passed|failed/
 4. Checkpoint state tracks outros correctly
 5. Resume works with outros
+
+Note: These are integration tests that run the actual CLI via subprocess.
+They require Ollama/TTS services to be running for full operation.
 """
 import pytest
 import json
 from pathlib import Path
 import subprocess
 import sys
+
+# Mark all tests in this module as integration tests
+pytestmark = pytest.mark.integration
 
 # Project paths
 ROOT = Path(__file__).resolve().parent.parent

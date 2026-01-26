@@ -162,9 +162,9 @@ def test_pipeline_mock_file_organization(tmp_path, mock_services):
     expected_folder = tmp_path / "intros" / "julie" / "The_Beatles-Hey_Jude"
     assert expected_folder.exists()
     
-    # Check files exist
+    # Check files exist (note: pipeline now creates _full.wav for dual audio)
     text_file = expected_folder / "julie_0.txt"
-    audio_file = expected_folder / "julie_0.wav"
+    audio_file = expected_folder / "julie_0_full.wav"
     assert text_file.exists()
     assert audio_file.exists()
 
@@ -277,5 +277,6 @@ def test_pipeline_mock_concurrent_djs(tmp_path, mock_services):
     
     assert julie_folder.exists()
     assert vegas_folder.exists()
-    assert (julie_folder / "julie_0.wav").exists()
-    assert (vegas_folder / "mr_new_vegas_0.wav").exists()
+    # Note: pipeline now creates _full.wav for dual audio
+    assert (julie_folder / "julie_0_full.wav").exists()
+    assert (vegas_folder / "mr_new_vegas_0_full.wav").exists()

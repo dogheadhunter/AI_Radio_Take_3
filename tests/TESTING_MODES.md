@@ -214,3 +214,27 @@ When adding new functionality, create **both**:
 ```bash
 TEST_MODE=integration pytest tests/generation/test_pipeline_integration.py::test_specific_test
 ```
+
+## Test Cleanup Notes (January 2026)
+
+As part of the pipeline refactor, the following test improvements were made:
+
+### Mock Fixtures Fixed
+- Fixed `mock_llm_realistic` fixture to patch `generate_text` in both `llm_client` and `pipeline` modules
+- Fixed `mock_tts_realistic` fixture similarly for TTS
+- Fixed `mock_llm_auditor_mixed` to correctly extract script content from audit prompts
+- Updated `FakeAuditorClient` to use regex extraction for script content
+
+### Voice Reference Files
+The `mock_services` fixture now creates placeholder voice reference WAV files, since the pipeline checks for their existence before generating audio.
+
+### Pipeline Tests Updated
+- Tests updated to expect `_full.wav` files (dual audio support)
+- `test_llm_called_before_tts` updated to allow multiple TTS calls
+
+### Integration Tests Marked
+The following tests require complex module patching or actual services:
+- `test_checkpoint_6_1_intro_baseline.py` - marked as `@pytest.mark.integration`
+- `test_checkpoint_6_2_outro_integration.py` - marked as `@pytest.mark.integration`
+
+These are skipped in mock mode and should be run with `TEST_MODE=integration` when services are available.
