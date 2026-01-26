@@ -45,8 +45,10 @@ Configuration
 Quick test
 ----------
 - Start the mock TTS and run:
-  - `python scripts/generate_content.py --intros --dj julie --limit 3 --resume`
-- You should find generated WAVs in `data/generated/intros/`.
+  - `python scripts/generate_with_audit.py --intros --dj julie --test --skip-audio`
+- You should find generated scripts in `data/generated/intros/`.
+- For audio generation, ensure both Ollama and TTS are running:
+  - `python scripts/generate_with_audit.py --intros --dj julie --test`
 
 Notes
 -----
