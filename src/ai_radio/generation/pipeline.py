@@ -646,6 +646,7 @@ def generate_batch_outros(
     resume: bool = False,
     progress_callback: Optional[Callable[[BatchProgress], None]] = None,
     two_phase: bool = False,
+    enable_bridges: bool = False,
 ) -> Iterator[GenerationResult]:
     total = len(songs)
     completed = 0
@@ -654,7 +655,7 @@ def generate_batch_outros(
     # Two-phase mode: generate all scripts first, then all audio
     if two_phase:
         # Phase 1: Generate all text scripts
-        for s in songs:
+        for i, s in enumerate(songs):
             current_song = s.get("title") or s.get("id")
             safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in s.get("artist", "Unknown"))
             safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in s.get("title", "Unknown"))
@@ -669,7 +670,13 @@ def generate_batch_outros(
                     progress_callback(BatchProgress(total=total, completed=completed, failed=failed, current_song=current_song))
                 continue
             
-            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, text_only=True)
+            # Determine next song for bridge (if enabled)
+            next_song_info = None
+            if enable_bridges and i < len(songs) - 1:
+                next_s = songs[i + 1]
+                next_song_info = f"{next_s.get('title', 'Unknown')} by {next_s.get('artist', 'Unknown')}"
+            
+            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, next_song=next_song_info, text_only=True)
             if result.success:
                 completed += 1
             else:
@@ -712,7 +719,7 @@ def generate_batch_outros(
             yield result
     else:
         # Original single-phase mode
-        for s in songs:
+        for i, s in enumerate(songs):
             current_song = s.get("title") or s.get("id")
 
             if resume:
@@ -730,7 +737,13 @@ def generate_batch_outros(
                     yield res
                     continue
 
-            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj)
+            # Determine next song for bridge (if enabled)
+            next_song_info = None
+            if enable_bridges and i < len(songs) - 1:
+                next_s = songs[i + 1]
+                next_song_info = f"{next_s.get('title', 'Unknown')} by {next_s.get('artist', 'Unknown')}"
+
+            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, next_song=next_song_info)
             if result.success:
                 completed += 1
             else:

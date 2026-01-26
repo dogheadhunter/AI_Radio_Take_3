@@ -1,0 +1,152 @@
+{
+  "timestamp": "20260125_191705",
+  "dj": "julie",
+  "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+  "params": {
+    "exaggeration": 0.5,
+    "cfg_weight": 0.5,
+    "temperature": 0.8
+  },
+  "tests": [
+    {
+      "script": "intro_Frank_Sinatra___Sammy_Davis_Jr",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\intro_Frank_Sinatra___Sammy_Davis_Jr\\original.wav",
+      "generation_time": 48.230268239974976,
+      "text_length": 280
+    },
+    {
+      "script": "intro_Billie_Holiday-Crazy_He_Calls_",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\intro_Billie_Holiday-Crazy_He_Calls_\\original.wav",
+      "generation_time": 38.173853635787964,
+      "text_length": 277
+    },
+    {
+      "script": "intro_The_Ink_Spots-I_Don_t_Want_to_",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\intro_The_Ink_Spots-I_Don_t_Want_to_\\original.wav",
+      "generation_time": 35.370423555374146,
+      "text_length": 269
+    },
+    {
+      "script": "intro_Billie_Holiday-All_Or_Nothing_",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\intro_Billie_Holiday-All_Or_Nothing_\\original.wav",
+      "generation_time": 33.320961475372314,
+      "text_length": 284
+    },
+    {
+      "script": "intro_Fats_Waller-Ain_t_Misbehavin_",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\intro_Fats_Waller-Ain_t_Misbehavin_\\original.wav",
+      "generation_time": 67.1148533821106,
+      "text_length": 310
+    },
+    {
+      "script": "intro_Betty_Hutton-It_s_a_Man",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\intro_Betty_Hutton-It_s_a_Man\\original.wav",
+      "generation_time": 50.5018675327301,
+      "text_length": 378
+    },
+    {
+      "script": "time_16-30",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\time_16-30\\original.wav",
+      "generation_time": 20.283645391464233,
+      "text_length": 160
+    },
+    {
+      "script": "time_02-00",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\time_02-00\\original.wav",
+      "generation_time": 10.905388593673706,
+      "text_length": 106
+    },
+    {
+      "script": "weather_17-00",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\weather_17-00\\original.wav",
+      "generation_time": 24.895883321762085,
+      "text_length": 224
+    },
+    {
+      "script": "weather_06-00",
+      "model": "original",
+      "file": "data\\model_comparison_20260125_191705\\weather_06-00\\original.wav",
+      "generation_time": 26.20680856704712,
+      "text_length": 228
+    },
+    {
+      "script": "intro_Frank_Sinatra___Sammy_Davis_Jr",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\intro_Frank_Sinatra___Sammy_Davis_Jr\\turbo.wav",
+      "generation_time": 14.802736520767212,
+      "text_length": 280
+    },
+    {
+      "script": "intro_Billie_Holiday-Crazy_He_Calls_",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\intro_Billie_Holiday-Crazy_He_Calls_\\turbo.wav",
+      "generation_time": 13.938472032546997,
+      "text_length": 277
+    },
+    {
+      "script": "intro_The_Ink_Spots-I_Don_t_Want_to_",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\intro_The_Ink_Spots-I_Don_t_Want_to_\\turbo.wav",
+      "generation_time": 11.753574848175049,
+      "text_length": 269
+    },
+    {
+      "script": "intro_Billie_Holiday-All_Or_Nothing_",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\intro_Billie_Holiday-All_Or_Nothing_\\turbo.wav",
+      "generation_time": 12.758183002471924,
+      "text_length": 284
+    },
+    {
+      "script": "intro_Fats_Waller-Ain_t_Misbehavin_",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\intro_Fats_Waller-Ain_t_Misbehavin_\\turbo.wav",
+      "generation_time": 14.855793952941895,
+      "text_length": 310
+    },
+    {
+      "script": "intro_Betty_Hutton-It_s_a_Man",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\intro_Betty_Hutton-It_s_a_Man\\turbo.wav",
+      "generation_time": 17.48405170440674,
+      "text_length": 378
+    },
+    {
+      "script": "time_16-30",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\time_16-30\\turbo.wav",
+      "generation_time": 7.231494665145874,
+      "text_length": 160
+    },
+    {
+      "script": "time_02-00",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\time_02-00\\turbo.wav",
+      "generation_time": 5.444231986999512,
+      "text_length": 106
+    },
+    {
+      "script": "weather_17-00",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\weather_17-00\\turbo.wav",
+      "generation_time": 10.559833288192749,
+      "text_length": 224
+    },
+    {
+      "script": "weather_06-00",
+      "model": "turbo",
+      "file": "data\\model_comparison_20260125_191705\\weather_06-00\\turbo.wav",
+      "generation_time": 9.288260459899902,
+      "text_length": 228
+    }
+  ]
+}

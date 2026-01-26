@@ -34,6 +34,7 @@ def main():
             "run",
             str(gui_script),
             "--server.port=8501",
+            "--server.address=0.0.0.0",  # Allow network access (e.g., via Tailscale)
             "--server.headless=true",
             "--browser.gatherUsageStats=false"
         ], cwd=str(project_root), check=True)

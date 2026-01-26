@@ -1,0 +1,11 @@
+{
+  "timestamp": "20260125_191202",
+  "dj": "julie",
+  "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+  "params": {
+    "exaggeration": 0.5,
+    "cfg_weight": 0.5,
+    "temperature": 0.8
+  },
+  "tests": []
+}

@@ -1,5 +1,4 @@
 Ol' Man Mose by Eddy Duchin
-============================================================
 
 Now one time there lived an old man
 With a very crooked nose
@@ -53,6 +52,3 @@ yeah, I found out ol' man, ol' man Mose is dead
 (you found out he's dead)
 
 Old Man Mose is dead.
-
-============================================================
-Source: lrclib

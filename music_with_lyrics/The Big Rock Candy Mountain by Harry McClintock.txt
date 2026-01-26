@@ -1,5 +1,4 @@
 The Big Rock Candy Mountain by Harry McClintock
-============================================================
 
 One evening as the sun went down
 And the jungle fire was burning
@@ -52,6 +51,3 @@ In The Big Rock Candy Mountains
 
 "I'll see you all this comin' fall
 In the Big Rock Candy Mountains"
-
-============================================================
-Source: lrclib

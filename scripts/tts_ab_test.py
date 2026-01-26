@@ -24,31 +24,20 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import torch
 import torchaudio
 
-# Parameter combinations to test
-# Key insight: temp=1.0 causes gibberish, cfg=0.5 is too high
-PARAM_SETS = {
-    "baseline": {"exaggeration": 0.5, "cfg_weight": 0.5, "temperature": 0.8},  # Chatterbox default but fixed temp
-    "warm_natural": {"exaggeration": 0.5, "cfg_weight": 0.3, "temperature": 0.8},
-    "expressive_low_cfg": {"exaggeration": 0.6, "cfg_weight": 0.3, "temperature": 0.8},
-    "subtle_smooth": {"exaggeration": 0.4, "cfg_weight": 0.35, "temperature": 0.7},
-    "balanced": {"exaggeration": 0.5, "cfg_weight": 0.35, "temperature": 0.85},
+# Voice reference clips to test
+VOICE_CLIP_TESTS = {
+    "julie_10sec": "assets/voice_references/Julie/julie_10sec.wav",
+    "julie_30sec": "assets/voice_references/Julie/julie_30sec.wav",
+    "julie_full": "assets/voice_references/Julie/julie.wav",
+    "julie_happy_v2": "assets/voice_references/Julie/Julie happy excited v2.wav",
+    "julie_semi_serious": "assets/voice_references/Julie/Julie semi serious.wav",
 }
 
-# Voice reference files
-# Voice references with energy variants
-# - energetic: For intros, outros, song announcements (upbeat pacing)
-# - calm: For time checks, weather reports (sincere, measured pacing)
-# NOTE: Keep clips 5-15 seconds for best pacing results
-VOICE_REFS = {
-    "julie": {
-        "default": "assets/voice_references/Julie/julie_10sec.wav",
-        "energetic": "assets/voice_references/Julie/julie_10sec.wav",
-        "calm": "assets/voice_references/Julie/julie_10sec.wav",
-    },
-    "mr_new_vegas": {
-        "default": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
-        # TODO: Add energetic/calm variants for Mr. New Vegas
-    },
+# Use baseline parameters from A/B testing for all clips
+BASELINE_PARAMS = {
+    "exaggeration": 0.5,
+    "cfg_weight": 0.5,
+    "temperature": 0.8,
 }
 
 def detect_mood(text: str) -> str:
@@ -159,16 +148,16 @@ def get_sample_scripts(dj: str, count: int = 10) -> list[dict]:
 
 
 def load_chatterbox(use_half: bool = False):
-    """Load the Chatterbox TTS model with optional fp16 for faster generation."""
+    """Load the Chatterbox Turbo TTS model with optional fp16 for faster generation."""
     # Add chatterbox src to path
     chatterbox_path = Path(__file__).parent.parent / "chatterbox" / "src"
     if str(chatterbox_path) not in sys.path:
         sys.path.insert(0, str(chatterbox_path))
     
-    from chatterbox.tts import ChatterboxTTS
+    from chatterbox.tts_turbo import ChatterboxTurboTTS
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Loading Chatterbox on {device}...")
+    print(f"Loading Chatterbox Turbo on {device}...")
     
     # Enable CUDA optimizations
     if device == "cuda":
@@ -176,7 +165,7 @@ def load_chatterbox(use_half: bool = False):
         torch.backends.cuda.matmul.allow_tf32 = True
         torch.backends.cudnn.allow_tf32 = True
     
-    model = ChatterboxTTS.from_pretrained(device=device)
+    model = ChatterboxTurboTTS.from_pretrained(device=device)
     
     # Convert to half precision for faster inference (CUDA only)
     if use_half and device == "cuda":

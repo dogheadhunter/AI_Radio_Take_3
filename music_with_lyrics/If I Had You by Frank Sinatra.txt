@@ -1,5 +1,4 @@
 If I Had You by Frank Sinatra
-============================================================
 
 I could show the world how to smile
 I could be glad all of the while
@@ -32,6 +31,3 @@ There is nothin' I couldn't do
 If I had you
 
 If I had you
-
-============================================================
-Source: lrclib

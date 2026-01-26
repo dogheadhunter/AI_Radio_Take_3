@@ -1,45 +1,38 @@
 Java Jive by The Ink Spots
-============================================================
 
-[Synced Lyrics - LRC Format]
-
-[00:10.15] I love coffee, I love tea
-[00:14.30] I love the java jive and it loves me
-[00:19.06] Coffee and tea and the java and me
-[00:23.60] A cup, a cup, a cup, a cup, a cup, boy
-[00:28.49] I love java, sweet and hot
-[00:32.96] Whoops, Mr. Moto, I'm a coffee pot
-[00:37.48] Shoot me the pot now pour me a shot
-[00:41.97] A cup, a cup, a cup, a cup, a cup
-[00:46.32] Oh, slip me a slug from the wonderful mug
-[00:51.22] I'll cut a rug till I'm snug in a jug
-[00:55.87] A slice of onion and a raw one, draw one
-[01:03.26] Waiter, waiter, percolator
-[01:05.74] I love coffee, I love tea
-[01:10.06] I love the java jive and it loves me
-[01:14.61] Coffee and tea and the java and me
-[01:19.26] A cup, a cup, a cup, a cup, a cup
-[01:23.58] Oh, Boston beans, soy beans (Yeah!)
-[01:28.86] Green beans, cabbage and greens (Home cooking!)
-[01:33.45] I'm not keen, not for a bean
-[01:37.63] Unless that is a cheery, cheery bean, boy
-[01:42.44] I love coffee, I love tea
-[01:47.20] I love the java jive and it loves me
-[01:51.78] Coffee and the tea and the java and me
-[01:56.44] A cup, a cup, a cup, a cup, a cup, yeah
-[02:01.19] I love java, sweet and hot
-[02:05.73] Whoops, Mr. Moto, I'm a coffee pot
-[02:10.38] Shoot me the pot now pour me a shot
-[02:15.01] A cup, a cup, a cup (Yeah!)
-[02:18.97] Oh, throw me that slug from the wonderful mug
-[02:24.25] And I'll cut a rug till I'm snug in the jug
-[02:28.96] Drop a nickel in a pot, Joe, I take 'em slow
-[02:35.72] Waiter, waiter, percolator
-[02:40.46] I love coffee, I love tea
-[02:45.03] I love the java jive and it loves me
-[02:49.52] Coffee and tea and the java and me
-[02:54.54] A cup, a cup, a cup, a cup, boy
-[03:01.00] 
-
-============================================================
-Source: lrclib
+I love coffee, I love tea
+I love the java jive and it loves me
+Coffee and tea and the java and me
+A cup, a cup, a cup, a cup, a cup, boy
+I love java, sweet and hot
+Whoops, Mr. Moto, I'm a coffee pot
+Shoot me the pot now pour me a shot
+A cup, a cup, a cup, a cup, a cup
+Oh, slip me a slug from the wonderful mug
+I'll cut a rug till I'm snug in a jug
+A slice of onion and a raw one, draw one
+Waiter, waiter, percolator
+I love coffee, I love tea
+I love the java jive and it loves me
+Coffee and tea and the java and me
+A cup, a cup, a cup, a cup, a cup
+Oh, Boston beans, soy beans (Yeah!)
+Green beans, cabbage and greens (Home cooking!)
+I'm not keen, not for a bean
+Unless that is a cheery, cheery bean, boy
+I love coffee, I love tea
+I love the java jive and it loves me
+Coffee and the tea and the java and me
+A cup, a cup, a cup, a cup, a cup, yeah
+I love java, sweet and hot
+Whoops, Mr. Moto, I'm a coffee pot
+Shoot me the pot now pour me a shot
+A cup, a cup, a cup (Yeah!)
+Oh, throw me that slug from the wonderful mug
+And I'll cut a rug till I'm snug in the jug
+Drop a nickel in a pot, Joe, I take 'em slow
+Waiter, waiter, percolator
+I love coffee, I love tea
+I love the java jive and it loves me
+Coffee and tea and the java and me
+A cup, a cup, a cup, a cup, boy

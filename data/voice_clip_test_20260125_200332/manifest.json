@@ -1,0 +1,256 @@
+{
+  "timestamp": "20260125_200332",
+  "dj": "mr_new_vegas",
+  "params": {
+    "exaggeration": 0.5,
+    "cfg_weight": 0.5,
+    "temperature": 0.8
+  },
+  "voice_clips": {
+    "mr_new_vegas_10sec": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+    "mr_new_vegas_30sec": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+    "mr_new_vegas_full": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav"
+  },
+  "tests": [
+    {
+      "script": "intro_Elvis_Presley-Can_t_Help_Falli",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Elvis_Presley-Can_t_Help_Falli\\mr_new_vegas_10sec.wav",
+      "text_length": 310
+    },
+    {
+      "script": "intro_Elvis_Presley-Can_t_Help_Falli",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Elvis_Presley-Can_t_Help_Falli\\mr_new_vegas_30sec.wav",
+      "text_length": 310
+    },
+    {
+      "script": "intro_Elvis_Presley-Can_t_Help_Falli",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Elvis_Presley-Can_t_Help_Falli\\mr_new_vegas_full.wav",
+      "text_length": 310
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_The_Mills_Brothers-The_Glow_Wo\\mr_new_vegas_10sec.wav",
+      "text_length": 274
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_The_Mills_Brothers-The_Glow_Wo\\mr_new_vegas_30sec.wav",
+      "text_length": 274
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_The_Mills_Brothers-The_Glow_Wo\\mr_new_vegas_full.wav",
+      "text_length": 274
+    },
+    {
+      "script": "intro_Patsy_Cline-Three_Cigarettes_i",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Patsy_Cline-Three_Cigarettes_i\\mr_new_vegas_10sec.wav",
+      "text_length": 258
+    },
+    {
+      "script": "intro_Patsy_Cline-Three_Cigarettes_i",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Patsy_Cline-Three_Cigarettes_i\\mr_new_vegas_30sec.wav",
+      "text_length": 258
+    },
+    {
+      "script": "intro_Patsy_Cline-Three_Cigarettes_i",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Patsy_Cline-Three_Cigarettes_i\\mr_new_vegas_full.wav",
+      "text_length": 258
+    },
+    {
+      "script": "intro_Arthur__Big_Boy__Crudup-I_m_Go",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Arthur__Big_Boy__Crudup-I_m_Go\\mr_new_vegas_10sec.wav",
+      "text_length": 295
+    },
+    {
+      "script": "intro_Arthur__Big_Boy__Crudup-I_m_Go",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Arthur__Big_Boy__Crudup-I_m_Go\\mr_new_vegas_30sec.wav",
+      "text_length": 295
+    },
+    {
+      "script": "intro_Arthur__Big_Boy__Crudup-I_m_Go",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Arthur__Big_Boy__Crudup-I_m_Go\\mr_new_vegas_full.wav",
+      "text_length": 295
+    },
+    {
+      "script": "intro_Lead_Belly-Where_Did_You_Sleep",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Lead_Belly-Where_Did_You_Sleep\\mr_new_vegas_10sec.wav",
+      "text_length": 290
+    },
+    {
+      "script": "intro_Lead_Belly-Where_Did_You_Sleep",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Lead_Belly-Where_Did_You_Sleep\\mr_new_vegas_30sec.wav",
+      "text_length": 290
+    },
+    {
+      "script": "intro_Lead_Belly-Where_Did_You_Sleep",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Lead_Belly-Where_Did_You_Sleep\\mr_new_vegas_full.wav",
+      "text_length": 290
+    },
+    {
+      "script": "intro_Louis_Prima-Just_a_Gigolo___I_",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Louis_Prima-Just_a_Gigolo___I_\\mr_new_vegas_10sec.wav",
+      "text_length": 344
+    },
+    {
+      "script": "intro_Louis_Prima-Just_a_Gigolo___I_",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Louis_Prima-Just_a_Gigolo___I_\\mr_new_vegas_30sec.wav",
+      "text_length": 344
+    },
+    {
+      "script": "intro_Louis_Prima-Just_a_Gigolo___I_",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\intro_Louis_Prima-Just_a_Gigolo___I_\\mr_new_vegas_full.wav",
+      "text_length": 344
+    },
+    {
+      "script": "time_01-00",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\time_01-00\\mr_new_vegas_10sec.wav",
+      "text_length": 113
+    },
+    {
+      "script": "time_01-00",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\time_01-00\\mr_new_vegas_30sec.wav",
+      "text_length": 113
+    },
+    {
+      "script": "time_01-00",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\time_01-00\\mr_new_vegas_full.wav",
+      "text_length": 113
+    },
+    {
+      "script": "time_10-30",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\time_10-30\\mr_new_vegas_10sec.wav",
+      "text_length": 182
+    },
+    {
+      "script": "time_10-30",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\time_10-30\\mr_new_vegas_30sec.wav",
+      "text_length": 182
+    },
+    {
+      "script": "time_10-30",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\time_10-30\\mr_new_vegas_full.wav",
+      "text_length": 182
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\weather_17-00\\mr_new_vegas_10sec.wav",
+      "text_length": 337
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\weather_17-00\\mr_new_vegas_30sec.wav",
+      "text_length": 337
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\weather_17-00\\mr_new_vegas_full.wav",
+      "text_length": 337
+    },
+    {
+      "script": "weather_06-00",
+      "voice_clip": "mr_new_vegas_10sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_200332\\weather_06-00\\mr_new_vegas_10sec.wav",
+      "text_length": 221
+    },
+    {
+      "script": "weather_06-00",
+      "voice_clip": "mr_new_vegas_30sec",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_200332\\weather_06-00\\mr_new_vegas_30sec.wav",
+      "text_length": 221
+    },
+    {
+      "script": "weather_06-00",
+      "voice_clip": "mr_new_vegas_full",
+      "clip_path": "assets/voice_references/Mister_New_Vegas/mr_new_vegas.wav",
+      "clip_duration": 81.7,
+      "file": "data\\voice_clip_test_20260125_200332\\weather_06-00\\mr_new_vegas_full.wav",
+      "text_length": 221
+    }
+  ]
+}

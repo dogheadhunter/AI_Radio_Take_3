@@ -1,5 +1,4 @@
 Frankie and Johnny by Jerry Lee Lewis
-============================================================
 
 Frankie and Johnny were sweethearts,
 Boy, how they could love!
@@ -49,6 +48,3 @@ And raising her eyes to heaven she cried,
 "Lord, I'm comin' to thee!
 I'm sorry I killed my man
 Who done me wrong!".
-
-============================================================
-Source: lrclib

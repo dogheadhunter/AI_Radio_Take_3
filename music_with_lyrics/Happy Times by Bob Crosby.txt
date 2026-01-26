@@ -1,5 +1,4 @@
 Happy Times by Bob Crosby
-============================================================
 
 Wish on the moon
 And look for the gold in a rainbow
@@ -22,6 +21,3 @@ So wish on the moon
 And someday it may be tomorrow
 You will suddenly hear chimes
 And you'll have your happy, happy times.
-
-============================================================
-Source: lrclib

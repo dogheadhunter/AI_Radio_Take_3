@@ -1,5 +1,4 @@
 Folsom Prison Blues by Johnny Cash
-============================================================
 
 I hear the train a-coming'
 It's rolling around the bend
@@ -36,6 +35,3 @@ Far from Folsom Prison
 That's where I want to stay
 And I'd let that lonesome whistle
 Blow my blues away
-
-============================================================
-Source: lrclib

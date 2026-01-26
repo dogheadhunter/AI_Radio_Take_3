@@ -1,5 +1,4 @@
 Grandma Plays the Numbers by Wynonie Harris
-============================================================
 
 (Say, Wynonie, I was by your house last night and guess what happened)
 (What happened, mon?)
@@ -44,6 +43,3 @@ That's where she gets her hunch
 (Well, what did you play?)
 (Three, six, nine)
 (Well, what do you know?)
-
-============================================================
-Source: lrclib

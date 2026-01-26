@@ -1,5 +1,4 @@
 Splish Splash by Bobby Darin
-============================================================
 
 Splish, splash, I was takin' a bath
 Long about a Saturday night, yeah
@@ -48,6 +47,3 @@ Splishin' and a-splashin'
 One time I was splishin' and a-splashin'
 Ooh, I was movin' and a-groovin'
 Yeah, I was splishin' and a-splashin'
-
-============================================================
-Source: lrclib

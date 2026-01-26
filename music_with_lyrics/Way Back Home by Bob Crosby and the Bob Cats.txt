@@ -1,63 +1,56 @@
 Way Back Home by Bob Crosby and the Bob Cats
-============================================================
 
-[Synced Lyrics - LRC Format]
-
-[00:09.48] The roads are the dustiest
-[00:11.57] The winds are the gustiest
-[00:13.89] The gates are the rustiest
-[00:16.01] The pies are the crustiest
-[00:18.30] The songs the lustiest
-[00:20.62] The friends the trustiest
-[00:22.99] Way back home (Back home)
-[00:25.86] The trees are the sappiest
-[00:29.62] The days are the nappiest
-[00:32.03] The dogs are the yappiest
-[00:34.25] The kids are the scrappiest
-[00:36.70] The jokes the snappiest
-[00:38.92] The folks the happiest
-[00:41.14] Way back home
-[00:45.40] Don't know why I left the homestead
-[00:49.64] I really must confess
-[00:54.22] I'm a weary exile
-[00:57.87] Singing my song of loneliness
-[01:03.71] The grass is the springiest
-[01:06.03] The bees are the stingiest
-[01:08.53] The birds are the wingiest
-[01:10.84] The bells are the ringiest (The hearts?)
-[01:14.51] The hearts the singiest (The arms?)
-[01:16.64] The arms the clingiest
-[01:17.48] Way back home
-[01:21.20] (What about the sun?)
-[01:27.38] The sun's the blaziest (And the fields?)
-[01:29.48] Field's the daisiest (And the cows?)
-[01:31.55] Cows the graziest (And the help?)
-[01:33.64] The help's the laziest
-[01:36.09] The boys (are the wittiest)
-[01:38.04] The girls (are the prettiest)
-[01:39.91] Way back home
-[01:44.49] (The pigs are the snootiest)
-[01:46.75] (The owls are the hootiest)
-[01:48.72] The plants the fruitiest
-[01:51.02] Stars the shootiest
-[01:53.24] (The grins the funniest)
-[01:55.58] The smiles the sunniest
-[01:57.64] Way back home
-[02:02.78] Don't know why I left the homestead
-[02:06.64] I really must confess
-[02:11.14] I'm a weary exile
-[02:13.39] Singing my song of loneliness
-[02:20.00] The food is the spreadiest
-[02:22.15] The wine is the headiest
-[02:24.44] The pals are the readiest
-[02:26.51] The gals are the steadiest
-[02:28.73] The love the liveliest
-[02:31.56] The life the loveliest
-[02:33.65] Way back
-[02:35.85] Way back
-[02:37.90] Way back home (No place like home)
-[02:44.06] Sweet home
-[02:50.50] 
-
-============================================================
-Source: lrclib
+The roads are the dustiest
+The winds are the gustiest
+The gates are the rustiest
+The pies are the crustiest
+The songs the lustiest
+The friends the trustiest
+Way back home (Back home)
+The trees are the sappiest
+The days are the nappiest
+The dogs are the yappiest
+The kids are the scrappiest
+The jokes the snappiest
+The folks the happiest
+Way back home
+Don't know why I left the homestead
+I really must confess
+I'm a weary exile
+Singing my song of loneliness
+The grass is the springiest
+The bees are the stingiest
+The birds are the wingiest
+The bells are the ringiest (The hearts?)
+The hearts the singiest (The arms?)
+The arms the clingiest
+Way back home
+(What about the sun?)
+The sun's the blaziest (And the fields?)
+Field's the daisiest (And the cows?)
+Cows the graziest (And the help?)
+The help's the laziest
+The boys (are the wittiest)
+The girls (are the prettiest)
+Way back home
+(The pigs are the snootiest)
+(The owls are the hootiest)
+The plants the fruitiest
+Stars the shootiest
+(The grins the funniest)
+The smiles the sunniest
+Way back home
+Don't know why I left the homestead
+I really must confess
+I'm a weary exile
+Singing my song of loneliness
+The food is the spreadiest
+The wine is the headiest
+The pals are the readiest
+The gals are the steadiest
+The love the liveliest
+The life the loveliest
+Way back
+Way back
+Way back home (No place like home)
+Sweet home

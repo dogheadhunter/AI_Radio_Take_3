@@ -1,5 +1,4 @@
 Hello Dolly by Louis Armstrong
-============================================================
 
 Hello Dolly!
 This is Louis, Dolly
@@ -21,6 +20,3 @@ Have a little faith in me, fellas
 Dolly'll never go away
 Fellas, she'll never go away
 Dolly's never go away again
-
-============================================================
-Source: lrclib

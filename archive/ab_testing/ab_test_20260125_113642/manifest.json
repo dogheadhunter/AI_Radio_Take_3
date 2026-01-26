@@ -1,0 +1,31 @@
+{
+  "timestamp": "20260125_113642",
+  "param_sets": {
+    "baseline": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "warm_natural": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.3,
+      "temperature": 0.8
+    },
+    "expressive_low_cfg": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.3,
+      "temperature": 0.8
+    },
+    "subtle_smooth": {
+      "exaggeration": 0.4,
+      "cfg_weight": 0.35,
+      "temperature": 0.7
+    },
+    "balanced": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.35,
+      "temperature": 0.85
+    }
+  },
+  "tests": []
+}

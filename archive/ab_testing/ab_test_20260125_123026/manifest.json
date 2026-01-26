@@ -1,0 +1,482 @@
+{
+  "timestamp": "20260125_123026",
+  "param_sets": {
+    "baseline": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.5,
+      "temperature": 0.8
+    },
+    "warm_natural": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.3,
+      "temperature": 0.8
+    },
+    "expressive_low_cfg": {
+      "exaggeration": 0.6,
+      "cfg_weight": 0.3,
+      "temperature": 0.8
+    },
+    "subtle_smooth": {
+      "exaggeration": 0.4,
+      "cfg_weight": 0.35,
+      "temperature": 0.7
+    },
+    "balanced": {
+      "exaggeration": 0.5,
+      "cfg_weight": 0.35,
+      "temperature": 0.85
+    }
+  },
+  "tests": [
+    {
+      "dj": "julie",
+      "script": "intro_The_Ink_Spots-Maybe",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Ink_Spots-Maybe\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 417,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Ink_Spots-Maybe",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Ink_Spots-Maybe\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 417,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Ink_Spots-Maybe",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Ink_Spots-Maybe\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 417,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Ink_Spots-Maybe",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Ink_Spots-Maybe\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 417,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Ink_Spots-Maybe",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Ink_Spots-Maybe\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 417,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Jackie_Wilson-By_the_Light_of_\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 414,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Jackie_Wilson-By_the_Light_of_\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 414,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Jackie_Wilson-By_the_Light_of_\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 414,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Jackie_Wilson-By_the_Light_of_\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 414,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Jackie_Wilson-By_the_Light_of_\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 414,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Marty_Robbins-They_re_Hanging_",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Marty_Robbins-They_re_Hanging_\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 177,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Marty_Robbins-They_re_Hanging_",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Marty_Robbins-They_re_Hanging_\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 177,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Marty_Robbins-They_re_Hanging_",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Marty_Robbins-They_re_Hanging_\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 177,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Marty_Robbins-They_re_Hanging_",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Marty_Robbins-They_re_Hanging_\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 177,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Marty_Robbins-They_re_Hanging_",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Marty_Robbins-They_re_Hanging_\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 177,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Cole_Porter-Anything_Goes",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Cole_Porter-Anything_Goes\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 237,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Cole_Porter-Anything_Goes",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Cole_Porter-Anything_Goes\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 237,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Cole_Porter-Anything_Goes",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Cole_Porter-Anything_Goes\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 237,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Cole_Porter-Anything_Goes",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Cole_Porter-Anything_Goes\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 237,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Cole_Porter-Anything_Goes",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Cole_Porter-Anything_Goes\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 237,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Platters-You_ll_Never__Nev",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Platters-You_ll_Never__Nev\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 339,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Platters-You_ll_Never__Nev",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Platters-You_ll_Never__Nev\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 339,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Platters-You_ll_Never__Nev",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Platters-You_ll_Never__Nev\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 339,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Platters-You_ll_Never__Nev",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Platters-You_ll_Never__Nev\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 339,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_The_Platters-You_ll_Never__Nev",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_The_Platters-You_ll_Never__Nev\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 339,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Johnny_Cash-Ring_of_Fire",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Johnny_Cash-Ring_of_Fire\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 155,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Johnny_Cash-Ring_of_Fire",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Johnny_Cash-Ring_of_Fire\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 155,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Johnny_Cash-Ring_of_Fire",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Johnny_Cash-Ring_of_Fire\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 155,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Johnny_Cash-Ring_of_Fire",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Johnny_Cash-Ring_of_Fire\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 155,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "intro_Johnny_Cash-Ring_of_Fire",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\intro_Johnny_Cash-Ring_of_Fire\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 155,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_12-00",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_12-00\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 113,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_12-00",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_12-00\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 113,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_12-00",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_12-00\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 113,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_12-00",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_12-00\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 113,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_12-00",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_12-00\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 113,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_20-30",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_20-30\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 101,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_20-30",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_20-30\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 101,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_20-30",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_20-30\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 101,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_20-30",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_20-30\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 101,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "time_20-30",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\time_20-30\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 101,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_12-00",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_12-00\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 253,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_12-00",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_12-00\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 253,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_12-00",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_12-00\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 253,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_12-00",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_12-00\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 253,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_12-00",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_12-00\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 253,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_06-00",
+      "params": "baseline",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_06-00\\baseline.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 228,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_06-00",
+      "params": "warm_natural",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_06-00\\warm_natural.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 228,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_06-00",
+      "params": "expressive_low_cfg",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_06-00\\expressive_low_cfg.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 228,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_06-00",
+      "params": "subtle_smooth",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_06-00\\subtle_smooth.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 228,
+      "status": "success"
+    },
+    {
+      "dj": "julie",
+      "script": "weather_06-00",
+      "params": "balanced",
+      "file": "data\\ab_test_20260125_123026\\julie\\weather_06-00\\balanced.wav",
+      "voice_ref": "assets/voice_references/Julie/julie_10sec.wav",
+      "text_length": 228,
+      "status": "success"
+    }
+  ]
+}

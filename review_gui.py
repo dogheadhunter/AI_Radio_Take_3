@@ -81,10 +81,18 @@ class ReviewItem:
     item_id: str
     folder_path: Path
     script_versions: List[Path]
-    audio_versions: List[Path]
-    latest_version: int
+    audio_versions: List[Path]  # Legacy: single audio per version
+    audio_30sec: Dict[int, Path] = None  # version -> 30sec audio path
+    audio_full: Dict[int, Path] = None   # version -> full audio path
+    latest_version: int = 0
     audit_status: Optional[str] = None
     review_status: Optional[str] = None
+    
+    def __post_init__(self):
+        if self.audio_30sec is None:
+            self.audio_30sec = {}
+        if self.audio_full is None:
+            self.audio_full = {}
     
     def get_script_path(self, version: int = None) -> Optional[Path]:
         """Get script path for a specific version (or latest)."""
@@ -94,13 +102,36 @@ class ReviewItem:
             return self.script_versions[version]
         return None
     
-    def get_audio_path(self, version: int = None) -> Optional[Path]:
-        """Get audio path for a specific version (or latest)."""
+    def get_audio_path(self, version: int = None, ref_type: str = None) -> Optional[Path]:
+        """Get audio path for a specific version and reference type.
+        
+        Args:
+            version: Script version number (default: latest)
+            ref_type: '30sec', 'full', or None (tries full first, then 30sec, then legacy)
+        """
         if version is None:
             version = self.latest_version
+        
+        # If specific type requested
+        if ref_type == '30sec' and version in self.audio_30sec:
+            return self.audio_30sec[version]
+        if ref_type == 'full' and version in self.audio_full:
+            return self.audio_full[version]
+        
+        # Auto-detect: try full, then 30sec, then legacy
+        if version in self.audio_full:
+            return self.audio_full[version]
+        if version in self.audio_30sec:
+            return self.audio_30sec[version]
         if version < len(self.audio_versions):
             return self.audio_versions[version]
         return None
+    
+    def has_dual_audio(self, version: int = None) -> bool:
+        """Check if both 30sec and full audio exist for this version."""
+        if version is None:
+            version = self.latest_version
+        return version in self.audio_30sec and version in self.audio_full
 
 
 
@@ -176,21 +207,50 @@ def scan_generated_content() -> List[ReviewItem]:
                 if not script_versions and not audio_versions:
                     continue
                 
-                # Determine latest version number
+                # Determine latest version number and categorize audio by ref type
                 latest_version = 0
-                for path in script_versions + audio_versions:
+                audio_30sec = {}  # version -> path
+                audio_full = {}   # version -> path
+                
+                for path in script_versions:
                     try:
-                        # Handle both _outro and _N naming
                         stem_parts = path.stem.split('_')
                         if content_type == "outros":
-                            # julie_outro or julie_outro_1
                             if len(stem_parts) > 2:
                                 version = int(stem_parts[-1])
                                 latest_version = max(latest_version, version)
                         else:
-                            # julie_0 or julie_1
                             version = int(stem_parts[-1])
                             latest_version = max(latest_version, version)
+                    except (ValueError, IndexError):
+                        pass
+                
+                for path in audio_versions:
+                    try:
+                        stem_parts = path.stem.split('_')
+                        # Check for new naming: dj_version_reftype.wav (e.g., mr_new_vegas_0_30sec.wav)
+                        if stem_parts[-1] == '30sec':
+                            # mr_new_vegas_0_30sec -> version is stem_parts[-2]
+                            version = int(stem_parts[-2])
+                            audio_30sec[version] = path
+                            latest_version = max(latest_version, version)
+                        elif stem_parts[-1] == 'full':
+                            # mr_new_vegas_0_full -> version is stem_parts[-2]
+                            version = int(stem_parts[-2])
+                            audio_full[version] = path
+                            latest_version = max(latest_version, version)
+                        else:
+                            # Legacy naming: dj_version.wav (e.g., mr_new_vegas_0.wav)
+                            if content_type == "outros":
+                                if len(stem_parts) > 2:
+                                    version = int(stem_parts[-1])
+                                    latest_version = max(latest_version, version)
+                            else:
+                                version = int(stem_parts[-1])
+                                latest_version = max(latest_version, version)
+                                # Store legacy audio in audio_full for backwards compatibility
+                                if version not in audio_full:
+                                    audio_full[version] = path
                     except (ValueError, IndexError):
                         pass
                 
@@ -209,7 +269,9 @@ def scan_generated_content() -> List[ReviewItem]:
                     audio_versions=audio_versions,
                     latest_version=latest_version,
                     audit_status=audit_status,
-                    review_status=review_status
+                    review_status=review_status,
+                    audio_30sec=audio_30sec,
+                    audio_full=audio_full
                 ))
     
     return items
@@ -537,174 +599,417 @@ def export_reviews_to_csv(items: List[ReviewItem]) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-def render_audio_player(audio_path: Path):
-    """Render HTML5 audio player for a wav file."""
+def render_audio_player(audio_path: Path, key_suffix: str = ""):
+    """Render HTML5 audio player for a wav file with mobile-friendly styling."""
     if audio_path and audio_path.exists():
         audio_bytes = audio_path.read_bytes()
         audio_b64 = base64.b64encode(audio_bytes).decode()
+        # Mobile-optimized audio player - no background wrapper to respect theme
         audio_html = f"""
-        <audio controls style="width: 100%;">
+        <audio controls style="width: 100%; min-height: 54px; border-radius: 12px; margin: 8px 0;">
             <source src="data:audio/wav;base64,{audio_b64}" type="audio/wav">
             Your browser does not support the audio element.
         </audio>
         """
         st.markdown(audio_html, unsafe_allow_html=True)
     else:
-        st.warning("Audio file not found")
+        st.warning("🔇 Audio file not found")
 
 
 def render_review_item(item: ReviewItem, index: int):
-    """Render a single review item with all controls."""
+    """Render a single review item with mobile-first design."""
     review_status = load_review_status(item.folder_path)
     
-    # Header with metadata
+    # Use Streamlit container instead of custom div for theme compatibility
     with st.container():
         st.markdown("---")
-        col1, col2, col3, col4 = st.columns([3, 1, 1, 1])
         
-        with col1:
-            st.subheader(f"{item.item_id}")
-        with col2:
-            st.caption(f"**Type:** {item.content_type}")
-        with col3:
-            st.caption(f"**DJ:** {item.dj}")
-        with col4:
-            # Status badges
-            if item.audit_status:
-                color = "[PASS]" if item.audit_status == "passed" else "[FAIL]"
-                st.caption(f"Audit: {color}")
-            
-            review_color = {"pending": "[PEND]", "approved": "[APPR]", "rejected": "[REJ]"}.get(review_status["status"], "[PEND]")
-            st.caption(f"Review: {review_color}")
-        
-        # Version selector
+        # === MOBILE-FRIENDLY HEADER ===
+        # Title and status on first row
+        if item.content_type in ["intros", "outros"]:
+            title, artist = format_song_title(item.item_id)
+            st.markdown(f"### 🎵 {title}")
+            st.caption(f"by {artist}" if artist else "")
+        else:
+            st.markdown(f"### {item.item_id.replace('_', ' ')}")
+    
+    # Status badges - compact inline display
+    status_html = f"""
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+        <span class="status-pill status-{review_status['status']}">{review_status['status'].upper()}</span>
+        <span class="status-pill" style="background: rgba(128,128,128,0.15); color: inherit;">
+            {item.content_type} • {item.dj.replace('_', ' ').title()}
+        </span>
+    """
+    if item.audit_status:
+        status_html += f'<span class="status-pill status-{item.audit_status}">Audit: {item.audit_status}</span>'
+    status_html += "</div>"
+    st.markdown(status_html, unsafe_allow_html=True)
+    
+    # Check if manually rewritten
+    is_rewritten = review_status.get("manually_rewritten", False)
+    if is_rewritten:
+        edit_count = review_status.get("edit_count", 1)
+        st.info(f"✏️ Manually edited" + (f" ({edit_count}x)" if edit_count > 1 else "") + " - Review still required")
+    
+    # === AUDIO FIRST (Most important for review) ===
+    st.markdown("#### 🔊 Audio Preview")
+    
+    # Only show version selector if there are multiple versions
+    if item.latest_version > 0:
         version = st.selectbox(
             "Version",
             range(item.latest_version + 1),
             index=item.latest_version,
             key=f"version_{index}"
         )
+    else:
+        version = 0  # Only one version exists, no selector needed
+    
+    # Check for dual audio
+    if item.has_dual_audio(version):
+        audio_tab1, audio_tab2 = st.tabs(["📻 30sec", "📻 Full"])
+        with audio_tab1:
+            render_audio_player(item.get_audio_path(version, ref_type='30sec'), f"30sec_{index}")
+        with audio_tab2:
+            render_audio_player(item.get_audio_path(version, ref_type='full'), f"full_{index}")
+    else:
+        audio_path = item.get_audio_path(version)
+        render_audio_player(audio_path, f"main_{index}")
+    
+    # === SCRIPT SECTION (Collapsible for mobile) ===
+    with st.expander("📝 Script", expanded=True):
+        script_path = item.get_script_path(version)
+        current_script = ""
         
-        # Display script and audio side by side
-        col_script, col_audio = st.columns(2)
-        
-        with col_script:
-            st.markdown("**Script:**")
-            script_path = item.get_script_path(version)
-            if script_path and script_path.exists():
-                script_text = script_path.read_text(encoding='utf-8')
-                st.text_area(
-                    "Script content",
-                    script_text,
-                    height=150,
-                    key=f"script_{index}_{version}",
-                    label_visibility="collapsed"
-                )
+        if script_path and script_path.exists():
+            if f"{item.dj}_" in script_path.name or f"{item.dj}_outro" in script_path.name:
+                current_script = script_path.read_text(encoding='utf-8')
             else:
-                st.warning("No script file found")
+                st.error(f"⚠️ Script file mismatch!")
+                current_script = f"ERROR: File mismatch"
         
-        with col_audio:
-            st.markdown("**Audio:**")
-            audio_path = item.get_audio_path(version)
-            render_audio_player(audio_path)
+        if current_script:
+            # Track original value for auto-save detection
+            script_key = f"script_{item.dj}_{item.item_id}_{version}_{index}"
+            
+            edited_script = st.text_area(
+                "Edit script",
+                value=current_script,
+                height=200,
+                key=script_key,
+                label_visibility="collapsed",
+                help="Edits are auto-saved when you click outside this box"
+            )
+            
+            # Auto-save: Check if value changed from what's on disk
+            if edited_script != current_script:
+                # Auto-save the changes immediately
+                if save_manual_script(item, edited_script, version):
+                    st.toast("✅ Auto-saved!", icon="💾")
+                    st.rerun()
+        else:
+            st.warning("No script file found")
+    
+    # === ORIGINAL SCRIPT COMPARISON (Collapsible - like lyrics) ===
+    with st.expander("🔄 Compare with Original/Previous Versions", expanded=False):
+        # Get backup file (original before any edits)
+        # The backup is stored as script_name.txt.original (not .original replacing .txt)
+        script_path = item.get_script_path(version)
+        has_original_backup = False
+        original_script = ""
         
-        # Version comparison (if multiple versions exist)
-        if item.latest_version > 0:
-            with st.expander("Compare Versions"):
-                compare_ver = st.selectbox(
-                    "Compare with version",
-                    [v for v in range(item.latest_version + 1) if v != version],
-                    key=f"compare_{index}"
+        if script_path and script_path.exists():
+            # Try both naming conventions for backup
+            backup_path = Path(str(script_path) + '.original')  # e.g., julie_0.txt.original
+            if not backup_path.exists():
+                backup_path = script_path.with_suffix('.original')  # e.g., julie_0.original
+            
+            if backup_path.exists():
+                has_original_backup = True
+                original_script = backup_path.read_text(encoding='utf-8')
+        
+        if has_original_backup:
+            st.markdown("**📄 Original (before any manual edits):**")
+            st.text_area(
+                "Original script",
+                value=original_script,
+                height=150,
+                disabled=True,
+                key=f"orig_{index}_{version}",
+                label_visibility="collapsed"
+            )
+            
+            # Show edit stats
+            edit_count = review_status.get("edit_count", 0)
+            if edit_count > 0:
+                first_edit = review_status.get("original_backup_at", "")
+                last_edit = review_status.get("rewritten_at", "")
+                st.caption(f"📝 Edited {edit_count} time(s)")
+                if first_edit:
+                    st.caption(f"First edit: {first_edit[:19]}")
+                if last_edit and last_edit != first_edit:
+                    st.caption(f"Last edit: {last_edit[:19]}")
+        elif is_rewritten:
+            # Edited but no backup exists (legacy edits before backup feature)
+            st.warning("⚠️ This script was edited before the backup feature was added. Original content is not available.")
+            st.caption("Future edits will create a backup of the current version.")
+        
+        st.markdown("---")
+        
+        # Version comparison with selector
+        st.markdown("**📚 Compare with other versions:**")
+        
+        # Build list of available versions to compare
+        available_versions = []
+        for v in range(item.latest_version + 1):
+            v_path = item.get_script_path(v)
+            if v_path and v_path.exists():
+                label = f"Version {v}"
+                if v == version:
+                    label += " (current)"
+                if v == item.latest_version:
+                    label += " (latest)"
+                available_versions.append((v, label))
+        
+        if len(available_versions) > 1:
+            # Filter out current version for comparison
+            compare_options = [(v, label) for v, label in available_versions if v != version]
+            
+            if compare_options:
+                compare_version = st.selectbox(
+                    "Select version to compare:",
+                    options=[v for v, _ in compare_options],
+                    format_func=lambda x: next(label for v, label in compare_options if v == x),
+                    key=f"compare_select_{index}"
                 )
                 
-                if compare_ver != version:
-                    comp_script_path = item.get_script_path(compare_ver)
-                    if comp_script_path and comp_script_path.exists():
-                        comp_script = comp_script_path.read_text(encoding='utf-8')
-                        st.text_area(
-                            f"Version {compare_ver} script",
-                            comp_script,
-                            height=100,
-                            key=f"comp_script_{index}_{compare_ver}"
-                        )
+                compare_path = item.get_script_path(compare_version)
+                if compare_path and compare_path.exists():
+                    compare_script = compare_path.read_text(encoding='utf-8')
+                    st.text_area(
+                        f"Version {compare_version}",
+                        value=compare_script,
+                        height=150,
+                        disabled=True,
+                        key=f"compare_{index}_{compare_version}",
+                        label_visibility="collapsed"
+                    )
+        else:
+            st.caption("No other versions available for comparison")
+    
+    # === REFERENCE MATERIALS (Collapsed by default on mobile) ===
+    if item.content_type in ["intros", "outros"]:
+        with st.expander("📜 Song Lyrics", expanded=False):
+            lyrics_file = find_lyrics_file(item.item_id)
+            if lyrics_file:
+                lyrics = load_lyrics(lyrics_file)
+                st.text_area("Lyrics", value=lyrics, height=150, disabled=True, 
+                           key=f"lyrics_{index}_{version}", label_visibility="collapsed")
+            else:
+                st.info("No lyrics file found")
+    
+    # === QUICK ACTIONS (Prominent for mobile) ===
+    st.markdown("#### ⚡ Quick Actions")
+    
+    # Regeneration buttons in a responsive grid
+    regen_cols = st.columns(3)
+    with regen_cols[0]:
+        if st.button("📝 Regen Script", key=f"regen_s_{index}", use_container_width=True):
+            add_to_regen_queue(item, "script", "Quick regen from review")
+            st.toast("Added to queue!", icon="✅")
+            st.rerun()
+    with regen_cols[1]:
+        if st.button("🔊 Regen Audio", key=f"regen_a_{index}", use_container_width=True):
+            add_to_regen_queue(item, "audio", "Quick regen from review")
+            st.toast("Added to queue!", icon="✅")
+            st.rerun()
+    with regen_cols[2]:
+        if st.button("🔄 Regen Both", key=f"regen_b_{index}", use_container_width=True):
+            add_to_regen_queue(item, "both", "Quick regen from review")
+            st.toast("Added to queue!", icon="✅")
+            st.rerun()
+    
+    # === REVIEW DECISION (Most important - always visible) ===
+    st.markdown("---")
+    st.markdown("#### 📋 Review Decision")
+    
+    # Issue selection - using tabs for mobile-friendly organization
+    issue_tab1, issue_tab2 = st.tabs(["Script Issues", "Audio Issues"])
+    
+    with issue_tab1:
+        script_issue_options = SCRIPT_ISSUES.get(item.content_type, [])
+        selected_script_issues = st.multiselect(
+            "Select script issues",
+            script_issue_options,
+            default=review_status.get("script_issues", []),
+            key=f"script_issues_{index}",
+            label_visibility="collapsed"
+        )
+    
+    with issue_tab2:
+        selected_audio_issues = st.multiselect(
+            "Select audio issues",
+            AUDIO_ISSUES,
+            default=review_status.get("audio_issues", []),
+            key=f"audio_issues_{index}",
+            label_visibility="collapsed"
+        )
+    
+    # Notes field
+    reviewer_notes = st.text_area(
+        "Notes (optional)",
+        value=review_status.get("reviewer_notes", ""),
+        key=f"notes_{index}",
+        height=60,
+        placeholder="Add any notes here..."
+    )
+    
+    # === APPROVE/REJECT BUTTONS (Large, prominent, mobile-friendly) ===
+    st.markdown("---")
+    approve_col, reject_col = st.columns(2)
+    
+    with approve_col:
+        if st.button("✅ APPROVE", key=f"approve_{index}", use_container_width=True, type="primary"):
+            new_status = {
+                "status": "approved",
+                "reviewed_at": datetime.now().isoformat(),
+                "reviewer_notes": reviewer_notes,
+                "script_issues": selected_script_issues,
+                "audio_issues": selected_audio_issues
+            }
+            # Preserve manual rewrite info
+            if is_rewritten:
+                new_status["manually_rewritten"] = True
+                new_status["rewritten_version"] = review_status.get("rewritten_version")
+                new_status["edit_count"] = review_status.get("edit_count", 1)
+            save_review_status(item.folder_path, new_status)
+            st.success("✅ Approved!")
+            st.rerun()
+    
+    with reject_col:
+        if st.button("❌ REJECT", key=f"reject_{index}", use_container_width=True):
+            new_status = {
+                "status": "rejected",
+                "reviewed_at": datetime.now().isoformat(),
+                "reviewer_notes": reviewer_notes,
+                "script_issues": selected_script_issues,
+                "audio_issues": selected_audio_issues
+            }
+            if is_rewritten:
+                new_status["manually_rewritten"] = True
+                new_status["rewritten_version"] = review_status.get("rewritten_version")
+                new_status["edit_count"] = review_status.get("edit_count", 1)
+            save_review_status(item.folder_path, new_status)
+            st.error("❌ Rejected")
+            st.rerun()
+
+
+def find_lyrics_file(song_id: str) -> Optional[Path]:
+    """Find lyrics file for a given song ID."""
+    if not LYRICS_DIR.exists():
+        return None
+    
+    # Parse song_id format: "Artist-Title" or "Artist_Name-Song_Title"
+    # Lyrics files format: "Title by Artist.txt"
+    parts = song_id.split('-', 1)
+    if len(parts) < 2:
+        return None
+    
+    # Folder naming: single underscore = space, double underscore = quote
+    # But apostrophes in lyrics files (like I'm) become underscore in folder (I_m)
+    # So we need smart matching
+    
+    def folder_to_display(text: str) -> str:
+        """Convert folder name to display format."""
+        # Double underscore = quote character
+        text = text.replace('__', '"')
+        # Single underscore = space (but also catches apostrophe cases)
+        text = text.replace('_', ' ')
+        return text
+    
+    def normalize_for_matching(text: str) -> str:
+        """Normalize text for fuzzy matching."""
+        # Remove all quotes and apostrophes
+        text = text.replace('"', '').replace('"', '').replace('"', '')
+        text = text.replace("'", '').replace("'", '').replace("'", '')
+        # Remove other special chars except spaces
+        text = re.sub(r'[^a-z0-9\s]', '', text.lower())
+        # Remove all spaces for matching (handles "I m" vs "Im" issue)
+        text = text.replace(' ', '')
+        return text
+    
+    artist_part = folder_to_display(parts[0])
+    title_part = folder_to_display(parts[1])
+    
+    # Try exact match first
+    expected_filename = f"{title_part} by {artist_part}.txt"
+    lyrics_path = LYRICS_DIR / expected_filename
+    if lyrics_path.exists():
+        return lyrics_path
+    
+    # Try normalized matching (removes all spaces, quotes, apostrophes)
+    expected_normalized = normalize_for_matching(f"{title_part} by {artist_part}")
+    for lyrics_file in LYRICS_DIR.glob("*.txt"):
+        if normalize_for_matching(lyrics_file.stem) == expected_normalized:
+            return lyrics_file
+    
+    return None
+
+
+def format_song_title(item_id: str) -> tuple[str, str]:
+    """Convert folder name format to readable song title and artist.
+    
+    Args:
+        item_id: Folder name like "Artist__Nickname__Name-Song_Title"
+    
+    Returns:
+        Tuple of (title, artist) for display
+    """
+    # Split on first dash to get artist and title
+    parts = item_id.split('-', 1)
+    if len(parts) < 2:
+        # Not a song, return as-is with underscores replaced
+        return (item_id.replace('_', ' '), "")
+    
+    def folder_to_display(text: str) -> str:
+        """Convert folder name to display format.
         
-        # Review decision section
-        with st.expander("Review Decision", expanded=(review_status["status"] == "pending")):
-            # Script issues
-            st.markdown("**Script Issues:**")
-            script_issue_options = SCRIPT_ISSUES.get(item.content_type, [])
-            selected_script_issues = st.multiselect(
-                "Select script issues",
-                script_issue_options,
-                default=review_status.get("script_issues", []),
-                key=f"script_issues_{index}",
-                label_visibility="collapsed"
-            )
-            
-            # Audio issues
-            st.markdown("**Audio Issues:**")
-            selected_audio_issues = st.multiselect(
-                "Select audio issues",
-                AUDIO_ISSUES,
-                default=review_status.get("audio_issues", []),
-                key=f"audio_issues_{index}",
-                label_visibility="collapsed"
-            )
-            
-            # Notes
-            reviewer_notes = st.text_area(
-                "Reviewer Notes",
-                value=review_status.get("reviewer_notes", ""),
-                key=f"notes_{index}",
-                height=80
-            )
-            
-            # Action buttons
-            col1, col2, col3, col4, col5 = st.columns(5)
-            
-            with col1:
-                if st.button("Approve", key=f"approve_{index}", use_container_width=True):
-                    new_status = {
-                        "status": "approved",
-                        "reviewed_at": datetime.now().isoformat(),
-                        "reviewer_notes": reviewer_notes,
-                        "script_issues": selected_script_issues,
-                        "audio_issues": selected_audio_issues
-                    }
-                    save_review_status(item.folder_path, new_status)
-                    st.success("Approved!")
-                    st.rerun()
-            
-            with col2:
-                if st.button("Reject", key=f"reject_{index}", use_container_width=True):
-                    new_status = {
-                        "status": "rejected",
-                        "reviewed_at": datetime.now().isoformat(),
-                        "reviewer_notes": reviewer_notes,
-                        "script_issues": selected_script_issues,
-                        "audio_issues": selected_audio_issues
-                    }
-                    save_review_status(item.folder_path, new_status)
-                    st.error("Rejected!")
-                    st.rerun()
-            
-            with col3:
-                if st.button("Regen Script", key=f"regen_script_{index}", use_container_width=True):
-                    feedback = f"Script issues: {', '.join(selected_script_issues)}. {reviewer_notes}"
-                    add_to_regen_queue(item, "script", feedback)
-                    st.info("Added to regeneration queue")
-            
-            with col4:
-                if st.button("Regen Audio", key=f"regen_audio_{index}", use_container_width=True):
-                    feedback = f"Audio issues: {', '.join(selected_audio_issues)}. {reviewer_notes}"
-                    add_to_regen_queue(item, "audio", feedback)
-                    st.info("Added to regeneration queue")
-            
-            with col5:
-                if st.button("Regen Both", key=f"regen_both_{index}", use_container_width=True):
-                    feedback = f"Script issues: {', '.join(selected_script_issues)}. Audio issues: {', '.join(selected_audio_issues)}. {reviewer_notes}"
-                    add_to_regen_queue(item, "both", feedback)
-                    st.info("Added to regeneration queue")
+        Folder naming convention:
+        - Triple underscore (___) = ampersand for "Artist & Artist"
+        - Name__Nickname__Surname = quoted nickname like Arthur "Big Boy" Crudup
+        - Double underscore (__) between phrases = space separator
+        - _m, _s, _t, _ll, _re, _ve, _d = apostrophe contractions
+        - Other single underscores = space
+        """
+        # Triple underscore = ampersand (for "Artist & Artist")
+        text = text.replace('___', ' & ')
+        
+        # Detect nickname pattern: Name__Nickname__Surname
+        # E.g., Arthur__Big_Boy__Crudup -> Arthur "Big Boy" Crudup
+        text = re.sub(r'([A-Z][a-z]+)__([A-Z][a-z]+(?:_[A-Z][a-z]+)?)__([A-Z][a-z]+)', 
+                      lambda m: m.group(1) + ' "' + m.group(2).replace('_', ' ') + '" ' + m.group(3), 
+                      text)
+        
+        # Handle common apostrophe patterns: _m -> 'm, _s -> 's, _t -> 't, etc.
+        text = re.sub(r"_([mstMST])(?=_|$)", r"'\1", text)
+        text = re.sub(r"_(ll|re|ve|d)(?=_|$)", r"'\1", text)
+        
+        # Double underscore that remains = just a space (phrase separator)
+        text = text.replace('__', ' ')
+        
+        # Remaining single underscores are spaces
+        text = text.replace('_', ' ')
+        
+        # Clean up any double spaces
+        text = re.sub(r'\s+', ' ', text).strip()
+        return text
+    
+    artist_part = folder_to_display(parts[0])
+    title_part = folder_to_display(parts[1])
+    
+    # Return as tuple (title, artist)
+    return (title_part, artist_part)
 
 
 def get_available_songs() -> List[Dict[str, str]]:
@@ -808,14 +1113,34 @@ def save_manual_script(item: ReviewItem, new_script: str, version: int) -> bool:
     try:
         script_path = item.get_script_path(version)
         if script_path:
+            # Load review status to check if this is the first edit
+            review_status = load_review_status(item.folder_path)
+            
+            # If this is the first manual edit, create a backup of the original
+            if not review_status.get("manually_rewritten", False) and script_path.exists():
+                original_content = script_path.read_text(encoding='utf-8')
+                # Create backup file by appending .original (e.g., julie_0.txt.original)
+                backup_path = Path(str(script_path) + '.original')
+                backup_path.write_text(original_content, encoding='utf-8')
+                review_status["original_backup_created"] = True
+                review_status["original_backup_at"] = datetime.now().isoformat()
+                review_status["original_backup_path"] = str(backup_path)
+            
             # Save the new script
             script_path.write_text(new_script, encoding='utf-8')
             
             # Mark as manually rewritten in review status
-            review_status = load_review_status(item.folder_path)
             review_status["manually_rewritten"] = True
             review_status["rewritten_version"] = version
             review_status["rewritten_at"] = datetime.now().isoformat()
+            
+            # Track edit count for multiple edits
+            edit_count = review_status.get("edit_count", 0) + 1
+            review_status["edit_count"] = edit_count
+            
+            # IMPORTANT: Reset status to pending - manual edits require re-review
+            review_status["status"] = "pending"
+            
             save_review_status(item.folder_path, review_status)
             
             return True
@@ -895,28 +1220,25 @@ def render_song_editor_page():
 
 
 def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label: str):
-    """Render an editable content item in the song editor."""
+    """Render an editable content item in the song editor - mobile optimized."""
     with st.container():
-        # Header
-        col1, col2, col3 = st.columns([3, 1, 1])
-        with col1:
-            st.subheader(f"{item.dj.replace('_', ' ').title()} - {content_label.title()}")
-        with col2:
-            # Status indicators
-            if item.audit_status:
-                status_emoji = "[PASS]" if item.audit_status == "passed" else "[FAIL]"
-                st.markdown(f"Audit: {status_emoji}")
-        with col3:
-            review_emoji = {"approved": "[APPR]", "rejected": "[REJ]", "pending": "[PEND]"}
-            st.markdown(f"Review: {review_emoji.get(item.review_status, '[PEND]')}")
+        # Compact header for mobile
+        st.markdown(f"### 🎙️ {item.dj.replace('_', ' ').title()} - {content_label.title()}")
+        
+        # Status badges inline
+        status_html = '<div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">'
+        if item.audit_status:
+            status_html += f'<span class="status-pill status-{item.audit_status}">{item.audit_status}</span>'
+        status_html += f'<span class="status-pill status-{item.review_status}">{item.review_status}</span>'
+        status_html += '</div>'
+        st.markdown(status_html, unsafe_allow_html=True)
         
         # Check if manually rewritten
         review_status = load_review_status(item.folder_path)
         is_rewritten = review_status.get("manually_rewritten", False)
-        rewritten_version = review_status.get("rewritten_version", None)
         
         if is_rewritten:
-            st.success(f"[MANUAL] Manually rewritten (version {rewritten_version}) - This version will be used for audio generation")
+            st.success(f"✏️ Manually edited (v{review_status.get('rewritten_version', '?')})")
         
         # Version selector
         version_options = list(range(len(item.script_versions)))
@@ -925,105 +1247,75 @@ def render_song_content_editor(item: ReviewItem, song_info: Dict, content_label:
                 "Version",
                 version_options,
                 index=min(item.latest_version, len(version_options) - 1),
-                key=f"version_{item.dj}_{item.content_type}_{item.item_id}"
+                key=f"ver_{item.dj}_{item.content_type}_{item.item_id}"
             )
         else:
             st.warning("No versions available")
             return
         
-        # Get script path and content before rendering columns
+        # Get script content
         script_path = item.get_script_path(selected_version)
         current_script = None
         if script_path and script_path.exists():
             current_script = script_path.read_text(encoding='utf-8')
         
-        # Two column layout: Edit Script | Reference Materials (with audio inline)
-        col_edit, col_reference = st.columns([1, 1])
-        
-        with col_edit:
-            st.markdown("**Edit Script:**")
-            if current_script is not None:
-                # Editable script area
-                edited_script = st.text_area(
-                    "Your edits",
-                    value=current_script,
-                    height=400,
-                    key=f"script_edit_{item.dj}_{item.content_type}_{selected_version}",
-                    help="Edit the script here. Changes will be saved when you click 'Save Changes'"
-                )
-                
-                # Save button
-                col_save, col_regen = st.columns(2)
-                with col_save:
-                    if edited_script != current_script:
-                        if st.button(f"Save Changes", key=f"save_{item.dj}_{item.content_type}_{selected_version}"):
-                            if save_manual_script(item, edited_script, selected_version):
-                                st.success("Script saved and marked as manually rewritten!")
-                                st.rerun()
-                
-                with col_regen:
-                    if st.button(f"Regenerate Audio", key=f"regen_audio_{item.dj}_{item.content_type}_{selected_version}"):
-                        # Add to regeneration queue for audio only
-                        feedback = "Manual script edit - regenerate audio with updated script"
-                        add_to_regen_queue(item, "audio", feedback)
-                        st.info("Added to regeneration queue")
+        # === AUDIO FIRST (most important) ===
+        st.markdown("#### 🔊 Audio")
+        if item.has_dual_audio(selected_version):
+            audio_tab1, audio_tab2 = st.tabs(["30sec", "Full"])
+            with audio_tab1:
+                audio_30sec_path = item.get_audio_path(selected_version, ref_type='30sec')
+                if audio_30sec_path and audio_30sec_path.exists():
+                    st.audio(audio_30sec_path.read_bytes(), format="audio/wav")
+            with audio_tab2:
+                audio_full_path = item.get_audio_path(selected_version, ref_type='full')
+                if audio_full_path and audio_full_path.exists():
+                    st.audio(audio_full_path.read_bytes(), format="audio/wav")
+        else:
+            audio_path = item.get_audio_path(selected_version)
+            if audio_path and audio_path.exists():
+                st.audio(audio_path.read_bytes(), format="audio/wav")
             else:
-                st.warning(f"Script file not found: {script_path}")
+                st.info("No audio file")
         
-        with col_reference:
-            st.markdown("**Reference Materials:**")
-            
-            # Show song lyrics
-            st.markdown("*Song Lyrics:*")
-            lyrics = load_lyrics(song_info['lyrics_file'])
-            st.text_area(
-                "Lyrics for reference",
-                value=lyrics,
-                height=150,
-                disabled=True,
-                key=f"ref_lyrics_{item.dj}_{item.content_type}_{selected_version}",
+        # === SCRIPT EDITOR ===
+        st.markdown("#### ✏️ Edit Script")
+        if current_script is not None:
+            edited_script = st.text_area(
+                "Script",
+                value=current_script,
+                height=250,
+                key=f"edit_{item.dj}_{item.content_type}_{selected_version}",
                 label_visibility="collapsed"
             )
             
-            # Show original generated script (version 0 if available, otherwise current version)
-            st.markdown("*Original Generated Script:*")
-            # Always try to show version 0 as the "original" for comparison
-            original_script_path = item.get_script_path(0)
-            if original_script_path and original_script_path.exists():
-                original_script = original_script_path.read_text(encoding='utf-8')
-                comparison_label = "Version 0 (original)" if selected_version != 0 else "Current version"
-                st.text_area(
-                    f"Original script for comparison ({comparison_label})",
-                    value=original_script,
-                    height=120,
-                    disabled=True,
-                    key=f"ref_script_{item.dj}_{item.content_type}_{selected_version}",
-                    label_visibility="collapsed"
-                )
-            elif current_script is not None:
-                # Fallback to current script if version 0 doesn't exist
-                st.text_area(
-                    "Original script for comparison",
-                    value=current_script,
-                    height=120,
-                    disabled=True,
-                    key=f"ref_script_{item.dj}_{item.content_type}_{selected_version}",
-                    label_visibility="collapsed"
-                )
-            else:
-                st.info("No original script available")
+            # Action buttons
+            action_col1, action_col2 = st.columns(2)
+            with action_col1:
+                if edited_script != current_script:
+                    if st.button("💾 Save", key=f"save_{item.dj}_{item.content_type}_{selected_version}", 
+                               use_container_width=True, type="primary"):
+                        if save_manual_script(item, edited_script, selected_version):
+                            st.success("✅ Saved!")
+                            st.rerun()
+                else:
+                    st.caption("No changes")
             
-            # Audio player inline with reference materials
-            st.markdown("*Audio Preview:*")
-            audio_path = item.get_audio_path(selected_version)
-            if audio_path and audio_path.exists():
-                try:
-                    audio_bytes = audio_path.read_bytes()
-                    st.audio(audio_bytes, format="audio/wav")
-                except Exception as e:
-                    st.error(f"Error loading audio: {e}")
-            else:
-                st.info("No audio file for this version")
+            with action_col2:
+                if st.button("🔊 Regen Audio", key=f"regen_{item.dj}_{item.content_type}_{selected_version}",
+                           use_container_width=True):
+                    add_to_regen_queue(item, "audio", "Regen from song editor")
+                    st.toast("Added to queue!", icon="✅")
+        else:
+            st.warning(f"Script not found: {script_path}")
+        
+        # Reference materials (collapsed)
+        with st.expander("📜 Reference", expanded=False):
+            st.markdown("**Song Lyrics:**")
+            lyrics = load_lyrics(song_info['lyrics_file'])
+            st.text_area("Lyrics", value=lyrics, height=120, disabled=True,
+                       key=f"lyr_{item.dj}_{item.content_type}_{selected_version}",
+                       label_visibility="collapsed")
         
         st.markdown("---")
 
@@ -1044,8 +1336,6 @@ def init_session_state():
         st.session_state.filter_review_status = "All"
     if 'search_query' not in st.session_state:
         st.session_state.search_query = ""
-    if 'page_mode' not in st.session_state:
-        st.session_state.page_mode = "Review List"
 
 
 def main():
@@ -1053,170 +1343,450 @@ def main():
     st.set_page_config(
         page_title="AI Radio Review GUI",
         page_icon=":radio:",
-        layout="wide"
+        layout="wide",
+        initial_sidebar_state="collapsed"  # Start collapsed on mobile
     )
+    
+    # Add comprehensive mobile-optimized CSS
+    st.markdown("""
+    <style>
+    /* ========================================
+       MOBILE-FIRST DESIGN SYSTEM
+       Theme-aware (works in light AND dark mode)
+       ======================================== */
+    
+    /* CSS Variables for consistent theming */
+    :root {
+        --touch-target-min: 48px;
+        --spacing-xs: 0.25rem;
+        --spacing-sm: 0.5rem;
+        --spacing-md: 1rem;
+        --spacing-lg: 1.5rem;
+        --border-radius: 12px;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.15);
+        --color-approve: #22c55e;
+        --color-reject: #ef4444;
+        --color-pending: #f59e0b;
+        --color-primary: #3b82f6;
+    }
+    
+    /* ========================================
+       BASE MOBILE STYLES (applied first)
+       ======================================== */
+    
+    /* Increase base font size for readability */
+    .stApp {
+        font-size: 16px;
+    }
+    
+    /* Universal touch-friendly button styling */
+    .stButton > button {
+        min-height: var(--touch-target-min);
+        padding: var(--spacing-md);
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: var(--border-radius);
+        margin: var(--spacing-xs) 0;
+        box-shadow: var(--shadow-sm);
+        transition: transform 0.1s, box-shadow 0.2s;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .stButton > button:active {
+        transform: scale(0.98);
+    }
+    
+    /* Text areas - larger and more readable */
+    .stTextArea > div > div > textarea {
+        font-size: 1rem;
+        line-height: 1.6;
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        min-height: 150px;
+    }
+    
+    /* Select boxes - larger touch targets */
+    .stSelectbox > div > div {
+        min-height: var(--touch-target-min);
+    }
+    
+    .stSelectbox [data-baseweb="select"] {
+        min-height: var(--touch-target-min);
+    }
+    
+    /* Multiselect - easier to tap */
+    .stMultiSelect [data-baseweb="tag"] {
+        min-height: 36px;
+        font-size: 0.9rem;
+    }
+    
+    /* Audio player - full width and prominent */
+    audio {
+        width: 100%;
+        min-height: 54px;
+        border-radius: var(--border-radius);
+    }
+    
+    /* Expander headers - larger touch target */
+    .streamlit-expanderHeader {
+        min-height: var(--touch-target-min);
+        font-size: 1rem;
+        font-weight: 600;
+        padding: var(--spacing-md) !important;
+    }
+    
+    /* ========================================
+       MOBILE LAYOUT (< 768px)
+       ======================================== */
+    @media (max-width: 768px) {
+        /* Hide sidebar toggle hint on mobile */
+        [data-testid="collapsedControl"] {
+            position: fixed;
+            top: 0.5rem;
+            left: 0.5rem;
+            z-index: 1000;
+        }
+        
+        /* Stack columns vertically */
+        [data-testid="column"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 100% !important;
+        }
+        
+        /* Reduce main padding */
+        .main .block-container {
+            padding: var(--spacing-sm) var(--spacing-md) 100px var(--spacing-md);
+            max-width: 100%;
+        }
+        
+        /* Larger buttons for touch */
+        .stButton > button {
+            min-height: 56px;
+            font-size: 1.1rem;
+            width: 100%;
+        }
+        
+        /* Larger text areas on mobile */
+        .stTextArea > div > div > textarea {
+            font-size: 1.1rem;
+            min-height: 200px;
+        }
+        
+        /* Hide non-essential elements */
+        .desktop-only {
+            display: none !important;
+        }
+        
+        /* Full-width metrics */
+        [data-testid="metric-container"] {
+            padding: var(--spacing-sm);
+        }
+        
+        /* Audio player more prominent */
+        audio {
+            min-height: 60px;
+            margin: var(--spacing-md) 0;
+        }
+        
+        /* Compact header */
+        h1 {
+            font-size: 1.5rem !important;
+        }
+        
+        h2, .stSubheader {
+            font-size: 1.25rem !important;
+        }
+    }
+    
+    /* ========================================
+       STATUS PILLS (theme-aware)
+       ======================================== */
+    .status-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        gap: 4px;
+    }
+    
+    .status-approved { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid #22c55e; }
+    .status-rejected { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid #ef4444; }
+    .status-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid #f59e0b; }
+    .status-passed { background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid #3b82f6; }
+    .status-failed { background: rgba(236, 72, 153, 0.2); color: #ec4899; border: 1px solid #ec4899; }
+    
+    /* ========================================
+       UTILITY CLASSES (theme-aware)
+       ======================================== */
+    .unsaved-warning {
+        background: rgba(245, 158, 11, 0.15);
+        border-left: 4px solid var(--color-pending);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        margin: var(--spacing-md) 0;
+        color: inherit;
+    }
+    
+    .success-saved {
+        background: rgba(34, 197, 94, 0.15);
+        border-left: 4px solid var(--color-approve);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius);
+        animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .keyboard-hint {
+        font-size: 0.8rem;
+        color: #6b7280;
+        font-style: italic;
+        padding: var(--spacing-xs);
+    }
+    
+    /* Hide keyboard hint on mobile */
+    @media (max-width: 768px) {
+        .keyboard-hint {
+            display: none;
+        }
+    }
+    
+    /* Swipe hint for mobile */
+    .swipe-hint {
+        display: none;
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.9rem;
+        padding: var(--spacing-sm);
+    }
+    
+    @media (max-width: 768px) {
+        .swipe-hint {
+            display: block;
+        }
+    }
+    
+    /* ========================================
+       TABLET STYLES (768px - 1024px)
+       ======================================== */
+    @media (min-width: 769px) and (max-width: 1024px) {
+        .main .block-container {
+            padding: var(--spacing-md);
+        }
+    }
+    
+    /* ========================================
+       DESKTOP STYLES (> 1024px)
+       ======================================== */
+    @media (min-width: 1025px) {
+        .mobile-only {
+            display: none !important;
+        }
+        
+        /* Sidebar visible by default */
+        [data-testid="stSidebar"] {
+            min-width: 280px;
+        }
+    }
+    </style>
+    """, unsafe_allow_html=True)
     
     init_session_state()
     
-    # Page mode selector in sidebar
-    with st.sidebar:
-        st.session_state.page_mode = st.radio(
-            "Page",
-            ["Review List", "Song Editor"],
-            index=["Review List", "Song Editor"].index(st.session_state.page_mode) if st.session_state.page_mode in ["Review List", "Song Editor"] else 0
-        )
-        st.markdown("---")
+    # Main page header - compact for mobile
+    st.markdown("""
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+        <span style="font-size: 2rem;">📻</span>
+        <div>
+            <h1 style="margin: 0; font-size: 1.5rem;">AI Radio Review</h1>
+            <p style="margin: 0; color: #6b7280; font-size: 0.9rem;" class="desktop-only">
+                Manual review and approval system
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    # Route to appropriate page
-    if st.session_state.page_mode == "Song Editor":
-        render_song_editor_page()
-        return
-    
-    # Original Review List page
-    st.title("AI Radio Review GUI")
-    st.markdown("Manual review and approval system for generated scripts and audio")
+    # Mobile-only quick stats bar
+    st.markdown('<p class="swipe-hint">👆 Tap items to review • Swipe to scroll</p>', unsafe_allow_html=True)
     
     # Sidebar (filters for Review List mode)
     with st.sidebar:
-        # Collapsible filters section
-        with st.expander("Filters", expanded=True):
-            # Content type filter
-            st.session_state.filter_content_type = st.selectbox(
-                "Content Type",
-                ["All"] + CONTENT_TYPES,
-                index=["All"] + CONTENT_TYPES.index(st.session_state.filter_content_type) if st.session_state.filter_content_type in CONTENT_TYPES else 0
-            )
-            
-            # DJ filter
-            st.session_state.filter_dj = st.selectbox(
-                "DJ",
-                ["All"] + DJS,
-                index=["All"] + DJS.index(st.session_state.filter_dj) if st.session_state.filter_dj in DJS else 0
-            )
-            
-            # Audit status filter
+        st.markdown("### 🔍 Filters")
+        
+        # Content type filter - using radio for mobile-friendliness
+        content_type_options = ["All"] + CONTENT_TYPES
+        content_type_index = content_type_options.index(st.session_state.filter_content_type) if st.session_state.filter_content_type in content_type_options else 0
+        st.session_state.filter_content_type = st.selectbox(
+            "📂 Content Type",
+            content_type_options,
+            index=content_type_index
+        )
+        
+        # DJ filter
+        dj_options = ["All"] + DJS
+        dj_index = dj_options.index(st.session_state.filter_dj) if st.session_state.filter_dj in dj_options else 0
+        st.session_state.filter_dj = st.selectbox(
+            "🎙️ DJ",
+            dj_options,
+            index=dj_index
+        )
+        
+        # Status filters in columns
+        col_audit, col_review = st.columns(2)
+        with col_audit:
             st.session_state.filter_audit_status = st.selectbox(
-                "Audit Status",
+                "🔍 Audit",
                 ["All", "Passed", "Failed"],
                 index=["All", "Passed", "Failed"].index(st.session_state.filter_audit_status) if st.session_state.filter_audit_status in ["All", "Passed", "Failed"] else 0
             )
-            
-            # Review status filter
+        with col_review:
             st.session_state.filter_review_status = st.selectbox(
-                "Review Status",
+                "📋 Review",
                 ["All", "Pending", "Approved", "Rejected"],
                 index=["All", "Pending", "Approved", "Rejected"].index(st.session_state.filter_review_status) if st.session_state.filter_review_status in ["All", "Pending", "Approved", "Rejected"] else 0
             )
-            
-            # Search
-            st.session_state.search_query = st.text_input(
-                "Search Item ID",
-                value=st.session_state.search_query
-            )
-            
-            # Items per page
-            st.session_state.items_per_page = st.selectbox(
-                "Items per page",
-                [5, 10, 20, 50],
-                index=[5, 10, 20, 50].index(st.session_state.items_per_page)
-            )
+        
+        # Search
+        st.session_state.search_query = st.text_input(
+            "🔎 Search",
+            value=st.session_state.search_query,
+            placeholder="Search by song/item..."
+        )
+        
+        # Items per page - smaller options for mobile
+        st.session_state.items_per_page = st.select_slider(
+            "Items per page",
+            options=[1, 3, 5, 10, 20],
+            value=st.session_state.items_per_page if st.session_state.items_per_page in [1, 3, 5, 10, 20] else 5
+        )
         
         st.markdown("---")
         
-        # Collapsible actions section
-        with st.expander("Actions", expanded=True):
-            # Refresh button
-            if st.button("Refresh", use_container_width=True):
+        # Queue status - prominent
+        queue_count = get_regen_queue_count()
+        if queue_count > 0:
+            st.markdown(f"### 🔄 Queue: {queue_count} items")
+            if st.button("▶️ Process Queue", use_container_width=True, type="primary"):
+                progress_bar = st.progress(0)
+                status_text = st.empty()
+                
+                def update_progress(progress):
+                    progress_bar.progress(progress)
+                
+                def update_status(status):
+                    status_text.text(status)
+                
+                update_status("Starting...")
+                results = process_regeneration_queue(
+                    progress_callback=update_progress,
+                    status_callback=update_status
+                )
+                
+                if results["success_count"] > 0:
+                    st.success(f"✅ {results['success_count']} done!")
+                if results["failed_count"] > 0:
+                    st.error(f"❌ {results['failed_count']} failed")
                 st.rerun()
             
-            # Regeneration queue status
-            queue_count = get_regen_queue_count()
-            st.metric("Regen Queue", queue_count)
-            
-            if queue_count > 0:
-                # Process Queue button
-                if st.button("Process Queue", use_container_width=True, type="primary"):
-                    # Initialize progress tracking
-                    progress_bar = st.progress(0)
-                    status_text = st.empty()
-                    
-                    def update_progress(progress):
-                        progress_bar.progress(progress)
-                    
-                    def update_status(status):
-                        status_text.text(status)
-                    
-                    # Process the queue
-                    update_status("Starting regeneration...")
-                    results = process_regeneration_queue(
-                        progress_callback=update_progress,
-                        status_callback=update_status
-                    )
-                    
-                    # Show results
-                    if results["success_count"] > 0:
-                        st.success(f"Regenerated {results['success_count']} items successfully!")
-                    
-                    if results["failed_count"] > 0:
-                        st.error(f"Failed to regenerate {results['failed_count']} items")
-                        if results["errors"]:
-                            with st.expander("View Errors"):
-                                for error in results["errors"]:
-                                    st.text(error)
-                    
-                    # Rerun to clear the progress display and update queue count
-                    st.rerun()
-                
-                # Clear Queue button
-                if st.button("Clear Queue", use_container_width=True):
-                    clear_regen_queue()
-                    st.success("Queue cleared!")
-                    st.rerun()
+            if st.button("🗑️ Clear Queue", use_container_width=True):
+                clear_regen_queue()
+                st.rerun()
+        else:
+            st.caption("Queue empty")
+        
+        # Refresh button
+        if st.button("🔄 Refresh", use_container_width=True):
+            st.rerun()
     
     # Main content area
-    # Scan and filter items
     all_items = scan_generated_content()
     filtered_items = filter_items(all_items)
     
-    # Statistics
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        st.metric("Total Items", len(all_items))
-    with col2:
-        st.metric("Filtered Items", len(filtered_items))
-    with col3:
+    # Compact statistics bar
+    stat_cols = st.columns(4)
+    with stat_cols[0]:
+        st.metric("Total", len(all_items))
+    with stat_cols[1]:
+        st.metric("Filtered", len(filtered_items))
+    with stat_cols[2]:
         approved_count = sum(1 for i in filtered_items if load_review_status(i.folder_path)["status"] == "approved")
-        st.metric("Approved", approved_count)
-    with col4:
+        st.metric("✅", approved_count)
+    with stat_cols[3]:
         rejected_count = sum(1 for i in filtered_items if load_review_status(i.folder_path)["status"] == "rejected")
-        st.metric("Rejected", rejected_count)
+        st.metric("❌", rejected_count)
     
-    # Export button
+    # Progress bar showing review completion
     if len(filtered_items) > 0:
-        csv_df = export_reviews_to_csv(filtered_items)
-        csv_data = csv_df.to_csv(index=False)
-        st.download_button(
-            label="Export Reviews to CSV",
-            data=csv_data,
-            file_name=f"review_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-            mime="text/csv"
+        reviewed_count = approved_count + rejected_count
+        progress = reviewed_count / len(filtered_items)
+        st.progress(progress, text=f"Reviewed: {reviewed_count}/{len(filtered_items)} ({progress:.0%})")
+    
+    # Export button (collapsed on mobile)
+    with st.expander("📥 Export", expanded=False):
+        if len(filtered_items) > 0:
+            csv_df = export_reviews_to_csv(filtered_items)
+            csv_data = csv_df.to_csv(index=False)
+            st.download_button(
+                label="📥 Download CSV",
+                data=csv_data,
+                file_name=f"review_{datetime.now().strftime('%Y%m%d')}.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+    
+    # MOBILE-FRIENDLY PAGINATION - Prominent at top
+    total_pages = max(1, (len(filtered_items) + st.session_state.items_per_page - 1) // st.session_state.items_per_page)
+    
+    # Ensure current page is valid
+    if st.session_state.current_page >= total_pages:
+        st.session_state.current_page = total_pages - 1
+    if st.session_state.current_page < 0:
+        st.session_state.current_page = 0
+    
+    # Top pagination bar - mobile optimized
+    st.markdown("---")
+    nav_col1, nav_col2, nav_col3 = st.columns([1, 2, 1])
+    
+    with nav_col1:
+        if st.button("⬅️ Prev", disabled=(st.session_state.current_page == 0), use_container_width=True):
+            st.session_state.current_page -= 1
+            st.rerun()
+    
+    with nav_col2:
+        st.markdown(f"""
+        <div style="text-align: center; padding: 8px; background: rgba(128,128,128,0.1); border-radius: 8px; border: 1px solid rgba(128,128,128,0.2);">
+            <strong>{st.session_state.current_page + 1}</strong> / {total_pages}
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with nav_col3:
+        if st.button("Next ➡️", disabled=(st.session_state.current_page >= total_pages - 1), use_container_width=True):
+            st.session_state.current_page += 1
+            st.rerun()
+    
+    # Page jump (collapsed on mobile)
+    with st.expander("Jump to page", expanded=False):
+        jump_page = st.number_input(
+            "Go to page",
+            min_value=1,
+            max_value=total_pages,
+            value=st.session_state.current_page + 1,
+            step=1,
+            label_visibility="collapsed"
         )
+        if st.button("Go", use_container_width=True):
+            st.session_state.current_page = jump_page - 1
+            st.rerun()
     
-    # Pagination
-    total_pages = (len(filtered_items) + st.session_state.items_per_page - 1) // st.session_state.items_per_page
-    
-    if total_pages > 0:
-        col1, col2, col3 = st.columns([1, 3, 1])
-        with col1:
-            if st.button("⬅️ Previous", disabled=(st.session_state.current_page == 0)):
-                st.session_state.current_page = max(0, st.session_state.current_page - 1)
-                st.rerun()
-        with col2:
-            st.markdown(f"<div style='text-align: center;'>Page {st.session_state.current_page + 1} of {total_pages}</div>", unsafe_allow_html=True)
-        with col3:
-            if st.button("Next ➡️", disabled=(st.session_state.current_page >= total_pages - 1)):
-                st.session_state.current_page = min(total_pages - 1, st.session_state.current_page + 1)
-                st.rerun()
+    st.markdown("---")
     
     # Display items for current page
     start_idx = st.session_state.current_page * st.session_state.items_per_page
@@ -1224,10 +1794,35 @@ def main():
     page_items = filtered_items[start_idx:end_idx]
     
     if not page_items:
-        st.info("No items found matching the current filters.")
+        st.info("📭 No items found. Try adjusting your filters.")
     else:
         for idx, item in enumerate(page_items):
             render_review_item(item, start_idx + idx)
+    
+    # BOTTOM PAGINATION (duplicate for mobile convenience)
+    if len(filtered_items) > 0:
+        st.markdown("---")
+        bottom_col1, bottom_col2, bottom_col3 = st.columns([1, 2, 1])
+        
+        with bottom_col1:
+            if st.button("⬅️ Prev", key="prev_bottom", disabled=(st.session_state.current_page == 0), use_container_width=True):
+                st.session_state.current_page -= 1
+                st.rerun()
+        
+        with bottom_col2:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 8px; background: rgba(128,128,128,0.1); border-radius: 8px; border: 1px solid rgba(128,128,128,0.2);">
+                <strong>{st.session_state.current_page + 1}</strong> / {total_pages}
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with bottom_col3:
+            if st.button("Next ➡️", key="next_bottom", disabled=(st.session_state.current_page >= total_pages - 1), use_container_width=True):
+                st.session_state.current_page += 1
+                st.rerun()
+        
+        # Add extra padding at bottom for mobile
+        st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True)
 
 
 if __name__ == "__main__":

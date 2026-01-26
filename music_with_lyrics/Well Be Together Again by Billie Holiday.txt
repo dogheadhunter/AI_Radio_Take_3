@@ -1,5 +1,4 @@
 We'll Be Together Again by Billie Holiday
-============================================================
 
 No tears
 No fears
@@ -23,6 +22,3 @@ Some way
 We both have a lifetime before us
 For parting is not goodbye
 We'll be together again.
-
-============================================================
-Source: lrclib

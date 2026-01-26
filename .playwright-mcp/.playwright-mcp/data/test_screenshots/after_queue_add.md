@@ -1,0 +1,931 @@
+- generic [ref=e2]:
+  - generic [ref=e28]:
+    - button "keyboard_double_arrow_left" [ref=e30] [cursor=pointer]:
+      - generic [ref=e32]: keyboard_double_arrow_left
+    - generic [ref=e33]:
+      - heading "🔍 Filters" [level=3] [ref=e38]
+      - generic [ref=e40]:
+        - paragraph [ref=e44]: 📂 Content Type
+        - generic [ref=e46]:
+          - generic [ref=e47]:
+            - generic: All
+            - generic:
+              - combobox "Selected All. 📂 Content Type"
+          - img "open" [ref=e49]
+      - generic [ref=e52]:
+        - paragraph [ref=e56]: 🎙️ DJ
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic: All
+            - generic:
+              - combobox "Selected All. 🎙️ DJ"
+          - img "open" [ref=e61]
+      - generic [ref=e64]:
+        - generic [ref=e67]:
+          - paragraph [ref=e71]: 🔍 Audit
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - generic: All
+              - generic:
+                - combobox "Selected All. 🔍 Audit"
+            - img "open" [ref=e76]
+        - generic [ref=e80]:
+          - paragraph [ref=e84]: 📋 Review
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - generic: All
+              - generic:
+                - combobox "Selected All. 📋 Review"
+            - img "open" [ref=e89]
+      - generic [ref=e92]:
+        - paragraph [ref=e96]: 🔎 Search
+        - textbox "🔎 Search" [ref=e99]:
+          - /placeholder: Search by song/item...
+      - generic [ref=e102]:
+        - paragraph [ref=e106]: Items per page
+        - generic [ref=e107]:
+          - slider "Items per page" [ref=e111]:
+            - generic:
+              - generic:
+                - paragraph: "10"
+          - generic:
+            - generic:
+              - paragraph: "1"
+            - generic:
+              - paragraph: "20"
+      - separator [ref=e117]
+      - paragraph [ref=e122]: Queue empty
+      - button "🔄 Refresh" [ref=e125] [cursor=pointer]:
+        - generic:
+          - generic:
+            - generic:
+              - paragraph: 🔄 Refresh
+  - generic [ref=e3]:
+    - banner [ref=e6]:
+      - generic [ref=e8]:
+        - button "keyboard_double_arrow_right" [ref=e130] [cursor=pointer]:
+          - generic [ref=e132]: keyboard_double_arrow_right
+        - generic [ref=e9]:
+          - button "Deploy" [ref=e20] [cursor=pointer]:
+            - generic [ref=e22]: Deploy
+          - button [ref=e24] [cursor=pointer]:
+            - img [ref=e25]
+    - generic [ref=e136]:
+      - generic [ref=e141]:
+        - generic [ref=e142]: 📻
+        - heading "AI Radio Review" [level=1] [ref=e145]:
+          - text: AI Radio Review
+          - generic [ref=e146]:
+            - link "Link to heading":
+              - /url: "#ai-radio-review"
+              - img
+      - paragraph [ref=e151]: 👆 Tap items to review • Swipe to scroll
+      - generic [ref=e153]:
+        - generic [ref=e158]:
+          - paragraph [ref=e162]: Total
+          - paragraph [ref=e166]: "630"
+        - generic [ref=e171]:
+          - paragraph [ref=e175]: Filtered
+          - paragraph [ref=e179]: "630"
+        - generic [ref=e184]:
+          - paragraph [ref=e188]: ✅
+          - paragraph [ref=e192]: "0"
+        - generic [ref=e197]:
+          - paragraph [ref=e201]: ❌
+          - paragraph [ref=e205]: "0"
+      - generic [ref=e207]:
+        - paragraph [ref=e210]: "Reviewed: 0/630 (0%)"
+        - progressbar "0% Loaded" [ref=e211]
+      - group [ref=e217]:
+        - generic "keyboard_arrow_right 📥 Export" [ref=e218] [cursor=pointer]:
+          - generic [ref=e219]:
+            - generic [ref=e221]: keyboard_arrow_right
+            - paragraph [ref=e224]: 📥 Export
+      - separator [ref=e229]
+      - generic [ref=e231]:
+        - button "⬅️ Prev" [disabled] [ref=e236]:
+          - paragraph [ref=e240]: ⬅️ Prev
+        - generic [ref=e247]:
+          - strong [ref=e248]: "1"
+          - text: / 63
+        - button "Next ➡️" [ref=e253] [cursor=pointer]:
+          - paragraph [ref=e257]: Next ➡️
+      - group [ref=e260]:
+        - generic "keyboard_arrow_right Jump to page" [ref=e261] [cursor=pointer]:
+          - generic [ref=e262]:
+            - generic [ref=e264]: keyboard_arrow_right
+            - paragraph [ref=e267]: Jump to page
+      - separator [ref=e272]
+      - generic [ref=e274]:
+        - separator [ref=e279]
+        - heading "🎵 Atomic Baby" [level=3] [ref=e285]:
+          - text: 🎵 Atomic Baby
+          - generic [ref=e286]:
+            - link "Link to heading":
+              - /url: "#atomic-baby"
+              - img
+        - paragraph [ref=e291]: by Amos Milburn
+      - generic [ref=e296]:
+        - generic [ref=e297]: PENDING
+        - generic [ref=e298]: intros • Julie
+      - alert [ref=e301]:
+        - paragraph [ref=e306]: ✏️ Manually edited (3x) - Review still required
+      - heading "🔊 Audio Preview" [level=4] [ref=e312]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e313]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e316]:
+        - paragraph [ref=e321]: 🔇 Audio file not found
+      - group [ref=e324]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e325] [cursor=pointer]:
+          - generic [ref=e326]:
+            - generic [ref=e328]: keyboard_arrow_down
+            - paragraph [ref=e331]: 📝 Script
+        - textbox "Edit script" [ref=e338]:
+          - /placeholder: ""
+          - text: Now, I wonder what the songwriter meant when they called a little baby an atomic bomb. Is it referring to how explosive and powerful this child might be someday? Or just comparing their energetic presence now? This is quite a metaphor! Here's Amos Milburn with his song about that feisty kid – let's call him Atomic Baby! edit edit 2 edit edit 4
+      - group [ref=e341]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e342] [cursor=pointer]:
+          - generic [ref=e343]:
+            - generic [ref=e345]: keyboard_arrow_right
+            - paragraph [ref=e348]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e351]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e352] [cursor=pointer]:
+          - generic [ref=e353]:
+            - generic [ref=e355]: keyboard_arrow_right
+            - paragraph [ref=e358]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e364]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e365]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e367]:
+        - button "📝 Regen Script" [active] [ref=e372] [cursor=pointer]:
+          - paragraph [ref=e376]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e381] [cursor=pointer]:
+          - paragraph [ref=e385]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e390] [cursor=pointer]:
+          - paragraph [ref=e394]: 🔄 Regen Both
+      - separator [ref=e399]
+      - heading "📋 Review Decision" [level=4] [ref=e405]:
+        - text: 📋 Review Decision
+        - generic [ref=e406]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e408]:
+        - tablist [ref=e410]:
+          - tab "Script Issues" [selected] [ref=e411] [cursor=pointer]:
+            - paragraph [ref=e413]: Script Issues
+          - tab "Audio Issues" [ref=e414] [cursor=pointer]:
+            - paragraph [ref=e416]: Audio Issues
+        - tabpanel "Script Issues" [ref=e419]:
+          - generic [ref=e425]:
+            - generic [ref=e426]:
+              - combobox "Select script issues" [ref=e428]
+              - generic [ref=e429]: Choose options
+            - img "open" [ref=e431] [cursor=pointer]
+      - generic [ref=e434]:
+        - paragraph [ref=e438]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e441]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e446]
+      - generic [ref=e448]:
+        - button "✅ APPROVE" [ref=e453] [cursor=pointer]:
+          - paragraph [ref=e457]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e462] [cursor=pointer]:
+          - paragraph [ref=e466]: ❌ REJECT
+      - generic [ref=e468]:
+        - separator [ref=e473]
+        - heading "🎵 I'm Gonna Dig Myself a Hole" [level=3] [ref=e479]:
+          - text: 🎵 I'm Gonna Dig Myself a Hole
+          - generic [ref=e480]:
+            - link "Link to heading":
+              - /url: "#i-m-gonna-dig-myself-a-hole"
+              - img
+        - paragraph [ref=e485]: by Arthur "Big Boy" Crudup
+      - generic [ref=e490]:
+        - generic [ref=e491]: PENDING
+        - generic [ref=e492]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e498]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e499]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e502]:
+        - paragraph [ref=e507]: 🔇 Audio file not found
+      - group [ref=e510]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e511] [cursor=pointer]:
+          - generic [ref=e512]:
+            - generic [ref=e514]: keyboard_arrow_down
+            - paragraph [ref=e517]: 📝 Script
+        - textbox "Edit script" [ref=e524]:
+          - /placeholder: ""
+          - text: I'm curious, is this song about digging yourself into trouble or finding solace in solitude? Either way it sounds like quite the emotional journey. Here's Arthur "Big Boy"Crudup with 'I'm Gonna Dig myself A hole.
+      - group [ref=e527]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e528] [cursor=pointer]:
+          - generic [ref=e529]:
+            - generic [ref=e531]: keyboard_arrow_right
+            - paragraph [ref=e534]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e537]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e538] [cursor=pointer]:
+          - generic [ref=e539]:
+            - generic [ref=e541]: keyboard_arrow_right
+            - paragraph [ref=e544]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e550]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e551]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e553]:
+        - button "📝 Regen Script" [ref=e558] [cursor=pointer]:
+          - paragraph [ref=e562]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e567] [cursor=pointer]:
+          - paragraph [ref=e571]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e576] [cursor=pointer]:
+          - paragraph [ref=e580]: 🔄 Regen Both
+      - separator [ref=e585]
+      - heading "📋 Review Decision" [level=4] [ref=e591]:
+        - text: 📋 Review Decision
+        - generic [ref=e592]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e594]:
+        - tablist [ref=e596]:
+          - tab "Script Issues" [selected] [ref=e597] [cursor=pointer]:
+            - paragraph [ref=e599]: Script Issues
+          - tab "Audio Issues" [ref=e600] [cursor=pointer]:
+            - paragraph [ref=e602]: Audio Issues
+        - tabpanel "Script Issues" [ref=e605]:
+          - generic [ref=e611]:
+            - generic [ref=e612]:
+              - combobox "Select script issues" [ref=e614]
+              - generic [ref=e615]: Choose options
+            - img "open" [ref=e617] [cursor=pointer]
+      - generic [ref=e620]:
+        - paragraph [ref=e624]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e627]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e632]
+      - generic [ref=e634]:
+        - button "✅ APPROVE" [ref=e639] [cursor=pointer]:
+          - paragraph [ref=e643]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e648] [cursor=pointer]:
+          - paragraph [ref=e652]: ❌ REJECT
+      - generic [ref=e654]:
+        - separator [ref=e659]
+        - heading "🎵 A Room With a View" [level=3] [ref=e665]:
+          - text: 🎵 A Room With a View
+          - generic [ref=e666]:
+            - link "Link to heading":
+              - /url: "#a-room-with-a-view"
+              - img
+        - paragraph [ref=e671]: by Artie Shaw
+      - generic [ref=e676]:
+        - generic [ref=e677]: PENDING
+        - generic [ref=e678]: intros • Julie
+      - alert [ref=e681]:
+        - paragraph [ref=e686]: ✏️ Manually edited - Review still required
+      - heading "🔊 Audio Preview" [level=4] [ref=e692]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e693]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e696]:
+        - paragraph [ref=e701]: 🔇 Audio file not found
+      - group [ref=e704]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e705] [cursor=pointer]:
+          - generic [ref=e706]:
+            - generic [ref=e708]: keyboard_arrow_down
+            - paragraph [ref=e711]: 📝 Script
+        - textbox "Edit script" [ref=e718]:
+          - /placeholder: ""
+          - text: The title says it all there's something so tantalizing about the idea of retreating to that perfect haven, isn't Testing backup feature!there? Maybe I'm just longing for an escape from reality myself. Here's Artie Shaw with his dreamy rendition of 'A Room With A View'.
+      - group [ref=e721]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e722] [cursor=pointer]:
+          - generic [ref=e723]:
+            - generic [ref=e725]: keyboard_arrow_right
+            - paragraph [ref=e728]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e731]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e732] [cursor=pointer]:
+          - generic [ref=e733]:
+            - generic [ref=e735]: keyboard_arrow_right
+            - paragraph [ref=e738]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e744]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e745]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e747]:
+        - button "📝 Regen Script" [ref=e752] [cursor=pointer]:
+          - paragraph [ref=e756]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e761] [cursor=pointer]:
+          - paragraph [ref=e765]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e770] [cursor=pointer]:
+          - paragraph [ref=e774]: 🔄 Regen Both
+      - separator [ref=e779]
+      - heading "📋 Review Decision" [level=4] [ref=e785]:
+        - text: 📋 Review Decision
+        - generic [ref=e786]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e788]:
+        - tablist [ref=e790]:
+          - tab "Script Issues" [selected] [ref=e791] [cursor=pointer]:
+            - paragraph [ref=e793]: Script Issues
+          - tab "Audio Issues" [ref=e794] [cursor=pointer]:
+            - paragraph [ref=e796]: Audio Issues
+        - tabpanel "Script Issues" [ref=e799]:
+          - generic [ref=e805]:
+            - generic [ref=e806]:
+              - combobox "Select script issues" [ref=e808]
+              - generic [ref=e809]: Choose options
+            - img "open" [ref=e811] [cursor=pointer]
+      - generic [ref=e814]:
+        - paragraph [ref=e818]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e821]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e826]
+      - generic [ref=e828]:
+        - button "✅ APPROVE" [ref=e833] [cursor=pointer]:
+          - paragraph [ref=e837]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e842] [cursor=pointer]:
+          - paragraph [ref=e846]: ❌ REJECT
+      - generic [ref=e848]:
+        - separator [ref=e853]
+        - heading "🎵 He's a Demon He's a Devil He's a Doll" [level=3] [ref=e859]:
+          - text: 🎵 He's a Demon He's a Devil He's a Doll
+          - generic [ref=e860]:
+            - link "Link to heading":
+              - /url: "#hes-a-demon-hes-a-devil-hes-a-doll"
+              - img
+        - paragraph [ref=e865]: by Betty Hutton
+      - generic [ref=e870]:
+        - generic [ref=e871]: PENDING
+        - generic [ref=e872]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e878]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e879]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e882]:
+        - paragraph [ref=e887]: 🔇 Audio file not found
+      - group [ref=e890]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e891] [cursor=pointer]:
+          - generic [ref=e892]:
+            - generic [ref=e894]: keyboard_arrow_down
+            - paragraph [ref=e897]: 📝 Script
+        - textbox "Edit script" [ref=e904]:
+          - /placeholder: ""
+          - text: Something about this title made me curious is the "demon" in question actually charming or deceitful? Either way, here's Betty Hutton with her take on it all. Here's He’s a Demon, He’s a Devil, He’s a Doll by Betty Hutton.
+      - group [ref=e907]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e908] [cursor=pointer]:
+          - generic [ref=e909]:
+            - generic [ref=e911]: keyboard_arrow_right
+            - paragraph [ref=e914]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e917]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e918] [cursor=pointer]:
+          - generic [ref=e919]:
+            - generic [ref=e921]: keyboard_arrow_right
+            - paragraph [ref=e924]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e930]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e931]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e933]:
+        - button "📝 Regen Script" [ref=e938] [cursor=pointer]:
+          - paragraph [ref=e942]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e947] [cursor=pointer]:
+          - paragraph [ref=e951]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e956] [cursor=pointer]:
+          - paragraph [ref=e960]: 🔄 Regen Both
+      - separator [ref=e965]
+      - heading "📋 Review Decision" [level=4] [ref=e971]:
+        - text: 📋 Review Decision
+        - generic [ref=e972]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e974]:
+        - tablist [ref=e976]:
+          - tab "Script Issues" [selected] [ref=e977] [cursor=pointer]:
+            - paragraph [ref=e979]: Script Issues
+          - tab "Audio Issues" [ref=e980] [cursor=pointer]:
+            - paragraph [ref=e982]: Audio Issues
+        - tabpanel "Script Issues" [ref=e985]:
+          - generic [ref=e991]:
+            - generic [ref=e992]:
+              - combobox "Select script issues" [ref=e994]
+              - generic [ref=e995]: Choose options
+            - img "open" [ref=e997] [cursor=pointer]
+      - generic [ref=e1000]:
+        - paragraph [ref=e1004]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e1007]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e1012]
+      - generic [ref=e1014]:
+        - button "✅ APPROVE" [ref=e1019] [cursor=pointer]:
+          - paragraph [ref=e1023]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e1028] [cursor=pointer]:
+          - paragraph [ref=e1032]: ❌ REJECT
+      - generic [ref=e1034]:
+        - separator [ref=e1039]
+        - heading "🎵 It's a Man" [level=3] [ref=e1045]:
+          - text: 🎵 It's a Man
+          - generic [ref=e1046]:
+            - link "Link to heading":
+              - /url: "#its-a-man"
+              - img
+        - paragraph [ref=e1051]: by Betty Hutton
+      - generic [ref=e1056]:
+        - generic [ref=e1057]: PENDING
+        - generic [ref=e1058]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e1064]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e1065]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e1068]:
+        - paragraph [ref=e1073]: 🔇 Audio file not found
+      - group [ref=e1076]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e1077] [cursor=pointer]:
+          - generic [ref=e1078]:
+            - generic [ref=e1080]: keyboard_arrow_down
+            - paragraph [ref=e1083]: 📝 Script
+        - textbox "Edit script" [ref=e1090]:
+          - /placeholder: ""
+          - text: Now we're in for some sassy, playful fun as the charming and lively Ms. Betty Hutton croons her way through "It's A Man". I can practically see her kicking up heels on stage with that signature sparkle she just radiates joyful energy! So let yourself be swept away by this effervescent gem of a tune, straight from one vivacious lady to you. Here's Betty Hutton with It’s a Man.
+      - group [ref=e1093]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e1094] [cursor=pointer]:
+          - generic [ref=e1095]:
+            - generic [ref=e1097]: keyboard_arrow_right
+            - paragraph [ref=e1100]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e1103]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e1104] [cursor=pointer]:
+          - generic [ref=e1105]:
+            - generic [ref=e1107]: keyboard_arrow_right
+            - paragraph [ref=e1110]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e1116]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e1117]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e1119]:
+        - button "📝 Regen Script" [ref=e1124] [cursor=pointer]:
+          - paragraph [ref=e1128]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e1133] [cursor=pointer]:
+          - paragraph [ref=e1137]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e1142] [cursor=pointer]:
+          - paragraph [ref=e1146]: 🔄 Regen Both
+      - separator [ref=e1151]
+      - heading "📋 Review Decision" [level=4] [ref=e1157]:
+        - text: 📋 Review Decision
+        - generic [ref=e1158]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e1160]:
+        - tablist [ref=e1162]:
+          - tab "Script Issues" [selected] [ref=e1163] [cursor=pointer]:
+            - paragraph [ref=e1165]: Script Issues
+          - tab "Audio Issues" [ref=e1166] [cursor=pointer]:
+            - paragraph [ref=e1168]: Audio Issues
+        - tabpanel "Script Issues" [ref=e1170]:
+          - generic [ref=e1176]:
+            - generic [ref=e1177]:
+              - combobox "Select script issues" [ref=e1179]
+              - generic [ref=e1180]: Choose options
+            - img "open" [ref=e1182] [cursor=pointer]
+      - generic [ref=e1185]:
+        - paragraph [ref=e1189]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e1192]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e1197]
+      - generic [ref=e1199]:
+        - button "✅ APPROVE" [ref=e1204] [cursor=pointer]:
+          - paragraph [ref=e1208]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e1213] [cursor=pointer]:
+          - paragraph [ref=e1217]: ❌ REJECT
+      - generic [ref=e1219]:
+        - separator [ref=e1224]
+        - heading "🎵 All of Me" [level=3] [ref=e1230]:
+          - text: 🎵 All of Me
+          - generic [ref=e1231]:
+            - link "Link to heading":
+              - /url: "#all-of-me"
+              - img
+        - paragraph [ref=e1236]: by Billie Holiday
+      - generic [ref=e1241]:
+        - generic [ref=e1242]: PENDING
+        - generic [ref=e1243]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e1249]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e1250]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e1253]:
+        - paragraph [ref=e1258]: 🔇 Audio file not found
+      - group [ref=e1261]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e1262] [cursor=pointer]:
+          - generic [ref=e1263]:
+            - generic [ref=e1265]: keyboard_arrow_down
+            - paragraph [ref=e1268]: 📝 Script
+        - textbox "Edit script" [ref=e1275]:
+          - /placeholder: ""
+          - text: Billie Holiday is known for her soulful, introspective delivery. In this song she seems to be pouring out a confession accepting herself warts and all as the lyrics say "I'm no paragon. " Her voice has an almost conspiratorial intimacy here like sharing secrets with just you. Here's Billie Holiday singing All of Me.
+      - group [ref=e1278]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e1279] [cursor=pointer]:
+          - generic [ref=e1280]:
+            - generic [ref=e1282]: keyboard_arrow_right
+            - paragraph [ref=e1285]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e1288]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e1289] [cursor=pointer]:
+          - generic [ref=e1290]:
+            - generic [ref=e1292]: keyboard_arrow_right
+            - paragraph [ref=e1295]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e1301]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e1302]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e1304]:
+        - button "📝 Regen Script" [ref=e1309] [cursor=pointer]:
+          - paragraph [ref=e1313]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e1318] [cursor=pointer]:
+          - paragraph [ref=e1322]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e1327] [cursor=pointer]:
+          - paragraph [ref=e1331]: 🔄 Regen Both
+      - separator [ref=e1336]
+      - heading "📋 Review Decision" [level=4] [ref=e1342]:
+        - text: 📋 Review Decision
+        - generic [ref=e1343]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e1345]:
+        - tablist [ref=e1347]:
+          - tab "Script Issues" [selected] [ref=e1348] [cursor=pointer]:
+            - paragraph [ref=e1350]: Script Issues
+          - tab "Audio Issues" [ref=e1351] [cursor=pointer]:
+            - paragraph [ref=e1353]: Audio Issues
+        - tabpanel "Script Issues" [ref=e1355]:
+          - generic [ref=e1361]:
+            - generic [ref=e1362]:
+              - combobox "Select script issues" [ref=e1364]
+              - generic [ref=e1365]: Choose options
+            - img "open" [ref=e1367] [cursor=pointer]
+      - generic [ref=e1370]:
+        - paragraph [ref=e1374]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e1377]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e1382]
+      - generic [ref=e1384]:
+        - button "✅ APPROVE" [ref=e1389] [cursor=pointer]:
+          - paragraph [ref=e1393]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e1398] [cursor=pointer]:
+          - paragraph [ref=e1402]: ❌ REJECT
+      - generic [ref=e1404]:
+        - separator [ref=e1409]
+        - heading "🎵 All Or Nothing At All" [level=3] [ref=e1415]:
+          - text: 🎵 All Or Nothing At All
+          - generic [ref=e1416]:
+            - link "Link to heading":
+              - /url: "#all-or-nothing-at-all"
+              - img
+        - paragraph [ref=e1421]: by Billie Holiday
+      - generic [ref=e1426]:
+        - generic [ref=e1427]: PENDING
+        - generic [ref=e1428]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e1434]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e1435]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e1438]:
+        - paragraph [ref=e1443]: 🔇 Audio file not found
+      - group [ref=e1446]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e1447] [cursor=pointer]:
+          - generic [ref=e1448]:
+            - generic [ref=e1450]: keyboard_arrow_down
+            - paragraph [ref=e1453]: 📝 Script
+        - textbox "Edit script" [ref=e1460]:
+          - /placeholder: ""
+          - text: I wonder what inspired the lyricist to write that line "all or nothing at all"? It almost seems like a vow of devotion, putting everything on the table for love. You can't help but imagine someone pouring their heart out completely. Here's Billie Holiday with 'All Or Nothing At All'.
+      - group [ref=e1463]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e1464] [cursor=pointer]:
+          - generic [ref=e1465]:
+            - generic [ref=e1467]: keyboard_arrow_right
+            - paragraph [ref=e1470]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e1473]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e1474] [cursor=pointer]:
+          - generic [ref=e1475]:
+            - generic [ref=e1477]: keyboard_arrow_right
+            - paragraph [ref=e1480]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e1486]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e1487]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e1489]:
+        - button "📝 Regen Script" [ref=e1494] [cursor=pointer]:
+          - paragraph [ref=e1498]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e1503] [cursor=pointer]:
+          - paragraph [ref=e1507]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e1512] [cursor=pointer]:
+          - paragraph [ref=e1516]: 🔄 Regen Both
+      - separator [ref=e1521]
+      - heading "📋 Review Decision" [level=4] [ref=e1527]:
+        - text: 📋 Review Decision
+        - generic [ref=e1528]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e1530]:
+        - tablist [ref=e1532]:
+          - tab "Script Issues" [selected] [ref=e1533] [cursor=pointer]:
+            - paragraph [ref=e1535]: Script Issues
+          - tab "Audio Issues" [ref=e1536] [cursor=pointer]:
+            - paragraph [ref=e1538]: Audio Issues
+        - tabpanel "Script Issues" [ref=e1540]:
+          - generic [ref=e1546]:
+            - generic [ref=e1547]:
+              - combobox "Select script issues" [ref=e1549]
+              - generic [ref=e1550]: Choose options
+            - img "open" [ref=e1552] [cursor=pointer]
+      - generic [ref=e1555]:
+        - paragraph [ref=e1559]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e1562]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e1567]
+      - generic [ref=e1569]:
+        - button "✅ APPROVE" [ref=e1574] [cursor=pointer]:
+          - paragraph [ref=e1578]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e1583] [cursor=pointer]:
+          - paragraph [ref=e1587]: ❌ REJECT
+      - generic [ref=e1589]:
+        - separator [ref=e1594]
+        - heading "🎵 Cheek To Cheek" [level=3] [ref=e1600]:
+          - text: 🎵 Cheek To Cheek
+          - generic [ref=e1601]:
+            - link "Link to heading":
+              - /url: "#cheek-to-cheek"
+              - img
+        - paragraph [ref=e1606]: by Billie Holiday
+      - generic [ref=e1611]:
+        - generic [ref=e1612]: PENDING
+        - generic [ref=e1613]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e1619]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e1620]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e1623]:
+        - paragraph [ref=e1628]: 🔇 Audio file not found
+      - group [ref=e1631]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e1632] [cursor=pointer]:
+          - generic [ref=e1633]:
+            - generic [ref=e1635]: keyboard_arrow_down
+            - paragraph [ref=e1638]: 📝 Script
+        - textbox "Edit script" [ref=e1645]:
+          - /placeholder: ""
+          - text: I've always loved how whimsical and playful the lyrics are in this song. The idea of dancing cheek to cheek feels so carefree, doesn't it? Like a joyful moment where nothing else matters but having fun with someone special. Here's Billie Holiday with that delightful tune Cheek To Cheep!
+      - group [ref=e1648]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e1649] [cursor=pointer]:
+          - generic [ref=e1650]:
+            - generic [ref=e1652]: keyboard_arrow_right
+            - paragraph [ref=e1655]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e1658]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e1659] [cursor=pointer]:
+          - generic [ref=e1660]:
+            - generic [ref=e1662]: keyboard_arrow_right
+            - paragraph [ref=e1665]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e1671]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e1672]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e1674]:
+        - button "📝 Regen Script" [ref=e1679] [cursor=pointer]:
+          - paragraph [ref=e1683]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e1688] [cursor=pointer]:
+          - paragraph [ref=e1692]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e1697] [cursor=pointer]:
+          - paragraph [ref=e1701]: 🔄 Regen Both
+      - separator [ref=e1706]
+      - heading "📋 Review Decision" [level=4] [ref=e1712]:
+        - text: 📋 Review Decision
+        - generic [ref=e1713]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e1715]:
+        - tablist [ref=e1717]:
+          - tab "Script Issues" [selected] [ref=e1718] [cursor=pointer]:
+            - paragraph [ref=e1720]: Script Issues
+          - tab "Audio Issues" [ref=e1721] [cursor=pointer]:
+            - paragraph [ref=e1723]: Audio Issues
+        - tabpanel "Script Issues" [ref=e1725]:
+          - generic [ref=e1731]:
+            - generic [ref=e1732]:
+              - combobox "Select script issues" [ref=e1734]
+              - generic [ref=e1735]: Choose options
+            - img "open" [ref=e1737] [cursor=pointer]
+      - generic [ref=e1740]:
+        - paragraph [ref=e1744]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e1747]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e1752]
+      - generic [ref=e1754]:
+        - button "✅ APPROVE" [ref=e1759] [cursor=pointer]:
+          - paragraph [ref=e1763]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e1768] [cursor=pointer]:
+          - paragraph [ref=e1772]: ❌ REJECT
+      - generic [ref=e1778]:
+        - separator [ref=e1783]
+        - heading "🎵 Crazy He Calls Me" [level=3] [ref=e1789]:
+          - text: 🎵 Crazy He Calls Me
+          - generic [ref=e1790]:
+            - link "Link to heading":
+              - /url: "#crazy-he-calls-me"
+              - img
+        - paragraph [ref=e1795]: by Billie Holiday
+      - generic [ref=e1800]:
+        - generic [ref=e1801]: PENDING
+        - generic [ref=e1802]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e1808]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e1809]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e1812]:
+        - paragraph [ref=e1817]: 🔇 Audio file not found
+      - group [ref=e1820]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e1821] [cursor=pointer]:
+          - generic [ref=e1822]:
+            - generic [ref=e1824]: keyboard_arrow_down
+            - paragraph [ref=e1827]: 📝 Script
+        - textbox "Edit script" [ref=e1834]:
+          - /placeholder: ""
+          - text: This song always makes me wonder why do we put up with the craziness in others, even when it affects us so deeply? Here's that hauntingly beautiful voice of Lady Day herself as she explores this question in her own life on 'Crazy He Calls Me'. Billie Holiday 'Crazy He Calls Me
+      - group [ref=e1837]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e1838] [cursor=pointer]:
+          - generic [ref=e1839]:
+            - generic [ref=e1841]: keyboard_arrow_right
+            - paragraph [ref=e1844]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e1847]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e1848] [cursor=pointer]:
+          - generic [ref=e1849]:
+            - generic [ref=e1851]: keyboard_arrow_right
+            - paragraph [ref=e1854]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e1860]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e1861]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e1863]:
+        - button "📝 Regen Script" [ref=e1868] [cursor=pointer]:
+          - paragraph [ref=e1872]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e1877] [cursor=pointer]:
+          - paragraph [ref=e1881]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e1886] [cursor=pointer]:
+          - paragraph [ref=e1890]: 🔄 Regen Both
+      - separator [ref=e1895]
+      - heading "📋 Review Decision" [level=4] [ref=e1901]:
+        - text: 📋 Review Decision
+        - generic [ref=e1902]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e1904]:
+        - tablist [ref=e1906]:
+          - tab "Script Issues" [selected] [ref=e1907] [cursor=pointer]:
+            - paragraph [ref=e1909]: Script Issues
+          - tab "Audio Issues" [ref=e1910] [cursor=pointer]:
+            - paragraph [ref=e1912]: Audio Issues
+        - tabpanel "Script Issues" [ref=e1915]:
+          - generic [ref=e1921]:
+            - generic [ref=e1922]:
+              - combobox "Select script issues" [ref=e1924]
+              - generic [ref=e1925]: Choose options
+            - img "open" [ref=e1927] [cursor=pointer]
+      - generic [ref=e1930]:
+        - paragraph [ref=e1934]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e1937]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e1942]
+      - generic [ref=e1944]:
+        - button "✅ APPROVE" [ref=e1949] [cursor=pointer]:
+          - paragraph [ref=e1953]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e1958] [cursor=pointer]:
+          - paragraph [ref=e1962]: ❌ REJECT
+      - generic [ref=e1964]:
+        - separator [ref=e1969]
+        - heading "🎵 Easy Living" [level=3] [ref=e1975]:
+          - text: 🎵 Easy Living
+          - generic [ref=e1976]:
+            - link "Link to heading":
+              - /url: "#easy-living"
+              - img
+        - paragraph [ref=e1981]: by Billie Holiday
+      - generic [ref=e1986]:
+        - generic [ref=e1987]: PENDING
+        - generic [ref=e1988]: intros • Julie
+      - heading "🔊 Audio Preview" [level=4] [ref=e1994]:
+        - text: 🔊 Audio Preview
+        - generic [ref=e1995]:
+          - link "Link to heading":
+            - /url: "#audio-preview"
+            - img
+      - alert [ref=e1998]:
+        - paragraph [ref=e2003]: 🔇 Audio file not found
+      - group [ref=e2006]:
+        - generic "keyboard_arrow_down 📝 Script" [ref=e2007] [cursor=pointer]:
+          - generic [ref=e2008]:
+            - generic [ref=e2010]: keyboard_arrow_down
+            - paragraph [ref=e2013]: 📝 Script
+        - textbox "Edit script" [ref=e2020]:
+          - /placeholder: ""
+          - text: You know, some days just feel easier than others. That's the message I get from this song next up an old favorite of mine called "Easy Livin'" sung by one of jazz greats, Miss Billie Holiday herself. Here's Billie Holiday with Easy Living.
+      - group [ref=e2023]:
+        - generic "keyboard_arrow_right 🔄 Compare with Original/Previous Versions" [ref=e2024] [cursor=pointer]:
+          - generic [ref=e2025]:
+            - generic [ref=e2027]: keyboard_arrow_right
+            - paragraph [ref=e2030]: 🔄 Compare with Original/Previous Versions
+      - group [ref=e2033]:
+        - generic "keyboard_arrow_right 📜 Song Lyrics" [ref=e2034] [cursor=pointer]:
+          - generic [ref=e2035]:
+            - generic [ref=e2037]: keyboard_arrow_right
+            - paragraph [ref=e2040]: 📜 Song Lyrics
+      - heading "⚡ Quick Actions" [level=4] [ref=e2046]:
+        - text: ⚡ Quick Actions
+        - generic [ref=e2047]:
+          - link "Link to heading":
+            - /url: "#quick-actions"
+            - img
+      - generic [ref=e2049]:
+        - button "📝 Regen Script" [ref=e2054] [cursor=pointer]:
+          - paragraph [ref=e2058]: 📝 Regen Script
+        - button "🔊 Regen Audio" [ref=e2063] [cursor=pointer]:
+          - paragraph [ref=e2067]: 🔊 Regen Audio
+        - button "🔄 Regen Both" [ref=e2072] [cursor=pointer]:
+          - paragraph [ref=e2076]: 🔄 Regen Both
+      - separator [ref=e2081]
+      - heading "📋 Review Decision" [level=4] [ref=e2087]:
+        - text: 📋 Review Decision
+        - generic [ref=e2088]:
+          - link "Link to heading":
+            - /url: "#review-decision"
+            - img
+      - generic [ref=e2090]:
+        - tablist [ref=e2092]:
+          - tab "Script Issues" [selected] [ref=e2093] [cursor=pointer]:
+            - paragraph [ref=e2095]: Script Issues
+          - tab "Audio Issues" [ref=e2096] [cursor=pointer]:
+            - paragraph [ref=e2098]: Audio Issues
+        - tabpanel "Script Issues" [ref=e2101]:
+          - generic [ref=e2107]:
+            - generic [ref=e2108]:
+              - combobox "Select script issues" [ref=e2110]
+              - generic [ref=e2111]: Choose options
+            - img "open" [ref=e2113] [cursor=pointer]
+      - generic [ref=e2116]:
+        - paragraph [ref=e2120]: Notes (optional)
+        - textbox "Notes (optional)" [ref=e2123]:
+          - /placeholder: Add any notes here...
+      - separator [ref=e2128]
+      - generic [ref=e2130]:
+        - button "✅ APPROVE" [ref=e2135] [cursor=pointer]:
+          - paragraph [ref=e2139]: ✅ APPROVE
+        - button "❌ REJECT" [ref=e2144] [cursor=pointer]:
+          - paragraph [ref=e2148]: ❌ REJECT
+      - separator [ref=e2153]
+      - generic [ref=e2155]:
+        - button "⬅️ Prev" [disabled] [ref=e2160]:
+          - paragraph [ref=e2164]: ⬅️ Prev
+        - generic [ref=e2171]:
+          - strong [ref=e2172]: "1"
+          - text: / 63
+        - button "Next ➡️" [ref=e2177] [cursor=pointer]:
+          - paragraph [ref=e2181]: Next ➡️

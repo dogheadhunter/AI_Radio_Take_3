@@ -1,5 +1,4 @@
 I Hear You Knocking by Fats Domino
-============================================================
 
 You went away and left me long time ago
 Now you come back and knockin' on my door
@@ -24,6 +23,3 @@ I hear you knockin'
 But you can't come in
 I hear you knockin'
 Go back where you've been
-
-============================================================
-Source: lrclib

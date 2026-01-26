@@ -1,27 +1,20 @@
 Over the Rainbow by Glenn Miller
-============================================================
 
-[Synced Lyrics - LRC Format]
-
-[00:50.81] Somewhere, over the rainbow
-[00:54.52] Way up high
-[00:58.19] There's a land that I heard of
-[01:01.87] Once in a lullaby
-[01:05.55] Somewhere, over the rainbow
-[01:10.25] Skies are blue
-[01:14.01] And the dreams that you dare to dream
-[01:18.56] Really do come true
-[01:21.30] Someday I'll wish upon a star
-[01:23.28] And wake up where the clouds are far behind me
-[01:28.76] Where troubles melt like lemon drops
-[01:31.48] Away above the chimney tops
-[01:34.24] That's where you'll find me
-[01:37.08] Somewhere over the rainbow, bluebirds fly
-[01:41.62] Birds fly over the rainbow
-[01:48.95] Why then, oh why can't I?
-[02:04.66] If happy little bluebirds fly beyond the rainbow
-[02:05.51] Why, oh why can't I?
-[02:06.45] 
-
-============================================================
-Source: lrclib
+Somewhere, over the rainbow
+Way up high
+There's a land that I heard of
+Once in a lullaby
+Somewhere, over the rainbow
+Skies are blue
+And the dreams that you dare to dream
+Really do come true
+Someday I'll wish upon a star
+And wake up where the clouds are far behind me
+Where troubles melt like lemon drops
+Away above the chimney tops
+That's where you'll find me
+Somewhere over the rainbow, bluebirds fly
+Birds fly over the rainbow
+Why then, oh why can't I?
+If happy little bluebirds fly beyond the rainbow
+Why, oh why can't I?

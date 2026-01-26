@@ -1,0 +1,418 @@
+{
+  "timestamp": "20260125_195044",
+  "dj": "julie",
+  "params": {
+    "exaggeration": 0.5,
+    "cfg_weight": 0.5,
+    "temperature": 0.8
+  },
+  "voice_clips": {
+    "julie_10sec": "assets/voice_references/Julie/julie_10sec.wav",
+    "julie_30sec": "assets/voice_references/Julie/julie_30sec.wav",
+    "julie_full": "assets/voice_references/Julie/julie.wav",
+    "julie_happy_v2": "assets/voice_references/Julie/Julie happy excited v2.wav",
+    "julie_semi_serious": "assets/voice_references/Julie/Julie semi serious.wav"
+  },
+  "tests": [
+    {
+      "script": "intro_Wynonie_Harris-Grandma_Plays_t",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Wynonie_Harris-Grandma_Plays_t\\julie_10sec.wav",
+      "text_length": 249
+    },
+    {
+      "script": "intro_Wynonie_Harris-Grandma_Plays_t",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Wynonie_Harris-Grandma_Plays_t\\julie_30sec.wav",
+      "text_length": 249
+    },
+    {
+      "script": "intro_Wynonie_Harris-Grandma_Plays_t",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Wynonie_Harris-Grandma_Plays_t\\julie_full.wav",
+      "text_length": 249
+    },
+    {
+      "script": "intro_Wynonie_Harris-Grandma_Plays_t",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Wynonie_Harris-Grandma_Plays_t\\julie_happy_v2.wav",
+      "text_length": 249
+    },
+    {
+      "script": "intro_Wynonie_Harris-Grandma_Plays_t",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Wynonie_Harris-Grandma_Plays_t\\julie_semi_serious.wav",
+      "text_length": 249
+    },
+    {
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Jackie_Wilson-By_the_Light_of_\\julie_10sec.wav",
+      "text_length": 414
+    },
+    {
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Jackie_Wilson-By_the_Light_of_\\julie_30sec.wav",
+      "text_length": 414
+    },
+    {
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Jackie_Wilson-By_the_Light_of_\\julie_full.wav",
+      "text_length": 414
+    },
+    {
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Jackie_Wilson-By_the_Light_of_\\julie_happy_v2.wav",
+      "text_length": 414
+    },
+    {
+      "script": "intro_Jackie_Wilson-By_the_Light_of_",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Jackie_Wilson-By_the_Light_of_\\julie_semi_serious.wav",
+      "text_length": 414
+    },
+    {
+      "script": "intro_Louis_Armstrong-Hello_Dolly",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Louis_Armstrong-Hello_Dolly\\julie_10sec.wav",
+      "text_length": 311
+    },
+    {
+      "script": "intro_Louis_Armstrong-Hello_Dolly",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Louis_Armstrong-Hello_Dolly\\julie_30sec.wav",
+      "text_length": 311
+    },
+    {
+      "script": "intro_Louis_Armstrong-Hello_Dolly",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Louis_Armstrong-Hello_Dolly\\julie_full.wav",
+      "text_length": 311
+    },
+    {
+      "script": "intro_Louis_Armstrong-Hello_Dolly",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Louis_Armstrong-Hello_Dolly\\julie_happy_v2.wav",
+      "text_length": 311
+    },
+    {
+      "script": "intro_Louis_Armstrong-Hello_Dolly",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Louis_Armstrong-Hello_Dolly\\julie_semi_serious.wav",
+      "text_length": 311
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_The_Mills_Brothers-The_Glow_Wo\\julie_10sec.wav",
+      "text_length": 318
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_The_Mills_Brothers-The_Glow_Wo\\julie_30sec.wav",
+      "text_length": 318
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_The_Mills_Brothers-The_Glow_Wo\\julie_full.wav",
+      "text_length": 318
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_The_Mills_Brothers-The_Glow_Wo\\julie_happy_v2.wav",
+      "text_length": 318
+    },
+    {
+      "script": "intro_The_Mills_Brothers-The_Glow_Wo",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_The_Mills_Brothers-The_Glow_Wo\\julie_semi_serious.wav",
+      "text_length": 318
+    },
+    {
+      "script": "intro_Eddy_Duchin-Ol__Man_Mose",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Eddy_Duchin-Ol__Man_Mose\\julie_10sec.wav",
+      "text_length": 95
+    },
+    {
+      "script": "intro_Eddy_Duchin-Ol__Man_Mose",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Eddy_Duchin-Ol__Man_Mose\\julie_30sec.wav",
+      "text_length": 95
+    },
+    {
+      "script": "intro_Eddy_Duchin-Ol__Man_Mose",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Eddy_Duchin-Ol__Man_Mose\\julie_full.wav",
+      "text_length": 95
+    },
+    {
+      "script": "intro_Eddy_Duchin-Ol__Man_Mose",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Eddy_Duchin-Ol__Man_Mose\\julie_happy_v2.wav",
+      "text_length": 95
+    },
+    {
+      "script": "intro_Eddy_Duchin-Ol__Man_Mose",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Eddy_Duchin-Ol__Man_Mose\\julie_semi_serious.wav",
+      "text_length": 95
+    },
+    {
+      "script": "intro_Bob_Wills-Bubbles_In_My_Beer",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Bob_Wills-Bubbles_In_My_Beer\\julie_10sec.wav",
+      "text_length": 155
+    },
+    {
+      "script": "intro_Bob_Wills-Bubbles_In_My_Beer",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Bob_Wills-Bubbles_In_My_Beer\\julie_30sec.wav",
+      "text_length": 155
+    },
+    {
+      "script": "intro_Bob_Wills-Bubbles_In_My_Beer",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Bob_Wills-Bubbles_In_My_Beer\\julie_full.wav",
+      "text_length": 155
+    },
+    {
+      "script": "intro_Bob_Wills-Bubbles_In_My_Beer",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Bob_Wills-Bubbles_In_My_Beer\\julie_happy_v2.wav",
+      "text_length": 155
+    },
+    {
+      "script": "intro_Bob_Wills-Bubbles_In_My_Beer",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\intro_Bob_Wills-Bubbles_In_My_Beer\\julie_semi_serious.wav",
+      "text_length": 155
+    },
+    {
+      "script": "time_11-30",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\time_11-30\\julie_10sec.wav",
+      "text_length": 104
+    },
+    {
+      "script": "time_11-30",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\time_11-30\\julie_30sec.wav",
+      "text_length": 104
+    },
+    {
+      "script": "time_11-30",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\time_11-30\\julie_full.wav",
+      "text_length": 104
+    },
+    {
+      "script": "time_11-30",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\time_11-30\\julie_happy_v2.wav",
+      "text_length": 104
+    },
+    {
+      "script": "time_11-30",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\time_11-30\\julie_semi_serious.wav",
+      "text_length": 104
+    },
+    {
+      "script": "time_06-00",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\time_06-00\\julie_10sec.wav",
+      "text_length": 138
+    },
+    {
+      "script": "time_06-00",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\time_06-00\\julie_30sec.wav",
+      "text_length": 138
+    },
+    {
+      "script": "time_06-00",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\time_06-00\\julie_full.wav",
+      "text_length": 138
+    },
+    {
+      "script": "time_06-00",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\time_06-00\\julie_happy_v2.wav",
+      "text_length": 138
+    },
+    {
+      "script": "time_06-00",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\time_06-00\\julie_semi_serious.wav",
+      "text_length": 138
+    },
+    {
+      "script": "weather_12-00",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_12-00\\julie_10sec.wav",
+      "text_length": 253
+    },
+    {
+      "script": "weather_12-00",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_12-00\\julie_30sec.wav",
+      "text_length": 253
+    },
+    {
+      "script": "weather_12-00",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_12-00\\julie_full.wav",
+      "text_length": 253
+    },
+    {
+      "script": "weather_12-00",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_12-00\\julie_happy_v2.wav",
+      "text_length": 253
+    },
+    {
+      "script": "weather_12-00",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_12-00\\julie_semi_serious.wav",
+      "text_length": 253
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "julie_10sec",
+      "clip_path": "assets/voice_references/Julie/julie_10sec.wav",
+      "clip_duration": 13.8,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_17-00\\julie_10sec.wav",
+      "text_length": 224
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "julie_30sec",
+      "clip_path": "assets/voice_references/Julie/julie_30sec.wav",
+      "clip_duration": 41.3,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_17-00\\julie_30sec.wav",
+      "text_length": 224
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "julie_full",
+      "clip_path": "assets/voice_references/Julie/julie.wav",
+      "clip_duration": 76.5,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_17-00\\julie_full.wav",
+      "text_length": 224
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "julie_happy_v2",
+      "clip_path": "assets/voice_references/Julie/Julie happy excited v2.wav",
+      "clip_duration": 15.4,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_17-00\\julie_happy_v2.wav",
+      "text_length": 224
+    },
+    {
+      "script": "weather_17-00",
+      "voice_clip": "julie_semi_serious",
+      "clip_path": "assets/voice_references/Julie/Julie semi serious.wav",
+      "clip_duration": 12.4,
+      "file": "data\\voice_clip_test_20260125_195044\\weather_17-00\\julie_semi_serious.wav",
+      "text_length": 224
+    }
+  ]
+}
