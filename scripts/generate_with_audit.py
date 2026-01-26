@@ -49,7 +49,7 @@ logger = logging.getLogger(__name__)
 # Import from new modular structure
 from src.ai_radio.generation.pipeline import GenerationPipeline
 from src.ai_radio.generation.llm_client import LLMClient
-from src.ai_radio.config import DATA_DIR
+from src.ai_radio.config import DATA_DIR, GENERATED_DIR
 
 # Import from refactored modules
 from src.ai_radio.core.checkpoint import PipelineCheckpoint
