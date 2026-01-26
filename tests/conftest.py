@@ -41,7 +41,7 @@ def pytest_configure(config):
 
 
 def pytest_collection_modifyitems(config, items):
-    """Auto-skip tests based on TEST_MODE."""
+    """Auto-skip tests based on TEST_MODE and apply timeout overrides."""
     from tests.test_modes import is_mock_mode, is_integration_mode
     
     for item in items:
@@ -54,6 +54,17 @@ def pytest_collection_modifyitems(config, items):
         if "mock" in item.keywords and is_integration_mode():
             # Mock tests can still run in integration mode as smoke tests
             pass
+        
+# Skip e2e tests in mock mode
+        if 'e2e' in item.keywords:
+            from tests.test_modes import is_mock_mode
+            if is_mock_mode():
+                item.add_marker(pytest.mark.skip(reason='Skipped in mock mode (requires running GUI)'))
+                continue
+
+        # Apply longer timeouts for e2e tests (5 minutes)
+        if "e2e" in item.keywords:
+            item.add_marker(pytest.mark.timeout(300))
 
 
 @pytest.fixture

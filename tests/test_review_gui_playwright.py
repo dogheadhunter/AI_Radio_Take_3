@@ -20,6 +20,9 @@ import sys
 from pathlib import Path
 from playwright.sync_api import Page, expect
 
+# Mark all tests in this file as e2e (requires GUI)
+pytestmark = pytest.mark.e2e
+
 
 # Streamlit app URL
 STREAMLIT_URL = "http://localhost:8501"
