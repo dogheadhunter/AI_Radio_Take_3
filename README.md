@@ -160,7 +160,7 @@ AI_Radio_Take_3/
 │   ├── stages/         # Pipeline stages (generate, audit, regen, audio)
 │   └── generation/     # LLM/TTS clients and prompts
 ├── scripts/            # CLI entry points
-├── tests/              # Test suite (67+ tests)
+├── tests/              # Test suite (390+ tests)
 ├── data/               # Generated content and audit results
 ├── docs/               # Documentation
 └── archive/            # Historical documentation
