@@ -608,12 +608,13 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
             # Use basic pipeline for audio-only regeneration
             use_validated = regen_type != "audio"
             if use_validated:
-                validated_pipeline = ValidatedGenerationPipeline(
+                pipeline = ValidatedGenerationPipeline(
                     output_dir=GENERATED_DIR,
                     prompt_version="v2",
                     lyrics_dir=LYRICS_DIR,
                 )
-            pipeline = GenerationPipeline(output_dir=GENERATED_DIR, prompt_version="v2", lyrics_dir=LYRICS_DIR)
+            else:
+                pipeline = GenerationPipeline(output_dir=GENERATED_DIR, prompt_version="v2", lyrics_dir=LYRICS_DIR)
             
             # Determine version number
             version = _get_next_version_for_regen(folder_path, dj_name, content_type)
@@ -725,7 +726,10 @@ def _generate_intro(pipeline, dj, artist: str, title: str, regen_type: str, feed
     """Generate intro with specified parameters. Returns (success, error_message).
     
     If lyrics_context is provided, it will be passed to the pipeline for thematic bridging.
+    Supports both GenerationPipeline (basic) and ValidatedGenerationPipeline (with validation).
     """
+    from src.ai_radio.generation.validated_pipeline import ValidatedGenerationPipeline
+    
     try:
         text_only = regen_type == "script"
         audio_only = regen_type == "audio"
@@ -735,29 +739,50 @@ def _generate_intro(pipeline, dj, artist: str, title: str, regen_type: str, feed
         dj_str = dj.value if hasattr(dj, 'value') else str(dj)
         logger.info(f"🎙️ Generating intro: {artist} - {title} (DJ: {dj_str}, type: {regen_type})")
         
-        # Load lyrics if not provided and not audio-only
-        if lyrics_context is None and not audio_only:
-            lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
-            if lyrics_file:
-                lyrics_context = load_lyrics(lyrics_file)
-                logger.info(f"📜 Loaded lyrics for thematic bridging: {lyrics_file.name}")
-        
-        result = pipeline.generate_song_intro(
-            song_id=song_id,
-            artist=artist,
-            title=title,
-            dj=dj_str,
-            text_only=text_only,
-            audio_only=audio_only,
-            lyrics_context=lyrics_context,
-            audit_feedback=feedback if feedback else None
-        )
-        if result.success:
-            logger.info(f"✅ Intro generated successfully: {artist} - {title}")
-            return True, None
+        # Check if using ValidatedGenerationPipeline (different API)
+        if isinstance(pipeline, ValidatedGenerationPipeline):
+            # ValidatedGenerationPipeline only does script generation with validation
+            # It has its own lyrics loading and validation stages
+            logger.info(f"🔍 Using ValidatedGenerationPipeline with rule + LLM validation")
+            result = pipeline.generate_song_intro(
+                song_id=song_id,
+                artist=artist,
+                title=title,
+                dj=dj_str,
+            )
+            if result.success:
+                logger.info(f"✅ Intro generated and validated: {artist} - {title} (attempts: {result.attempts})")
+                return True, None
+            else:
+                # ValidatedGenerationPipeline returns errors as a list
+                error_msg = "; ".join(result.errors) if result.errors else "Validation failed"
+                logger.error(f"❌ Intro validation failed: {artist} - {title}: {error_msg}")
+                return False, error_msg
         else:
-            logger.error(f"❌ Intro generation failed: {artist} - {title}: {result.error}")
-            return False, result.error
+            # Basic GenerationPipeline
+            # Load lyrics if not provided and not audio-only
+            if lyrics_context is None and not audio_only:
+                lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
+                if lyrics_file:
+                    lyrics_context = load_lyrics(lyrics_file)
+                    logger.info(f"📜 Loaded lyrics for thematic bridging: {lyrics_file.name}")
+            
+            result = pipeline.generate_song_intro(
+                song_id=song_id,
+                artist=artist,
+                title=title,
+                dj=dj_str,
+                text_only=text_only,
+                audio_only=audio_only,
+                lyrics_context=lyrics_context,
+                audit_feedback=feedback if feedback else None
+            )
+            if result.success:
+                logger.info(f"✅ Intro generated successfully: {artist} - {title}")
+                return True, None
+            else:
+                logger.error(f"❌ Intro generation failed: {artist} - {title}: {result.error}")
+                return False, result.error
     except Exception as e:
         error_msg = str(e)
         logger.error(f"❌ Intro generation failed: {artist} - {title}: {error_msg}")
@@ -768,7 +793,10 @@ def _generate_outro(pipeline, dj, artist: str, title: str, regen_type: str, feed
     """Generate outro with specified parameters. Returns (success, error_message).
     
     If lyrics_context is provided, it will be passed to the pipeline for thematic bridging.
+    Supports both GenerationPipeline (basic) and ValidatedGenerationPipeline (with validation).
     """
+    from src.ai_radio.generation.validated_pipeline import ValidatedGenerationPipeline
+    
     try:
         text_only = regen_type == "script"
         audio_only = regen_type == "audio"
@@ -778,29 +806,49 @@ def _generate_outro(pipeline, dj, artist: str, title: str, regen_type: str, feed
         dj_str = dj.value if hasattr(dj, 'value') else str(dj)
         logger.info(f"🎙️ Generating outro: {artist} - {title} (DJ: {dj_str}, type: {regen_type})")
         
-        # Load lyrics if not provided and not audio-only
-        if lyrics_context is None and not audio_only:
-            lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
-            if lyrics_file:
-                lyrics_context = load_lyrics(lyrics_file)
-                logger.info(f"📜 Loaded lyrics for thematic bridging: {lyrics_file.name}")
-        
-        result = pipeline.generate_song_outro(
-            song_id=song_id,
-            artist=artist,
-            title=title,
-            dj=dj_str,
-            text_only=text_only,
-            audio_only=audio_only,
-            lyrics_context=lyrics_context,
-            audit_feedback=feedback if feedback else None
-        )
-        if result.success:
-            logger.info(f"✅ Outro generated successfully: {artist} - {title}")
-            return True, None
+        # Check if using ValidatedGenerationPipeline (different API)
+        if isinstance(pipeline, ValidatedGenerationPipeline):
+            # ValidatedGenerationPipeline only does script generation with validation
+            logger.info(f"🔍 Using ValidatedGenerationPipeline with rule + LLM validation")
+            result = pipeline.generate_song_outro(
+                song_id=song_id,
+                artist=artist,
+                title=title,
+                dj=dj_str,
+            )
+            if result.success:
+                logger.info(f"✅ Outro generated and validated: {artist} - {title} (attempts: {result.attempts})")
+                return True, None
+            else:
+                # ValidatedGenerationPipeline returns errors as a list
+                error_msg = "; ".join(result.errors) if result.errors else "Validation failed"
+                logger.error(f"❌ Outro validation failed: {artist} - {title}: {error_msg}")
+                return False, error_msg
         else:
-            logger.error(f"❌ Outro generation failed: {artist} - {title}: {result.error}")
-            return False, result.error
+            # Basic GenerationPipeline
+            # Load lyrics if not provided and not audio-only
+            if lyrics_context is None and not audio_only:
+                lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
+                if lyrics_file:
+                    lyrics_context = load_lyrics(lyrics_file)
+                    logger.info(f"📜 Loaded lyrics for thematic bridging: {lyrics_file.name}")
+            
+            result = pipeline.generate_song_outro(
+                song_id=song_id,
+                artist=artist,
+                title=title,
+                dj=dj_str,
+                text_only=text_only,
+                audio_only=audio_only,
+                lyrics_context=lyrics_context,
+                audit_feedback=feedback if feedback else None
+            )
+            if result.success:
+                logger.info(f"✅ Outro generated successfully: {artist} - {title}")
+                return True, None
+            else:
+                logger.error(f"❌ Outro generation failed: {artist} - {title}: {result.error}")
+                return False, result.error
     except Exception as e:
         error_msg = str(e)
         logger.error(f"❌ Outro generation failed: {artist} - {title}: {error_msg}")

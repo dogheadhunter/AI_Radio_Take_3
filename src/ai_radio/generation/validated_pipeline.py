@@ -10,6 +10,7 @@ Pipeline stages:
 4. Regenerate if validation fails (max retries)
 """
 import logging
+import re
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional, List, Dict, Any
@@ -88,8 +89,6 @@ def sanitize_text(text: str) -> str:
     This handles encoding issues and basic cleanup,
     but does NOT try to fix grammar (that's what regeneration is for).
     """
-    import re
-    
     # Fix common encoding issues (double-encoded UTF-8)
     # These patterns appear when UTF-8 is interpreted as Windows-1252
     replacements = [
@@ -241,11 +240,156 @@ class ValidatedGenerationPipeline:
                 continue  # Regenerate
             
             # All validations passed!
+            # Save the sanitized text (overwrite the raw text that was saved by basic pipeline)
+            # Reconstruct the file path
+            safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist).strip().replace(' ', '_')
+            safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title).strip().replace(' ', '_')
+            song_folder = self.output_dir / "intros" / dj / f"{safe_artist}-{safe_title}"
+            
+            # Find the most recent version file to overwrite with sanitized text
+            version = 0
+            for f in song_folder.glob(f"{dj}_*.txt"):
+                match = re.search(r'_(\d+)\.txt$', f.name)
+                if match:
+                    v = int(match.group(1))
+                    if v > version:
+                        version = v
+            
+            text_path = song_folder / f"{dj}_{version}.txt"
+            if text_path.exists():
+                text_path.write_text(text, encoding='utf-8')
+                logger.info(f"✓ Saved sanitized text to {text_path}")
+            
             validated_script = ValidatedScript(
                 script_id=f"{song_id}_{dj}",
                 text=text,
                 dj=dj,
                 content_type="song_intro",
+                artist=artist,
+                title=title,
+                lyrics_context=lyrics_context,
+                attempts=attempts,
+                rule_validation=rule_result,
+                character_validation=char_result,
+            )
+            
+            return GenerationResult(
+                success=True,
+                script=validated_script,
+                attempts=attempts,
+            )
+        
+        # All retries exhausted
+        return GenerationResult(
+            success=False,
+            errors=errors,
+            attempts=attempts,
+        )
+    
+    def generate_song_outro(
+        self,
+        song_id: str,
+        artist: str,
+        title: str,
+        dj: str,
+    ) -> GenerationResult:
+        """
+        Generate a validated song outro.
+        
+        Args:
+            song_id: Unique identifier for the song
+            artist: Artist name
+            title: Song title
+            dj: DJ name ("julie" or "mr_new_vegas")
+        
+        Returns:
+            GenerationResult with success status and validated script
+        """
+        errors = []
+        attempts = 0
+        
+        # Load lyrics for thematic bridging
+        lyrics_context = load_lyrics(title, artist, self.lyrics_dir)
+        
+        for attempt in range(self.max_retries):
+            attempts += 1
+            logger.info(f"Generation attempt {attempts}/{self.max_retries} for {song_id}_{dj} outro")
+            
+            # Stage 1: Generate
+            try:
+                result = self.generation_pipeline.generate_song_outro(
+                    song_id=song_id,
+                    artist=artist,
+                    title=title,
+                    dj=dj,
+                    text_only=True,
+                    lyrics_context=lyrics_context,
+                )
+                
+                if not result.success or not result.text:
+                    errors.append(f"Attempt {attempts}: Generation failed")
+                    continue
+                
+                raw_text = result.text
+            except Exception as e:
+                errors.append(f"Attempt {attempts}: Generation error - {e}")
+                continue
+            
+            # Sanitize before validation
+            text = sanitize_text(raw_text)
+            
+            # Stage 2: Rule-based validation
+            rule_result = validate_script(
+                text=text,
+                content_type="song_outro",
+                artist=artist,
+                title=title,
+            )
+            
+            if not rule_result.passed:
+                errors.append(f"Attempt {attempts}: Rule validation failed - {rule_result.errors}")
+                logger.debug(f"Rule validation errors: {rule_result.errors}")
+                continue  # Regenerate
+            
+            # Stage 3: LLM character validation
+            char_result = validate_character(
+                client=None,  # Use default client
+                text=text,
+                dj=dj,
+                content_type="song_outro",
+            )
+            
+            if not char_result.passed:
+                errors.append(f"Attempt {attempts}: Character validation failed - {char_result.issues}")
+                logger.debug(f"Character validation issues: {char_result.issues}")
+                continue  # Regenerate
+            
+            # All validations passed!
+            # Save the sanitized text (overwrite the raw text that was saved by basic pipeline)
+            # Reconstruct the file path
+            safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist).strip().replace(' ', '_')
+            safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title).strip().replace(' ', '_')
+            song_folder = self.output_dir / "outros" / dj / f"{safe_artist}-{safe_title}"
+            
+            # Find the most recent version file to overwrite with sanitized text
+            version = 0
+            for f in song_folder.glob(f"{dj}_*.txt"):
+                match = re.search(r'_(\d+)\.txt$', f.name)
+                if match:
+                    v = int(match.group(1))
+                    if v > version:
+                        version = v
+            
+            text_path = song_folder / f"{dj}_{version}.txt"
+            if text_path.exists():
+                text_path.write_text(text, encoding='utf-8')
+                logger.info(f"✓ Saved sanitized text to {text_path}")
+            
+            validated_script = ValidatedScript(
+                script_id=f"{song_id}_{dj}_outro",
+                text=text,
+                dj=dj,
+                content_type="song_outro",
                 artist=artist,
                 title=title,
                 lyrics_context=lyrics_context,
