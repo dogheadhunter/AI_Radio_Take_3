@@ -39,7 +39,9 @@ assets/voice_references/**/*.wav
 
 # Generated content and local DBs
 /data/generated/
+/data/audit/
 /data/regeneration_queue.json
+/data/pipeline_state.json
 logs/
 .cache.sqlite
 server_output.log
