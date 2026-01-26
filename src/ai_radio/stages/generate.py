@@ -26,8 +26,17 @@ from src.ai_radio.core.checkpoint import PipelineCheckpoint
 logger = logging.getLogger(__name__)
 
 
-def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoint, test_mode: bool = False) -> int:
-    """Stage 1: Generate text scripts for all songs."""
+def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoint, test_mode: bool = False, overwrite: bool = False) -> int:
+    """Stage 1: Generate text scripts for all songs.
+    
+    Args:
+        pipeline: GenerationPipeline instance
+        songs: List of song dictionaries
+        djs: List of DJ names
+        checkpoint: PipelineCheckpoint for state tracking
+        test_mode: If True, use mock generation
+        overwrite: If True, regenerate even if files exist
+    """
     logger.info("=" * 60)
     logger.info("STAGE 1: GENERATE SCRIPTS")
     logger.info("=" * 60)
@@ -48,7 +57,7 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
             # Intros
             if "intros" in content_types:
                 script_path = get_script_path(song, dj, content_type='intros')
-                if script_path.exists():
+                if script_path.exists() and not overwrite:
                     logger.debug(f"  [{i}/{len(songs)}] Skipping intro {song['title']} (already exists)")
                     total_scripts += 1
                 else:
@@ -82,7 +91,7 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
             # Outros
             if "outros" in content_types:
                 outro_path = get_script_path(song, dj, content_type='outros')
-                if outro_path.exists():
+                if outro_path.exists() and not overwrite:
                     logger.debug(f"  [{i}/{len(songs)}] Skipping outro {song['title']} (already exists)")
                     total_scripts += 1
                 else:

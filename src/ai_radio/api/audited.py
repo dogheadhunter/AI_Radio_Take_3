@@ -82,27 +82,36 @@ class AuditedGenerationAPI(GenerationAPI):
         
         try:
             # Stage 1: Generate script
-            logger.info(f"Generating intro: {song.artist} - {song.title} (DJ: {dj.value})")
+            from datetime import datetime
+            start_time = datetime.now()
+            logger.info(f"[{start_time.strftime('%H:%M:%S')}] Generating intro: {song.artist} - {song.title} (DJ: {dj.value})")
             stage_generate(
                 pipeline=self.pipeline,
                 songs=songs,
                 djs=djs,
                 checkpoint=checkpoint,
                 test_mode=self.test_mode,
+                overwrite=True,  # Force regeneration
             )
+            gen_time = datetime.now()
+            logger.info(f"[{gen_time.strftime('%H:%M:%S')}] Generation took {(gen_time - start_time).total_seconds():.1f}s")
             
             # Stage 2: Audit
-            logger.info(f"Auditing intro: {song.artist} - {song.title}")
+            audit_start = datetime.now()
+            logger.info(f"[{audit_start.strftime('%H:%M:%S')}] Auditing intro: {song.artist} - {song.title}")
             audit_results = stage_audit(
                 songs=songs,
                 djs=djs,
                 checkpoint=checkpoint,
                 test_mode=self.test_mode,
             )
+            audit_time = datetime.now()
+            logger.info(f"[{audit_time.strftime('%H:%M:%S')}] Audit took {(audit_time - audit_start).total_seconds():.1f}s")
             
             # Stage 3: Regenerate if failed
             if audit_results.get('failed', 0) > 0:
-                logger.info(f"Audit failed, regenerating up to {max_retries} times")
+                regen_start = datetime.now()
+                logger.info(f"[{regen_start.strftime('%H:%M:%S')}] Audit failed, regenerating up to {max_retries} times")
                 regenerated = stage_regenerate(
                     pipeline=self.pipeline,
                     songs=songs,
@@ -110,19 +119,24 @@ class AuditedGenerationAPI(GenerationAPI):
                     max_retries=max_retries,
                     test_mode=self.test_mode,
                 )
-                logger.info(f"Regenerated {regenerated} scripts")
+                regen_time = datetime.now()
+                logger.info(f"[{regen_time.strftime('%H:%M:%S')}] Regeneration took {(regen_time - regen_start).total_seconds():.1f}s - {regenerated} scripts")
             
             # Stage 4: Audio generation (only if passed and not text_only)
             if not text_only:
-                logger.info(f"Generating audio for intro")
+                audio_start = datetime.now()
+                logger.info(f"[{audio_start.strftime('%H:%M:%S')}] Generating audio for intro")
                 audio_count = stage_audio(
                     songs=songs,
                     djs=djs,
                     checkpoint=checkpoint,
                 )
-                logger.info(f"Generated {audio_count} audio files")
+                audio_time = datetime.now()
+                logger.info(f"[{audio_time.strftime('%H:%M:%S')}] Audio generation took {(audio_time - audio_start).total_seconds():.1f}s - {audio_count} files")
             
             # Return result with audit info
+            total_time = datetime.now()
+            logger.info(f"[{total_time.strftime('%H:%M:%S')}] Total pipeline time: {(total_time - start_time).total_seconds():.1f}s")
             return self._build_result_from_stages(song, dj, ContentType.INTRO)
             
         except Exception as e:
