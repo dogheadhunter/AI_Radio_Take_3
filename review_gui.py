@@ -3,6 +3,10 @@ Streamlit-based review GUI for AI Radio generated scripts and audio.
 
 Allows manual review, approval/rejection, version comparison,
 and regeneration queueing of generated content.
+
+IMPORTANT: This GUI uses the API layer exclusively for all operations.
+No direct LLM/TTS calls - all generation goes through src/ai_radio/api/
+to ensure proper lyrics context, validation, and audit loop.
 """
 import streamlit as st
 import json
@@ -20,6 +24,17 @@ import logging
 # Configure logging for generation tracking
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Import GUI utilities and backend (API-powered)
+from src.ai_radio.gui import (
+    render_diff,
+    render_inline_diff,
+    VersionManager,
+    VersionType,
+    inject_mobile_styles,
+    render_status_badge,
+)
+from src.ai_radio.gui import backend as gui_backend
 
 # Constants
 DATA_DIR = Path("data")
@@ -545,6 +560,9 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
     """
     Process items in the regeneration queue with progress tracking.
     
+    IMPORTANT: Uses the API layer for all generation to ensure proper
+    lyrics context, validation, and audit loop.
+    
     Args:
         progress_callback: Function to call with progress (0.0 to 1.0)
         status_callback: Function to call with status messages
@@ -562,16 +580,6 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
     
     if not queue:
         return {"success_count": 0, "failed_count": 0, "errors": []}
-    
-    # Import validated generation pipeline with lyrics support
-    try:
-        project_root = Path(__file__).parent
-        sys.path.insert(0, str(project_root))
-        from src.ai_radio.generation.validated_pipeline import ValidatedGenerationPipeline
-        from src.ai_radio.generation.pipeline import GenerationPipeline
-        from src.ai_radio.generation.prompts import DJ
-    except Exception as e:
-        return {"success_count": 0, "failed_count": 0, "errors": [f"Failed to import generation pipeline: {str(e)}"]}
     
     results = {
         "success_count": 0,
@@ -596,69 +604,32 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
             # Extract information from queue item
             content_type = queue_item["content_type"]
             dj_name = queue_item["dj"]
-            folder_path = Path(queue_item["folder_path"])
             feedback = queue_item.get("feedback", "")
             
-            logger.info(f"📋 Processing queue item: {item_id} ({content_type}/{dj_name}/{regen_type})")
+            logger.info(f"📋 Processing queue item via API: {item_id} ({content_type}/{dj_name}/{regen_type})")
             
-            # Create DJ enum
-            dj = DJ.JULIE if dj_name == "julie" else DJ.MR_NEW_VEGAS
-            
-            # Initialize pipeline - use validated pipeline for scripts (includes lyrics + validation)
-            # Use basic pipeline for audio-only regeneration
-            use_validated = regen_type != "audio"
-            if use_validated:
-                pipeline = ValidatedGenerationPipeline(
-                    output_dir=GENERATED_DIR,
-                    prompt_version="v2",
-                    lyrics_dir=LYRICS_DIR,
-                )
-            else:
-                pipeline = GenerationPipeline(output_dir=GENERATED_DIR, prompt_version="v2", lyrics_dir=LYRICS_DIR)
-            
-            # Determine version number
-            version = _get_next_version_for_regen(folder_path, dj_name, content_type)
-            
-            # Generate based on type
-            success = False
-            error_msg = None
-            if content_type == "intros":
-                artist, song = _parse_song_info(item_id)
-                if artist and song:
-                    success, error_msg = _generate_intro(pipeline, dj, artist, song, regen_type, feedback)
-                else:
-                    error_msg = f"Could not parse artist/song from: {item_id}"
-            elif content_type == "outros":
-                artist, song = _parse_song_info(item_id)
-                if artist and song:
-                    success, error_msg = _generate_outro(pipeline, dj, artist, song, regen_type, feedback)
-                else:
-                    error_msg = f"Could not parse artist/song from: {item_id}"
-            elif content_type == "time":
-                hour, minute = _parse_time_info(item_id)
-                if hour is not None:
-                    success, error_msg = _generate_time(pipeline, dj, hour, minute, regen_type, feedback)
-                else:
-                    error_msg = f"Could not parse time from: {item_id}"
-            elif content_type == "weather":
-                hour, minute = _parse_time_info(item_id)
-                if hour is not None:
-                    success, error_msg = _generate_weather(pipeline, dj, hour, minute, regen_type, feedback)
-                else:
-                    error_msg = f"Could not parse time from: {item_id}"
-            else:
-                error_msg = f"Unknown content type: {content_type}"
+            # Use the GUI backend to regenerate through the API layer
+            success, error_msg = gui_backend.regenerate_content(
+                content_type_str=content_type,
+                dj_str=dj_name,
+                item_id=item_id,
+                regen_type=regen_type,
+                feedback=feedback,
+            )
             
             if success:
                 results["success_count"] += 1
+                logger.info(f"✅ Successfully regenerated via API: {item_id}")
             else:
                 results["failed_count"] += 1
                 results["errors"].append(f"{item_id}: {error_msg or 'Generation failed'}")
+                logger.error(f"❌ Failed to regenerate: {item_id}: {error_msg}")
                 
         except Exception as e:
             results["failed_count"] += 1
             error_msg = f"{item_id}: {str(e)}"
             results["errors"].append(error_msg)
+            logger.error(f"❌ Exception during regeneration: {error_msg}")
             if status_callback:
                 status_callback(f"ERROR: {error_msg}")
     
@@ -1096,8 +1067,8 @@ def render_review_item(item: ReviewItem, index: int):
         
         st.markdown("---")
         
-        # Version comparison with selector
-        st.markdown("**📚 Compare with other versions:**")
+        # Version comparison with selector - now with color-coded diff
+        st.markdown("**📚 Compare with other versions (color-coded diff):**")
         
         # Build list of available versions to compare
         available_versions = []
@@ -1126,14 +1097,47 @@ def render_review_item(item: ReviewItem, index: int):
                 compare_path = item.get_script_path(compare_version)
                 if compare_path and compare_path.exists():
                     compare_script = compare_path.read_text(encoding='utf-8')
-                    st.text_area(
-                        f"Version {compare_version}",
-                        value=compare_script,
-                        height=150,
-                        disabled=True,
-                        key=f"compare_{index}_{compare_version}",
+                    
+                    # Show diff rendering toggle
+                    diff_mode = st.radio(
+                        "View mode:",
+                        ["Side-by-side text", "Color diff (inline)", "Color diff (table)"],
+                        horizontal=True,
+                        key=f"diff_mode_{index}",
                         label_visibility="collapsed"
                     )
+                    
+                    if diff_mode == "Side-by-side text":
+                        # Original plain text comparison
+                        col_old, col_new = st.columns(2)
+                        with col_old:
+                            st.caption(f"Version {compare_version}")
+                            st.text_area(
+                                f"Version {compare_version}",
+                                value=compare_script,
+                                height=150,
+                                disabled=True,
+                                key=f"compare_{index}_{compare_version}",
+                                label_visibility="collapsed"
+                            )
+                        with col_new:
+                            st.caption(f"Version {version} (current)")
+                            st.text_area(
+                                f"Version {version}",
+                                value=current_script,
+                                height=150,
+                                disabled=True,
+                                key=f"current_{index}_{version}_cmp",
+                                label_visibility="collapsed"
+                            )
+                    elif diff_mode == "Color diff (inline)":
+                        # Use inline diff rendering (mobile-friendly)
+                        diff_html = render_inline_diff(compare_script, current_script)
+                        st.markdown(diff_html, unsafe_allow_html=True)
+                    else:
+                        # Use table diff rendering
+                        diff_html = render_diff(compare_script, current_script)
+                        st.markdown(f'<div style="overflow-x: auto; font-size: 0.85rem;">{diff_html}</div>', unsafe_allow_html=True)
         else:
             st.caption("No other versions available for comparison")
     
@@ -1487,42 +1491,55 @@ def get_song_content(song_id: str) -> Dict[str, List[ReviewItem]]:
 
 
 def save_manual_script(item: ReviewItem, new_script: str, version: int) -> bool:
-    """Save manually edited script and mark it as rewritten."""
+    """Save manually edited script as a NEW version (preserves history).
+    
+    According to issue requirements: manual edits should create NEW versions,
+    never overwrite existing versions. This preserves full version history.
+    
+    Args:
+        item: ReviewItem being edited
+        new_script: The new script text
+        version: The version being edited (used for reference, not modified)
+        
+    Returns:
+        True if save succeeded
+    """
     try:
-        script_path = item.get_script_path(version)
-        if script_path:
-            # Load review status to check if this is the first edit
-            review_status = load_review_status(item.folder_path)
-            
-            # If this is the first manual edit, create a backup of the original
-            if not review_status.get("manually_rewritten", False) and script_path.exists():
-                original_content = script_path.read_text(encoding='utf-8')
-                # Create backup file by appending .original (e.g., julie_0.txt.original)
-                backup_path = Path(str(script_path) + '.original')
-                backup_path.write_text(original_content, encoding='utf-8')
-                review_status["original_backup_created"] = True
-                review_status["original_backup_at"] = datetime.now().isoformat()
-                review_status["original_backup_path"] = str(backup_path)
-            
-            # Save the new script
-            script_path.write_text(new_script, encoding='utf-8')
-            
-            # Mark as manually rewritten in review status
-            review_status["manually_rewritten"] = True
-            review_status["rewritten_version"] = version
-            review_status["rewritten_at"] = datetime.now().isoformat()
-            
-            # Track edit count for multiple edits
-            edit_count = review_status.get("edit_count", 0) + 1
-            review_status["edit_count"] = edit_count
-            
-            # IMPORTANT: Reset status to pending - manual edits require re-review
-            review_status["status"] = "pending"
-            
-            save_review_status(item.folder_path, review_status)
-            
-            return True
+        # Use the version manager to create a new version
+        success, version_info = gui_backend.save_manual_edit(
+            folder_path=item.folder_path,
+            dj_str=item.dj,
+            content_type=item.content_type,
+            new_script=new_script,
+            notes=f"Manual edit from Review GUI (based on v{version})",
+        )
+        
+        if not success:
+            st.error("Failed to create new version")
+            return False
+        
+        # Update review status
+        review_status = load_review_status(item.folder_path)
+        
+        # Mark as manually rewritten
+        review_status["manually_rewritten"] = True
+        review_status["rewritten_version"] = version_info.version if version_info else version + 1
+        review_status["rewritten_at"] = datetime.now().isoformat()
+        
+        # Track edit count
+        edit_count = review_status.get("edit_count", 0) + 1
+        review_status["edit_count"] = edit_count
+        
+        # IMPORTANT: Reset status to pending - manual edits require re-review
+        review_status["status"] = "pending"
+        
+        save_review_status(item.folder_path, review_status)
+        
+        logger.info(f"Created new version {version_info.version if version_info else 'unknown'} for {item.item_id}")
+        return True
+        
     except Exception as e:
+        logger.error(f"Error saving script: {e}")
         st.error(f"Error saving script: {e}")
         return False
 
@@ -2370,22 +2387,20 @@ def render_catalog_tab():
                 if st.button("⚡ Generate Now", key=f"gen_{song['id']}", type="primary", use_container_width=True):
                     with st.spinner(f"Generating {content_type} ({regen_type})..."):
                         try:
-                            # Import and run pipeline directly
-                            project_root = Path(__file__).parent
-                            sys.path.insert(0, str(project_root))
-                            from src.ai_radio.generation.pipeline import GenerationPipeline
-                            from src.ai_radio.generation.prompts import DJ
+                            # Use API layer for generation (proper pipeline with lyrics + validation)
+                            # Build item_id from artist-title
+                            item_id = f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}"
                             
-                            pipeline = GenerationPipeline()
-                            dj_enum = DJ.JULIE if dj == "julie" else DJ.MR_NEW_VEGAS
-                            
-                            if content_type == "intros":
-                                success, error = _generate_intro(pipeline, dj_enum, artist, title, regen_type, "")
-                            else:
-                                success, error = _generate_outro(pipeline, dj_enum, artist, title, regen_type, "")
+                            success, error = gui_backend.regenerate_content(
+                                content_type_str=content_type,
+                                dj_str=dj,
+                                item_id=item_id,
+                                regen_type=regen_type,
+                                feedback="",
+                            )
                             
                             if success:
-                                st.success(f"✅ Generated {content_type} successfully!")
+                                st.success(f"✅ Generated {content_type} via API successfully!")
                                 st.rerun()
                             else:
                                 st.error(f"❌ Failed: {error}")
