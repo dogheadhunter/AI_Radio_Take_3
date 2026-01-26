@@ -44,13 +44,56 @@ def main():
     # Set environment and run pytest
     env = os.environ.copy()
     env['TEST_MODE'] = mode
-    
+
+    # In integration mode, do a preflight service check and fail fast on missing services
+    if mode == 'integration':
+        # Lazy import of check functions to avoid importing heavy modules in mock mode
+        from src.ai_radio.generation.llm_client import check_ollama_available
+        from src.ai_radio.generation.tts_client import check_tts_available
+        print("Performing preflight checks for required services...")
+
+        if not check_ollama_available():
+            print("ERROR: Ollama LLM service not available at http://localhost:11434")
+            print("Start Ollama (e.g., `ollama serve`) and try again.")
+            return 2
+
+        # Run TTS availability check with a short timeout to avoid long model loads
+        import multiprocessing, queue
+
+        def _check_tts(q):
+            try:
+                ok = check_tts_available()
+            except Exception:
+                ok = False
+            q.put(bool(ok))
+
+        q = multiprocessing.Queue()
+        p = multiprocessing.Process(target=_check_tts, args=(q,))
+        p.start()
+        p.join(10)  # 10 second timeout for TTS check
+        tts_ok = False
+        try:
+            tts_ok = q.get_nowait()
+        except queue.Empty:
+            tts_ok = False
+        finally:
+            if p.is_alive():
+                p.terminate()
+                p.join()
+
+        if not tts_ok:
+            print("WARNING: TTS model not available (local Chatterbox model could not be loaded)")
+            print("TTS-dependent integration tests will be skipped or may fail.")
+            print("If you intended to run full TTS integration tests, start the Chatterbox server or ensure local model loads quickly.")
+            print("Continuing test run, but beware some tests may be skipped or fall back to silent audio.")
+            print()
+
     cmd = [sys.executable, '-m', 'pytest'] + args
-    
+
     print(f"Running: {' '.join(cmd)}")
     print(f"TEST_MODE={mode}")
     print("-" * 60)
-    
+
     result = subprocess.run(cmd, env=env)
     return result.returncode
 
