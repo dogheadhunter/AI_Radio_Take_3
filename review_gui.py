@@ -15,12 +15,18 @@ import base64
 import re
 import sys
 import time
+import logging
+
+# Configure logging for generation tracking
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Constants
 DATA_DIR = Path("data")
 GENERATED_DIR = DATA_DIR / "generated"
 AUDIT_DIR = DATA_DIR / "audit"
 REGEN_QUEUE_FILE = DATA_DIR / "regeneration_queue.json"
+CATALOG_FILE = DATA_DIR / "catalog.json"
 LYRICS_DIR = Path("music_with_lyrics")
 
 # Content types and their folder structure
@@ -171,8 +177,88 @@ def get_audit_status(content_type: str, dj: str, item_id: str) -> Optional[str]:
     return None
 
 
+def _scan_item_folder(item_folder: Path, dj: str, content_type: str) -> Optional[dict]:
+    """Scan a single item folder and return its content info.
+    
+    Returns dict with script_versions, audio_versions, audio_30sec, audio_full, latest_version
+    or None if folder has no content.
+    """
+    # Find all versions of scripts and audio
+    # Note: outros use different naming convention (_outro instead of _0)
+    if content_type == "outros":
+        # For outros: julie_outro.txt, julie_outro_1.txt, etc.
+        script_versions = sorted(item_folder.glob(f"{dj}_outro*.txt"))
+        audio_versions = sorted(item_folder.glob(f"{dj}_outro*.wav"))
+    else:
+        # For other types: julie_0.txt, julie_1.txt, etc.
+        script_versions = sorted(item_folder.glob(f"{dj}_*.txt"))
+        audio_versions = sorted(item_folder.glob(f"{dj}_*.wav"))
+    
+    if not script_versions and not audio_versions:
+        return None
+    
+    # Determine latest version number and categorize audio by ref type
+    latest_version = 0
+    audio_30sec = {}  # version -> path
+    audio_full = {}   # version -> path
+    
+    for path in script_versions:
+        try:
+            stem_parts = path.stem.split('_')
+            if content_type == "outros":
+                if len(stem_parts) > 2:
+                    version = int(stem_parts[-1])
+                    latest_version = max(latest_version, version)
+            else:
+                version = int(stem_parts[-1])
+                latest_version = max(latest_version, version)
+        except (ValueError, IndexError):
+            pass
+    
+    for path in audio_versions:
+        try:
+            stem_parts = path.stem.split('_')
+            # Check for new naming: dj_version_reftype.wav (e.g., mr_new_vegas_0_30sec.wav)
+            if stem_parts[-1] == '30sec':
+                # mr_new_vegas_0_30sec -> version is stem_parts[-2]
+                version = int(stem_parts[-2])
+                audio_30sec[version] = path
+                latest_version = max(latest_version, version)
+            elif stem_parts[-1] == 'full':
+                # mr_new_vegas_0_full -> version is stem_parts[-2]
+                version = int(stem_parts[-2])
+                audio_full[version] = path
+                latest_version = max(latest_version, version)
+            else:
+                # Legacy naming: dj_version.wav (e.g., mr_new_vegas_0.wav)
+                if content_type == "outros":
+                    if len(stem_parts) > 2:
+                        version = int(stem_parts[-1])
+                        latest_version = max(latest_version, version)
+                else:
+                    version = int(stem_parts[-1])
+                    latest_version = max(latest_version, version)
+                    # Store legacy audio in audio_full for backwards compatibility
+                    if version not in audio_full:
+                        audio_full[version] = path
+        except (ValueError, IndexError):
+            pass
+    
+    return {
+        'script_versions': script_versions,
+        'audio_versions': audio_versions,
+        'audio_30sec': audio_30sec,
+        'audio_full': audio_full,
+        'latest_version': latest_version,
+    }
+
+
 def scan_generated_content() -> List[ReviewItem]:
-    """Scan data/generated directory for all content."""
+    """Scan data/generated directory for all content.
+    
+    Merges content from both legacy doubled paths (intros/intros/dj) 
+    and new single paths (intros/dj) to handle transition period.
+    """
     items = []
     
     if not GENERATED_DIR.exists():
@@ -184,94 +270,101 @@ def scan_generated_content() -> List[ReviewItem]:
             continue
         
         for dj in DJS:
-            dj_dir = content_dir / dj
-            if not dj_dir.exists():
-                continue
+            # Check both path structures and merge content
+            legacy_dj_dir = content_dir / content_type / dj  # doubled: intros/intros/dj
+            new_dj_dir = content_dir / dj                     # single: intros/dj
             
-            # Each subdirectory is an item (song folder, time slot, weather condition)
-            for item_folder in dj_dir.iterdir():
-                if not item_folder.is_dir():
-                    continue
-                
-                # Find all versions of scripts and audio
-                # Note: outros use different naming convention (_outro instead of _0)
-                if content_type == "outros":
-                    # For outros: julie_outro.txt, julie_outro_1.txt, etc.
-                    script_versions = sorted(item_folder.glob(f"{dj}_outro*.txt"))
-                    audio_versions = sorted(item_folder.glob(f"{dj}_outro*.wav"))
+            # Collect all item folders from both paths
+            item_folders_by_id = {}  # item_id -> (folder_path, prefer_new)
+            
+            # First add legacy path items
+            if legacy_dj_dir.exists():
+                for item_folder in legacy_dj_dir.iterdir():
+                    if item_folder.is_dir():
+                        item_folders_by_id[item_folder.name] = (item_folder, False)
+            
+            # Then add/override with new path items (new path takes priority)
+            if new_dj_dir.exists():
+                for item_folder in new_dj_dir.iterdir():
+                    if item_folder.is_dir():
+                        item_id = item_folder.name
+                        if item_id in item_folders_by_id:
+                            # Both exist - we need to merge content from both
+                            legacy_folder = item_folders_by_id[item_id][0]
+                            item_folders_by_id[item_id] = ((legacy_folder, item_folder), True)
+                        else:
+                            item_folders_by_id[item_id] = (item_folder, False)
+            
+            # Process each item
+            for item_id, (folder_info, is_merged) in item_folders_by_id.items():
+                if is_merged:
+                    # Merge content from both folders
+                    legacy_folder, new_folder = folder_info
+                    legacy_content = _scan_item_folder(legacy_folder, dj, content_type)
+                    new_content = _scan_item_folder(new_folder, dj, content_type)
+                    
+                    if not legacy_content and not new_content:
+                        continue
+                    
+                    # Prefer new folder as primary, merge versions
+                    primary_folder = new_folder
+                    
+                    # Combine all versions from both folders
+                    all_scripts = []
+                    all_audio = []
+                    merged_30sec = {}
+                    merged_full = {}
+                    max_version = 0
+                    
+                    if legacy_content:
+                        all_scripts.extend(legacy_content['script_versions'])
+                        all_audio.extend(legacy_content['audio_versions'])
+                        merged_30sec.update(legacy_content['audio_30sec'])
+                        merged_full.update(legacy_content['audio_full'])
+                        max_version = max(max_version, legacy_content['latest_version'])
+                    
+                    if new_content:
+                        all_scripts.extend(new_content['script_versions'])
+                        all_audio.extend(new_content['audio_versions'])
+                        merged_30sec.update(new_content['audio_30sec'])
+                        merged_full.update(new_content['audio_full'])
+                        max_version = max(max_version, new_content['latest_version'])
+                    
+                    # Remove duplicates and sort
+                    script_versions = sorted(set(all_scripts), key=lambda p: p.name)
+                    audio_versions = sorted(set(all_audio), key=lambda p: p.name)
+                    
                 else:
-                    # For other types: julie_0.txt, julie_1.txt, etc.
-                    script_versions = sorted(item_folder.glob(f"{dj}_*.txt"))
-                    audio_versions = sorted(item_folder.glob(f"{dj}_*.wav"))
-                
-                if not script_versions and not audio_versions:
-                    continue
-                
-                # Determine latest version number and categorize audio by ref type
-                latest_version = 0
-                audio_30sec = {}  # version -> path
-                audio_full = {}   # version -> path
-                
-                for path in script_versions:
-                    try:
-                        stem_parts = path.stem.split('_')
-                        if content_type == "outros":
-                            if len(stem_parts) > 2:
-                                version = int(stem_parts[-1])
-                                latest_version = max(latest_version, version)
-                        else:
-                            version = int(stem_parts[-1])
-                            latest_version = max(latest_version, version)
-                    except (ValueError, IndexError):
-                        pass
-                
-                for path in audio_versions:
-                    try:
-                        stem_parts = path.stem.split('_')
-                        # Check for new naming: dj_version_reftype.wav (e.g., mr_new_vegas_0_30sec.wav)
-                        if stem_parts[-1] == '30sec':
-                            # mr_new_vegas_0_30sec -> version is stem_parts[-2]
-                            version = int(stem_parts[-2])
-                            audio_30sec[version] = path
-                            latest_version = max(latest_version, version)
-                        elif stem_parts[-1] == 'full':
-                            # mr_new_vegas_0_full -> version is stem_parts[-2]
-                            version = int(stem_parts[-2])
-                            audio_full[version] = path
-                            latest_version = max(latest_version, version)
-                        else:
-                            # Legacy naming: dj_version.wav (e.g., mr_new_vegas_0.wav)
-                            if content_type == "outros":
-                                if len(stem_parts) > 2:
-                                    version = int(stem_parts[-1])
-                                    latest_version = max(latest_version, version)
-                            else:
-                                version = int(stem_parts[-1])
-                                latest_version = max(latest_version, version)
-                                # Store legacy audio in audio_full for backwards compatibility
-                                if version not in audio_full:
-                                    audio_full[version] = path
-                    except (ValueError, IndexError):
-                        pass
+                    # Single folder
+                    item_folder = folder_info
+                    content = _scan_item_folder(item_folder, dj, content_type)
+                    if not content:
+                        continue
+                    
+                    primary_folder = item_folder
+                    script_versions = content['script_versions']
+                    audio_versions = content['audio_versions']
+                    merged_30sec = content['audio_30sec']
+                    merged_full = content['audio_full']
+                    max_version = content['latest_version']
                 
                 # Get audit and review status
-                item_id = item_folder.name
                 audit_status = get_audit_status(content_type, dj, item_id)
-                review_status_data = load_review_status(item_folder)
+                review_status_data = load_review_status(primary_folder)
                 review_status = review_status_data.get("status", "pending")
                 
                 items.append(ReviewItem(
                     content_type=content_type,
                     dj=dj,
                     item_id=item_id,
-                    folder_path=item_folder,
+                    folder_path=primary_folder,
                     script_versions=script_versions,
                     audio_versions=audio_versions,
-                    latest_version=latest_version,
+                    latest_version=max_version,
                     audit_status=audit_status,
                     review_status=review_status,
-                    audio_30sec=audio_30sec,
-                    audio_full=audio_full
+                    audio_30sec=merged_30sec,
+                    audio_full=merged_full
                 ))
     
     return items
@@ -297,10 +390,10 @@ def filter_items(items: List[ReviewItem]) -> List[ReviewItem]:
     if st.session_state.filter_review_status != "All":
         filtered = [i for i in filtered if i.review_status == st.session_state.filter_review_status.lower()]
     
-    # Search query
+    # Search query - normalize underscores to spaces for better matching
     if st.session_state.search_query:
-        query = st.session_state.search_query.lower()
-        filtered = [i for i in filtered if query in i.item_id.lower()]
+        query = st.session_state.search_query.lower().replace('_', ' ')
+        filtered = [i for i in filtered if query in i.item_id.lower().replace('_', ' ')]
     
     return filtered
 
@@ -345,6 +438,109 @@ def clear_regen_queue():
         REGEN_QUEUE_FILE.write_text("[]", encoding='utf-8')
 
 
+def load_catalog() -> List[Dict]:
+    """Load the song catalog from catalog.json."""
+    if not CATALOG_FILE.exists():
+        return []
+    try:
+        data = json.loads(CATALOG_FILE.read_text(encoding='utf-8'))
+        return data.get("songs", [])
+    except Exception as e:
+        logger.error(f"Failed to load catalog: {e}")
+        return []
+
+
+def get_song_generation_status(artist: str, title: str, dj: str) -> Dict[str, bool]:
+    """Check what has been generated for a song (intro/outro script and audio)."""
+    # Normalize names for folder lookup - must match pipeline's _make_song_folder()
+    # Pipeline uses: c if c.isalnum() or c in (' ', '-', '_') else '_'
+    safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist)
+    safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title)
+    safe_artist = safe_artist.strip().replace(' ', '_')
+    safe_title = safe_title.strip().replace(' ', '_')
+    folder_name = f"{safe_artist}-{safe_title}"
+    
+    status = {
+        "intro_script": False,
+        "intro_audio": False,
+        "outro_script": False,
+        "outro_audio": False,
+    }
+    
+    # Check intros - both legacy doubled path and new single path
+    intro_paths = [
+        GENERATED_DIR / "intros" / "intros" / dj / folder_name,  # Legacy doubled path
+        GENERATED_DIR / "intros" / dj / folder_name,              # New single path
+    ]
+    for intro_path in intro_paths:
+        if intro_path.exists():
+            scripts = list(intro_path.glob(f"{dj}*.txt"))
+            audios = list(intro_path.glob(f"{dj}*.wav")) + list(intro_path.glob(f"*_30sec.wav")) + list(intro_path.glob(f"*_full.wav"))
+            if scripts:
+                status["intro_script"] = True
+            if audios:
+                status["intro_audio"] = True
+    
+    # Check outros - both legacy doubled path and new single path
+    outro_paths = [
+        GENERATED_DIR / "outros" / "outros" / dj / folder_name,  # Legacy doubled path
+        GENERATED_DIR / "outros" / dj / folder_name,              # New single path
+    ]
+    for outro_path in outro_paths:
+        if outro_path.exists():
+            scripts = list(outro_path.glob(f"{dj}*.txt"))
+            audios = list(outro_path.glob(f"{dj}*.wav")) + list(outro_path.glob(f"*_30sec.wav")) + list(outro_path.glob(f"*_full.wav"))
+            if scripts:
+                status["outro_script"] = True
+            if audios:
+                status["outro_audio"] = True
+    
+    return status
+
+
+def add_catalog_item_to_queue(artist: str, title: str, dj: str, content_type: str, regen_type: str):
+    """Add a catalog song to the regeneration queue for generation."""
+    # Normalize names for folder path - must match pipeline's _make_song_folder()
+    safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist)
+    safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title)
+    safe_artist = safe_artist.strip().replace(' ', '_')
+    safe_title = safe_title.strip().replace(' ', '_')
+    folder_name = f"{safe_artist}-{safe_title}"
+    
+    # Use single path structure (correct): intros/dj/folder
+    folder_path = GENERATED_DIR / content_type / dj / folder_name
+    
+    queue = []
+    if REGEN_QUEUE_FILE.exists():
+        try:
+            queue = json.loads(REGEN_QUEUE_FILE.read_text(encoding='utf-8'))
+        except Exception:
+            queue = []
+    
+    # Check if already in queue
+    for item in queue:
+        if (item.get("item_id") == folder_name and 
+            item.get("dj") == dj and 
+            item.get("content_type") == content_type):
+            return False  # Already queued
+    
+    queue_item = {
+        "content_type": content_type,
+        "dj": dj,
+        "item_id": folder_name,
+        "folder_path": str(folder_path),
+        "regenerate_type": regen_type,
+        "feedback": "",
+        "added_at": datetime.now().isoformat(),
+        "source": "catalog"
+    }
+    
+    queue.append(queue_item)
+    REGEN_QUEUE_FILE.write_text(json.dumps(queue, indent=2), encoding='utf-8')
+    logger.info(f"Added to queue: {artist} - {title} ({content_type}/{dj}/{regen_type})")
+    return True
+
+
 def process_regeneration_queue(progress_callback=None, status_callback=None):
     """
     Process items in the regeneration queue with progress tracking.
@@ -367,10 +563,11 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
     if not queue:
         return {"success_count": 0, "failed_count": 0, "errors": []}
     
-    # Import generation pipeline
+    # Import validated generation pipeline with lyrics support
     try:
         project_root = Path(__file__).parent
         sys.path.insert(0, str(project_root))
+        from src.ai_radio.generation.validated_pipeline import ValidatedGenerationPipeline
         from src.ai_radio.generation.pipeline import GenerationPipeline
         from src.ai_radio.generation.prompts import DJ
     except Exception as e:
@@ -402,39 +599,60 @@ def process_regeneration_queue(progress_callback=None, status_callback=None):
             folder_path = Path(queue_item["folder_path"])
             feedback = queue_item.get("feedback", "")
             
+            logger.info(f"📋 Processing queue item: {item_id} ({content_type}/{dj_name}/{regen_type})")
+            
             # Create DJ enum
             dj = DJ.JULIE if dj_name == "julie" else DJ.MR_NEW_VEGAS
             
-            # Initialize pipeline
-            pipeline = GenerationPipeline()
+            # Initialize pipeline - use validated pipeline for scripts (includes lyrics + validation)
+            # Use basic pipeline for audio-only regeneration
+            use_validated = regen_type != "audio"
+            if use_validated:
+                validated_pipeline = ValidatedGenerationPipeline(
+                    output_dir=GENERATED_DIR,
+                    prompt_version="v2",
+                    lyrics_dir=LYRICS_DIR,
+                )
+            pipeline = GenerationPipeline(output_dir=GENERATED_DIR, prompt_version="v2", lyrics_dir=LYRICS_DIR)
             
             # Determine version number
             version = _get_next_version_for_regen(folder_path, dj_name, content_type)
             
             # Generate based on type
             success = False
+            error_msg = None
             if content_type == "intros":
                 artist, song = _parse_song_info(item_id)
                 if artist and song:
-                    success = _generate_intro(pipeline, dj, artist, song, regen_type, feedback)
+                    success, error_msg = _generate_intro(pipeline, dj, artist, song, regen_type, feedback)
+                else:
+                    error_msg = f"Could not parse artist/song from: {item_id}"
             elif content_type == "outros":
                 artist, song = _parse_song_info(item_id)
                 if artist and song:
-                    success = _generate_outro(pipeline, dj, artist, song, regen_type, feedback)
+                    success, error_msg = _generate_outro(pipeline, dj, artist, song, regen_type, feedback)
+                else:
+                    error_msg = f"Could not parse artist/song from: {item_id}"
             elif content_type == "time":
                 hour, minute = _parse_time_info(item_id)
                 if hour is not None:
-                    success = _generate_time(pipeline, dj, hour, minute, regen_type, feedback)
+                    success, error_msg = _generate_time(pipeline, dj, hour, minute, regen_type, feedback)
+                else:
+                    error_msg = f"Could not parse time from: {item_id}"
             elif content_type == "weather":
                 hour, minute = _parse_time_info(item_id)
                 if hour is not None:
-                    success = _generate_weather(pipeline, dj, hour, minute, regen_type, feedback)
+                    success, error_msg = _generate_weather(pipeline, dj, hour, minute, regen_type, feedback)
+                else:
+                    error_msg = f"Could not parse time from: {item_id}"
+            else:
+                error_msg = f"Unknown content type: {content_type}"
             
             if success:
                 results["success_count"] += 1
             else:
                 results["failed_count"] += 1
-                results["errors"].append(f"{item_id}: Generation returned False")
+                results["errors"].append(f"{item_id}: {error_msg or 'Generation failed'}")
                 
         except Exception as e:
             results["failed_count"] += 1
@@ -503,49 +721,98 @@ def _parse_time_info(item_id: str) -> tuple:
     return None, None
 
 
-def _generate_intro(pipeline, dj, artist: str, song: str, regen_type: str, feedback: str) -> bool:
-    """Generate intro with specified parameters."""
+def _generate_intro(pipeline, dj, artist: str, title: str, regen_type: str, feedback: str, lyrics_context: str = None) -> tuple:
+    """Generate intro with specified parameters. Returns (success, error_message).
+    
+    If lyrics_context is provided, it will be passed to the pipeline for thematic bridging.
+    """
     try:
         text_only = regen_type == "script"
         audio_only = regen_type == "audio"
-        pipeline.generate_song_intro(
+        # Create a song_id from artist-title
+        song_id = f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}"
+        # Convert DJ enum to string if needed
+        dj_str = dj.value if hasattr(dj, 'value') else str(dj)
+        logger.info(f"🎙️ Generating intro: {artist} - {title} (DJ: {dj_str}, type: {regen_type})")
+        
+        # Load lyrics if not provided and not audio-only
+        if lyrics_context is None and not audio_only:
+            lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
+            if lyrics_file:
+                lyrics_context = load_lyrics(lyrics_file)
+                logger.info(f"📜 Loaded lyrics for thematic bridging: {lyrics_file.name}")
+        
+        result = pipeline.generate_song_intro(
+            song_id=song_id,
             artist=artist,
-            song=song,
-            dj=dj,
-            prompt_version="v2",
+            title=title,
+            dj=dj_str,
             text_only=text_only,
             audio_only=audio_only,
+            lyrics_context=lyrics_context,
             audit_feedback=feedback if feedback else None
         )
-        return True
-    except Exception:
-        return False
+        if result.success:
+            logger.info(f"✅ Intro generated successfully: {artist} - {title}")
+            return True, None
+        else:
+            logger.error(f"❌ Intro generation failed: {artist} - {title}: {result.error}")
+            return False, result.error
+    except Exception as e:
+        error_msg = str(e)
+        logger.error(f"❌ Intro generation failed: {artist} - {title}: {error_msg}")
+        return False, error_msg
 
 
-def _generate_outro(pipeline, dj, artist: str, song: str, regen_type: str, feedback: str) -> bool:
-    """Generate outro with specified parameters."""
+def _generate_outro(pipeline, dj, artist: str, title: str, regen_type: str, feedback: str, lyrics_context: str = None) -> tuple:
+    """Generate outro with specified parameters. Returns (success, error_message).
+    
+    If lyrics_context is provided, it will be passed to the pipeline for thematic bridging.
+    """
     try:
         text_only = regen_type == "script"
         audio_only = regen_type == "audio"
-        pipeline.generate_song_outro(
+        # Create a song_id from artist-title
+        song_id = f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}"
+        # Convert DJ enum to string if needed
+        dj_str = dj.value if hasattr(dj, 'value') else str(dj)
+        logger.info(f"🎙️ Generating outro: {artist} - {title} (DJ: {dj_str}, type: {regen_type})")
+        
+        # Load lyrics if not provided and not audio-only
+        if lyrics_context is None and not audio_only:
+            lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
+            if lyrics_file:
+                lyrics_context = load_lyrics(lyrics_file)
+                logger.info(f"📜 Loaded lyrics for thematic bridging: {lyrics_file.name}")
+        
+        result = pipeline.generate_song_outro(
+            song_id=song_id,
             artist=artist,
-            song=song,
-            dj=dj,
-            prompt_version="v2",
+            title=title,
+            dj=dj_str,
             text_only=text_only,
             audio_only=audio_only,
+            lyrics_context=lyrics_context,
             audit_feedback=feedback if feedback else None
         )
-        return True
-    except Exception:
-        return False
+        if result.success:
+            logger.info(f"✅ Outro generated successfully: {artist} - {title}")
+            return True, None
+        else:
+            logger.error(f"❌ Outro generation failed: {artist} - {title}: {result.error}")
+            return False, result.error
+    except Exception as e:
+        error_msg = str(e)
+        logger.error(f"❌ Outro generation failed: {artist} - {title}: {error_msg}")
+        return False, error_msg
 
 
-def _generate_time(pipeline, dj, hour: int, minute: int, regen_type: str, feedback: str) -> bool:
-    """Generate time announcement with specified parameters."""
+def _generate_time(pipeline, dj, hour: int, minute: int, regen_type: str, feedback: str) -> tuple:
+    """Generate time announcement with specified parameters. Returns (success, error_message)."""
     try:
         text_only = regen_type == "script"
         audio_only = regen_type == "audio"
+        logger.info(f"🕐 Generating time: {hour}:{minute:02d} (DJ: {dj}, type: {regen_type})")
         pipeline.generate_time_announcement(
             hour=hour,
             minute=minute,
@@ -555,16 +822,20 @@ def _generate_time(pipeline, dj, hour: int, minute: int, regen_type: str, feedba
             audio_only=audio_only,
             audit_feedback=feedback if feedback else None
         )
-        return True
-    except Exception:
-        return False
+        logger.info(f"✅ Time generated successfully: {hour}:{minute:02d}")
+        return True, None
+    except Exception as e:
+        error_msg = str(e)
+        logger.error(f"❌ Time generation failed: {hour}:{minute:02d}: {error_msg}")
+        return False, error_msg
 
 
-def _generate_weather(pipeline, dj, hour: int, minute: int, regen_type: str, feedback: str) -> bool:
-    """Generate weather announcement with specified parameters."""
+def _generate_weather(pipeline, dj, hour: int, minute: int, regen_type: str, feedback: str) -> tuple:
+    """Generate weather announcement with specified parameters. Returns (success, error_message)."""
     try:
         text_only = regen_type == "script"
         audio_only = regen_type == "audio"
+        logger.info(f"🌤️ Generating weather: {hour}:{minute:02d} (DJ: {dj}, type: {regen_type})")
         pipeline.generate_weather_announcement(
             hour=hour,
             minute=minute,
@@ -574,9 +845,12 @@ def _generate_weather(pipeline, dj, hour: int, minute: int, regen_type: str, fee
             audio_only=audio_only,
             audit_feedback=feedback if feedback else None
         )
-        return True
-    except Exception:
-        return False
+        logger.info(f"✅ Weather generated successfully: {hour}:{minute:02d}")
+        return True, None
+    except Exception as e:
+        error_msg = str(e)
+        logger.error(f"❌ Weather generation failed: {hour}:{minute:02d}: {error_msg}")
+        return False, error_msg
 
 
 def export_reviews_to_csv(items: List[ReviewItem]) -> pd.DataFrame:
@@ -655,16 +929,33 @@ def render_review_item(item: ReviewItem, index: int):
     # === AUDIO FIRST (Most important for review) ===
     st.markdown("#### 🔊 Audio Preview")
     
-    # Only show version selector if there are multiple versions
+    # Version navigation with < > buttons
     if item.latest_version > 0:
-        version = st.selectbox(
-            "Version",
-            range(item.latest_version + 1),
-            index=item.latest_version,
-            key=f"version_{index}"
-        )
+        # Initialize version in session state if needed
+        version_key = f"version_{item.dj}_{item.item_id}_{index}"
+        if version_key not in st.session_state:
+            st.session_state[version_key] = item.latest_version
+        
+        version = st.session_state[version_key]
+        
+        # Navigation row: < version N of M >
+        nav_col1, nav_col2, nav_col3 = st.columns([1, 2, 1])
+        with nav_col1:
+            if st.button("◀️", key=f"prev_ver_{index}", disabled=(version == 0), use_container_width=True):
+                st.session_state[version_key] = version - 1
+                st.rerun()
+        with nav_col2:
+            st.markdown(f"""
+            <div style="text-align: center; padding: 8px; background: rgba(128,128,128,0.1); border-radius: 8px;">
+                <strong>Version {version + 1}</strong> of {item.latest_version + 1}
+            </div>
+            """, unsafe_allow_html=True)
+        with nav_col3:
+            if st.button("▶️", key=f"next_ver_{index}", disabled=(version >= item.latest_version), use_container_width=True):
+                st.session_state[version_key] = version + 1
+                st.rerun()
     else:
-        version = 0  # Only one version exists, no selector needed
+        version = 0  # Only one version exists, no navigation needed
     
     # Check for dual audio
     if item.has_dual_audio(version):
@@ -1050,45 +1341,81 @@ def get_song_content(song_id: str) -> Dict[str, List[ReviewItem]]:
     
     for content_type in ["intros", "outros"]:
         for dj in DJS:
-            folder = GENERATED_DIR / content_type / dj / song_id
-            if folder.exists():
+            # Check both legacy doubled path and new single path
+            possible_folders = [
+                GENERATED_DIR / content_type / content_type / dj / song_id,  # Legacy doubled path
+                GENERATED_DIR / content_type / dj / song_id,                  # New single path
+            ]
+            
+            for folder in possible_folders:
+                if not folder.exists():
+                    continue
+                    
                 # Scan for versions
                 script_versions = []
                 audio_versions = []
+                audio_30sec = {}
+                audio_full = {}
                 
                 if content_type == "outros":
                     # Outros use different naming: dj_outro.txt, dj_outro_1.txt, etc.
                     base_script = folder / f"{dj}_outro.txt"
                     base_audio = folder / f"{dj}_outro.wav"
+                    base_audio_full = folder / f"{dj}_outro_full.wav"
+                    base_audio_30sec = folder / f"{dj}_outro_30sec.wav"
                     if base_script.exists():
                         script_versions.append(base_script)
                     if base_audio.exists():
                         audio_versions.append(base_audio)
+                    if base_audio_full.exists():
+                        audio_full[0] = base_audio_full
+                    if base_audio_30sec.exists():
+                        audio_30sec[0] = base_audio_30sec
                     
                     # Check for numbered versions
                     for i in range(1, 100):
                         script = folder / f"{dj}_outro_{i}.txt"
                         audio = folder / f"{dj}_outro_{i}.wav"
+                        audio_f = folder / f"{dj}_outro_{i}_full.wav"
+                        audio_30 = folder / f"{dj}_outro_{i}_30sec.wav"
                         if script.exists():
                             script_versions.append(script)
                         if audio.exists():
                             audio_versions.append(audio)
-                        if not script.exists() and not audio.exists():
+                        if audio_f.exists():
+                            audio_full[i] = audio_f
+                        if audio_30.exists():
+                            audio_30sec[i] = audio_30
+                        if not script.exists() and not audio.exists() and not audio_f.exists() and not audio_30.exists():
                             break
                 else:
-                    # Standard naming: dj_0.txt, dj_1.txt, etc.
+                    # Standard naming: dj_0.txt, dj_1.txt, dj_0_full.wav, dj_0_30sec.wav, etc.
                     for i in range(100):
                         script = folder / f"{dj}_{i}.txt"
                         audio = folder / f"{dj}_{i}.wav"
+                        audio_f = folder / f"{dj}_{i}_full.wav"
+                        audio_30 = folder / f"{dj}_{i}_30sec.wav"
                         if script.exists():
                             script_versions.append(script)
                         if audio.exists():
                             audio_versions.append(audio)
-                        if not script.exists() and not audio.exists():
+                            # Store legacy audio in audio_full for backwards compatibility
+                            if i not in audio_full:
+                                audio_full[i] = audio
+                        if audio_f.exists():
+                            audio_full[i] = audio_f
+                        if audio_30.exists():
+                            audio_30sec[i] = audio_30
+                        if not script.exists() and not audio.exists() and not audio_f.exists() and not audio_30.exists():
                             break
                 
-                if script_versions or audio_versions:
-                    latest = max(len(script_versions), len(audio_versions)) - 1
+                if script_versions or audio_versions or audio_full or audio_30sec:
+                    latest = max(
+                        len(script_versions) - 1 if script_versions else 0,
+                        len(audio_versions) - 1 if audio_versions else 0,
+                        max(audio_full.keys()) if audio_full else 0,
+                        max(audio_30sec.keys()) if audio_30sec else 0
+                    )
                     review_status_data = load_review_status(folder)
                     audit_status = get_audit_status(content_type, dj, song_id)
                     
@@ -1101,9 +1428,12 @@ def get_song_content(song_id: str) -> Dict[str, List[ReviewItem]]:
                         audio_versions=audio_versions,
                         latest_version=latest,
                         audit_status=audit_status,
-                        review_status=review_status_data.get("status", "pending")
+                        review_status=review_status_data.get("status", "pending"),
+                        audio_30sec=audio_30sec,
+                        audio_full=audio_full
                     )
                     content[content_type].append(item)
+                    break  # Found content in this path, don't check the other
     
     return content
 
@@ -1336,6 +1666,17 @@ def init_session_state():
         st.session_state.filter_review_status = "All"
     if 'search_query' not in st.session_state:
         st.session_state.search_query = ""
+    # Queue processing results (persisted across reruns)
+    if 'queue_results' not in st.session_state:
+        st.session_state.queue_results = None
+    # Active tab
+    if 'active_tab' not in st.session_state:
+        st.session_state.active_tab = "Review"
+    # Catalog filters
+    if 'catalog_search' not in st.session_state:
+        st.session_state.catalog_search = ""
+    if 'catalog_dj' not in st.session_state:
+        st.session_state.catalog_dj = "julie"
 
 
 def main():
@@ -1690,22 +2031,47 @@ def main():
                     status_callback=update_status
                 )
                 
-                if results["success_count"] > 0:
-                    st.success(f"✅ {results['success_count']} done!")
-                if results["failed_count"] > 0:
-                    st.error(f"❌ {results['failed_count']} failed")
+                # Store results in session state for persistent display
+                st.session_state.queue_results = results
                 st.rerun()
             
             if st.button("🗑️ Clear Queue", use_container_width=True):
                 clear_regen_queue()
+                st.session_state.queue_results = None
                 st.rerun()
         else:
             st.caption("Queue empty")
+        
+        # Show persistent queue results if any
+        if st.session_state.queue_results:
+            results = st.session_state.queue_results
+            if results["success_count"] > 0:
+                st.success(f"✅ {results['success_count']} generated!")
+            if results["failed_count"] > 0:
+                st.error(f"❌ {results['failed_count']} failed")
+                with st.expander("View errors"):
+                    for err in results.get("errors", []):
+                        st.text(err)
+            if st.button("Clear results", use_container_width=True):
+                st.session_state.queue_results = None
+                st.rerun()
         
         # Refresh button
         if st.button("🔄 Refresh", use_container_width=True):
             st.rerun()
     
+    # Tab-based navigation
+    tab_review, tab_catalog = st.tabs(["📋 Review", "🎵 Catalog"])
+    
+    with tab_review:
+        render_review_tab()
+    
+    with tab_catalog:
+        render_catalog_tab()
+
+
+def render_review_tab():
+    """Render the review tab content."""
     # Main content area
     all_items = scan_generated_content()
     filtered_items = filter_items(all_items)
@@ -1823,6 +2189,164 @@ def main():
         
         # Add extra padding at bottom for mobile
         st.markdown("<div style='height: 80px;'></div>", unsafe_allow_html=True)
+
+
+def render_catalog_tab():
+    """Render the catalog browser tab for generating new content."""
+    st.markdown("### 🎵 Song Catalog")
+    st.caption("Browse songs and generate intros/outros")
+    
+    # Filters
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        search = st.text_input(
+            "🔎 Search songs",
+            value=st.session_state.catalog_search,
+            placeholder="Search by artist or title...",
+            key="catalog_search_input"
+        )
+        st.session_state.catalog_search = search
+    
+    with col2:
+        dj = st.selectbox(
+            "🎙️ DJ",
+            ["julie", "mr_new_vegas"],
+            index=0 if st.session_state.catalog_dj == "julie" else 1,
+            key="catalog_dj_select"
+        )
+        st.session_state.catalog_dj = dj
+    
+    # Load catalog
+    catalog = load_catalog()
+    
+    if not catalog:
+        st.warning("No catalog found. Check data/catalog.json")
+        return
+    
+    # Filter by search
+    if search:
+        search_lower = search.lower()
+        catalog = [
+            s for s in catalog 
+            if search_lower in s.get("artist", "").lower() 
+            or search_lower in s.get("title", "").lower()
+        ]
+    
+    st.caption(f"Showing {len(catalog)} songs")
+    
+    # Display songs in a paginated list
+    songs_per_page = 10
+    total_pages = max(1, (len(catalog) + songs_per_page - 1) // songs_per_page)
+    
+    if 'catalog_page' not in st.session_state:
+        st.session_state.catalog_page = 0
+    
+    # Pagination controls
+    nav_col1, nav_col2, nav_col3 = st.columns([1, 2, 1])
+    with nav_col1:
+        if st.button("⬅️", key="cat_prev", disabled=(st.session_state.catalog_page == 0)):
+            st.session_state.catalog_page -= 1
+            st.rerun()
+    with nav_col2:
+        st.markdown(f"<div style='text-align:center;'><strong>{st.session_state.catalog_page + 1}</strong> / {total_pages}</div>", unsafe_allow_html=True)
+    with nav_col3:
+        if st.button("➡️", key="cat_next", disabled=(st.session_state.catalog_page >= total_pages - 1)):
+            st.session_state.catalog_page += 1
+            st.rerun()
+    
+    # Get current page of songs
+    start_idx = st.session_state.catalog_page * songs_per_page
+    end_idx = start_idx + songs_per_page
+    page_songs = catalog[start_idx:end_idx]
+    
+    # Display each song
+    for song in page_songs:
+        artist = song.get("artist", "Unknown")
+        title = song.get("title", "Unknown")
+        
+        # Get generation status
+        status = get_song_generation_status(artist, title, dj)
+        
+        # Status indicators
+        intro_status = ""
+        if status["intro_script"] and status["intro_audio"]:
+            intro_status = "✅"
+        elif status["intro_script"]:
+            intro_status = "📝"
+        elif status["intro_audio"]:
+            intro_status = "🔊"
+        else:
+            intro_status = "❌"
+        
+        outro_status = ""
+        if status["outro_script"] and status["outro_audio"]:
+            outro_status = "✅"
+        elif status["outro_script"]:
+            outro_status = "📝"
+        elif status["outro_audio"]:
+            outro_status = "🔊"
+        else:
+            outro_status = "❌"
+        
+        with st.expander(f"**{title}** — {artist}  [{intro_status} Intro | {outro_status} Outro]"):
+            st.caption(f"Intro: Script {'✅' if status['intro_script'] else '❌'} | Audio {'✅' if status['intro_audio'] else '❌'}")
+            st.caption(f"Outro: Script {'✅' if status['outro_script'] else '❌'} | Audio {'✅' if status['outro_audio'] else '❌'}")
+            
+            # Generation buttons
+            st.markdown("**Generate:**")
+            
+            col_type, col_regen = st.columns(2)
+            with col_type:
+                content_type = st.selectbox(
+                    "Content",
+                    ["intros", "outros"],
+                    key=f"ct_{song['id']}"
+                )
+            with col_regen:
+                regen_type = st.selectbox(
+                    "Generate",
+                    ["script", "audio", "both"],
+                    key=f"rt_{song['id']}"
+                )
+            
+            col_btn1, col_btn2 = st.columns(2)
+            with col_btn1:
+                if st.button("➕ Add to Queue", key=f"add_{song['id']}", use_container_width=True):
+                    if add_catalog_item_to_queue(artist, title, dj, content_type, regen_type):
+                        st.success(f"Added to queue!")
+                        st.rerun()
+                    else:
+                        st.warning("Already in queue")
+            
+            with col_btn2:
+                if st.button("⚡ Generate Now", key=f"gen_{song['id']}", type="primary", use_container_width=True):
+                    with st.spinner(f"Generating {content_type} ({regen_type})..."):
+                        try:
+                            # Import and run pipeline directly
+                            project_root = Path(__file__).parent
+                            sys.path.insert(0, str(project_root))
+                            from src.ai_radio.generation.pipeline import GenerationPipeline
+                            from src.ai_radio.generation.prompts import DJ
+                            
+                            pipeline = GenerationPipeline()
+                            dj_enum = DJ.JULIE if dj == "julie" else DJ.MR_NEW_VEGAS
+                            
+                            if content_type == "intros":
+                                success, error = _generate_intro(pipeline, dj_enum, artist, title, regen_type, "")
+                            else:
+                                success, error = _generate_outro(pipeline, dj_enum, artist, title, regen_type, "")
+                            
+                            if success:
+                                st.success(f"✅ Generated {content_type} successfully!")
+                                st.rerun()
+                            else:
+                                st.error(f"❌ Failed: {error}")
+                        except Exception as e:
+                            st.error(f"❌ Error: {str(e)}")
+    
+    # Legend
+    st.markdown("---")
+    st.caption("**Legend:** ✅ Complete | 📝 Script only | 🔊 Audio only | ❌ Not generated")
 
 
 if __name__ == "__main__":

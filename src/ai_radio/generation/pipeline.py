@@ -72,12 +72,26 @@ class GenerationPipeline:
         folder_path.mkdir(parents=True, exist_ok=True)
         return folder_path
 
-    def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None, audit_feedback: str = None) -> GenerationResult:
+    def generate_song_intro(self, song_id: str, artist: str, title: str, dj: str, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None, audit_feedback: str = None, version: int = None) -> GenerationResult:
+        """Generate song intro with versioning and dual audio support.
+        
+        Args:
+            version: If None, auto-detect next version number. If specified, use that version.
+                    For regeneration, pass the next version number to preserve previous versions.
+        """
         try:
             # Create song folder
             song_folder = self._make_song_folder(song_id, artist, title, dj)
-            text_path = song_folder / f"{dj}_0.txt"
-            audio_path = song_folder / f"{dj}_0.wav"
+            
+            # Auto-detect version if not specified
+            if version is None:
+                version = self._get_next_version(song_folder, dj, "intros")
+            
+            text_path = song_folder / f"{dj}_{version}.txt"
+            audio_path_full = song_folder / f"{dj}_{version}_full.wav"
+            audio_path_30sec = song_folder / f"{dj}_{version}_30sec.wav"
+            # Legacy single audio path (for backwards compatibility in result)
+            audio_path = song_folder / f"{dj}_{version}.wav"
             
             text = None
             
@@ -106,20 +120,77 @@ class GenerationPipeline:
                     if text_path.exists():
                         text = text_path.read_text(encoding='utf-8')
                     else:
-                        raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
+                        # Try previous version's text file if audio_only and new version
+                        prev_text_path = song_folder / f"{dj}_{version-1}.txt" if version > 0 else None
+                        if prev_text_path and prev_text_path.exists():
+                            text = prev_text_path.read_text(encoding='utf-8')
+                        else:
+                            # Check legacy doubled path structure (intros/intros/dj/...)
+                            safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist).strip().replace(' ', '_')
+                            safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title).strip().replace(' ', '_')
+                            legacy_text_path = self.output_dir / "intros" / "intros" / dj / f"{safe_artist}-{safe_title}" / f"{dj}_0.txt"
+                            if legacy_text_path.exists():
+                                text = legacy_text_path.read_text(encoding='utf-8')
+                            else:
+                                raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
                 
-                # Use voice reference if available
-                # Voice files are in subdirectories: Julie/julie.wav, Mister_New_Vegas/mr_new_vegas.wav
+                # Generate DUAL audio: full voice sample and 30-second sample
                 dj_folder = "Julie" if dj == "julie" else "Mister_New_Vegas"
-                voice_ref = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
-                if not voice_ref.exists():
-                    voice_ref = None
                 
-                generate_audio(self._tts, text=text, output_path=audio_path, voice_reference=voice_ref)
+                # Full voice reference
+                voice_ref_full = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
+                if voice_ref_full.exists():
+                    generate_audio(self._tts, text=text, output_path=audio_path_full, voice_reference=voice_ref_full)
+                
+                # 30-second voice reference
+                voice_ref_30sec = VOICE_REFERENCES_DIR / dj_folder / f"{dj}_30sec.wav"
+                if voice_ref_30sec.exists():
+                    generate_audio(self._tts, text=text, output_path=audio_path_30sec, voice_reference=voice_ref_30sec)
+                elif voice_ref_full.exists():
+                    # Fallback: if no 30sec exists, just generate with full ref as legacy single file
+                    generate_audio(self._tts, text=text, output_path=audio_path, voice_reference=voice_ref_full)
 
-            return GenerationResult(song_id=song_id, dj=dj, text=text, audio_path=audio_path if not text_only else None, success=True)
+            return GenerationResult(song_id=song_id, dj=dj, text=text, audio_path=audio_path_full if not text_only else None, success=True)
         except Exception as exc:
             return GenerationResult(song_id=song_id, dj=dj, text=None, audio_path=None, success=False, error=str(exc))
+    
+    def _get_next_version(self, folder: Path, dj: str, content_type: str) -> int:
+        """Get next version number by scanning existing files in folder."""
+        import re
+        if not folder.exists():
+            return 0
+        
+        versions = set()
+        
+        if content_type == "outros":
+            # Outros: dj_outro.txt (v0), dj_outro_1.txt (v1), etc.
+            for f in folder.glob(f"{dj}_outro*.txt"):
+                if f.stem == f"{dj}_outro":
+                    versions.add(0)
+                else:
+                    match = re.search(r'_outro_(\d+)', f.stem)
+                    if match:
+                        versions.add(int(match.group(1)))
+            for f in folder.glob(f"{dj}_outro*.wav"):
+                if f.stem == f"{dj}_outro":
+                    versions.add(0)
+                else:
+                    match = re.search(r'_outro_(\d+)', f.stem)
+                    if match:
+                        versions.add(int(match.group(1)))
+        else:
+            # Intros and others: dj_0.txt, dj_1.txt, dj_0_full.wav, dj_0_30sec.wav, etc.
+            for f in folder.glob(f"{dj}_*.txt"):
+                match = re.search(rf'{dj}_(\d+)\.txt$', f.name)
+                if match:
+                    versions.add(int(match.group(1)))
+            for f in folder.glob(f"{dj}_*.wav"):
+                # Match both legacy (dj_0.wav) and new (dj_0_full.wav, dj_0_30sec.wav)
+                match = re.search(rf'{dj}_(\d+)(?:_(?:full|30sec))?\.wav$', f.name)
+                if match:
+                    versions.add(int(match.group(1)))
+        
+        return max(versions) + 1 if versions else 0
 
     def generate_batch_intros(
         self,
@@ -370,8 +441,12 @@ class GenerationPipeline:
         except Exception as exc:
             return GenerationResult(song_id=f"weather_{hour:02d}{minute:02d}", dj=dj, text=None, audio_path=None, success=False, error=str(exc))
 
-    def generate_song_outro(self, song_id: str, artist: str, title: str, dj: str, next_song: str = None, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None, audit_feedback: str = None) -> GenerationResult:
-        """Generate a short outro for a song and save it under outros/<dj>/<song_folder>/"""
+    def generate_song_outro(self, song_id: str, artist: str, title: str, dj: str, next_song: str = None, text_only: bool = False, audio_only: bool = False, lyrics_context: str = None, audit_feedback: str = None, version: int = None) -> GenerationResult:
+        """Generate a short outro for a song with versioning and dual audio support.
+        
+        Args:
+            version: If None, auto-detect next version number. If specified, use that version.
+        """
         try:
             # Create folder similar to intros
             safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist)
@@ -381,8 +456,22 @@ class GenerationPipeline:
             folder_name = f"{safe_artist}-{safe_title}"
             folder = self.output_dir / "outros" / dj / folder_name
             folder.mkdir(parents=True, exist_ok=True)
-            text_path = folder / f"{dj}_outro.txt"
-            audio_path = folder / f"{dj}_outro.wav"
+            
+            # Auto-detect version if not specified
+            if version is None:
+                version = self._get_next_version(folder, dj, "outros")
+            
+            # Naming: outro v0 = dj_outro.txt, v1+ = dj_outro_1.txt
+            if version == 0:
+                text_path = folder / f"{dj}_outro.txt"
+                audio_path_full = folder / f"{dj}_outro_full.wav"
+                audio_path_30sec = folder / f"{dj}_outro_30sec.wav"
+                audio_path = folder / f"{dj}_outro.wav"
+            else:
+                text_path = folder / f"{dj}_outro_{version}.txt"
+                audio_path_full = folder / f"{dj}_outro_{version}_full.wav"
+                audio_path_30sec = folder / f"{dj}_outro_{version}_30sec.wav"
+                audio_path = folder / f"{dj}_outro_{version}.wav"
             
             text = None
             
@@ -409,16 +498,43 @@ class GenerationPipeline:
                     if text_path.exists():
                         text = text_path.read_text(encoding='utf-8')
                     else:
-                        raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
+                        # Try previous version's text file
+                        if version == 1:
+                            prev_text_path = folder / f"{dj}_outro.txt"
+                        elif version > 1:
+                            prev_text_path = folder / f"{dj}_outro_{version-1}.txt"
+                        else:
+                            prev_text_path = None
+                        
+                        if prev_text_path and prev_text_path.exists():
+                            text = prev_text_path.read_text(encoding='utf-8')
+                        else:
+                            # Check legacy doubled path structure (outros/outros/dj/...)
+                            safe_artist = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in artist).strip().replace(' ', '_')
+                            safe_title = "".join(c if c.isalnum() or c in (' ', '-', '_') else '_' for c in title).strip().replace(' ', '_')
+                            legacy_text_path = self.output_dir / "outros" / "outros" / dj / f"{safe_artist}-{safe_title}" / f"{dj}_outro.txt"
+                            if legacy_text_path.exists():
+                                text = legacy_text_path.read_text(encoding='utf-8')
+                            else:
+                                raise FileNotFoundError(f"Text file not found for audio generation: {text_path}")
                 
+                # Generate DUAL audio: full voice sample and 30-second sample
                 dj_folder = "Julie" if dj == "julie" else "Mister_New_Vegas"
-                voice_ref = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
-                if not voice_ref.exists():
-                    voice_ref = None
+                
+                # Full voice reference
+                voice_ref_full = VOICE_REFERENCES_DIR / dj_folder / f"{dj}.wav"
+                if voice_ref_full.exists():
+                    generate_audio(self._tts, text=text, output_path=audio_path_full, voice_reference=voice_ref_full)
+                
+                # 30-second voice reference
+                voice_ref_30sec = VOICE_REFERENCES_DIR / dj_folder / f"{dj}_30sec.wav"
+                if voice_ref_30sec.exists():
+                    generate_audio(self._tts, text=text, output_path=audio_path_30sec, voice_reference=voice_ref_30sec)
+                elif voice_ref_full.exists():
+                    # Fallback: if no 30sec exists, just generate with full ref as legacy single file
+                    generate_audio(self._tts, text=text, output_path=audio_path, voice_reference=voice_ref_full)
 
-                generate_audio(self._tts, text=text, output_path=audio_path, voice_reference=voice_ref)
-
-            return GenerationResult(song_id=song_id, dj=dj, text=text, audio_path=audio_path if not text_only else None, success=True)
+            return GenerationResult(song_id=song_id, dj=dj, text=text, audio_path=audio_path_full if not text_only else None, success=True)
         except Exception as exc:
             return GenerationResult(song_id=song_id, dj=dj, text=None, audio_path=None, success=False, error=str(exc))
 
