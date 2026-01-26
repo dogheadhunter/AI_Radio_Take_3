@@ -1,5 +1,8 @@
 import sys
+import re
+import wave
 from pathlib import Path
+from unittest.mock import patch, MagicMock
 
 # Ensure repository root is on sys.path so tests can import `src.*` packages
 ROOT = Path(__file__).resolve().parent.parent
@@ -8,9 +11,16 @@ if str(ROOT) not in sys.path:
 
 # Shared test fixtures
 import pytest
-from pathlib import Path
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TDRC
 from tests.test_modes import is_mock_mode, is_integration_mode
+
+# Import modules used in fixtures
+from src.ai_radio.generation import llm_client as llm_client_module
+from src.ai_radio.generation import auditor as auditor_module
+from src.ai_radio.config import VOICE_REFERENCES_DIR
+
+# Constants for mock WAV generation
+MIN_WAV_FRAMES = 100
 
 
 # ============================================================
@@ -86,8 +96,6 @@ def sample_mp3_no_tags(sample_mp3_path):
 # ============================================================
 # Generation & External Service Mocks
 # ============================================================
-from unittest.mock import patch, MagicMock
-import wave
 
 
 @pytest.fixture
@@ -136,7 +144,7 @@ def mock_tts(monkeypatch):
 @pytest.fixture
 def mock_llm_realistic(monkeypatch):
     """Realistic LLM mock that generates contextual responses."""
-    def _generate(client, prompt):
+    def _generate(client, prompt, banned_phrases=None):
         # Parse prompt to provide contextual responses
         if "song intro" in prompt.lower() or "introduce" in prompt.lower():
             return "Hey there, listeners! You're tuned in to Radio New Vegas, and I've got something special for you."
@@ -149,8 +157,9 @@ def mock_llm_realistic(monkeypatch):
         else:
             return "This is your DJ speaking from Radio New Vegas."
     
-    # Mock the generate_text function
+    # Mock the generate_text function in BOTH the source module AND where it's imported
     monkeypatch.setattr('src.ai_radio.generation.llm_client.generate_text', _generate)
+    monkeypatch.setattr('src.ai_radio.generation.pipeline.generate_text', _generate)
     
     # Also mock check functions to avoid service calls
     monkeypatch.setattr('src.ai_radio.generation.llm_client.check_ollama_available', lambda *args: True)
@@ -177,28 +186,31 @@ def mock_llm_auditor_mixed(monkeypatch):
     """Mock auditor LLM that inspects script content and returns pass/fail for tests."""
     import json as json_module
 
-    def _generate(client, prompt):
-        # Extract script content between '---' markers to avoid matching system prompt text
-        parts = prompt.split('---')
-        script_text = parts[1] if len(parts) >= 2 else prompt
-        p = script_text.lower()
+    def _generate(client, prompt, banned_phrases=None):
+        # Extract script content from between quotes in 'SCRIPT TO EVALUATE: "..."'
+        match = re.search(r'SCRIPT TO EVALUATE:\s*"([^"]*)"', prompt)
+        if match:
+            script_text = match.group(1).lower()
+        else:
+            # Fallback: just use whole prompt (shouldn't happen)
+            script_text = prompt.lower()
 
-        # Bad: modern slang or emojis
-        if "awesome" in p or "emoji" in p or "😀" in p or "👍" in p:
+        # Bad: modern slang or emojis in the actual SCRIPT content
+        if "awesome" in script_text or "emoji" in script_text or "😀" in script_text or "👍" in script_text:
             return json_module.dumps({
                 "criteria_scores": {"character_voice": 4, "era_appropriateness": 2, "forbidden_elements": 1, "natural_flow": 4, "length": 6},
                 "issues": ["Uses modern slang or emoji"],
                 "notes": "Contains modern slang or emojis"
             })
         # Bad: wrong character signifiers
-        if "sounds like generic dj" in p or "not julie" in p:
+        if "sounds like generic dj" in script_text or "not julie" in script_text:
             return json_module.dumps({
                 "criteria_scores": {"character_voice": 2, "era_appropriateness": 6, "forbidden_elements": 10, "natural_flow": 5, "length": 6},
                 "issues": ["Not in character"],
                 "notes": "Sounds like generic DJ rather than the target character"
             })
         # Borderline
-        if "borderline" in p:
+        if "borderline" in script_text:
             return json_module.dumps({
                 "criteria_scores": {"character_voice": 7, "era_appropriateness": 7, "forbidden_elements": 10, "natural_flow": 7, "length": 7},
                 "issues": ["Slight character drift"],
@@ -211,7 +223,10 @@ def mock_llm_auditor_mixed(monkeypatch):
             "notes": "Good overall"
         })
 
-    monkeypatch.setattr('src.ai_radio.generation.llm_client.generate_text', _generate)
+    # Mock in BOTH modules using the imported module objects
+    monkeypatch.setattr(llm_client_module, 'generate_text', _generate)
+    # The auditor imports llm_client as a module, so we need to patch on that reference
+    monkeypatch.setattr(auditor_module.llm_client, 'generate_text', _generate)
     yield _generate
 
 
@@ -238,11 +253,12 @@ def mock_tts_realistic(monkeypatch):
             # Length proportional to text length (simulate real TTS)
             duration_seconds = len(text) / 150  # ~150 chars per second
             num_frames = int(22050 * duration_seconds)
-            frames = b"\x00\x00" * max(num_frames, 100)  # At least 100 frames
+            frames = b"\x00\x00" * max(num_frames, MIN_WAV_FRAMES)
             wavf.writeframes(frames)
     
-    # Mock the generate_audio function
+    # Mock the generate_audio function in BOTH the source module AND where it's imported
     monkeypatch.setattr('src.ai_radio.generation.tts_client.generate_audio', _generate)
+    monkeypatch.setattr('src.ai_radio.generation.pipeline.generate_audio', _generate)
     
     # Mock the model getter to prevent loading
     monkeypatch.setattr('src.ai_radio.generation.tts_client._get_model', lambda: None)
@@ -253,7 +269,26 @@ def mock_tts_realistic(monkeypatch):
 
 @pytest.fixture
 def mock_services(mock_llm_realistic, mock_tts_realistic):
-    """Combined fixture for both LLM and TTS mocking with realistic behavior."""
+    """Combined fixture for both LLM and TTS mocking with realistic behavior.
+    
+    Also creates placeholder voice reference files if they don't exist, since
+    the pipeline checks for their existence before generating audio.
+    """
+    # Create placeholder voice reference files for tests
+    for dj_folder, dj_name in [("Julie", "julie"), ("Mister_New_Vegas", "mr_new_vegas")]:
+        voice_dir = VOICE_REFERENCES_DIR / dj_folder
+        voice_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Create placeholder WAV files (minimal valid WAV header)
+        for suffix in ["", "_30sec"]:
+            voice_file = voice_dir / f"{dj_name}{suffix}.wav"
+            if not voice_file.exists():
+                with wave.open(str(voice_file), "wb") as wavf:
+                    wavf.setnchannels(1)
+                    wavf.setsampwidth(2)
+                    wavf.setframerate(22050)
+                    wavf.writeframes(b"\x00\x00" * MIN_WAV_FRAMES)
+    
     return {"llm": mock_llm_realistic, "tts": mock_tts_realistic}
 
 

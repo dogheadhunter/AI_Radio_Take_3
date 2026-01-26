@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List, Dict, Optional
 import json
 import random
+import re
 
 
 def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_sample: bool = False) -> List[Dict]:
@@ -84,10 +85,15 @@ class FakeAuditorClient:
         Returns:
             JSON string with audit result
         """
-        # Extract just the script portion (between the last '---')
-        parts = prompt.split('---')
-        script = parts[-1] if len(parts) > 1 else prompt
-        script = script.lower()
+        # Extract script content from 'SCRIPT TO EVALUATE: "..."' format
+        match = re.search(r'SCRIPT TO EVALUATE:\s*"([^"]*)"', prompt)
+        if match:
+            script = match.group(1).lower()
+        else:
+            # Fallback: extract from between '---' markers (legacy format)
+            parts = prompt.split('---')
+            script = parts[-1] if len(parts) > 1 else prompt
+            script = script.lower()
         
         # Simple heuristics for pass/fail - be more lenient in test mode
         # Look for actual problematic content in the script

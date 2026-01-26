@@ -86,7 +86,9 @@ def test_llm_called_before_tts(monkeypatch, tmp_path):
     monkeypatch.setattr(pipeline, "_tts", MockTTS())
 
     pipeline.generate_song_intro("id", "Artist", "Title", "julie")
-    assert call_order == ["llm", "tts"]
+    # LLM should be called first, then TTS (may be called multiple times for dual audio)
+    assert call_order[0] == "llm"
+    assert all(c == "tts" for c in call_order[1:])
 
 
 def test_processes_all_songs(monkeypatch, tmp_path, sample_song_list):

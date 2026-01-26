@@ -9,7 +9,7 @@ The AI Radio system generates DJ scripts and audio for a 24/7 radio station with
 ## Architecture Principles
 
 1. **Separation of Concerns**: Core utilities, pipeline stages, and CLI are cleanly separated
-2. **Testability**: All modules have comprehensive mock tests (67+ tests)
+2. **Testability**: All modules have comprehensive mock tests (390+ tests)
 3. **Maintainability**: Small, focused modules instead of one large file
 4. **Reusability**: Core utilities can be used across different contexts
 
@@ -198,7 +198,7 @@ The pipeline handles four content types:
 
 ### Mock Tests (Primary)
 - **Location**: `tests/core/`, `tests/stages/`
-- **Coverage**: 67+ tests
+- **Coverage**: 390+ tests
 - **Purpose**: Fast, deterministic testing without external services
 - **No Requirements**: Ollama, TTS, or other services
 - **Run with**: `pytest` or `TEST_MODE=mock pytest`

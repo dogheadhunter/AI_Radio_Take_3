@@ -6,30 +6,29 @@
 
 ## AI Radio Development Workflow
 
-This project uses a phased checkpoint system. Follow these rules:
+This project uses a modular architecture. Follow these rules:
 
 ### Context Management
-- **ALWAYS** start by reading `Script_Improvement_Plan/STATUS.md`
-- **ONLY** load the current checkpoint file, not completed ones
+- **ALWAYS** start by reading `docs/LLM_CONTEXT.md` for quick project overview
+- For detailed architecture, see `docs/ARCHITECTURE.md`
 - **NEVER** read archived documentation unless explicitly asked
-- If you feel lost, ask the user to clarify the current checkpoint
+- If you feel lost, ask the user for clarification
 
-### Checkpoint Discipline
-- Complete ALL success criteria before moving on
-- Run the Auditor agent to verify completion
-- Update STATUS.md after each checkpoint
-- Commit with descriptive messages
+### Code Organization
+- Core utilities are in `src/ai_radio/core/`
+- Pipeline stages are in `src/ai_radio/stages/`
+- Generation backend is in `src/ai_radio/generation/`
+- Tests mirror the source structure in `tests/`
 
-### Avoiding Context Rot
-- Keep responses focused on the current task
-- Do not reference completed phases unless relevant
-- If context seems stale, re-read STATUS.md and CONTEXT.md
-- Ask clarifying questions rather than guessing
+### Testing Discipline
+- Run tests after making changes: `pytest`
+- Use mock tests for fast iteration (default)
+- Only use integration tests with user permission
 
 ### File Locations
 | Purpose | Path |
 |---------|------|
-| Current status | `Script_Improvement_Plan/STATUS.md` |
-| Essential context | `Script_Improvement_Plan/CONTEXT.md` |
-| Current checkpoint | `Script_Improvement_Plan/phase_6_testing/checkpoint_6_8_*.md` |
-| Archived phases | `archive/` |
+| LLM context | `docs/LLM_CONTEXT.md` |
+| Architecture | `docs/ARCHITECTURE.md` |
+| Main README | `README.md` |
+| Archived docs | `archive/` |
