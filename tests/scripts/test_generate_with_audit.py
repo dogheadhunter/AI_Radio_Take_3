@@ -6,9 +6,9 @@ import pytest
 
 # Import the pipeline functions
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-from scripts.generate_with_audit import (
-    run_pipeline,
-    PipelineCheckpoint,
+from scripts.generate_with_audit import run_pipeline
+from src.ai_radio.core.checkpoint import PipelineCheckpoint
+from src.ai_radio.core.paths import (
     get_script_path,
     get_audit_path,
     get_audio_path
