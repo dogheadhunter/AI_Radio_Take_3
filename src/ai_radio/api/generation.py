@@ -127,6 +127,15 @@ class GenerationAPI:
             if result.success and result.text:
                 # Sanitize and truncate
                 sanitized = sanitize_script(result.text)
+                if not sanitized:
+                    return GenerationResult(
+                        success=False,
+                        content_type=ContentType.INTRO,
+                        dj=dj,
+                        error="Script sanitization returned empty result",
+                        song=song,
+                    )
+                
                 truncated = truncate_after_song_intro(sanitized, song.artist, song.title)
                 
                 if truncated:

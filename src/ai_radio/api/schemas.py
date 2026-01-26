@@ -142,21 +142,32 @@ class AuditResult:
     audit_path: Optional[Path] = None
     audited_at: Optional[datetime] = None
     
+    # Mapping for content type strings to enums
+    _CONTENT_TYPE_MAP: Dict[str, "ContentType"] = None  # type: ignore
+    
+    @classmethod
+    def _get_content_type_map(cls) -> Dict[str, "ContentType"]:
+        """Get or create content type mapping."""
+        if cls._CONTENT_TYPE_MAP is None:
+            cls._CONTENT_TYPE_MAP = {
+                "song_intro": ContentType.INTRO,
+                "intro": ContentType.INTRO,
+                "song_outro": ContentType.OUTRO,
+                "outro": ContentType.OUTRO,
+                "time_announcement": ContentType.TIME,
+                "time": ContentType.TIME,
+                "weather_announcement": ContentType.WEATHER,
+                "weather": ContentType.WEATHER,
+            }
+        return cls._CONTENT_TYPE_MAP
+    
     @classmethod
     def from_dict(cls, data: Dict[str, Any], audit_path: Optional[Path] = None) -> "AuditResult":
         """Create AuditResult from dictionary (e.g., loaded from JSON)."""
-        # Map string content type to enum
-        content_type_str = data.get("content_type", "intro")
-        if "intro" in content_type_str.lower():
-            content_type = ContentType.INTRO
-        elif "outro" in content_type_str.lower():
-            content_type = ContentType.OUTRO
-        elif "time" in content_type_str.lower():
-            content_type = ContentType.TIME
-        elif "weather" in content_type_str.lower():
-            content_type = ContentType.WEATHER
-        else:
-            content_type = ContentType.INTRO
+        # Map string content type to enum using exact lookup
+        content_type_str = data.get("content_type", "intro").lower()
+        type_map = cls._get_content_type_map()
+        content_type = type_map.get(content_type_str, ContentType.INTRO)
         
         # Map DJ string to enum
         dj_str = data.get("dj", "julie").lower()
