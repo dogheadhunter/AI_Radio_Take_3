@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import List, Dict, Optional
 import json
 import random
+import re
 
 
 def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_sample: bool = False) -> List[Dict]:
@@ -84,8 +85,6 @@ class FakeAuditorClient:
         Returns:
             JSON string with audit result
         """
-        import re
-        
         # Extract script content from 'SCRIPT TO EVALUATE: "..."' format
         match = re.search(r'SCRIPT TO EVALUATE:\s*"([^"]*)"', prompt)
         if match:

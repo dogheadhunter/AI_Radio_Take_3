@@ -1,5 +1,8 @@
 import sys
+import re
+import wave
 from pathlib import Path
+from unittest.mock import patch, MagicMock
 
 # Ensure repository root is on sys.path so tests can import `src.*` packages
 ROOT = Path(__file__).resolve().parent.parent
@@ -8,9 +11,16 @@ if str(ROOT) not in sys.path:
 
 # Shared test fixtures
 import pytest
-from pathlib import Path
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TDRC
 from tests.test_modes import is_mock_mode, is_integration_mode
+
+# Import modules used in fixtures
+from src.ai_radio.generation import llm_client as llm_client_module
+from src.ai_radio.generation import auditor as auditor_module
+from src.ai_radio.config import VOICE_REFERENCES_DIR
+
+# Constants for mock WAV generation
+MIN_WAV_FRAMES = 100
 
 
 # ============================================================
@@ -86,8 +96,6 @@ def sample_mp3_no_tags(sample_mp3_path):
 # ============================================================
 # Generation & External Service Mocks
 # ============================================================
-from unittest.mock import patch, MagicMock
-import wave
 
 
 @pytest.fixture
@@ -177,9 +185,6 @@ def mock_llm_auditor(monkeypatch):
 def mock_llm_auditor_mixed(monkeypatch):
     """Mock auditor LLM that inspects script content and returns pass/fail for tests."""
     import json as json_module
-    import re
-    from src.ai_radio.generation import llm_client as llm_client_module
-    from src.ai_radio.generation import auditor as auditor_module
 
     def _generate(client, prompt, banned_phrases=None):
         # Extract script content from between quotes in 'SCRIPT TO EVALUATE: "..."'
@@ -248,7 +253,7 @@ def mock_tts_realistic(monkeypatch):
             # Length proportional to text length (simulate real TTS)
             duration_seconds = len(text) / 150  # ~150 chars per second
             num_frames = int(22050 * duration_seconds)
-            frames = b"\x00\x00" * max(num_frames, 100)  # At least 100 frames
+            frames = b"\x00\x00" * max(num_frames, MIN_WAV_FRAMES)
             wavf.writeframes(frames)
     
     # Mock the generate_audio function in BOTH the source module AND where it's imported
@@ -269,8 +274,6 @@ def mock_services(mock_llm_realistic, mock_tts_realistic):
     Also creates placeholder voice reference files if they don't exist, since
     the pipeline checks for their existence before generating audio.
     """
-    from src.ai_radio.config import VOICE_REFERENCES_DIR
-    
     # Create placeholder voice reference files for tests
     for dj_folder, dj_name in [("Julie", "julie"), ("Mister_New_Vegas", "mr_new_vegas")]:
         voice_dir = VOICE_REFERENCES_DIR / dj_folder
@@ -284,7 +287,7 @@ def mock_services(mock_llm_realistic, mock_tts_realistic):
                     wavf.setnchannels(1)
                     wavf.setsampwidth(2)
                     wavf.setframerate(22050)
-                    wavf.writeframes(b"\x00\x00" * 100)
+                    wavf.writeframes(b"\x00\x00" * MIN_WAV_FRAMES)
     
     return {"llm": mock_llm_realistic, "tts": mock_tts_realistic}
 
