@@ -154,7 +154,7 @@ data/generated/{content_type}/{dj}/{item_id}/
 
 These are **archived/obsolete**:
 - `Script_Improvement_Plan/` (moved to `archive/`)
-- Old CLI patterns using `generate_content.py` for main generation
+- Old CLI patterns using `generate_content.py` (use `generate_with_audit.py` instead)
 - Monolithic pipeline references before modularization
 
 ## Session Protocol

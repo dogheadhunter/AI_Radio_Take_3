@@ -44,11 +44,13 @@ Configuration
 
 Quick test
 ----------
-- Start the mock TTS and run:
+- Test with mock services (no external services needed):
   - `python scripts/generate_with_audit.py --intros --dj julie --test --skip-audio`
+  - The `--test` flag uses mock LLM/TTS clients instead of real Ollama/TTS services
 - You should find generated scripts in `data/generated/intros/`.
-- For audio generation, ensure both Ollama and TTS are running:
-  - `python scripts/generate_with_audit.py --intros --dj julie --test`
+- For real audio generation, ensure both Ollama and TTS are running:
+  - `python scripts/generate_with_audit.py --intros --dj julie --skip-audio` (real LLM, no audio)
+  - `python scripts/generate_with_audit.py --intros --dj julie` (real LLM + TTS)
 
 Notes
 -----

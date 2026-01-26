@@ -95,7 +95,7 @@ python scripts/generate_with_audit.py [OPTIONS]
 | `--dj {julie,mr_new_vegas,all}` | Select DJ personality |
 | `--skip-audio` | Skip TTS audio generation |
 | `--resume` | Resume from checkpoint |
-| `--test` | Use mock services (no Ollama/TTS required) |
+| `--test` | Use mock services for testing (no Ollama/TTS required) |
 
 ### Examples
 
