@@ -1173,6 +1173,24 @@ def render_review_item(item: ReviewItem, index: int):
             st.toast("Added to queue!", icon="✅")
             st.rerun()
     
+    # === REGENERATE AUDIO FROM CURRENT SCRIPT (for manual edits) ===
+    # Check if script was manually edited
+    if review_status.get("manually_rewritten", False):
+        st.markdown("---")
+        st.markdown("**🔊 Regenerate Audio from Edited Script**")
+        st.caption("Generate new audio using the current (edited) script text, without validation.")
+        
+        if st.button(
+            "🎤 Generate Audio from Current Script",
+            key=f"audio_from_edit_{index}",
+            use_container_width=True,
+            type="primary"
+        ):
+            # Add to queue with audio-only regeneration
+            add_to_regen_queue(item, "audio", "Audio from manual edit - no script validation")
+            st.toast("Added to queue! Audio will be generated from current script.", icon="🎤")
+            st.rerun()
+    
     # === REVIEW DECISION (Most important - always visible) ===
     st.markdown("---")
     st.markdown("#### 📋 Review Decision")
@@ -2354,58 +2372,104 @@ def render_catalog_tab():
             outro_status = "❌"
         
         with st.expander(f"**{title}** — {artist}  [{intro_status} Intro | {outro_status} Outro]"):
-            st.caption(f"Intro: Script {'✅' if status['intro_script'] else '❌'} | Audio {'✅' if status['intro_audio'] else '❌'}")
-            st.caption(f"Outro: Script {'✅' if status['outro_script'] else '❌'} | Audio {'✅' if status['outro_audio'] else '❌'}")
+            # Two-column layout: lyrics on left, info/actions on right
+            col_lyrics, col_actions = st.columns([1, 1])
             
-            # Generation buttons
-            st.markdown("**Generate:**")
+            with col_lyrics:
+                st.markdown("**📜 Lyrics:**")
+                # Find and display lyrics
+                lyrics_file = find_lyrics_file(f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}")
+                if lyrics_file:
+                    lyrics = load_lyrics(lyrics_file)
+                    # Show preview (first 300 chars) with option to expand
+                    if len(lyrics) > 300:
+                        st.text_area(
+                            "Lyrics preview",
+                            value=lyrics[:300] + "...",
+                            height=120,
+                            disabled=True,
+                            key=f"lyrics_preview_{song['id']}",
+                            label_visibility="collapsed"
+                        )
+                        with st.expander("📖 Full Lyrics"):
+                            st.text_area(
+                                "Full lyrics",
+                                value=lyrics,
+                                height=200,
+                                disabled=True,
+                                key=f"lyrics_full_{song['id']}",
+                                label_visibility="collapsed"
+                            )
+                    else:
+                        st.text_area(
+                            "Lyrics",
+                            value=lyrics,
+                            height=120,
+                            disabled=True,
+                            key=f"lyrics_{song['id']}",
+                            label_visibility="collapsed"
+                        )
+                else:
+                    st.info("No lyrics file found")
             
-            col_type, col_regen = st.columns(2)
-            with col_type:
+            with col_actions:
+                st.caption(f"Intro: Script {'✅' if status['intro_script'] else '❌'} | Audio {'✅' if status['intro_audio'] else '❌'}")
+                st.caption(f"Outro: Script {'✅' if status['outro_script'] else '❌'} | Audio {'✅' if status['outro_audio'] else '❌'}")
+                
+                # Generation buttons
+                st.markdown("**Generate:**")
+                
                 content_type = st.selectbox(
                     "Content",
                     ["intros", "outros"],
-                    key=f"ct_{song['id']}"
+                    key=f"ct_{song['id']}",
+                    label_visibility="collapsed"
                 )
-            with col_regen:
                 regen_type = st.selectbox(
                     "Generate",
-                    ["script", "audio", "both"],
-                    key=f"rt_{song['id']}"
+                    ["both", "script", "audio"],
+                    key=f"rt_{song['id']}",
+                    label_visibility="collapsed"
                 )
-            
-            col_btn1, col_btn2 = st.columns(2)
-            with col_btn1:
-                if st.button("➕ Add to Queue", key=f"add_{song['id']}", use_container_width=True):
-                    if add_catalog_item_to_queue(artist, title, dj, content_type, regen_type):
-                        st.success(f"Added to queue!")
+                
+                col_btn1, col_btn2 = st.columns(2)
+                with col_btn1:
+                    if st.button("➕ Queue", key=f"add_{song['id']}", use_container_width=True):
+                        if add_catalog_item_to_queue(artist, title, dj, content_type, regen_type):
+                            st.success(f"Added!")
+                            st.rerun()
+                        else:
+                            st.warning("Already in queue")
+                
+                with col_btn2:
+                    if st.button("⚡ Now", key=f"gen_{song['id']}", type="primary", use_container_width=True):
+                        with st.spinner(f"Generating..."):
+                            try:
+                                item_id = f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}"
+                                
+                                success, error = gui_backend.regenerate_content(
+                                    content_type_str=content_type,
+                                    dj_str=dj,
+                                    item_id=item_id,
+                                    regen_type=regen_type,
+                                    feedback="",
+                                )
+                                
+                                if success:
+                                    st.success(f"✅ Generated!")
+                                    st.rerun()
+                                else:
+                                    st.error(f"❌ {error}")
+                            except Exception as e:
+                                st.error(f"❌ {str(e)}")
+                
+                # Jump to Review button (if content exists)
+                if status["intro_script"] or status["outro_script"]:
+                    if st.button("📋 Go to Review", key=f"review_{song['id']}", use_container_width=True):
+                        # Set search filter to find this song
+                        st.session_state.search_query = title
+                        st.session_state.filter_content_type = "All"
                         st.rerun()
-                    else:
-                        st.warning("Already in queue")
-            
-            with col_btn2:
-                if st.button("⚡ Generate Now", key=f"gen_{song['id']}", type="primary", use_container_width=True):
-                    with st.spinner(f"Generating {content_type} ({regen_type})..."):
-                        try:
-                            # Use API layer for generation (proper pipeline with lyrics + validation)
-                            # Build item_id from artist-title
-                            item_id = f"{artist.replace(' ', '_')}-{title.replace(' ', '_')}"
-                            
-                            success, error = gui_backend.regenerate_content(
-                                content_type_str=content_type,
-                                dj_str=dj,
-                                item_id=item_id,
-                                regen_type=regen_type,
-                                feedback="",
-                            )
-                            
-                            if success:
-                                st.success(f"✅ Generated {content_type} via API successfully!")
-                                st.rerun()
-                            else:
-                                st.error(f"❌ Failed: {error}")
-                        except Exception as e:
-                            st.error(f"❌ Error: {str(e)}")
     
     # Legend
     st.markdown("---")
