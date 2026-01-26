@@ -90,6 +90,42 @@ DJ_MAP = {
     "mr_new_vegas": DJ.MR_NEW_VEGAS,
 }
 
+# Cached catalog lookup for better performance
+_catalog_lookup_cache: Optional[Dict[str, SongInfo]] = None
+
+
+def _get_catalog_lookup() -> Dict[str, SongInfo]:
+    """Get or create a lookup dictionary for fast song access.
+    
+    Returns:
+        Dict mapping lowercase "artist|title" to SongInfo
+    """
+    global _catalog_lookup_cache
+    if _catalog_lookup_cache is None:
+        catalog = load_catalog()
+        _catalog_lookup_cache = {
+            f"{s.artist.lower()}|{s.title.lower()}": s
+            for s in catalog
+        }
+    return _catalog_lookup_cache
+
+
+def _find_song_in_catalog(artist: str, title: str) -> Optional[SongInfo]:
+    """Find a song in the catalog by artist and title.
+    
+    Uses cached lookup for O(1) access instead of O(n) iteration.
+    
+    Args:
+        artist: Artist name (case-insensitive)
+        title: Song title (case-insensitive)
+        
+    Returns:
+        SongInfo if found, None otherwise
+    """
+    lookup = _get_catalog_lookup()
+    key = f"{artist.lower()}|{title.lower()}"
+    return lookup.get(key)
+
 
 def load_catalog() -> List[SongInfo]:
     """Load the song catalog using ContentAPI.
@@ -222,13 +258,8 @@ def _regenerate_song_intro(
     if not title:
         return False, f"Could not parse artist/title from: {item_id}"
     
-    # Find song in catalog
-    catalog = load_catalog()
-    song = None
-    for s in catalog:
-        if s.artist.lower() == artist.lower() and s.title.lower() == title.lower():
-            song = s
-            break
+    # Find song in catalog using optimized lookup
+    song = _find_song_in_catalog(artist, title)
     
     if song is None:
         # Create a new SongInfo if not in catalog
@@ -268,13 +299,8 @@ def _regenerate_song_outro(
     if not title:
         return False, f"Could not parse artist/title from: {item_id}"
     
-    # Find song in catalog
-    catalog = load_catalog()
-    song = None
-    for s in catalog:
-        if s.artist.lower() == artist.lower() and s.title.lower() == title.lower():
-            song = s
-            break
+    # Find song in catalog using optimized lookup
+    song = _find_song_in_catalog(artist, title)
     
     if song is None:
         song = SongInfo(id=item_id, artist=artist, title=title)
