@@ -47,8 +47,8 @@ Tests for the regeneration queue processor (`scripts/process_regen_queue.py`).
 5. `test_queue_file_structure` - Queue JSON validation
 6. `test_version_increment_logic` - Naming pattern verification
 
-### `tests/test_review_gui_playwright.py` ⭐ NEW
-End-to-end Playwright tests for the Streamlit GUI.
+### `tests/test_review_gui_playwright.py`
+End-to-end Playwright tests for the Streamlit GUI (legacy location).
 
 **Coverage:**
 - Complete GUI rendering and layout
@@ -74,6 +74,44 @@ End-to-end Playwright tests for the Streamlit GUI.
 13. `test_statistics_display` - Statistics dashboard
 14. And more...
 
+### `tests/e2e/test_review_gui.py` ⭐ NEW
+Comprehensive end-to-end Playwright tests organized by feature area (PR #11).
+
+**Coverage:**
+- All acceptance criteria from Issue #10
+- API-based regeneration verification
+- Manual editing and version history
+- Side-by-side diff comparison
+- Catalog browser functionality
+- Mobile responsiveness
+
+**Test Classes (22 tests total):**
+1. **TestReviewGUI** (12 tests) - Core functionality
+   - GUI launch, content display, audio player
+   - Filters, pagination, search
+   - Script editor, regenerate buttons
+   - Version selector, diff comparison
+   - Catalog tab and search
+   - Mobile viewport
+
+2. **TestReviewGUIFilters** (3 tests) - Filtering
+   - Statistics accuracy
+   - Pagination controls
+   - Refresh button
+
+3. **TestReviewGUIActions** (2 tests) - Review actions
+   - Review decision section
+   - Approve/reject buttons
+
+4. **TestReviewGUIResponsive** (3 tests) - Responsive design
+   - Desktop layout (1920x1080)
+   - Tablet layout (768x1024)
+   - Mobile layout (375x812)
+
+5. **TestReviewGUIEdgeCases** (2 tests) - Error handling
+   - No console errors
+   - Empty state handling
+
 ## Running Tests
 
 ### Run All Review GUI Tests
@@ -81,14 +119,17 @@ End-to-end Playwright tests for the Streamlit GUI.
 # Unit tests only (fast)
 pytest tests/test_review_gui.py tests/test_regen_queue_processor.py -v
 
-# Include Playwright tests (requires GUI running)
+# Include legacy Playwright tests (requires GUI running)
 pytest tests/test_review_gui.py tests/test_regen_queue_processor.py tests/test_review_gui_playwright.py -v
 
-# Playwright tests only
-pytest tests/test_review_gui_playwright.py -v
+# New E2E tests only (organized by feature, requires GUI running)
+pytest tests/e2e/test_review_gui.py -v
 
-# Playwright with visible browser (headed mode)
-pytest tests/test_review_gui_playwright.py --headed -v
+# All tests including E2E (requires GUI running)
+pytest tests/test_review_gui.py tests/test_regen_queue_processor.py tests/e2e/test_review_gui.py -v
+
+# E2E tests with visible browser (headed mode)
+pytest tests/e2e/test_review_gui.py --headed -v
 ```
 
 ### Run Specific Test File
@@ -99,14 +140,27 @@ pytest tests/test_review_gui.py -v
 # Queue processor tests only
 pytest tests/test_regen_queue_processor.py -v
 
-# Playwright tests only
+# Legacy Playwright tests
 pytest tests/test_review_gui_playwright.py -v
+
+# New E2E tests (recommended)
+pytest tests/e2e/test_review_gui.py -v
 ```
 
 ### Run Specific Test
 ```bash
 pytest tests/test_review_gui.py::test_scan_generated_content -v
 pytest tests/test_review_gui_playwright.py::test_gui_loads_successfully --headed -v
+pytest tests/e2e/test_review_gui.py::TestReviewGUI::test_gui_launches -v
+```
+
+### Run Specific Test Class
+```bash
+# Run all tests in TestReviewGUI class
+pytest tests/e2e/test_review_gui.py::TestReviewGUI -v
+
+# Run all responsive tests
+pytest tests/e2e/test_review_gui.py::TestReviewGUIResponsive -v
 ```
 
 ### Run with Coverage
