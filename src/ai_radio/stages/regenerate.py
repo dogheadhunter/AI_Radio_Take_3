@@ -36,7 +36,6 @@ def stage_regenerate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[
     total_regenerated = 0
     
     # Get content types from checkpoint (needed for time announcements)
-    from pathlib import Path
     checkpoint_file = DATA_DIR / "pipeline_state.json"
     checkpoint = PipelineCheckpoint(checkpoint_file)
     content_types = checkpoint.state.get("config", {}).get("content_types", [])

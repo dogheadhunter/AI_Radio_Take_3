@@ -160,9 +160,11 @@ def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
         title: Expected song title
         
     Returns:
-        Truncated text ending at song introduction
+        Truncated text ending at song introduction, or empty string if
+        artist name appears truncated (potential LLM error)
     """
     # Validate artist name appears correctly (catch typos/truncations)
+    # Returns empty string to signal invalid output that should be rejected
     artist_parts = artist.split()
     if len(artist_parts) > 1:
         for part in artist_parts:
@@ -171,7 +173,7 @@ def truncate_after_song_intro(text: str, artist: str, title: str) -> str:
                 if re.search(r'\b' + pattern + r'[a-z]{0,2}\b', text, re.IGNORECASE):
                     if part.lower() not in text.lower():
                         logger.warning(f"Detected truncated artist name in script: expected '{artist}'")
-                        return ""
+                        return ""  # Signal invalid output
     
     # Protect common abbreviations
     protected_text = text.replace('Mr.', 'Mr~').replace('Mrs.', 'Mrs~').replace('Ms.', 'Ms~').replace('Dr.', 'Dr~')

@@ -6,6 +6,7 @@ including catalog loading, lyrics retrieval, and test utilities.
 from pathlib import Path
 from typing import List, Dict, Optional
 import json
+import random
 
 
 def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_sample: bool = False) -> List[Dict]:
@@ -28,7 +29,6 @@ def load_catalog_songs(catalog_path: Path, limit: Optional[int] = None, random_s
     
     # Apply random sampling if requested
     if random_sample and limit:
-        import random
         songs = random.sample(songs, min(limit, len(songs)))
     elif limit:
         songs = songs[:limit]

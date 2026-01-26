@@ -47,8 +47,10 @@ def stage_audio(songs: List[Dict], djs: List[str], checkpoint: PipelineCheckpoin
         dj = item['dj']
         ctype = item.get('content_type', 'song_intro')
         
-        script_path = get_script_path(song, dj, content_type='outros' if ctype == 'song_outro' else 'intros')
-        audio_path = get_audio_path(song, dj, content_type='outros' if ctype == 'song_outro' else 'intros')        
+        # Map content type for path functions
+        path_content_type = 'outros' if ctype == 'song_outro' else 'intros'
+        script_path = get_script_path(song, dj, content_type=path_content_type)
+        audio_path = get_audio_path(song, dj, content_type=path_content_type)        
         # Check if audio already exists
         if audio_path.exists():
             audio_generated += 1
