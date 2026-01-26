@@ -122,6 +122,10 @@ class GenerationResult:
     # For time/weather
     hour: Optional[int] = None
     minute: Optional[int] = None
+    
+    # Audit information (from AuditedGenerationAPI)
+    audit_passed: Optional[bool] = None
+    audit_score: Optional[float] = None
 
 
 @dataclass

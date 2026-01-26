@@ -53,11 +53,12 @@ def _get_content_api() -> ContentAPI:
     return _content_api
 
 
-def _get_generation_api(test_mode: bool = False) -> GenerationAPI:
-    """Get or create GenerationAPI instance."""
+def _get_generation_api(test_mode: bool = False):
+    """Get or create AuditedGenerationAPI instance."""
+    from src.ai_radio.api.audited import AuditedGenerationAPI
     global _generation_api
     if _generation_api is None:
-        _generation_api = GenerationAPI(test_mode=test_mode)
+        _generation_api = AuditedGenerationAPI(test_mode=test_mode)
     return _generation_api
 
 
@@ -247,13 +248,13 @@ def _parse_time_from_item_id(item_id: str) -> Tuple[Optional[int], Optional[int]
 
 
 def _regenerate_song_intro(
-    api: GenerationAPI,
+    api,  # Now AuditedGenerationAPI
     dj: DJ,
     item_id: str,
     regen_type: str,
     feedback: str,
 ) -> Tuple[bool, Optional[str]]:
-    """Regenerate a song intro through the API."""
+    """Regenerate a song intro through the audited API."""
     artist, title = _parse_song_from_item_id(item_id)
     if not title:
         return False, f"Could not parse artist/title from: {item_id}"
@@ -265,22 +266,33 @@ def _regenerate_song_intro(
         # Create a new SongInfo if not in catalog
         song = SongInfo(id=item_id, artist=artist, title=title)
     
-    # Determine regeneration mode
-    text_only = regen_type == "script"
+    # Route to appropriate generation method
+    logger.info(f"Regenerating intro via audited API: {artist} - {title} (DJ: {dj.value}, type: {regen_type})")
     
-    # Use API to regenerate
-    logger.info(f"Regenerating intro via API: {artist} - {title} (DJ: {dj.value}, type: {regen_type})")
-    
-    result = api.generate_intro(
-        song=song,
-        dj=dj,
-        text_only=text_only,
-        overwrite=True,
-        audit_feedback=feedback if feedback else None,
-    )
+    if regen_type == "audio":
+        # Audio-only: Skip stages, just generate audio
+        result = api.generate_intro(
+            song=song,
+            dj=dj,
+            text_only=False,
+            overwrite=True,
+        )
+    else:
+        # Script or both: Use audited pipeline
+        text_only = regen_type == "script"
+        result = api.generate_intro_with_audit(
+            song=song,
+            dj=dj,
+            max_retries=5,
+            text_only=text_only,
+            user_feedback=feedback if feedback else None,
+        )
     
     if result.success:
-        logger.info(f"✅ Intro regenerated via API: {artist} - {title}")
+        audit_info = ""
+        if result.audit_passed is not None:
+            audit_info = f" (audit: {'✅ passed' if result.audit_passed else '❌ failed'}, score: {result.audit_score})"
+        logger.info(f"✅ Intro regenerated via API: {artist} - {title}{audit_info}")
         return True, None
     else:
         logger.error(f"❌ Intro regeneration failed: {result.error}")
@@ -288,13 +300,13 @@ def _regenerate_song_intro(
 
 
 def _regenerate_song_outro(
-    api: GenerationAPI,
+    api,  # Now AuditedGenerationAPI
     dj: DJ,
     item_id: str,
     regen_type: str,
     feedback: str,
 ) -> Tuple[bool, Optional[str]]:
-    """Regenerate a song outro through the API."""
+    """Regenerate a song outro through the audited API."""
     artist, title = _parse_song_from_item_id(item_id)
     if not title:
         return False, f"Could not parse artist/title from: {item_id}"
@@ -305,17 +317,27 @@ def _regenerate_song_outro(
     if song is None:
         song = SongInfo(id=item_id, artist=artist, title=title)
     
-    text_only = regen_type == "script"
+    logger.info(f"Regenerating outro via audited API: {artist} - {title} (DJ: {dj.value}, type: {regen_type})")
     
-    logger.info(f"Regenerating outro via API: {artist} - {title} (DJ: {dj.value}, type: {regen_type})")
-    
-    result = api.generate_outro(
-        song=song,
-        dj=dj,
-        text_only=text_only,
-        overwrite=True,
-        audit_feedback=feedback if feedback else None,
-    )
+    if regen_type == "audio":
+        # Audio-only: Skip stages
+        result = api.generate_outro(
+            song=song,
+            dj=dj,
+            text_only=False,
+            overwrite=True,
+        )
+    else:
+        # Script or both: Use audited pipeline (once we implement generate_outro_with_audit)
+        # For now, fall back to non-audited
+        text_only = regen_type == "script"
+        result = api.generate_outro(
+            song=song,
+            dj=dj,
+            text_only=text_only,
+            overwrite=True,
+            audit_feedback=feedback if feedback else None,
+        )
     
     if result.success:
         logger.info(f"✅ Outro regenerated via API: {artist} - {title}")
