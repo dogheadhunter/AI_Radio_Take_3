@@ -3,26 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="AI Radio - Your 24/7 Golden Age Radio Station">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="description" content="Golden Age Of Radio Broadcast - Broadcasting the finest music from the 1940s & 1950s">
+    <meta name="theme-color" content="#1a2332">
     
     <!-- PWA Support -->
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="AI Radio">
+    <meta name="apple-mobile-web-app-title" content="Golden Age Radio">
     
-    <title>AI Radio - Tune In</title>
+    <title>Golden Age Of Radio Broadcast</title>
     <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Righteous&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header class="header">
+            <div class="vintage-badge">EST. 1947</div>
             <div class="logo-container">
-                <div class="radio-icon">📻</div>
-                <h1 class="title">AI Radio</h1>
+                <div class="radio-dial">
+                    <div class="dial-indicator"></div>
+                    <div class="frequency-markers">
+                        <span>55</span><span>60</span><span>70</span><span>80</span>
+                        <span>90</span><span>100</span><span>120</span><span>160</span>
+                    </div>
+                </div>
+                <h1 class="title">Golden Age<br>Of Radio Broadcast</h1>
             </div>
-            <p class="subtitle">Your 24/7 Golden Age Radio Station</p>
+            <p class="subtitle">Broadcasting the finest music from the 1940s & 1950s</p>
+            <div class="art-deco-divider"></div>
         </header>
 
         <main class="main-content">
@@ -32,35 +43,28 @@
                     <span class="status-text">Ready to tune in</span>
                 </div>
 
-                <button id="tuneInBtn" class="tune-in-btn" aria-label="Tune in to AI Radio">
+                <button id="tuneInBtn" class="tune-in-btn" aria-label="Tune in to Golden Age Radio">
                     <span class="btn-icon">▶</span>
                     <span class="btn-text">Tune In</span>
                 </button>
 
                 <div class="now-playing" id="nowPlaying" style="display: none;">
-                    <p class="now-playing-label">Now Playing</p>
-                    <p class="now-playing-title" id="trackTitle">AI Radio - 24/7 Golden Age Hits</p>
+                    <div class="vinyl-record"></div>
+                    <p class="now-playing-label">ON THE AIR</p>
+                    <p class="now-playing-artist" id="trackArtist">The Andrews Sisters</p>
+                    <p class="now-playing-title" id="trackTitle">Boogie Woogie Bugle Boy</p>
                 </div>
 
                 <div class="info-box">
-                    <p class="info-text">
-                        <strong>🎵 Background Playback:</strong> Audio will continue playing even if you:
-                    </p>
-                    <ul class="info-list">
-                        <li>Lock your device screen</li>
-                        <li>Switch to another app</li>
-                        <li>Navigate to other tabs (browser dependent)</li>
-                    </ul>
-                    <p class="info-note">
-                        <em>Note: Background playback support varies by browser and platform. 
-                        For best results, use Chrome, Safari, or Edge on mobile devices.</em>
-                    </p>
+                    <p><strong>📻 Continuous Broadcast:</strong> The broadcast continues playing 24/7. When you tune in, you'll hear whatever is currently on the air.</p>
                 </div>
             </div>
         </main>
 
         <footer class="footer">
-            <p>Powered by AI Radio - Golden Age Music & DJ Personalities</p>
+            <div class="art-deco-divider"></div>
+            <p>⚡ Golden Age Of Radio Broadcast ⚡</p>
+            <p class="footer-tagline">Bringing Yesterday's Melodies to Today</p>
         </footer>
     </div>
 

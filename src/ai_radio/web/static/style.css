@@ -1,20 +1,29 @@
 /**
- * AI Radio - Styles
- * Clean, accessible design for the tune-in interface
+ * Golden Age Of Radio Broadcast - 1940s/1950s Vintage Aesthetic
+ * Art Deco inspired design with period-appropriate typography
  */
 
 :root {
-    --bg-dark: #1a1a1a;
-    --bg-card: #2a2a2a;
-    --text-primary: #ffffff;
-    --text-secondary: #b0b0b0;
-    --accent-primary: #ff6b35;
-    --accent-hover: #ff8555;
-    --status-online: #4ade80;
-    --status-offline: #94a3b8;
-    --status-error: #f87171;
-    --border-radius: 12px;
-    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    /* 1940s Color Palette */
+    --vintage-gold: #d4af37;
+    --vintage-brass: #b8860b;
+    --rich-burgundy: #800020;
+    --deep-navy: #1a2332;
+    --warm-cream: #f5f5dc;
+    --radio-dial: #2c2416;
+    --speaker-cloth: #3a3226;
+    
+    /* UI Colors */
+    --bg-dark: #0f0f0f;
+    --bg-card: linear-gradient(145deg, #1a1410 0%, #2a2216 100%);
+    --text-primary: var(--warm-cream);
+    --text-gold: var(--vintage-gold);
+    --accent-glow: rgba(212, 175, 55, 0.3);
+    
+    /* Shadows & Effects */
+    --shadow-deep: 0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    --glow-gold: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
+    --text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 * {
@@ -24,8 +33,8 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg-dark);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: radial-gradient(ellipse at center, #1a1410 0%, #0a0805 100%);
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
@@ -34,223 +43,398 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 2rem 1rem;
     width: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
 }
+
+/* Art Deco Divider */
+.art-deco-divider {
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--vintage-gold) 20%, 
+        var(--vintage-gold) 80%, 
+        transparent 100%
+    );
+    margin: 1.5rem auto;
+    width: 80%;
+    position: relative;
+}
+
+.art-deco-divider::before,
+.art-deco-divider::after {
+    content: '◆';
+    position: absolute;
+    top: -8px;
+    color: var(--vintage-gold);
+    font-size: 1rem;
+}
+
+.art-deco-divider::before { left: 10%; }
+.art-deco-divider::after { right: 10%; }
 
 /* Header */
 .header {
     text-align: center;
     margin-bottom: 2rem;
+    position: relative;
+}
+
+.vintage-badge {
+    display: inline-block;
+    background: var(--rich-burgundy);
+    color: var(--vintage-gold);
+    padding: 0.3rem 1rem;
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    border: 2px solid var(--vintage-gold);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-deep);
 }
 
 .logo-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
+    gap: 2rem;
+    margin-bottom: 1rem;
 }
 
-.radio-icon {
-    font-size: 3rem;
-    line-height: 1;
+/* Radio Dial */
+.radio-dial {
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, var(--radio-dial) 0%, #1a1410 100%);
+    border-radius: 50%;
+    border: 4px solid var(--vintage-brass);
+    box-shadow: var(--shadow-deep), var(--glow-gold);
+    position: relative;
+    animation: dialGlow 3s ease-in-out infinite;
 }
 
+.dial-indicator {
+    width: 6px;
+    height: 40px;
+    background: linear-gradient(180deg, var(--vintage-gold) 0%, transparent 100%);
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 3px;
+    box-shadow: 0 0 10px var(--vintage-gold);
+    animation: dialSweep 8s linear infinite;
+}
+
+.frequency-markers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    font-size: 0.5rem;
+    color: var(--vintage-gold);
+    font-family: 'Special Elite', monospace;
+}
+
+.frequency-markers span {
+    position: absolute;
+    transform-origin: center;
+}
+
+.frequency-markers span:nth-child(1) { top: 10%; left: 15%; }
+.frequency-markers span:nth-child(2) { top: 5%; left: 35%; }
+.frequency-markers span:nth-child(3) { top: 5%; right: 35%; }
+.frequency-markers span:nth-child(4) { top: 10%; right: 15%; }
+.frequency-markers span:nth-child(5) { bottom: 10%; left: 15%; }
+.frequency-markers span:nth-child(6) { bottom: 5%; left: 35%; }
+.frequency-markers span:nth-child(7) { bottom: 5%; right: 35%; }
+.frequency-markers span:nth-child(8) { bottom: 10%; right: 15%; }
+
+@keyframes dialGlow {
+    0%, 100% { box-shadow: var(--shadow-deep), var(--glow-gold); }
+    50% { box-shadow: var(--shadow-deep), 0 0 30px rgba(212, 175, 55, 0.5); }
+}
+
+@keyframes dialSweep {
+    0% { transform: translateX(-50%) rotate(-45deg); }
+    100% { transform: translateX(-50%) rotate(405deg); }
+}
+
+/* Title */
 .title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-family: 'Righteous', 'Impact', sans-serif;
+    font-size: 2.8rem;
+    line-height: 1.1;
+    color: var(--vintage-gold);
+    text-shadow: var(--text-shadow);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
 }
 
 .subtitle {
-    color: var(--text-secondary);
-    font-size: 1rem;
+    color: var(--warm-cream);
+    font-family: 'Special Elite', 'Courier New', monospace;
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    opacity: 0.9;
 }
 
-/* Main Content */
-.main-content {
-    flex: 1;
-    display: flex;
-    align-items: center;
-}
-
+/* Player Card (Vintage Radio Cabinet) */
 .player-card {
     background: var(--bg-card);
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    box-shadow: var(--shadow);
-    width: 100%;
+    border: 3px solid var(--vintage-brass);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow-deep);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Status */
+.player-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.3) 2px,
+        rgba(0, 0, 0, 0.3) 4px
+    );
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Status Indicator */
 .status {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
 }
 
 .status-indicator {
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    animation: pulse 2s ease-in-out infinite;
+    border: 2px solid var(--vintage-brass);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
 }
 
 .status-indicator.online {
-    background: var(--status-online);
+    background: var(--vintage-gold);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8), 0 0 15px var(--vintage-gold);
+    animation: pulse 2s ease-in-out infinite;
 }
 
 .status-indicator.offline {
-    background: var(--status-offline);
-    animation: none;
-}
-
-.status-indicator.error {
-    background: var(--status-error);
+    background: #4a4a4a;
 }
 
 @keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
 }
 
-.status-text {
-    color: var(--text-secondary);
-}
-
-/* Tune In Button */
+/* Tune In Button (Big Vintage Knob) */
 .tune-in-btn {
-    width: 100%;
-    padding: 1.5rem;
-    font-size: 1.5rem;
-    font-weight: 600;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+    padding: 0;
     border: none;
-    border-radius: var(--border-radius);
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
-    color: var(--text-primary);
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, 
+        #3a2f1f 0%, 
+        #2a1f0f 50%, 
+        #1a0f00 100%
+    );
+    border: 8px solid var(--vintage-brass);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.8),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.5),
+        inset 0 5px 10px rgba(255, 255, 255, 0.1);
     cursor: pointer;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: var(--shadow);
+    position: relative;
+    transition: transform 0.1s, box-shadow 0.3s;
+}
+
+.tune-in-btn::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 60px;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.2) 0%, 
+        transparent 100%
+    );
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%) rotate(-10deg);
+    border-radius: 10px;
 }
 
 .tune-in-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 12px -2px rgba(0, 0, 0, 0.4), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+    transform: scale(1.05);
+    box-shadow: 
+        0 12px 35px rgba(0, 0, 0, 0.9),
+        inset 0 -5px 10px rgba(0, 0, 0, 0.5),
+        inset 0 5px 10px rgba(255, 255, 255, 0.2),
+        0 0 30px var(--accent-glow);
 }
 
 .tune-in-btn:active {
-    transform: translateY(0);
-}
-
-.tune-in-btn:focus {
-    outline: 2px solid var(--accent-hover);
-    outline-offset: 2px;
+    transform: scale(0.98);
 }
 
 .btn-icon {
-    font-size: 1.8rem;
-    line-height: 1;
+    font-size: 4rem;
+    color: var(--vintage-gold);
+    text-shadow: 0 0 10px var(--vintage-gold);
 }
 
-/* Now Playing */
+.btn-text {
+    font-family: 'Special Elite', monospace;
+    font-size: 1.1rem;
+    color: var(--warm-cream);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+}
+
+/* Now Playing (Vinyl Record Display) */
 .now-playing {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: var(--border-radius);
+    background: linear-gradient(145deg, #2a2216 0%, #1a1410 100%);
+    border: 3px solid var(--vintage-brass);
+    border-radius: 15px;
+    padding: 2rem;
     text-align: center;
+    position: relative;
+    box-shadow: var(--shadow-deep);
+}
+
+.vinyl-record {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, 
+        #1a1a1a 0%, 
+        #1a1a1a 35%, 
+        #d4af37 35%, 
+        #d4af37 37%, 
+        #2a2a2a 37%, 
+        #2a2a2a 100%
+    );
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    position: relative;
+    animation: spin 4s linear infinite;
+}
+
+.vinyl-record::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #1a1a1a;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--vintage-gold);
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 .now-playing-label {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.7rem;
+    color: var(--vintage-gold);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+}
+
+.now-playing-artist {
+    font-family: 'Righteous', sans-serif;
+    font-size: 1.3rem;
+    color: var(--vintage-gold);
     margin-bottom: 0.25rem;
 }
 
 .now-playing-title {
     font-size: 1.1rem;
-    font-weight: 500;
+    color: var(--warm-cream);
+    font-style: italic;
 }
 
 /* Info Box */
 .info-box {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background: rgba(255, 107, 53, 0.1);
-    border-left: 3px solid var(--accent-primary);
-    border-radius: 4px;
-}
-
-.info-text {
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.info-list {
-    margin: 0.5rem 0;
-    padding-left: 1.5rem;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.info-list li {
-    margin: 0.25rem 0;
-}
-
-.info-note {
-    margin-top: 0.75rem;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(128, 0, 32, 0.2);
+    border-left: 4px solid var(--rich-burgundy);
+    border-right: 4px solid var(--rich-burgundy);
+    font-size: 0.85rem;
+    color: var(--warm-cream);
 }
 
 /* Footer */
 .footer {
     text-align: center;
-    padding: 1.5rem 0;
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 2rem;
+    padding: 2rem 0 1rem;
+    color: var(--vintage-gold);
+    font-family: 'Special Elite', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
 }
 
-/* Responsive Design */
+.footer-tagline {
+    font-size: 0.7rem;
+    color: var(--warm-cream);
+    opacity: 0.7;
+    font-style: italic;
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
 @media (max-width: 640px) {
-    .container {
-        padding: 1rem;
+    .logo-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .radio-dial {
+        width: 100px;
+        height: 100px;
     }
     
     .title {
         font-size: 2rem;
     }
     
-    .player-card {
-        padding: 1.5rem;
+    .tune-in-btn {
+        width: 160px;
+        height: 160px;
     }
     
-    .tune-in-btn {
-        font-size: 1.2rem;
-        padding: 1.2rem;
+    .btn-icon {
+        font-size: 3rem;
     }
 }
 
@@ -259,17 +443,5 @@ body {
     * {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .player-card {
-        border: 2px solid var(--text-primary);
-    }
-    
-    .tune-in-btn {
-        border: 2px solid var(--text-primary);
     }
 }
