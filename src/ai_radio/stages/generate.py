@@ -164,15 +164,13 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
     # Weather announcements (if requested)
     if "weather" in content_types:
         from src.ai_radio.config import WEATHER_TIMES
-        
-        # Hardcoded test weather data - keep it subtle and timeless
-        SAMPLE_WEATHER = [
-            "Clear skies, temperature around 75 degrees, perfect evening",
-            "Partly cloudy with a chance of afternoon showers",
-            "Dust storm moving in from the west, expect reduced visibility",
-        ]
+        from src.ai_radio.services.weather import WeatherService
         
         logger.info(f"\nGenerating weather announcements for {len(WEATHER_TIMES)} slots...")
+        logger.info("Fetching real weather data from Open-Meteo API...")
+        
+        # Initialize weather service to fetch real weather
+        weather_service = WeatherService()
         
         for dj in djs:
             logger.info(f"\nGenerating weather announcements for {dj.upper()}...")
@@ -183,10 +181,60 @@ def stage_generate(pipeline: GenerationPipeline, songs: List[Dict], djs: List[st
                     logger.debug(f"  [{i}/{len(WEATHER_TIMES)}] Skipping {hour:02d}:00 (already exists)")
                     total_scripts += 1
                 else:
-                    # Use hardcoded weather data cycling through the samples
-                    weather_summary = SAMPLE_WEATHER[i % len(SAMPLE_WEATHER)]
-                    
                     try:
+                        # Fetch weather forecast for the announcement hour and look-ahead
+                        current_weather = weather_service.get_forecast_for_hour(hour)
+                        
+                        # Build comprehensive weather summary with look-ahead forecast
+                        # 6 AM: morning weather + preview of day ahead (check 12 PM and 5 PM)
+                        # 12 PM: afternoon weather + evening preview (check 5 PM and next morning)
+                        # 5 PM: evening weather + night forecast + tomorrow preview (check next 6 AM)
+                        
+                        if current_weather and current_weather.temperature is not None:
+                            temp = int(round(current_weather.temperature))
+                            conditions = current_weather.conditions or "clear skies"
+                            
+                            # Build look-ahead summary based on time
+                            if hour == 6:
+                                # Morning: preview the day ahead
+                                midday = weather_service.get_forecast_for_hour(12)
+                                evening = weather_service.get_forecast_for_hour(17)
+                                midday_temp = int(round(midday.temperature)) if midday and midday.temperature else temp
+                                evening_cond = evening.conditions if evening and evening.conditions else conditions
+                                weather_summary = (
+                                    f"Good morning! Currently {conditions} with {temp} degrees. "
+                                    f"Expect highs around {midday_temp} this afternoon, "
+                                    f"with {evening_cond} later this evening."
+                                )
+                            elif hour == 12:
+                                # Afternoon: current + evening preview
+                                evening = weather_service.get_forecast_for_hour(17)
+                                evening_temp = int(round(evening.temperature)) if evening and evening.temperature else temp
+                                evening_cond = evening.conditions if evening and evening.conditions else conditions
+                                weather_summary = (
+                                    f"Good afternoon! {conditions.capitalize()} right now at {temp} degrees. "
+                                    f"This evening expect {evening_cond} with temperatures dropping to around {evening_temp}."
+                                )
+                            elif hour == 17:
+                                # Evening: current + tonight + tomorrow preview
+                                tomorrow_morning = weather_service.get_forecast_for_hour(6)  # Next day's 6 AM
+                                tomorrow_temp = int(round(tomorrow_morning.temperature)) if tomorrow_morning and tomorrow_morning.temperature else temp
+                                tomorrow_cond = tomorrow_morning.conditions if tomorrow_morning and tomorrow_morning.conditions else conditions
+                                weather_summary = (
+                                    f"Good evening! {conditions.capitalize()} at {temp} degrees. "
+                                    f"Clear skies expected tonight. "
+                                    f"Tomorrow morning looking at {tomorrow_cond} with temperatures around {tomorrow_temp}."
+                                )
+                            else:
+                                # Fallback for any other hour
+                                weather_summary = f"{conditions.capitalize()}, temperature around {temp} degrees"
+                                
+                            logger.debug(f"  Weather for {hour:02d}:00 - {temp}°F, {conditions}")
+                        else:
+                            # Fallback if API fails
+                            weather_summary = "Clear skies, pleasant temperature expected throughout the day"
+                            logger.warning(f"  Using fallback weather data for {hour:02d}:00")
+                        
                         result = pipeline.generate_weather_announcement(
                             hour=hour,
                             minute=0,  # Weather announcements are on the hour

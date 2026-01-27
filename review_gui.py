@@ -2144,6 +2144,8 @@ def main():
             st.rerun()
     
     # Tab-based navigation
+    # Note: Streamlit tabs don't support programmatic switching well,
+    # but query params help guide initial render
     tab_review, tab_catalog = st.tabs(["📋 Review", "🎵 Catalog"])
     
     with tab_review:
@@ -2466,7 +2468,8 @@ def render_catalog_tab():
                 # Jump to Review button (if content exists)
                 if status["intro_script"] or status["outro_script"]:
                     if st.button("📋 Go to Review", key=f"review_{song['id']}", use_container_width=True):
-                        # Set search filter to find this song
+                        # Set query parameters to switch tabs
+                        st.query_params["tab"] = "review"
                         st.session_state.search_query = title
                         st.session_state.filter_content_type = "All"
                         st.rerun()

@@ -213,15 +213,15 @@ def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optio
         ]
         voice = "Warm, reflective, conversational wrap-up."
     else:
-        # Mr. New Vegas outro examples (romantic sign-offs)
+        # Mr. New Vegas outro examples (brief commentary, not show sign-offs)
         examples = [
             "I hope you enjoyed that one, ladies and gentlemen.",
             "And that was for you, New Vegas.",
             "Hope that brought a smile to your face.",
             "And you're still as perfect as the day we met.",
-            "Until next time, New Vegas."
+            "That's one of my personal favorites."
         ]
-        voice = "Smooth, romantic, confident sign-off."
+        voice = "Smooth, romantic, confident commentary - NOT a show sign-off."
 
     system = _build_system_prompt(dj, examples, voice)
 
@@ -242,7 +242,8 @@ def build_song_outro_prompt_v2(dj: DJ, artist: str, title: str, next_song: Optio
         "- Length: 1-3 sentences optimal, 5 sentences MAX.\n"
         "- Use PAST TENSE (the song just played - 'That was...', 'Hope you enjoyed...').\n"
         "- Keep it brief and transitional - no long commentary.\n"
-        "- Natural wrap-up or sign-off feel.\n"
+        "- Brief post-song comment, NOT a show sign-off or goodbye.\n"
+        "- AVOID phrases like 'Until next time', 'Stay tuned', 'Signing off' - this is NOT the end of the show.\n"
         "- DO NOT introduce the song again (it already played)."
     )
 
@@ -292,9 +293,13 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
             minute_expr = f"{minute} minutes past"
         
         time_hint = f"{display_hour} {minute_expr}" if minute != 0 else f"{display_hour} o'clock"
+        # Store AM/PM for the user prompt
+        time_with_ampm = f"{time_hint} {am_pm}"
     else:
         time_of_day = "day"
         time_hint = "the current time"
+        am_pm = ""
+        time_with_ampm = time_hint
     
     # Character-specific prompt
     if dj == DJ.JULIE:
@@ -303,8 +308,10 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
             "Write a SHORT time announcement (1-2 sentences max).\n"
             "Examples of your style:\n"
             "- 'Hey friends, it's eight thirty in the morning here at Appalachia Radio.'\n"
-            "- 'Well, would you look at the time. Just past noon out here in the wasteland.'\n"
-            "- 'Coming up on three o'clock, hope you're staying safe out there.'\n"
+            "- 'Well, would you look at the time. High noon out here in the wasteland.'\n"
+            "- 'Coming up on three o'clock this afternoon, hope you're staying safe out there.'\n"
+            "- 'Well it's midnight, y'all. Late night tunes comin' your way.'\n"
+            "- 'Evening's settling in, it's six o'clock and we're winding down here.'\n"
         )
     else:
         system = (
@@ -312,9 +319,22 @@ def build_time_prompt_v2(dj: DJ, hour: Optional[int] = None, minute: Optional[in
             "Write a SHORT time announcement (1-2 sentences max).\n"
             "Examples of your style:\n"
             "- 'Ladies and gentlemen, it's nine o'clock on this fine evening.'\n"
-            "- 'The time is half past eight, and the music keeps flowing here on Radio New Vegas.'\n"
+            "- 'The time is half past eight this morning, and the music keeps flowing.'\n"
             "- 'Right now it's midnight in the Mojave, and I've got more great tunes for you.'\n"
+            "- 'Good afternoon, New Vegas. It's three o'clock in the desert heat.'\n"
         )
+    
+    user = (
+        f"Announce the time: {time_with_ampm} ({time_of_day}).\n\n"
+        "RULES:\n"
+        "- 1-2 sentences ONLY\n"
+        "- State the time with contextually appropriate references (e.g., 'morning', 'evening', 'midnight', 'high noon', 'afternoon', 'tonight')\n"
+        "- The time reference MUST match the actual time of day (don't say 'morning' at 8 PM)\n"
+        "- Can include generic bridge/filler ('more music coming', 'stay with us')\n"
+        "- NO specific artist names or song titles\n"
+        "- NO digital time formats (like '14:30')\n"
+        "- Just the announcement, nothing else"
+    )
     
     user = (
         f"Announce the time: {time_hint} ({time_of_day}).\n\n"

@@ -792,7 +792,16 @@ def generate_batch_outros(
                 next_s = songs[i + 1]
                 next_song_info = f"{next_s.get('title', 'Unknown')} by {next_s.get('artist', 'Unknown')}"
             
-            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, next_song=next_song_info, text_only=True)
+            # Include lyrics context when available
+            lyrics_ctx = None
+            ldata = pipeline._lyrics_map.get(str(s.get("id")))
+            if ldata:
+                try:
+                    lyrics_ctx = ldata.lyrics if not ldata.is_instrumental else "[Instrumental - no lyrics]"
+                except Exception:
+                    lyrics_ctx = None
+            
+            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, next_song=next_song_info, text_only=True, lyrics_context=lyrics_ctx)
             if result.success:
                 completed += 1
             else:
@@ -859,7 +868,16 @@ def generate_batch_outros(
                 next_s = songs[i + 1]
                 next_song_info = f"{next_s.get('title', 'Unknown')} by {next_s.get('artist', 'Unknown')}"
 
-            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, next_song=next_song_info)
+            # Include lyrics context when available
+            lyrics_ctx = None
+            ldata = pipeline._lyrics_map.get(str(s.get("id")))
+            if ldata:
+                try:
+                    lyrics_ctx = ldata.lyrics if not ldata.is_instrumental else "[Instrumental - no lyrics]"
+                except Exception:
+                    lyrics_ctx = None
+
+            result = pipeline.generate_song_outro(song_id=s["id"], artist=s.get("artist"), title=s.get("title"), dj=dj, next_song=next_song_info, lyrics_context=lyrics_ctx)
             if result.success:
                 completed += 1
             else:

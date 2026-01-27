@@ -54,6 +54,7 @@ class TTSClient:
     def __init__(self, base_url: str = None):
         # base_url kept for backward compatibility but not used
         self._model = None
+        self._cached_voice_ref = None  # Track which voice ref is currently loaded
     
     def _ensure_model(self):
         """Ensure model is loaded."""
@@ -74,9 +75,13 @@ class TTSClient:
             import torchaudio as ta
             import io
             
-            # Generate audio
+            # Prepare conditionals only if voice reference changed
             if voice_reference and voice_reference.exists():
-                wav = model.generate(text, audio_prompt_path=str(voice_reference))
+                if self._cached_voice_ref != str(voice_reference):
+                    logger.info(f"Preparing voice reference: {voice_reference.name}")
+                    model.prepare_conditionals(str(voice_reference), exaggeration=0.0)
+                    self._cached_voice_ref = str(voice_reference)
+                wav = model.generate(text)  # Don't pass audio_prompt_path since conditionals are already set
             else:
                 wav = model.generate(text)
             

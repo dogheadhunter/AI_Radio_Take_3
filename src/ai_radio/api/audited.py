@@ -80,6 +80,10 @@ class AuditedGenerationAPI(GenerationAPI):
         checkpoint_file = Path(tempfile.mktemp(suffix='.json'))
         checkpoint = PipelineCheckpoint(state_file=checkpoint_file)
         
+        # Configure checkpoint with content types
+        checkpoint.state["config"]["content_types"] = ["intros"]
+        checkpoint.save()
+        
         try:
             # Stage 1: Generate script
             from datetime import datetime

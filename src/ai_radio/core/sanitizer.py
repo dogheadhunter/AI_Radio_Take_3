@@ -110,6 +110,16 @@ def validate_time_announcement(text: str) -> tuple:
     if re.search(r'\b\d{1,2}:\d{2}\b', text):
         return False, "Contains timecode format"
     
+    # REQUIRED: Must mention time with contextual reference
+    # Accept: AM/PM, midnight, noon, or contextual phrases (morning, evening, afternoon, tonight, night)
+    text_lower = text.lower()
+    has_am_pm = bool(re.search(r'\b(am|a\.m\.|pm|p\.m\.)\b', text_lower, re.IGNORECASE))
+    has_midnight_or_noon = bool(re.search(r'\b(midnight|noon)\b', text_lower))
+    has_time_context = bool(re.search(r'\b(morning|evening|afternoon|tonight|night)\b', text_lower))
+    
+    if not (has_am_pm or has_midnight_or_noon or has_time_context):
+        return False, "Missing time context (need: AM/PM, midnight, noon, or morning/evening/afternoon/tonight)"
+    
     # All checks passed
     return True, "OK"
 

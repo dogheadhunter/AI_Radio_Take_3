@@ -67,6 +67,12 @@ def run_pipeline(args):
     
     # Initialize checkpoint first (in resume mode)
     checkpoint_file = DATA_DIR / "pipeline_state.json"
+    
+    # Reset checkpoint for fresh runs (not using --resume)
+    if not args.resume and checkpoint_file.exists():
+        logger.info("Fresh run detected - resetting checkpoint...")
+        checkpoint_file.unlink()
+    
     checkpoint = PipelineCheckpoint(checkpoint_file)
     
     # In resume mode, restore configuration from checkpoint
@@ -105,8 +111,8 @@ def run_pipeline(args):
     # Prepare time slots if --time is specified
     time_slots = []
     if args.time or (args.resume and 'time' in checkpoint.state.get('config', {}).get('content_types', [])):
-        # Generate all 48 time slots (every 30 minutes)
-        all_time_slots = [(h, m) for h in range(24) for m in [0, 30]]
+        # Generate 24 time slots (top of each hour only)
+        all_time_slots = [(h, 0) for h in range(24)]
         
         if limit and args.time:  # Only apply limit if explicitly using --time (not in resume)
             # For predictable testing, take first N slots
@@ -247,7 +253,7 @@ Examples:
     # Content type selection
     parser.add_argument('--intros', action='store_true', help='Generate song intros')
     parser.add_argument('--outros', action='store_true', help='Generate song outros')
-    parser.add_argument('--time', action='store_true', help='Generate time announcements (48 slots, every 30 min). With --limit N, generates first N time slots.')
+    parser.add_argument('--time', action='store_true', help='Generate time announcements (24 slots, top of each hour). With --limit N, generates first N time slots.')
     parser.add_argument('--weather', action='store_true', help='Generate weather announcements (3 slots: 6 AM, 12 PM, 5 PM)')
     parser.add_argument('--all-content', action='store_true', help='Generate everything (not yet implemented)')
     
