@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI Radio - Your 24/7 Golden Age Radio Station">
+    <meta name="theme-color" content="#1a1a1a">
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AI Radio">
+    
+    <title>AI Radio - Tune In</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <div class="radio-icon">📻</div>
+                <h1 class="title">AI Radio</h1>
+            </div>
+            <p class="subtitle">Your 24/7 Golden Age Radio Station</p>
+        </header>
+
+        <main class="main-content">
+            <div class="player-card">
+                <div id="status" class="status">
+                    <span class="status-indicator offline"></span>
+                    <span class="status-text">Ready to tune in</span>
+                </div>
+
+                <button id="tuneInBtn" class="tune-in-btn" aria-label="Tune in to AI Radio">
+                    <span class="btn-icon">▶</span>
+                    <span class="btn-text">Tune In</span>
+                </button>
+
+                <div class="now-playing" id="nowPlaying" style="display: none;">
+                    <p class="now-playing-label">Now Playing</p>
+                    <p class="now-playing-title" id="trackTitle">AI Radio - 24/7 Golden Age Hits</p>
+                </div>
+
+                <div class="info-box">
+                    <p class="info-text">
+                        <strong>🎵 Background Playback:</strong> Audio will continue playing even if you:
+                    </p>
+                    <ul class="info-list">
+                        <li>Lock your device screen</li>
+                        <li>Switch to another app</li>
+                        <li>Navigate to other tabs (browser dependent)</li>
+                    </ul>
+                    <p class="info-note">
+                        <em>Note: Background playback support varies by browser and platform. 
+                        For best results, use Chrome, Safari, or Edge on mobile devices.</em>
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Powered by AI Radio - Golden Age Music & DJ Personalities</p>
+        </footer>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>
