@@ -52,6 +52,27 @@ python scripts/generate_with_audit.py --intros --dj julie --skip-audio
 python scripts/generate_with_audit.py --intros --dj all --resume
 ```
 
+## Radio Streaming
+
+### Web GUI - Tune In to Live Radio
+
+Start the standalone web interface for 24/7 radio streaming:
+
+```bash
+# Start the web server
+python scripts/run_radio_server.py
+
+# Open browser to http://localhost:5000 and click "Tune In"
+```
+
+**Features:**
+- 📻 One-click tune-in button
+- 🔊 Background audio playback (works when device locked)
+- 📱 Mobile-friendly PWA (install as app)
+- ♿ Accessible design with keyboard navigation
+
+See [`docs/RADIO_GUI.md`](docs/RADIO_GUI.md) for detailed documentation.
+
 ## Project Architecture
 
 The pipeline uses a modular architecture with clean separation of concerns:
@@ -149,6 +170,7 @@ TEST_MODE=integration pytest     # or: make test-integration
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | **System architecture and design** |
 | [`docs/LLM_CONTEXT.md`](docs/LLM_CONTEXT.md) | LLM-optimized context document |
 | [`tests/TESTING_MODES.md`](tests/TESTING_MODES.md) | Testing strategy and modes |
+| [`docs/RADIO_GUI.md`](docs/RADIO_GUI.md) | **Standalone web GUI for radio streaming** |
 | [`docs/gui/REVIEW_GUI.md`](docs/gui/REVIEW_GUI.md) | Review GUI (optional, Streamlit) |
 
 ## Directory Structure

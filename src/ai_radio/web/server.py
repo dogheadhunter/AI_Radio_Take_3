@@ -103,4 +103,8 @@ def run_server(host='0.0.0.0', port=5000, debug=False):
 
 
 if __name__ == '__main__':
-    run_server(debug=True)
+    # Only enable debug mode if explicitly requested via CLI
+    # Direct execution is for testing only - use scripts/run_radio_server.py
+    import sys
+    debug = '--debug' in sys.argv
+    run_server(debug=debug)

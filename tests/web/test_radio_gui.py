@@ -233,11 +233,11 @@ def test_static_assets_load(app_server, page):
     """)
     assert style_loaded
     
-    # Check JavaScript loaded
+    # Check JavaScript loaded by verifying the button element exists
+    # (app.js functions are scoped, not global, so we check DOM manipulation)
     script_loaded = page.evaluate("""
         () => {
-            return typeof togglePlayback !== 'undefined' || 
-                   document.querySelector('#tuneInBtn') !== null;
+            return document.querySelector('#tuneInBtn') !== null;
         }
     """)
     assert script_loaded
