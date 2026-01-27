@@ -45,6 +45,17 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+# DJ-specific style markers (for bonus scoring)
+DJ_STYLE_MARKERS = {
+    "julie": ["friend", "neighbor", "folks", "home", "appalachia"],
+    "mr.newvegas": ["lovely", "wonderful", "beautiful", "enchanting", "desert"],  # "mr. new vegas" normalized
+    "mrnewvegas": ["lovely", "wonderful", "beautiful", "enchanting", "desert"],
+}
+
+# Common filler words to penalize (reduce conciseness)
+FILLER_WORDS = ["actually", "basically", "literally", "um", "uh", "like", "you know"]
+
+
 @dataclass
 class ScriptCandidate:
     """Represents a script candidate for evaluation."""
@@ -99,10 +110,11 @@ class SelectionGuidelines:
     max_length_chars: int = 500          # Maximum script length
     
     # Forbidden patterns (case-insensitive)
+    # Note: Radio content is set in 2077 (Fallout universe), so modern years are anachronistic
     forbidden_patterns: List[str] = field(default_factory=lambda: [
-        r'\b(awesome|cool|okay|ok)\b',  # Modern slang
-        r'\b(lol|omg|btw)\b',           # Internet slang
-        r'\b(2\d{3})\b',                # Years (anachronistic)
+        r'\b(awesome|cool|okay|ok)\b',      # Modern slang
+        r'\b(lol|omg|btw)\b',               # Internet slang
+        r'\b(19\d{2}|20\d{2}|21\d{2})\b',  # Years 1900-2199 (anachronistic)
     ])
     
     # User override (if provided, this script wins regardless)
@@ -331,13 +343,12 @@ class CherryPicker:
         # Additional heuristics based on DJ (if provided)
         if dj:
             text_lower = candidate.content.lower()
-            if dj.lower() == "julie":
-                # Julie: warm, personal, Appalachian
-                if any(word in text_lower for word in ["friend", "neighbor", "folks", "home"]):
-                    score += 0.5
-            elif dj.lower() == "mr. new vegas" or dj.lower() == "mrnewvegas":
-                # Mr. New Vegas: smooth, romantic
-                if any(word in text_lower for word in ["lovely", "wonderful", "beautiful", "enchanting"]):
+            dj_key = dj.lower().replace(" ", "")  # Normalize DJ name
+            
+            # Check for DJ-specific style markers
+            if dj_key in DJ_STYLE_MARKERS:
+                markers = DJ_STYLE_MARKERS[dj_key]
+                if any(word in text_lower for word in markers):
                     score += 0.5
         
         return max(0.0, min(10.0, score))
@@ -381,9 +392,8 @@ class CherryPicker:
             score = min(score, float(length_score))
         
         # Penalize filler words
-        filler_words = ["actually", "basically", "literally", "um", "uh", "like", "you know"]
         text_lower = candidate.content.lower()
-        for word in filler_words:
+        for word in FILLER_WORDS:
             if f" {word} " in f" {text_lower} ":
                 score -= 0.5
         
